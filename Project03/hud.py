@@ -28,12 +28,13 @@ MUTED = (130, 130, 130)
 
 
 def wrap(pen, text, width):
-    """글자를 하나씩 붙이다가 폭을 넘으면 줄을 바꾼 줄 목록을 만드는 함수"""
-    lines = [""]
-    for char in text:
-        if pen.textlength(lines[-1] + char, font=SMALL_FONT) > width:
-            lines.append("")
-        lines[-1] += char
+    """낱말을 하나씩 붙이다가 폭을 넘으면 줄을 바꾼 줄 목록을 만드는 함수"""
+    lines = []
+    for word in text.split(" "):
+        if lines and pen.textlength(lines[-1] + " " + word, font=SMALL_FONT) <= width:
+            lines[-1] += " " + word
+        else:
+            lines.append(word)
     if len(lines) > MAX_LINES:
         lines = lines[:MAX_LINES]
         lines[-1] = lines[-1][:-1] + "…"

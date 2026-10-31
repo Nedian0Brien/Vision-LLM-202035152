@@ -8,7 +8,7 @@ from ultralytics import YOLO
 
 from detect import CLASSES, scene_state
 from hud import draw
-from retrieve import STATE_QUERIES, Retriever
+from retrieve import Retriever
 
 FRAME_SIZE = (1280, 720)
 STABLE_FRAMES = 5  # 한두 프레임만 잡힌 오탐을 버리려고 5프레임 연속 탐지된 상태만 인정함
@@ -26,8 +26,8 @@ cap = cv2.VideoCapture(args.video)
 video_fps = cap.get(cv2.CAP_PROP_FPS)
 hold_frames = int(HOLD_SECONDS * video_fps)
 
-streak = {state: 0 for state in STATE_QUERIES}
-last_seen = {state: -hold_frames - 1 for state in STATE_QUERIES}
+streak = {state: 0 for state in retriever.queries}
+last_seen = {state: -hold_frames - 1 for state in retriever.queries}
 shown_states = []
 articles = {}
 frame_index = 0
@@ -45,17 +45,17 @@ while True:
     results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES)
     found, boxes = scene_state(results[0], frame)
 
-    for state in STATE_QUERIES:
+    for state in retriever.queries:
         if state in found:
             streak[state] += 1
         else:
             streak[state] = 0
         if streak[state] >= STABLE_FRAMES:
             last_seen[state] = frame_index
-    states = [state for state in STATE_QUERIES if frame_index - last_seen[state] <= hold_frames]
+    states = [state for state in retriever.queries if frame_index - last_seen[state] <= hold_frames]
     if states != shown_states:
         shown_states = states
-        articles = {state: retriever.search(STATE_QUERIES[state], 1)[0] for state in states}
+        articles = {state: retriever.search(retriever.queries[state], 1)[0] for state in states}
     frame_index += 1
 
     elapsed_time = time.perf_counter() - start_time
@@ -66,7 +66,7 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, boxes, shown_states, articles, args.corpus, displayed_fps)
+    output_frame = draw(frame, boxes, shown_states, articles, retriever.name, displayed_fps)
 
     cv2.imshow("Driving Rule Retrieval", output_frame)
 
