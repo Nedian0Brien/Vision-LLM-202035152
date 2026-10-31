@@ -20,8 +20,14 @@ def fetch(oc, mst):
         return ET.fromstring(response.read())
 
 
+def clean(text):
+    """줄바꿈과 겹친 공백을 한 칸으로 줄이고 끝의 개정 이력을 지우는 함수"""
+    # 줄 끝의 <개정 2020.6.9> 같은 개정 이력은 검색과 표시에 쓰지 않음
+    return " ".join(text.split()).split(" <")[0]
+
+
 def law_articles(root):
-    """도로교통법 조문을 조문마다 한 항목으로 모으는 함수"""
+    """도로교통법 조문을 항마다 한 항목으로 모으는 함수"""
     articles = []
     for unit in root.iter("조문단위"):
         # 장·절 제목 줄과 삭제된 조문은 조문제목이 없음
@@ -30,14 +36,20 @@ def law_articles(root):
         number = "제" + unit.findtext("조문번호") + "조"
         if unit.findtext("조문가지번호"):
             number += "의" + unit.findtext("조문가지번호")
-        lines = []
-        for element in unit.iter():
-            if element.tag in ("항내용", "호내용", "목내용"):
-                # 줄 끝의 <개정 2020.6.9> 같은 개정 이력은 검색과 표시에 쓰지 않음
-                lines.append(element.text.strip().split(" <")[0])
-        if not lines:
-            lines.append(unit.findtext("조문내용").split(")", 1)[1].strip())
-        articles.append({"id": "도로교통법 " + number, "title": unit.findtext("조문제목"), "text": " ".join(lines)})
+        # 조문내용은 "제2조(정의) 이 법에서 …"처럼 조문 머리와 항이 없는 조문의 본문을 담음
+        head = clean(unit.findtext("조문내용").split(")", 1)[1])
+        paragraphs = unit.findall("항")
+        if not paragraphs:
+            articles.append({"id": "도로교통법 " + number, "title": unit.findtext("조문제목"), "text": head})
+        for paragraph in paragraphs:
+            lines = []
+            if paragraph.findtext("항번호") is None:
+                lines.append(head)
+            for element in paragraph.iter():
+                if element.tag in ("항내용", "호내용", "목내용"):
+                    lines.append(clean(element.text))
+            paragraph_id = ("도로교통법 " + number + " " + paragraph.findtext("항번호", "")).strip()
+            articles.append({"id": paragraph_id, "title": unit.findtext("조문제목"), "text": " ".join(lines)})
     return articles
 
 
