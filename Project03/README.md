@@ -55,7 +55,7 @@ Project03/
 mkdir -p videos && curl -L -o videos/wonju-2020-04-16.webm "https://upload.wikimedia.org/wikipedia/commons/c/c3/2020-04-16_%EC%9B%90%EC%A3%BC%EC%8B%9C_%EB%8F%84%EB%A1%9C%EC%A3%BC%ED%96%89.webm"
 ```
 
-시연에는 원본의 86~118초(적색 신호 교차로 두 곳과 앞차 구간)를 1280×720 mp4(`mp4v` 코덱)로 다시 저장한 `videos/wonju-demo.mp4`를 씁니다. Jetson의 OpenCV가 VP9을 읽지 못할 경우에 대비한 파일입니다. Mac에서 OpenCV `VideoWriter`로 만들었습니다.
+시연에는 원본의 86~118초를 1280×720 mp4(`mp4v` 코덱)로 다시 저장한 `videos/wonju-demo.mp4`를 씁니다. 이 구간에서 앞차는 시연 영상 4.7초와 24초 부근에, 적색 신호는 24.5~27.4초(원본 110.5초)에 패널에 나옵니다. 원본 90초의 적색 신호는 이 파일에서 5프레임 연속 탐지가 되지 않아 패널에 나오지 않습니다. Jetson의 OpenCV가 VP9을 읽지 못할 경우에 대비한 파일입니다. Mac에서 OpenCV `VideoWriter`로 만들었습니다.
 
 ### 실행 명령
 
