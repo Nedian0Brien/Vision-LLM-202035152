@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 FONT_PATHS = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",  # Jetson Ubuntu의 fonts-noto-cjk 글꼴
+    "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",  # Ubuntu의 fonts-nanum 글꼴
     "/System/Library/Fonts/AppleSDGothicNeo.ttc",  # macOS 기본 한글 글꼴
 ]
 FONT_PATH = [path for path in FONT_PATHS if os.path.exists(path)][0]

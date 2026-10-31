@@ -71,6 +71,9 @@ def signal_rows(root):
             group += cells[0].strip()
             if not border:
                 kind += cells[-2].strip()
+                # 문장이 끝난 줄 다음은 "2." 같은 새 호가 시작하므로 띄어 씀
+                if meaning.endswith("."):
+                    meaning += " "
                 meaning += cells[-1].strip()
         if border and meaning:
             rows.append({"id": "시행규칙 별표 2", "title": kind, "text": meaning})
