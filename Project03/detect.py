@@ -41,7 +41,8 @@ def scene_state(result, frame):
     for box, cls in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist()):
         x1, y1, x2, y2 = map(int, box)
         cls = int(cls)
-        if (y1 + y2) / 2 > height * HOOD_Y:
+        # 박스 중심으로 거르면 발이 화면 아래에 걸친 가까운 보행자까지 지워졌음
+        if y1 > height * HOOD_Y:
             continue
         area = (x2 - x1) * (y2 - y1) / (width * height)
         center_x = (x1 + x2) / 2 / width

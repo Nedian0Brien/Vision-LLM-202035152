@@ -8,21 +8,35 @@ import llama_cpp.mtmd_cpp as mtmd_cpp
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Gemma4ChatHandler
 
+from edge import ACTIONS, sentences
+
 LLM_PATH = "../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf"
 VISION_PATH = "../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf"
 # 기본값인 144개에서는 신호등 색과 표지판 글자를 전혀 읽지 못했고 560개에서 표지판 글자 5개 중 4개를 읽었음(2026-11-02 키프레임 13장 측정)
 IMAGE_TOKENS = 560
-# 같은 측정에서 도로 종류와 터널은 믿을 수 없어 교차로와 횡단보도만 물음
-SCENE_ITEMS = ["교차로", "횡단보도"]
+# 개발용 세트에서 두 번의 판단 중 한 번이라도 예이면 인정했을 때 정밀도가 80% 미만인 항목은 묻지 않음(2026-11-02)
+# 제외: 횡단보도 5/7, 라바콘 2/3, 양보 표지 0/1, 철길 건널목 0/2, 회전교차로 0/4
+# 버스 전용차로는 9개 중 2개만 맞혀 법 개념 대신 눈에 보이는 노면 글자로 물음
+SCENE_ITEMS = ["버스 전용 글자가 쓰인 차로", "노면전차 선로", "회전 금지 표지", "터널", "통학버스", "긴급자동차", "어린이보호구역"]
 
-# "40자 이내 한 문장"으로 지시하면 조항의 첫 문장만 요약해 개정된 뒷부분이 빠졌음
-INSTRUCTION_PROMPT = (
-    "너는 자율주행 차량의 주행 규칙 안내기다. 주어진 법령 조항을 근거로, 지금 장면에서 운전자가 해야 할 행동을 "
-    "한국어 명령문 두 문장 이내로 쓴다. 조항에 적힌 행동 조건을 모두 담고, 조항에 없는 내용은 쓰지 않는다."
+# 의역한 지시문은 부정어와 조건이 빠지거나 뜻이 뒤집혀서 원문 문장의 기호만 고르게 함(2026-11-02)
+# 숫자만 붙이면 조문의 항 번호(②, ⑥)나 조 번호(21950)를 답하는 경우가 있어 S1, S2처럼 기호를 붙임
+SELECT_PROMPT = (
+    "너는 자율주행 차량의 주행 규칙 안내기다. 기호가 붙은 법령 문장 중 주어진 장면에서 자동차 운전자가 지킬 의무를 정한 문장의 기호를 모두 쓰고, "
+    "다음 줄에 그 의무가 요구하는 행동 종류를 " + ", ".join(ACTIONS) + " 중 하나 쓴다."
 )
+# 개발용 엣지 케이스에서 고른 예시이고, 장면 이름, 조항, 문장 목록, 정답으로 이루어짐
+EXAMPLES = [
+    ('통학버스', '도로교통법 제51조 ① 어린이통학버스의 특별보호', ['① 어린이통학버스가 도로에 정차하여 어린이나 영유아가 타고 내리는 중임을 표시하는 점멸등 등의 장치를 작동 중일 때에는 어린이통학버스가 정차한 차로와 그 차로의 바로 옆 차로로 통행하는 차의 운전자는 어린이통학버스에 이르기 전에 일시정지하여 안전을 확인한 후 서행하여야 한다.'], 'S1\n정지'),
+    ('노면전차 선로', '도로교통법 제16조 ② 노면전차 전용로의 설치 등', ['② 노면전차의 운전자는 제1항에 따른 노면전차 전용도로 또는 전용차로로 통행하여야 하며, 차마의 운전자는 노면전차 전용도로 또는 전용차로를 다음 각 호의 경우를 제외하고는 통행하여서는 아니 된다.', '1. 좌회전, 우회전, 횡단 또는 회전하기 위하여 궤도부지를 가로지르는 경우 2. 도로, 교통안전시설, 도로의 부속물 등의 보수를 위하여 진입이 불가피한 경우 3. 노면전차 전용차로에서 긴급자동차가 그 본래의 긴급한 용도로 운행되고 있는 경우'], 'S1\n진입·회전 금지'),
+    ('공사 구간', '도로교통법 제5조 ② 신호 또는 지시에 따를 의무', ['② 도로를 통행하는 보행자, 차마 또는 노면전차의 운전자는 제1항에 따른 교통안전시설이 표시하는 신호 또는 지시와 교통정리를 하는 경찰공무원 또는 경찰보조자(이하 "경찰공무원등"이라 한다)의 신호 또는 지시가 서로 다른 경우에는 경찰공무원등의 신호 또는 지시에 따라야 한다.'], 'S1\n주의'),
+    ('정지 표지', 'CVC §22450(a)', ['(a) The driver of any vehicle approaching a stop sign at the entrance to, or within, an intersection shall stop at a limit line, if marked, otherwise before entering the crosswalk on the near side of the intersection.', 'If there is no limit line or crosswalk, the driver shall stop at the entrance to the intersecting roadway.'], 'S1, S2\n정지'),
+    ('회전 금지 표지', 'CVC §21461(a)', ['(a) It is unlawful for a driver of a vehicle to fail to obey a sign or signal defined as regulatory in the federal Manual on Uniform Traffic Control Devices, or a Department of Transportation approved supplement to that manual of a regulatory nature erected or maintained to enhance traffic safety and operations or to indicate and carry out the provisions of this code or a local traffic ordinance or resolution adopted pursuant to a local traffic ordinance, or to fail to obey a device erected or maintained by lawful authority of a public body or official.'], 'S1\n진입·회전 금지'),
+]
+TRANSLATE_PROMPT = "다음 영어 법령 문장을 한국어로 옮긴다. 부정어, 조건, 수치를 빠뜨리지 않고 설명을 덧붙이지 않는다."
 SCENE_PROMPT = (
     "이 사진은 주행 중인 차량에서 앞을 찍은 화면이다. 아래 항목마다 사진에 보이면 예, 보이지 않으면 아니오로만 답하라. "
-    "설명은 쓰지 마라.\n교차로:\n횡단보도:\n표지판 글자(없으면 없음):"
+    "설명은 쓰지 마라.\n" + "\n".join(item + ":" for item in SCENE_ITEMS) + "\n표지판 글자(없으면 없음):"
 )
 CHECK_PROMPT = (
     "너는 자율주행 차량의 법령 검색 검증기다. 운전자가 도로에서 본 표지판 글자와 번호가 붙은 후보 조항들이 주어진다. "
@@ -57,13 +71,39 @@ def ask(llm, messages, max_tokens):
     return response["choices"][0]["message"]["content"].strip()
 
 
-def write_instruction(llm, state, article):
-    """조항 하나를 근거로 주행 지시문을 만드는 함수"""
-    messages = [
-        {"role": "system", "content": INSTRUCTION_PROMPT},
-        {"role": "user", "content": f"장면: {state}\n조항: {article['id']} {article['title']}\n{article['text']}"},
-    ]
-    return ask(llm, messages, 120)
+def sentence_message(name, header, lines):
+    """장면 이름, 조항, 기호를 붙인 문장 목록으로 사용자 메시지를 만드는 함수"""
+    listing = "\n".join(f"S{i + 1}. {line}" for i, line in enumerate(lines))
+    return {"role": "user", "content": f"장면: {name}\n조항: {header}\n{listing}"}
+
+
+def write_instruction(llm, name, article):
+    """조항에서 장면에 해당하는 원문 문장과 행동 종류를 골라 지시문 사전을 만드는 함수"""
+    lines = sentences(article["text"])
+    messages = [{"role": "system", "content": SELECT_PROMPT}]
+    for example_name, header, example_lines, example_answer in EXAMPLES:
+        messages.append(sentence_message(example_name, header, example_lines))
+        messages.append({"role": "assistant", "content": example_answer})
+    messages.append(sentence_message(name, (article["id"] + " " + article["title"]).strip(), lines))
+    answer = ask(llm, messages, 30).split("\n")
+    chosen = []
+    for mark in answer[0].split(","):
+        mark = mark.strip(" .")
+        if mark[1:].isdigit() and 1 <= int(mark[1:]) <= len(lines) and lines[int(mark[1:]) - 1] not in chosen:
+            chosen.append(lines[int(mark[1:]) - 1])
+    # 고른 기호가 없으면 조항 전체를 보여 줘 의무가 빠지지 않게 함
+    if not chosen:
+        chosen = lines
+    # "주의 진행 중"처럼 낱말을 덧붙여 답하는 경우가 있어 포함된 행동 종류를 고름
+    action = ""
+    for kind in ACTIONS:
+        if kind in answer[-1]:
+            action = kind
+    translation = ""
+    if "다" not in article["text"]:
+        messages = [{"role": "system", "content": TRANSLATE_PROMPT}, {"role": "user", "content": " ".join(chosen)}]
+        translation = ask(llm, messages, 300)
+    return {"문장": chosen, "번역": translation, "행동 종류": action}
 
 
 def parse_answer(text):
@@ -82,7 +122,7 @@ def read_scene(llm, frame):
     ok, jpg = cv2.imencode(".jpg", frame)
     url = "data:image/jpeg;base64," + base64.b64encode(jpg.tobytes()).decode()
     content = [{"type": "image_url", "image_url": {"url": url}}, {"type": "text", "text": SCENE_PROMPT}]
-    answer = parse_answer(ask(llm, [{"role": "user", "content": content}], 80))
+    answer = parse_answer(ask(llm, [{"role": "user", "content": content}], 160))
     facts = {item for item in SCENE_ITEMS if answer.get(item, "").startswith("예")}
     sign = answer.get("표지판 글자", "").strip(" .")
     # 표지판 글자 칸에도 예나 아니오로 답하는 경우가 있었고, 그 낱말로 검색하면 엉뚱한 조항이 후보가 됨
@@ -117,8 +157,8 @@ def watch(llm, retriever, shared):
             time.sleep(0.1)
             continue
         facts, sign = read_scene(llm, frame)
-        # 한 번의 오답이 패널에 바로 나오지 않도록 두 번 연속 같은 판단만 채택함
-        scene = {"facts": facts & last_facts, "sign": "", "article": None, "instruction": ""}
+        # 개발용 세트에서 두 번 모두 예일 때만 인정하면 재현율이 46%, 한 번이라도 예이면 58%였음(2026-11-02)
+        scene = {"facts": facts | last_facts, "sign": "", "article": None, "instruction": ""}
         if sign and sign == last_sign:
             if sign not in checked:
                 article = check_sign(llm, retriever, sign)
