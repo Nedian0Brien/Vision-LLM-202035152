@@ -161,26 +161,32 @@ def check_sign(llm, retriever, sign):
     return None
 
 
-def watch(llm, retriever, shared):
+def watch(llm, retrievers, shared):
     """최신 프레임을 계속 판단해 채택한 맥락을 shared["scene"]에 넣는 스레드 함수"""
-    last_facts, last_sign = set(), ""
+    last_video, last_facts, last_sign = None, set(), ""
     checked = {}
     while True:
-        frame = shared["frame"]
-        if frame is None:
+        if shared["frame"] is None:
             time.sleep(0.1)
             continue
+        video, frame = shared["frame"]
         facts, sign = read_scene(llm, frame)
+        # 판단하는 동안 영상 버튼이 눌렸으면 이전 영상의 판단을 버림
+        if shared["frame"][0] != video:
+            continue
+        if video != last_video:
+            last_facts, last_sign = set(), ""
+        corpus = shared["corpus"]
         # 개발용 세트에서 두 번 모두 예일 때만 인정하면 재현율이 46%, 한 번이라도 예이면 58%였음(2026-11-02)
-        scene = {"facts": facts | last_facts, "sign": "", "article": None, "instruction": None}
+        scene = {"facts": facts | last_facts, "corpus": corpus, "sign": "", "article": None, "instruction": None}
         if sign and sign == last_sign:
-            if sign not in checked:
-                article = check_sign(llm, retriever, sign)
+            if (corpus, sign) not in checked:
+                article = check_sign(llm, retrievers[corpus], sign)
                 instruction = write_instruction(llm, "표지판 " + sign, article) if article else None
-                checked[sign] = (article, instruction)
+                checked[(corpus, sign)] = (article, instruction)
             scene["sign"] = sign
-            scene["article"], scene["instruction"] = checked[sign]
-        last_facts, last_sign = facts, sign
+            scene["article"], scene["instruction"] = checked[(corpus, sign)]
+        last_video, last_facts, last_sign = video, facts, sign
         print("맥락", sorted(scene["facts"]), scene["sign"])
         # 새 사전을 한 번에 넣어 메인 루프가 반쯤 바뀐 결과를 읽지 않게 함
         shared["scene"] = scene

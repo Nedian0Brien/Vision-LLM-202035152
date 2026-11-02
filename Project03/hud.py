@@ -27,6 +27,11 @@ OTHER = (140, 140, 140)
 TITLE = (245, 245, 245)
 BODY = (200, 200, 200)
 MUTED = (130, 130, 130)
+BUTTON = (55, 55, 55)
+CHOSEN = (235, 235, 235)
+
+BUTTON_HEIGHT = 34
+BUTTON_GAP = 8
 
 
 def wrap(pen, text, font, max_lines):
@@ -43,8 +48,21 @@ def wrap(pen, text, font, max_lines):
     return lines
 
 
-def draw(frame, boxes, panel, corpus_name, fps):
-    """프레임에 박스를 그리고 오른쪽 패널의 왼쪽 열에 지시문, 오른쪽 열에 근거 조문을 붙이는 함수"""
+def button_boxes(frame_width, groups):
+    """버튼 묶음마다 한 줄씩 패널 위쪽에 놓을 버튼의 묶음 이름, 번호, 글자, 사각형 목록을 만드는 함수"""
+    buttons = []
+    y = BUTTON_GAP
+    for group, names in groups.items():
+        width = (PANEL_WIDTH - 48 - BUTTON_GAP * (len(names) - 1)) // len(names)
+        for index, name in enumerate(names):
+            x = frame_width + 24 + index * (width + BUTTON_GAP)
+            buttons.append((group, index, name, (x, y, x + width, y + BUTTON_HEIGHT)))
+        y += BUTTON_HEIGHT + BUTTON_GAP
+    return buttons
+
+
+def draw(frame, boxes, panel, buttons, selected, fps):
+    """프레임에 박스를 그리고 오른쪽 패널 위쪽에 버튼, 왼쪽 열에 지시문, 오른쪽 열에 근거 조문을 붙이는 함수"""
     for x1, y1, x2, y2, state in boxes:
         cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
@@ -55,12 +73,16 @@ def draw(frame, boxes, panel, corpus_name, fps):
         if state:
             pen.text((x1, max(y1 - 26, 0)), state, font=MEDIUM_FONT, fill=STATE)
 
+    for group, index, name, (x1, y1, x2, y2) in buttons:
+        chosen = selected[group] == index
+        pen.rectangle((x1, y1, x2, y2), fill=CHOSEN if chosen else BUTTON)
+        pen.text(((x1 + x2) // 2, (y1 + y2) // 2), name, font=SMALL_FONT, fill=PANEL if chosen else BODY, anchor="mm")
+    pen.text((canvas.shape[1] - 24, canvas.shape[0] - 12), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="rd")
+
     left = frame.shape[1] + 24
     right = left + COLUMN_WIDTH + 24
-    pen.text((left, 20), corpus_name, font=SMALL_FONT, fill=MUTED)
-    pen.text((canvas.shape[1] - 24, 20), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="ra")
     # 엣지 케이스 3개가 720 픽셀 높이에 들어가도록 의무 하나는 3줄, 근거 문장은 7줄까지만 보여 줌
-    y = 64
+    y = buttons[-1][3][3] + 28
     shown = []
     for name, article, instruction in panel:
         # 정지 표지와 양보 표지처럼 같은 조항을 가리키는 엣지 케이스는 한 번만 보여 줌
