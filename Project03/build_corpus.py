@@ -17,26 +17,42 @@ VERSIONS = {
 
 # 검색 문장은 상태마다 그 법령이 쓰는 용어로 적음
 KOREAN_QUERIES = {
-    "적색 신호": "차량신호등 적색의 등화 정지선 횡단보도 교차로 직전 정지 우회전",
+    "적색 신호 교차로": "차량신호등 적색의 등화 정지선 횡단보도 교차로 직전 정지 우회전",
     "황색 신호": "차량신호등 황색의 등화 정지선 교차로 직전 정지 우회전 보행자 횡단 방해",
-    "녹색 신호": "차량신호등 녹색의 등화 직진 우회전 비보호좌회전",
-    "보행자": "보행자 횡단보도 통행 일시정지 횡단 방해",
-    "횡단보도": "횡단보도 앞 일시정지 보행자 횡단 통행하려고 하는 때",
-    "교차로": "교차로에서 우회전 우측 가장자리 서행 보행자 주의",
-    "자전거": "자전거등 옆 지날 때 충돌 피할 거리 확보",
-    "앞차": "앞차 뒤를 따르는 경우 충돌 피할 안전거리 확보",
-    "정지 표지": "안전표지 일시정지 장소 지정",
+    "횡단보도 보행자": "보행자 횡단보도 통행 일시정지 횡단 방해",
+    "차도 보행자": "횡단보도가 설치되어 있지 아니한 도로를 횡단하는 보행자 안전거리 일시정지",
+    "정지 표지": "일시정지나 양보를 표시하는 안전표지가 설치되어 있는 교차로 일시정지",
+    "양보 표지": "양보를 표시하는 안전표지가 설치되어 있는 교차로 다른 차의 진행 방해 양보",
+    "회전 금지 표지": "교통안전시설이 표시하는 신호 또는 지시를 따라야 한다",
+    "버스 전용차로": "전용차로로 통행할 수 있는 차가 아니면 전용차로로 통행하여서는 아니 된다",
+    "노면전차 선로": "차마의 운전자는 노면전차 전용도로 또는 전용차로를 통행하여서는 아니 된다 궤도부지",
+    "터널": "다음 각 호의 어느 하나에 해당하는 곳에서는 다른 차를 앞지르지 못한다 교차로 터널 안 다리 위",
+    "공사 구간": "교통안전시설이 표시하는 신호 또는 지시를 따라야 한다 공사",
+    "자전거 근접": "자전거등 옆 지날 때 충돌 피할 거리 확보",
+    "통학버스": "어린이통학버스가 정차하여 점멸등 작동 중 일시정지 안전 확인 서행",
+    "긴급자동차": "긴급자동차가 접근하는 경우 교차로를 피하여 일시정지 진로 양보",
+    "철길 건널목": "철길 건널목을 통과하려는 경우 건널목 앞에서 일시정지 안전 확인",
+    "회전교차로": "회전교차로에 진입하려는 경우 서행 일시정지 진행하고 있는 다른 차 진로 양보",
+    "어린이보호구역": "어린이 보호구역에서 조치를 준수하고 어린이의 안전에 유의하면서 운행",
 }
 CALIFORNIA_QUERIES = {
-    "적색 신호": "steady circular red signal stop then turn right yield to pedestrians",
+    "적색 신호 교차로": "steady circular red signal stop then turn right yield to pedestrians",
     "황색 신호": "steady circular yellow signal warning red will be shown",
-    "녹색 신호": "circular green signal proceed straight or turn right or left",
-    "보행자": "yield right-of-way to pedestrian crossing roadway within marked crosswalk",
-    "횡단보도": "approaching pedestrian within crosswalk exercise due care reduce speed",
-    "교차로": "approaching an intersection yield right-of-way to vehicle entered intersection",
-    "자전거": "passing a bicycle in the same direction three feet distance",
-    "앞차": "follow another vehicle more closely than reasonable and prudent",
+    "횡단보도 보행자": "yield right-of-way to pedestrian crossing roadway within marked crosswalk",
+    "차도 보행자": "pedestrian upon a roadway at any point other than within a crosswalk shall not relieve the driver duty to exercise due care",
     "정지 표지": "approaching a stop sign at the entrance to an intersection stop at limit line",
+    "양보 표지": "approaching intersection controlled by a yield right-of-way sign yield to vehicles",
+    "회전 금지 표지": "unlawful for a driver to fail to obey a sign or signal defined as regulatory",
+    "버스 전용차로": "shall not operate a motor vehicle on a transit-only traffic lane",
+    "노면전차 선로": "overtaking streetcar stopped receiving or discharging passenger shall stop vehicle to the rear",
+    "터널": "no vehicle shall be driven to the left side of the roadway approaching tunnel",
+    "공사 구간": "unlawful for a driver to fail to obey a sign or signal defined as regulatory construction",
+    "자전거 근접": "passing a bicycle in the same direction three feet distance",
+    "통학버스": "meeting or overtaking schoolbus stopped flashing red signal lamps driver shall stop",
+    "긴급자동차": "approach of authorized emergency vehicle siren red lamp yield right-of-way stop",
+    "철길 건널목": "approaching railroad grade crossing signal warning approaching train shall stop",
+    "회전교차로": "roundabout traffic circle yield to vehicles in circle",
+    "어린이보호구역": "approaching or passing a school building children twenty-five miles per hour",
 }
 
 
@@ -124,15 +140,18 @@ def california_sections(zip_path):
             number = columns[2].rstrip(".")
             content = ET.fromstring(archive.read(columns[14]))
             items = []
+            head = ""
             for paragraph in content.iter("p"):
                 # (a) 뒤의 공백은 빈 <span> 태그라 글 조각 사이를 띄어 이어야 함
                 text = " ".join(" ".join(paragraph.itertext()).split())
                 # (a)처럼 영문 소문자 한 글자로 시작하는 문단이 새 항이고 (1) 같은 호는 앞 항에 붙임
                 if text[:1] == "(" and text[2:3] == ")" and text[1:2].islower():
-                    items.append([number + text[:3], text])
+                    # "under the following conditions:"처럼 항 앞 머리 문장이 있으면 항만으로는 뜻이 통하지 않아 앞에 붙임
+                    items.append([number + text[:3], (head + " " + text).strip()])
                 elif items:
                     items[-1][1] += " " + text
                 else:
+                    head = text
                     items.append([number, text])
             for item_id, text in items:
                 articles.append({"id": "CVC §" + item_id, "title": "", "text": text})
