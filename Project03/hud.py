@@ -16,8 +16,9 @@ SMALL_FONT = ImageFont.truetype(FONT_PATH, 15)
 MEDIUM_FONT = ImageFont.truetype(FONT_PATH, 19)
 LARGE_FONT = ImageFont.truetype(FONT_PATH, 22)
 
-PANEL_WIDTH = 480
-TEXT_WIDTH = PANEL_WIDTH - 48
+# 1280 픽셀 영상 옆에 붙여 전체 폭이 1920 픽셀 화면에 맞게 함
+PANEL_WIDTH = 640
+COLUMN_WIDTH = 284  # 패널 좌우 여백 24와 두 열 사이 간격 24를 뺀 폭을 반으로 나눔
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
 PANEL = (28, 28, 28)
@@ -29,10 +30,10 @@ MUTED = (130, 130, 130)
 
 
 def wrap(pen, text, font, max_lines):
-    """낱말을 하나씩 붙이다가 패널 폭을 넘으면 줄을 바꾼 줄 목록을 만드는 함수"""
+    """낱말을 하나씩 붙이다가 열 폭을 넘으면 줄을 바꾼 줄 목록을 만드는 함수"""
     lines = []
     for word in text.split(" "):
-        if lines and pen.textlength(lines[-1] + " " + word, font=font) <= TEXT_WIDTH:
+        if lines and pen.textlength(lines[-1] + " " + word, font=font) <= COLUMN_WIDTH:
             lines[-1] += " " + word
         else:
             lines.append(word)
@@ -43,7 +44,7 @@ def wrap(pen, text, font, max_lines):
 
 
 def draw(frame, boxes, panel, corpus_name, fps):
-    """프레임에 박스를 그리고 오른쪽에 엣지 케이스별 행동 종류, 지시문, 근거 문장 패널을 붙이는 함수"""
+    """프레임에 박스를 그리고 오른쪽 패널의 왼쪽 열에 지시문, 오른쪽 열에 근거 조문을 붙이는 함수"""
     for x1, y1, x2, y2, state in boxes:
         cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
@@ -54,11 +55,11 @@ def draw(frame, boxes, panel, corpus_name, fps):
         if state:
             pen.text((x1, max(y1 - 26, 0)), state, font=MEDIUM_FONT, fill=STATE)
 
-    x = frame.shape[1] + 24
-    right = canvas.shape[1] - 24
-    pen.text((x, 20), corpus_name, font=SMALL_FONT, fill=MUTED)
-    pen.text((right, 20), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="ra")
-    # 엣지 케이스 3개가 720 픽셀 높이에 들어가도록 지시문은 3줄, 근거 원문은 2줄까지만 보여 줌
+    left = frame.shape[1] + 24
+    right = left + COLUMN_WIDTH + 24
+    pen.text((left, 20), corpus_name, font=SMALL_FONT, fill=MUTED)
+    pen.text((canvas.shape[1] - 24, 20), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="ra")
+    # 엣지 케이스 3개가 720 픽셀 높이에 들어가도록 의무 하나는 3줄, 근거 문장은 7줄까지만 보여 줌
     y = 64
     shown = []
     for name, article, instruction in panel:
@@ -66,17 +67,22 @@ def draw(frame, boxes, panel, corpus_name, fps):
         if article["id"] + article["title"] in shown or len(shown) == 3:
             continue
         shown.append(article["id"] + article["title"])
-        pen.text((x, y), name, font=LARGE_FONT, fill=STATE)
-        pen.text((right, y), instruction["행동 종류"], font=LARGE_FONT, fill=TITLE, anchor="ra")
-        y += 34
-        for line in wrap(pen, instruction["지시"], MEDIUM_FONT, 3):
-            pen.text((x, y), line, font=MEDIUM_FONT, fill=TITLE)
-            y += 26
-        y += 6
-        pen.text((x, y), article["id"] + " " + article["title"], font=SMALL_FONT, fill=MUTED)
-        y += 21
-        for line in wrap(pen, " ".join(instruction["문장"]), SMALL_FONT, 2):
-            pen.text((x, y), line, font=SMALL_FONT, fill=BODY)
-            y += 21
-        y += 22
+        pen.text((left, y), name, font=LARGE_FONT, fill=STATE)
+        pen.text((left, y + 30), instruction["행동 종류"], font=MEDIUM_FONT, fill=STATE)
+        left_y = y + 62
+        # 의무 하나가 여러 줄로 넘어가도 의무끼리 구분되도록 의무 사이에 간격을 둠
+        for duty in instruction["지시"].split("\n"):
+            for line in wrap(pen, duty.strip(), MEDIUM_FONT, 3):
+                pen.text((left, left_y), line, font=MEDIUM_FONT, fill=TITLE)
+                left_y += 25
+            left_y += 8
+        right_y = y + 4
+        for line in wrap(pen, article["id"] + " " + article["title"], SMALL_FONT, 2):
+            pen.text((right, right_y), line, font=SMALL_FONT, fill=MUTED)
+            right_y += 20
+        right_y += 4
+        for line in wrap(pen, " ".join(instruction["문장"]), SMALL_FONT, 7):
+            pen.text((right, right_y), line, font=SMALL_FONT, fill=BODY)
+            right_y += 20
+        y = max(left_y, right_y) + 24
     return np.array(image)
