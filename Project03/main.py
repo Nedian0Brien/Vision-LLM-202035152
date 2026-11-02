@@ -8,6 +8,7 @@ from ultralytics import YOLO
 
 from detect import CLASSES, scene_state
 from hud import draw
+from instruct import write_instructions
 from retrieve import Retriever
 
 FRAME_SIZE = (1280, 720)
@@ -20,16 +21,18 @@ parser.add_argument("--corpus", default="corpus-current.json")
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
-model = YOLO(args.model)
 retriever = Retriever(args.corpus)
+# 상태마다 검색 문장이 하나로 정해져 있어 검색 결과와 지시문을 시작할 때 한 번만 만듦
+articles = {state: retriever.search(query, 1)[0] for state, query in retriever.queries.items()}
+# 지시문을 만든 뒤 Gemma가 해제되고 나서 YOLO를 불러와 두 모델이 메모리에 함께 올라가지 않음
+instructions = write_instructions(articles)
+model = YOLO(args.model)
 cap = cv2.VideoCapture(args.video)
 video_fps = cap.get(cv2.CAP_PROP_FPS)
 hold_frames = int(HOLD_SECONDS * video_fps)
 
 streak = {state: 0 for state in retriever.queries}
 last_seen = {state: -hold_frames - 1 for state in retriever.queries}
-shown_states = []
-articles = {}
 frame_index = 0
 displayed_fps = 0.0
 
@@ -53,9 +56,6 @@ while True:
         if streak[state] >= STABLE_FRAMES:
             last_seen[state] = frame_index
     states = [state for state in retriever.queries if frame_index - last_seen[state] <= hold_frames]
-    if states != shown_states:
-        shown_states = states
-        articles = {state: retriever.search(retriever.queries[state], 1)[0] for state in states}
     frame_index += 1
 
     elapsed_time = time.perf_counter() - start_time
@@ -66,7 +66,7 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, boxes, shown_states, articles, retriever.name, displayed_fps)
+    output_frame = draw(frame, boxes, states, articles, instructions, retriever.name, displayed_fps)
 
     cv2.imshow("Driving Rule Retrieval", output_frame)
 

@@ -12,11 +12,12 @@ FONT_PATHS = [
     "/System/Library/Fonts/AppleSDGothicNeo.ttc",  # macOS 기본 한글 글꼴
 ]
 FONT_PATH = [path for path in FONT_PATHS if os.path.exists(path)][0]
-SMALL_FONT = ImageFont.truetype(FONT_PATH, 17)
+SMALL_FONT = ImageFont.truetype(FONT_PATH, 15)
+MEDIUM_FONT = ImageFont.truetype(FONT_PATH, 19)
 LARGE_FONT = ImageFont.truetype(FONT_PATH, 22)
 
 PANEL_WIDTH = 480
-MAX_LINES = 5
+TEXT_WIDTH = PANEL_WIDTH - 48
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
 PANEL = (28, 28, 28)
@@ -27,22 +28,22 @@ BODY = (200, 200, 200)
 MUTED = (130, 130, 130)
 
 
-def wrap(pen, text, width):
-    """낱말을 하나씩 붙이다가 폭을 넘으면 줄을 바꾼 줄 목록을 만드는 함수"""
+def wrap(pen, text, font, max_lines):
+    """낱말을 하나씩 붙이다가 패널 폭을 넘으면 줄을 바꾼 줄 목록을 만드는 함수"""
     lines = []
     for word in text.split(" "):
-        if lines and pen.textlength(lines[-1] + " " + word, font=SMALL_FONT) <= width:
+        if lines and pen.textlength(lines[-1] + " " + word, font=font) <= TEXT_WIDTH:
             lines[-1] += " " + word
         else:
             lines.append(word)
-    if len(lines) > MAX_LINES:
-        lines = lines[:MAX_LINES]
+    if len(lines) > max_lines:
+        lines = lines[:max_lines]
         lines[-1] = lines[-1][:-1] + "…"
     return lines
 
 
-def draw(frame, boxes, states, articles, corpus_name, fps):
-    """프레임에 박스를 그리고 오른쪽에 장면 상태별 조문 패널을 붙이는 함수"""
+def draw(frame, boxes, states, articles, instructions, corpus_name, fps):
+    """프레임에 박스를 그리고 오른쪽에 장면 상태별 지시문과 근거 조문 패널을 붙이는 함수"""
     for x1, y1, x2, y2, state in boxes:
         cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
@@ -51,20 +52,25 @@ def draw(frame, boxes, states, articles, corpus_name, fps):
     pen = ImageDraw.Draw(image)
     for x1, y1, x2, y2, state in boxes:
         if state:
-            pen.text((x1, max(y1 - 26, 0)), state, font=SMALL_FONT, fill=STATE)
+            pen.text((x1, max(y1 - 26, 0)), state, font=MEDIUM_FONT, fill=STATE)
 
     x = frame.shape[1] + 24
     pen.text((x, 20), corpus_name, font=SMALL_FONT, fill=MUTED)
     pen.text((canvas.shape[1] - 24, 20), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="ra")
+    # 상태 3개가 720 픽셀 높이에 들어가도록 지시문은 3줄, 근거 원문은 2줄까지만 보여 줌
     y = 64
     for state in states:
         article = articles[state]
         pen.text((x, y), state, font=LARGE_FONT, fill=STATE)
         y += 34
-        pen.text((x, y), article["id"] + " " + article["title"], font=SMALL_FONT, fill=TITLE)
-        y += 28
-        for line in wrap(pen, article["text"], PANEL_WIDTH - 48):
+        for line in wrap(pen, instructions[state], MEDIUM_FONT, 3):
+            pen.text((x, y), line, font=MEDIUM_FONT, fill=TITLE)
+            y += 26
+        y += 6
+        pen.text((x, y), article["id"] + " " + article["title"], font=SMALL_FONT, fill=MUTED)
+        y += 21
+        for line in wrap(pen, article["text"], SMALL_FONT, 2):
             pen.text((x, y), line, font=SMALL_FONT, fill=BODY)
-            y += 25
+            y += 21
         y += 22
     return np.array(image)
