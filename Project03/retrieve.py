@@ -9,11 +9,17 @@ B = 0.75
 
 
 def tokenize(text):
-    """공백을 빼고 소문자로 바꾼 글을 두 글자씩 묶은 바이그램 목록을 만드는 함수"""
-    # 형태소 분석기 없이도 조사가 붙은 낱말이 같은 바이그램을 공유함
-    # 영어 문장 첫 글자의 대문자도 같은 바이그램이 되도록 소문자로 바꿈
-    text = text.replace(" ", "").lower()
-    return [text[i:i + 2] for i in range(len(text) - 1)]
+    """영어 낱말은 낱말 그대로, 한국어는 이어 붙여 두 글자씩 묶은 토큰 목록을 만드는 함수"""
+    tokens = []
+    korean = ""
+    for word in text.lower().split():
+        # 영어를 글자 두 개씩 자르면 "on", "wa" 같은 조각이 어느 낱말에나 있어 지명도 높은 점수를 받았음
+        if word.isascii():
+            tokens.append(word.strip(".,;:()"))
+        else:
+            korean += word
+    # 형태소 분석기 없이도 조사가 붙은 한국어 낱말이 같은 바이그램을 공유함
+    return tokens + [korean[i:i + 2] for i in range(len(korean) - 1)]
 
 
 class Retriever:
@@ -54,4 +60,4 @@ class Retriever:
                     score += self.idf[token] * count[token] * (K1 + 1) / (count[token] + norm)
             scores.append((score, i))
         scores.sort(reverse=True)
-        return [self.articles[i] for score, i in scores[:k]]
+        return [(score, self.articles[i]) for score, i in scores[:k]]

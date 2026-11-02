@@ -5,6 +5,8 @@
   "황색 신호": "steady circular yellow signal warning red will be shown",
   "녹색 신호": "circular green signal proceed straight or turn right or left",
   "보행자": "yield right-of-way to pedestrian crossing roadway within marked crosswalk",
+  "횡단보도": "approaching pedestrian within crosswalk exercise due care reduce speed",
+  "교차로": "approaching an intersection yield right-of-way to vehicle entered intersection",
   "자전거": "passing a bicycle in the same direction three feet distance",
   "앞차": "follow another vehicle more closely than reasonable and prudent",
   "정지 표지": "approaching a stop sign at the entrance to an intersection stop at limit line"

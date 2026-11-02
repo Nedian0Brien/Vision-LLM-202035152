@@ -23,7 +23,7 @@ args = parser.parse_args()
 
 retriever = Retriever(args.corpus)
 # 상태마다 검색 문장이 하나로 정해져 있어 검색 결과와 지시문을 시작할 때 한 번만 만듦
-articles = {state: retriever.search(query, 1)[0] for state, query in retriever.queries.items()}
+articles = {state: retriever.search(query, 1)[0][1] for state, query in retriever.queries.items()}
 # 지시문을 만든 뒤 Gemma가 해제되고 나서 YOLO를 불러와 두 모델이 메모리에 함께 올라가지 않음
 instructions = write_instructions(articles)
 model = YOLO(args.model)
