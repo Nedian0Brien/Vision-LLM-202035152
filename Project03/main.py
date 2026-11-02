@@ -7,7 +7,7 @@ import time
 import cv2
 from ultralytics import YOLO
 
-from detect import CLASSES, scene_state
+from detect import CLASSES, IMAGE_SIZE, scene_state
 from edge import EDGE_CASES, active_edge_cases
 from gemma import load_gemma, watch, write_instruction
 from hud import button_boxes, draw, draw_panel
@@ -16,6 +16,8 @@ from retrieve import Retriever
 FRAME_SIZE = (1280, 720)
 STABLE_FRAMES = 5  # 한두 프레임만 잡힌 오탐을 버리려고 5프레임 연속 탐지된 상태만 인정함
 HOLD_SECONDS = 2.0  # 신호등이 화면 밖으로 나가도 조문을 읽을 수 있도록 2초 동안 유지함
+# 개발용 세트 판정 재현율이 간격 0, 2, 4초에서 33, 34, 33개로 같아 가장 긴 4초를 고름(2026-11-03)
+GEMMA_INTERVAL = 4.0
 WINDOW = "Driving Rule Retrieval"
 VIDEOS = [("원주", "videos/wonju-demo.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4")]
 CORPORA = [("현행 도로교통법", "corpus-current.json"), ("2021년 도로교통법", "corpus-2021.json"),
@@ -26,6 +28,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
 parser.add_argument("--corpus", default=CORPORA[0][1])
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
+parser.add_argument("--interval", type=float, default=GEMMA_INTERVAL)
 args = parser.parse_args()
 
 llm = load_gemma()
@@ -57,7 +60,7 @@ def on_click(event, x, y, flags, param):
 
 
 # 시작 지시문을 다 만든 뒤 스레드를 시작해 두 곳이 같은 Gemma를 동시에 쓰지 않게 함
-shared = {"frame": None, "corpus": selected["corpus"], "scene": EMPTY_SCENE}
+shared = {"frame": None, "corpus": selected["corpus"], "scene": EMPTY_SCENE, "interval": args.interval}
 threading.Thread(target=watch, args=(llm, retrievers, shared), daemon=True).start()
 model = YOLO(args.model)
 # 마우스 콜백은 이름 붙은 창에만 달 수 있어 첫 imshow 전에 창을 만듦
@@ -90,7 +93,7 @@ while True:
     # draw가 이 프레임 위에 박스를 그리므로 Gemma에는 복사본을 넘김
     shared["frame"] = (current_video, frame.copy())
     shared["corpus"] = selected["corpus"]
-    results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES)
+    results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)
     found, boxes = scene_state(results[0], frame)
 
     for fact in found | set(streak):

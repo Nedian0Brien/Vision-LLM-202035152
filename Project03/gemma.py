@@ -194,3 +194,5 @@ def watch(llm, retrievers, shared):
         print("맥락", sorted(scene["facts"]), scene["sign"])
         # 새 사전을 한 번에 넣어 메인 루프가 반쯤 바뀐 결과를 읽지 않게 함
         shared["scene"] = scene
+        # Gemma가 쉬는 동안 YOLO가 GPU를 혼자 씀
+        time.sleep(shared["interval"])
