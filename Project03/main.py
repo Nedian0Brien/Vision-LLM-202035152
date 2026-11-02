@@ -1,4 +1,4 @@
-"""주행 영상의 장면 상태로 도로교통법 조문을 찾아 보여 주는 실행 파일"""
+"""주행 영상에서 법 조문이 필요한 엣지 케이스를 찾아 근거 문장과 행동 종류를 보여 주는 실행 파일"""
 
 import argparse
 import threading
@@ -8,6 +8,7 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, scene_state
+from edge import EDGE_CASES, active_edge_cases
 from gemma import load_gemma, watch, write_instruction
 from hud import draw
 from retrieve import Retriever
@@ -24,24 +25,24 @@ args = parser.parse_args()
 
 llm = load_gemma()
 retriever = Retriever(args.corpus)
-# 상태마다 검색 문장이 하나로 정해져 있어 검색 결과와 지시문을 시작할 때 한 번만 만듦
+# 엣지 케이스마다 검색 문장이 하나로 정해져 있어 검색 결과와 지시문을 시작할 때 한 번만 만듦
 articles = {}
 instructions = {}
-for state, query in retriever.queries.items():
-    articles[state] = retriever.search(query, 1)[0][1]
-    instructions[state] = write_instruction(llm, state, articles[state])
-    print(state, instructions[state])
+for name in EDGE_CASES:
+    articles[name] = retriever.search(retriever.queries[name], 1)[0][1]
+    instructions[name] = write_instruction(llm, name, articles[name])
+    print(name, instructions[name]["행동 종류"], articles[name]["id"])
 
 # 시작 지시문을 다 만든 뒤 스레드를 시작해 두 곳이 같은 Gemma를 동시에 쓰지 않게 함
-shared = {"frame": None, "scene": {"facts": set(), "sign": "", "article": None, "instruction": ""}}
+shared = {"frame": None, "scene": {"facts": set(), "sign": "", "article": None, "instruction": None}}
 threading.Thread(target=watch, args=(llm, retriever, shared), daemon=True).start()
 model = YOLO(args.model)
 cap = cv2.VideoCapture(args.video)
 video_fps = cap.get(cv2.CAP_PROP_FPS)
 hold_frames = int(HOLD_SECONDS * video_fps)
 
-streak = {state: 0 for state in retriever.queries}
-last_seen = {state: -hold_frames - 1 for state in retriever.queries}
+streak = {}
+last_seen = {}
 frame_index = 0
 displayed_fps = 0.0
 
@@ -59,23 +60,21 @@ while True:
     results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES)
     found, boxes = scene_state(results[0], frame)
 
-    for state in retriever.queries:
-        if state in found:
-            streak[state] += 1
+    for fact in found | set(streak):
+        if fact in found:
+            streak[fact] = streak.get(fact, 0) + 1
         else:
-            streak[state] = 0
-        if streak[state] >= STABLE_FRAMES:
-            last_seen[state] = frame_index
-    # 패널 항목은 이름, 근거 조항, 지시문, Gemma 비전에서 왔는지로 이루어짐
+            streak[fact] = 0
+        if streak[fact] >= STABLE_FRAMES:
+            last_seen[fact] = frame_index
+    held = {fact for fact in last_seen if frame_index - last_seen[fact] <= hold_frames}
     scene = shared["scene"]
+    # 패널 항목은 엣지 케이스 이름, 근거 조항, 지시문으로 이루어짐
     panel = []
-    for state in retriever.queries:
-        if frame_index - last_seen[state] <= hold_frames:
-            panel.append((state, articles[state], instructions[state], False))
-        elif state in scene["facts"]:
-            panel.append((state, articles[state], instructions[state], True))
+    for name in active_edge_cases(held | scene["facts"]):
+        panel.append((name, articles[name], instructions[name]))
     if scene["article"] is not None:
-        panel.append(("표지판 " + scene["sign"], scene["article"], scene["instruction"], True))
+        panel.append(("표지판 " + scene["sign"], scene["article"], scene["instruction"]))
     frame_index += 1
 
     elapsed_time = time.perf_counter() - start_time
