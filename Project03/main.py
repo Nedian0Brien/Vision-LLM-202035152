@@ -1,14 +1,15 @@
 """주행 영상의 장면 상태로 도로교통법 조문을 찾아 보여 주는 실행 파일"""
 
 import argparse
+import threading
 import time
 
 import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, scene_state
+from gemma import load_gemma, watch, write_instruction
 from hud import draw
-from instruct import write_instructions
 from retrieve import Retriever
 
 FRAME_SIZE = (1280, 720)
@@ -21,11 +22,19 @@ parser.add_argument("--corpus", default="corpus-current.json")
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
+llm = load_gemma()
 retriever = Retriever(args.corpus)
 # 상태마다 검색 문장이 하나로 정해져 있어 검색 결과와 지시문을 시작할 때 한 번만 만듦
-articles = {state: retriever.search(query, 1)[0][1] for state, query in retriever.queries.items()}
-# 지시문을 만든 뒤 Gemma가 해제되고 나서 YOLO를 불러와 두 모델이 메모리에 함께 올라가지 않음
-instructions = write_instructions(articles)
+articles = {}
+instructions = {}
+for state, query in retriever.queries.items():
+    articles[state] = retriever.search(query, 1)[0][1]
+    instructions[state] = write_instruction(llm, state, articles[state])
+    print(state, instructions[state])
+
+# 시작 지시문을 다 만든 뒤 스레드를 시작해 두 곳이 같은 Gemma를 동시에 쓰지 않게 함
+shared = {"frame": None, "scene": {"facts": set(), "sign": "", "article": None, "instruction": ""}}
+threading.Thread(target=watch, args=(llm, retriever, shared), daemon=True).start()
 model = YOLO(args.model)
 cap = cv2.VideoCapture(args.video)
 video_fps = cap.get(cv2.CAP_PROP_FPS)
@@ -45,6 +54,8 @@ while True:
         break
 
     frame = cv2.resize(frame, FRAME_SIZE)
+    # draw가 이 프레임 위에 박스를 그리므로 Gemma에는 복사본을 넘김
+    shared["frame"] = frame.copy()
     results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES)
     found, boxes = scene_state(results[0], frame)
 
@@ -55,7 +66,16 @@ while True:
             streak[state] = 0
         if streak[state] >= STABLE_FRAMES:
             last_seen[state] = frame_index
-    states = [state for state in retriever.queries if frame_index - last_seen[state] <= hold_frames]
+    # 패널 항목은 이름, 근거 조항, 지시문, Gemma 비전에서 왔는지로 이루어짐
+    scene = shared["scene"]
+    panel = []
+    for state in retriever.queries:
+        if frame_index - last_seen[state] <= hold_frames:
+            panel.append((state, articles[state], instructions[state], False))
+        elif state in scene["facts"]:
+            panel.append((state, articles[state], instructions[state], True))
+    if scene["article"] is not None:
+        panel.append(("표지판 " + scene["sign"], scene["article"], scene["instruction"], True))
     frame_index += 1
 
     elapsed_time = time.perf_counter() - start_time
@@ -66,7 +86,7 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, boxes, states, articles, instructions, retriever.name, displayed_fps)
+    output_frame = draw(frame, boxes, panel, retriever.name, displayed_fps)
 
     cv2.imshow("Driving Rule Retrieval", output_frame)
 

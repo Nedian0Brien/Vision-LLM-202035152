@@ -22,6 +22,7 @@ TEXT_WIDTH = PANEL_WIDTH - 48
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
 PANEL = (28, 28, 28)
 STATE = (40, 180, 255)
+VISION = (230, 200, 80)
 OTHER = (140, 140, 140)
 TITLE = (245, 245, 245)
 BODY = (200, 200, 200)
@@ -42,8 +43,8 @@ def wrap(pen, text, font, max_lines):
     return lines
 
 
-def draw(frame, boxes, states, articles, instructions, corpus_name, fps):
-    """프레임에 박스를 그리고 오른쪽에 장면 상태별 지시문과 근거 조문 패널을 붙이는 함수"""
+def draw(frame, boxes, panel, corpus_name, fps):
+    """프레임에 박스를 그리고 오른쪽에 상태별 지시문과 근거 조문 패널을 붙이는 함수"""
     for x1, y1, x2, y2, state in boxes:
         cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
@@ -59,11 +60,15 @@ def draw(frame, boxes, states, articles, instructions, corpus_name, fps):
     pen.text((canvas.shape[1] - 24, 20), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="ra")
     # 상태 3개가 720 픽셀 높이에 들어가도록 지시문은 3줄, 근거 원문은 2줄까지만 보여 줌
     y = 64
-    for state in states:
-        article = articles[state]
-        pen.text((x, y), state, font=LARGE_FONT, fill=STATE)
+    shown = []
+    for name, article, instruction, from_vision in panel:
+        # 보행자와 횡단보도처럼 같은 조항을 가리키는 상태는 한 번만 보여 줌
+        if article["id"] + article["title"] in shown or len(shown) == 3:
+            continue
+        shown.append(article["id"] + article["title"])
+        pen.text((x, y), name, font=LARGE_FONT, fill=VISION if from_vision else STATE)
         y += 34
-        for line in wrap(pen, instructions[state], MEDIUM_FONT, 3):
+        for line in wrap(pen, instruction, MEDIUM_FONT, 3):
             pen.text((x, y), line, font=MEDIUM_FONT, fill=TITLE)
             y += 26
         y += 6
