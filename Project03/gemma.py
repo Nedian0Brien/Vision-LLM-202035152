@@ -14,6 +14,7 @@ LLM_PATH = "../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf"
 VISION_PATH = "../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf"
 # 기본값인 144개에서는 신호등 색과 표지판 글자를 전혀 읽지 못했고 560개에서 표지판 글자 5개 중 4개를 읽었음(2026-11-02 키프레임 13장 측정)
 IMAGE_TOKENS = 560
+GEMMA_THREADS = 2
 # 개발용 세트에서 두 번의 판단 중 한 번이라도 예이면 인정했을 때 정밀도가 80% 미만인 항목은 묻지 않음(2026-11-02)
 # 제외: 횡단보도 5/7, 라바콘 2/3, 양보 표지 0/1, 철길 건널목 0/2, 회전교차로 0/4
 # 버스 전용차로는 9개 중 2개만 맞혀 법 개념 대신 눈에 보이는 노면 글자로 물음
@@ -74,7 +75,10 @@ def load_gemma():
     mtmd_cpp.mtmd_context_params_default = vision_params
     handler = Gemma4ChatHandler(clip_model_path=VISION_PATH, verbose=False)
     # 05 노트북 설정에서 이미지 토큰 560개가 들어가도록 n_ctx와 n_batch를 늘림
-    return Llama(model_path=LLM_PATH, chat_handler=handler, n_gpu_layers=-1, n_ctx=4096, n_batch=512, n_ubatch=512, verbose=False)
+    # 기본값은 CPU 코어 수만큼 스레드를 써서 같은 CPU의 YOLO가 20ms에서 358ms로 느려졌고, 2개로 줄이면 110ms였음(2026-11-03 Mac 측정)
+    # 비전 모듈도 n_threads 값을 그대로 씀
+    return Llama(model_path=LLM_PATH, chat_handler=handler, n_gpu_layers=-1, n_ctx=4096, n_batch=512, n_ubatch=512,
+                 n_threads=GEMMA_THREADS, n_threads_batch=GEMMA_THREADS, verbose=False)
 
 
 def ask(llm, messages, max_tokens):

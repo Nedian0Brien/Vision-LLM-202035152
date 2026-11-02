@@ -10,7 +10,7 @@ from ultralytics import YOLO
 from detect import CLASSES, scene_state
 from edge import EDGE_CASES, active_edge_cases
 from gemma import load_gemma, watch, write_instruction
-from hud import button_boxes, draw
+from hud import button_boxes, draw, draw_panel
 from retrieve import Retriever
 
 FRAME_SIZE = (1280, 720)
@@ -66,6 +66,7 @@ cv2.setMouseCallback(WINDOW, on_click)
 
 current_video = None
 displayed_fps = 0.0
+panel_key = None
 
 while True:
     start_time = time.perf_counter()
@@ -119,7 +120,12 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, boxes, panel, buttons, selected, displayed_fps)
+    # 패널 글자는 엣지 케이스나 버튼 선택이 바뀔 때만 다시 그림
+    key = (tuple(item[0] for item in panel), selected["video"], selected["corpus"])
+    if key != panel_key:
+        panel_key = key
+        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], panel, buttons, selected)
+    output_frame = draw(frame, boxes, panel_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 

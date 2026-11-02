@@ -1,4 +1,4 @@
-"""탐지 박스와 엣지 케이스별 지시문과 근거 문장 패널을 화면에 그리는 모듈"""
+"""탐지 박스와 버튼, 엣지 케이스별 지시문과 근거 조문 패널을 화면에 그리는 모듈"""
 
 import os
 
@@ -29,6 +29,8 @@ BODY = (200, 200, 200)
 MUTED = (130, 130, 130)
 BUTTON = (55, 55, 55)
 CHOSEN = (235, 235, 235)
+
+LABELS = {}
 
 BUTTON_HEIGHT = 34
 BUTTON_GAP = 8
@@ -61,25 +63,27 @@ def button_boxes(frame_width, groups):
     return buttons
 
 
-def draw(frame, boxes, panel, buttons, selected, fps):
-    """프레임에 박스를 그리고 오른쪽 패널 위쪽에 버튼, 왼쪽 열에 지시문, 오른쪽 열에 근거 조문을 붙이는 함수"""
-    for x1, y1, x2, y2, state in boxes:
-        cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
-    canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
-    # cv2.putText는 한글을 그리지 못해 글자는 모두 PIL로 그림
-    image = Image.fromarray(canvas)
-    pen = ImageDraw.Draw(image)
-    for x1, y1, x2, y2, state in boxes:
-        if state:
-            pen.text((x1, max(y1 - 26, 0)), state, font=MEDIUM_FONT, fill=STATE)
+def label_image(text):
+    """상태 이름 글자를 처음 한 번만 그려 두고 다시 쓰는 함수"""
+    # 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
+    if text not in LABELS:
+        image = Image.new("RGB", (int(MEDIUM_FONT.getlength(text)) + 12, 28), PANEL)
+        ImageDraw.Draw(image).text((6, 2), text, font=MEDIUM_FONT, fill=STATE)
+        LABELS[text] = np.array(image)
+    return LABELS[text]
 
+
+def draw_panel(height, frame_width, panel, buttons, selected):
+    """버튼, 지시문 열, 근거 조문 열을 그린 패널 이미지를 만드는 함수"""
+    image = Image.new("RGB", (PANEL_WIDTH, height), PANEL)
+    pen = ImageDraw.Draw(image)
+    # 버튼 사각형은 클릭 판정에 쓰는 창 좌표라 패널 왼쪽 끝만큼 빼서 그림
     for group, index, name, (x1, y1, x2, y2) in buttons:
         chosen = selected[group] == index
-        pen.rectangle((x1, y1, x2, y2), fill=CHOSEN if chosen else BUTTON)
-        pen.text(((x1 + x2) // 2, (y1 + y2) // 2), name, font=SMALL_FONT, fill=PANEL if chosen else BODY, anchor="mm")
-    pen.text((canvas.shape[1] - 24, canvas.shape[0] - 12), f"{fps:.1f} FPS", font=SMALL_FONT, fill=MUTED, anchor="rd")
+        pen.rectangle((x1 - frame_width, y1, x2 - frame_width, y2), fill=CHOSEN if chosen else BUTTON)
+        pen.text(((x1 + x2) // 2 - frame_width, (y1 + y2) // 2), name, font=SMALL_FONT, fill=PANEL if chosen else BODY, anchor="mm")
 
-    left = frame.shape[1] + 24
+    left = 24
     right = left + COLUMN_WIDTH + 24
     # 엣지 케이스 3개가 720 픽셀 높이에 들어가도록 의무 하나는 3줄, 근거 문장은 7줄까지만 보여 줌
     y = buttons[-1][3][3] + 28
@@ -108,3 +112,19 @@ def draw(frame, boxes, panel, buttons, selected, fps):
             right_y += 20
         y = max(left_y, right_y) + 24
     return np.array(image)
+
+
+def draw(frame, boxes, panel_image, fps):
+    """프레임에 박스와 상태 이름을 그리고 미리 그린 패널을 오른쪽에 붙이는 함수"""
+    for x1, y1, x2, y2, state in boxes:
+        cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
+        if state:
+            label = label_image(state)
+            height, width = label.shape[:2]
+            top = max(y1 - height, 0)
+            width = min(width, frame.shape[1] - x1)
+            frame[top:top + height, x1:x1 + width] = label[:, :width]
+    canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
+    canvas[:, frame.shape[1]:] = panel_image
+    cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, MUTED, 1)
+    return canvas
