@@ -166,13 +166,26 @@ def check_sign(llm, retriever, sign):
 
 
 def watch(llm, retrievers, shared):
-    """최신 프레임을 계속 판단해 채택한 맥락을 shared["scene"]에 넣는 스레드 함수"""
+    """활성 엣지 케이스의 지시문을 만들고 최신 프레임을 판단해 shared["written"]과 shared["scene"]에 넣는 스레드 함수"""
     last_video, last_facts, last_sign = None, set(), ""
-    checked = {}
+    written, sign_result = {}, None
     while True:
         if shared["frame"] is None:
             time.sleep(0.1)
             continue
+        corpus, active = shared["corpus"], shared["active"]
+        # 사라진 엣지 케이스의 지시문을 버려 다시 나타나면 그 입력으로 새로 만들게 함
+        written = {key: value for key, value in written.items() if key[0] == corpus and key[1] in active}
+        # 새 사전을 한 번에 넣어 메인 루프가 반쯤 바뀐 결과를 읽지 않게 함
+        shared["written"] = dict(written)
+        # 비교 모드에서는 법령이 None이고 지시문을 만들지 않음
+        for name in active:
+            if corpus is not None and (corpus, name) not in written:
+                retriever = retrievers[corpus]
+                article = retriever.search(retriever.queries[name], 1)[0][1]
+                written[(corpus, name)] = (article, write_instruction(llm, name, article))
+                shared["written"] = dict(written)
+                print("지시문", name, written[(corpus, name)][1]["행동 종류"])
         video, frame = shared["frame"]
         facts, sign = read_scene(llm, frame)
         # 판단하는 동안 영상 버튼이 눌렸으면 이전 영상의 판단을 버림
@@ -183,13 +196,16 @@ def watch(llm, retrievers, shared):
         corpus = shared["corpus"]
         # 개발용 세트에서 두 번 모두 예일 때만 인정하면 재현율이 46%, 한 번이라도 예이면 58%였음(2026-11-02)
         scene = {"facts": facts | last_facts, "corpus": corpus, "sign": "", "article": None, "instruction": None}
-        if sign and sign == last_sign:
-            if (corpus, sign) not in checked:
+        # 표지판 지시문은 같은 법령에서 같은 글자가 이어서 확인되는 동안만 유지함
+        if corpus is not None and sign and sign == last_sign:
+            if sign_result is None or sign_result[:2] != (corpus, sign):
                 article = check_sign(llm, retrievers[corpus], sign)
                 instruction = write_instruction(llm, "표지판 " + sign, article) if article else None
-                checked[(corpus, sign)] = (article, instruction)
+                sign_result = (corpus, sign, article, instruction)
             scene["sign"] = sign
-            scene["article"], scene["instruction"] = checked[(corpus, sign)]
+            scene["article"], scene["instruction"] = sign_result[2], sign_result[3]
+        else:
+            sign_result = None
         last_video, last_facts, last_sign = video, facts, sign
         print("맥락", sorted(scene["facts"]), scene["sign"])
         # 새 사전을 한 번에 넣어 메인 루프가 반쯤 바뀐 결과를 읽지 않게 함

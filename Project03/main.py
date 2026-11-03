@@ -1,6 +1,7 @@
 """주행 영상에서 법 조문이 필요한 엣지 케이스를 찾아 지시문과 근거 조문을 보여 주는 실행 파일"""
 
 import argparse
+import json
 import threading
 import time
 
@@ -8,9 +9,9 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, IMAGE_SIZE, scene_state
-from edge import EDGE_CASES, active_edge_cases
-from gemma import load_gemma, watch, write_instruction
-from hud import button_boxes, draw, draw_panel
+from edge import active_edge_cases
+from gemma import load_gemma, watch
+from hud import button_boxes, draw, draw_compare_panel, draw_panel
 from retrieve import Retriever
 
 FRAME_SIZE = (1280, 720)
@@ -22,6 +23,7 @@ WINDOW = "Driving Rule Retrieval"
 VIDEOS = [("원주", "videos/wonju-demo.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4")]
 CORPORA = [("현행 도로교통법", "corpus-current.json"), ("2021년 도로교통법", "corpus-2021.json"),
            ("캘리포니아 차량법", "corpus-california.json")]
+COMPARE_PATH = "compare-instructions.json"
 EMPTY_SCENE = {"facts": set(), "corpus": None, "sign": "", "article": None, "instruction": None}
 
 parser = argparse.ArgumentParser()
@@ -32,23 +34,16 @@ parser.add_argument("--interval", type=float, default=GEMMA_INTERVAL)
 args = parser.parse_args()
 
 llm = load_gemma()
-# 맥락 스레드가 Gemma를 쓰는 동안 메인 루프가 Gemma를 부르지 않도록 세 코퍼스의 지시문을 시작할 때 모두 만듦
-retrievers, articles, instructions = [], [], []
-for corpus_name, corpus_path in CORPORA:
-    retriever = Retriever(corpus_path)
-    found, written = {}, {}
-    for name in EDGE_CASES:
-        found[name] = retriever.search(retriever.queries[name], 1)[0][1]
-        written[name] = write_instruction(llm, name, found[name])
-        print(corpus_name, name, written[name]["행동 종류"], found[name]["id"])
-    retrievers.append(retriever)
-    articles.append(found)
-    instructions.append(written)
+retrievers = [Retriever(path) for name, path in CORPORA]
+# 비교 모드에서만 build_compare.py가 미리 만든 세 법령 지시문을 보여 줌
+with open(COMPARE_PATH, encoding="utf-8") as file:
+    compare = json.load(file)
 
 video_paths = [path for name, path in VIDEOS]
 corpus_paths = [path for name, path in CORPORA]
 selected = {"video": video_paths.index(args.video), "corpus": corpus_paths.index(args.corpus)}
-buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path in VIDEOS], "corpus": [name for name, path in CORPORA]})
+# 법령 버튼 줄의 마지막 버튼이 비교 모드이고 번호는 len(CORPORA)임
+buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path in VIDEOS], "corpus": [name for name, path in CORPORA] + ["비교"]})
 
 
 def on_click(event, x, y, flags, param):
@@ -59,8 +54,9 @@ def on_click(event, x, y, flags, param):
                 selected[group] = index
 
 
-# 시작 지시문을 다 만든 뒤 스레드를 시작해 두 곳이 같은 Gemma를 동시에 쓰지 않게 함
-shared = {"frame": None, "corpus": selected["corpus"], "scene": EMPTY_SCENE, "interval": args.interval}
+# 지시문은 맥락 스레드만 만들어 두 곳이 같은 Gemma를 동시에 쓰지 않게 함
+# active는 메인 루프가 찾은 엣지 케이스 이름 목록이고 written은 맥락 스레드가 만든 (법령 번호, 이름)별 조항과 지시문임
+shared = {"frame": None, "corpus": selected["corpus"], "scene": EMPTY_SCENE, "interval": args.interval, "active": [], "written": {}}
 threading.Thread(target=watch, args=(llm, retrievers, shared), daemon=True).start()
 model = YOLO(args.model)
 # 마우스 콜백은 이름 붙은 창에만 달 수 있어 첫 imshow 전에 창을 만듦
@@ -92,7 +88,8 @@ while True:
     frame = cv2.resize(frame, FRAME_SIZE)
     # draw가 이 프레임 위에 박스를 그리므로 Gemma에는 복사본을 넘김
     shared["frame"] = (current_video, frame.copy())
-    shared["corpus"] = selected["corpus"]
+    # 비교 모드에서는 맥락 스레드가 지시문을 만들지 않도록 법령 번호를 None으로 넘김
+    shared["corpus"] = selected["corpus"] if selected["corpus"] < len(CORPORA) else None
     results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)
     found, boxes = scene_state(results[0], frame)
 
@@ -106,13 +103,24 @@ while True:
     held = {fact for fact in last_seen if frame_index - last_seen[fact] <= hold_frames}
     scene = shared["scene"]
     corpus = selected["corpus"]
-    # 패널 항목은 엣지 케이스 이름, 근거 조항, 지시문으로 이루어짐
-    panel = []
-    for name in active_edge_cases(held | scene["facts"]):
-        panel.append((name, articles[corpus][name], instructions[corpus][name]))
-    # 법령 버튼을 누른 직후에는 이전 코퍼스로 찾은 표지판 조항을 보여 주지 않음
-    if scene["article"] is not None and scene["corpus"] == corpus:
-        panel.append(("표지판 " + scene["sign"], scene["article"], scene["instruction"]))
+    names = active_edge_cases(held | scene["facts"])
+    if names != shared["active"]:
+        print("엣지 케이스", names)
+    shared["active"] = names
+    panel, ready = [], []
+    if corpus == len(CORPORA):
+        # 비교 모드 패널 항목은 엣지 케이스 이름과 세 법령의 법령 이름, 조항, 지시문으로 이루어짐
+        for name in names:
+            panel.append((name, [(corpus_name, compare[path][name]["article"], compare[path][name]["instruction"]) for corpus_name, path in CORPORA]))
+    else:
+        # 패널 항목은 엣지 케이스 이름, 근거 조항, 지시문이고 맥락 스레드가 만들기 전에는 조항과 지시문이 None임
+        for name in names:
+            article, instruction = shared["written"].get((corpus, name), (None, None))
+            panel.append((name, article, instruction))
+            ready.append(instruction is not None)
+        # 법령 버튼을 누른 직후에는 이전 코퍼스로 찾은 표지판 조항을 보여 주지 않음
+        if scene["article"] is not None and scene["corpus"] == corpus:
+            panel.append(("표지판 " + scene["sign"], scene["article"], scene["instruction"]))
     frame_index += 1
 
     elapsed_time = time.perf_counter() - start_time
@@ -123,11 +131,14 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    # 패널 글자는 엣지 케이스나 버튼 선택이 바뀔 때만 다시 그림
-    key = (tuple(item[0] for item in panel), selected["video"], selected["corpus"])
+    # 패널 글자는 엣지 케이스, 지시문 준비 여부, 버튼 선택이 바뀔 때만 다시 그림
+    key = (tuple(item[0] for item in panel), tuple(ready), selected["video"], corpus)
     if key != panel_key:
         panel_key = key
-        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], panel, buttons, selected)
+        if corpus == len(CORPORA):
+            panel_image = draw_compare_panel(FRAME_SIZE[1], FRAME_SIZE[0], panel, buttons, selected)
+        else:
+            panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], panel, buttons, selected)
     output_frame = draw(frame, boxes, panel_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
