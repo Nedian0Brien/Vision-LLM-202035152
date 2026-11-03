@@ -16,8 +16,8 @@ from retrieve import Retriever
 FRAME_SIZE = (1280, 720)
 STABLE_FRAMES = 5  # 한두 프레임만 잡힌 오탐을 버리려고 5프레임 연속 탐지된 상태만 인정함
 HOLD_SECONDS = 2.0  # 신호등이 화면 밖으로 나가도 조문을 읽을 수 있도록 2초 동안 유지함
-# 개발용 세트 판정 재현율이 간격 0, 2, 4초에서 33, 34, 33개로 같아 가장 긴 4초를 고름(2026-11-03)
-GEMMA_INTERVAL = 4.0
+# 시험용 세트에서 간격 4초가 낡은 판단으로 정답 4개를 놓치고 오판 2개를 만들어 기본값은 쉬지 않음(2026-11-03)
+GEMMA_INTERVAL = 0.0
 WINDOW = "Driving Rule Retrieval"
 VIDEOS = [("원주", "videos/wonju-demo.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4")]
 CORPORA = [("현행 도로교통법", "corpus-current.json"), ("2021년 도로교통법", "corpus-2021.json"),
