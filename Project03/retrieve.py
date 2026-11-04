@@ -29,7 +29,6 @@ class Retriever:
         with open(corpus_path, encoding="utf-8") as file:
             corpus = json.load(file)
         self.name = corpus["name"]
-        self.queries = corpus["queries"]
         self.articles = corpus["articles"]
         self.counts = []
         self.lengths = []
@@ -61,3 +60,15 @@ class Retriever:
             scores.append((score, i))
         scores.sort(reverse=True)
         return [(score, self.articles[i]) for score, i in scores[:k]]
+
+
+def sentences(text):
+    """조문을 문장 목록으로 나누는 함수"""
+    # 한국 조문은 "1. 교차로 2. 터널 안"처럼 호 번호에도 마침표가 있어 문장 끝인 "다. "에서만 나눔
+    # 영어 조문에는 "다"가 없고 한국 조문은 모두 "-다"로 끝나는 문장을 가짐
+    if "다" in text:
+        parts, ending = text.split("다. "), "다."
+    else:
+        parts, ending = text.split(". "), "."
+    # 나눌 때 잘려 나간 문장 끝을 마지막 조각을 뺀 나머지에 다시 붙임
+    return [part + ending for part in parts[:-1]] + parts[-1:]

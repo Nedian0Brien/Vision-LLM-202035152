@@ -15,47 +15,6 @@ VERSIONS = {
     "corpus-2021.json": {"name": "대한민국 도로교통법 (2021-11-30 공포본)", "law": "237009", "rule": "239101"},
 }
 
-# 검색 문장은 상태마다 그 법령이 쓰는 용어로 적음
-KOREAN_QUERIES = {
-    "적색 신호 교차로": "차량신호등 적색의 등화 정지선 횡단보도 교차로 직전 정지 우회전",
-    "황색 신호": "차량신호등 황색의 등화 정지선 교차로 직전 정지 우회전 보행자 횡단 방해",
-    "횡단보도 보행자": "보행자 횡단보도 통행 일시정지 횡단 방해",
-    "차도 보행자": "횡단보도가 설치되어 있지 아니한 도로를 횡단하는 보행자 안전거리 일시정지",
-    "정지 표지": "일시정지나 양보를 표시하는 안전표지가 설치되어 있는 교차로 일시정지",
-    "양보 표지": "양보를 표시하는 안전표지가 설치되어 있는 교차로 다른 차의 진행 방해 양보",
-    "회전 금지 표지": "교통안전시설이 표시하는 신호 또는 지시를 따라야 한다",
-    "버스 전용차로": "전용차로로 통행할 수 있는 차가 아니면 전용차로로 통행하여서는 아니 된다",
-    "노면전차 선로": "차마의 운전자는 노면전차 전용도로 또는 전용차로를 통행하여서는 아니 된다 궤도부지",
-    "터널": "다음 각 호의 어느 하나에 해당하는 곳에서는 다른 차를 앞지르지 못한다 교차로 터널 안 다리 위",
-    "공사 구간": "교통안전시설이 표시하는 신호 또는 지시를 따라야 한다 공사",
-    "자전거 근접": "자전거등 옆 지날 때 충돌 피할 거리 확보",
-    "통학버스": "어린이통학버스가 정차하여 점멸등 작동 중 일시정지 안전 확인 서행",
-    "긴급자동차": "긴급자동차가 접근하는 경우 교차로를 피하여 일시정지 진로 양보",
-    "철길 건널목": "철길 건널목을 통과하려는 경우 건널목 앞에서 일시정지 안전 확인",
-    "회전교차로": "회전교차로에 진입하려는 경우 서행 일시정지 진행하고 있는 다른 차 진로 양보",
-    "어린이보호구역": "어린이 보호구역에서 조치를 준수하고 어린이의 안전에 유의하면서 운행",
-}
-CALIFORNIA_QUERIES = {
-    "적색 신호 교차로": "steady circular red signal stop then turn right yield to pedestrians",
-    "황색 신호": "steady circular yellow signal warning red will be shown",
-    "횡단보도 보행자": "yield right-of-way to pedestrian crossing roadway within marked crosswalk",
-    "차도 보행자": "pedestrian upon a roadway at any point other than within a crosswalk shall not relieve the driver duty to exercise due care",
-    "정지 표지": "approaching a stop sign at the entrance to an intersection stop at limit line",
-    "양보 표지": "approaching intersection controlled by a yield right-of-way sign yield to vehicles",
-    "회전 금지 표지": "unlawful for a driver to fail to obey a sign or signal defined as regulatory",
-    "버스 전용차로": "shall not operate a motor vehicle on a transit-only traffic lane",
-    "노면전차 선로": "overtaking streetcar stopped receiving or discharging passenger shall stop vehicle to the rear",
-    "터널": "no vehicle shall be driven to the left side of the roadway approaching tunnel",
-    "공사 구간": "unlawful for a driver to fail to obey a sign or signal defined as regulatory construction",
-    "자전거 근접": "passing a bicycle in the same direction three feet distance",
-    "통학버스": "meeting or overtaking schoolbus stopped flashing red signal lamps driver shall stop",
-    "긴급자동차": "approach of authorized emergency vehicle siren red lamp yield right-of-way stop",
-    "철길 건널목": "approaching railroad grade crossing signal warning approaching train shall stop",
-    "회전교차로": "roundabout traffic circle yield to vehicles in circle",
-    "어린이보호구역": "approaching or passing a school building children twenty-five miles per hour",
-}
-
-
 def fetch(oc, mst):
     with urllib.request.urlopen(API_URL.format(oc=oc, mst=mst)) as response:
         return ET.fromstring(response.read())
@@ -158,15 +117,15 @@ def california_sections(zip_path):
     return articles
 
 
-def save(file_name, name, queries, articles):
-    """코퍼스 이름, 검색 문장, 항목을 JSON 파일 하나로 저장하는 함수"""
+def save(file_name, name, articles):
+    """코퍼스 이름과 항목을 JSON 파일 하나로 저장하는 함수"""
     with open(file_name, "w", encoding="utf-8") as file:
-        json.dump({"name": name, "queries": queries, "articles": articles}, file, ensure_ascii=False, indent=1)
+        json.dump({"name": name, "articles": articles}, file, ensure_ascii=False, indent=1)
     print(file_name, len(articles))
 
 
 oc, zip_path = sys.argv[1], sys.argv[2]
 for file_name, version in VERSIONS.items():
     articles = law_articles(fetch(oc, version["law"])) + signal_rows(fetch(oc, version["rule"]))
-    save(file_name, version["name"], KOREAN_QUERIES, articles)
-save("corpus-california.json", "California Vehicle Code Division 11", CALIFORNIA_QUERIES, california_sections(zip_path))
+    save(file_name, version["name"], articles)
+save("corpus-california.json", "California Vehicle Code Division 11", california_sections(zip_path))

@@ -1,24 +1,5 @@
 {
  "name": "California Vehicle Code Division 11",
- "queries": {
-  "적색 신호 교차로": "steady circular red signal stop then turn right yield to pedestrians",
-  "황색 신호": "steady circular yellow signal warning red will be shown",
-  "횡단보도 보행자": "yield right-of-way to pedestrian crossing roadway within marked crosswalk",
-  "차도 보행자": "pedestrian upon a roadway at any point other than within a crosswalk shall not relieve the driver duty to exercise due care",
-  "정지 표지": "approaching a stop sign at the entrance to an intersection stop at limit line",
-  "양보 표지": "approaching intersection controlled by a yield right-of-way sign yield to vehicles",
-  "회전 금지 표지": "unlawful for a driver to fail to obey a sign or signal defined as regulatory",
-  "버스 전용차로": "shall not operate a motor vehicle on a transit-only traffic lane",
-  "노면전차 선로": "overtaking streetcar stopped receiving or discharging passenger shall stop vehicle to the rear",
-  "터널": "no vehicle shall be driven to the left side of the roadway approaching tunnel",
-  "공사 구간": "unlawful for a driver to fail to obey a sign or signal defined as regulatory construction",
-  "자전거 근접": "passing a bicycle in the same direction three feet distance",
-  "통학버스": "meeting or overtaking schoolbus stopped flashing red signal lamps driver shall stop",
-  "긴급자동차": "approach of authorized emergency vehicle siren red lamp yield right-of-way stop",
-  "철길 건널목": "approaching railroad grade crossing signal warning approaching train shall stop",
-  "회전교차로": "roundabout traffic circle yield to vehicles in circle",
-  "어린이보호구역": "approaching or passing a school building children twenty-five miles per hour"
- },
  "articles": [
   {
    "id": "CVC §21117(a)",
