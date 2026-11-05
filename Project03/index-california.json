@@ -4,63 +4,82 @@
  "picks": {
   "a red traffic light facing the car": {
    "provision": 1007,
-   "reason": "21453(a)가 적색 신호 앞에서 정지선 앞에 멈추고 진행 신호가 나올 때까지 정지하라고 정한다."
+   "reason": "21453(a)가 적색 신호 앞에서 정지선 앞에 멈추고 진행 신호가 나올 때까지 정지하라고 정한다.",
+   "references": []
   },
   "a yellow traffic light facing the car": {
    "provision": 134,
-   "reason": "21452(a)가 황색 신호는 녹색 진행이 끝나고 곧 적색이 켜진다는 경고임을 정한다."
+   "reason": "21452(a)가 황색 신호는 녹색 진행이 끝나고 곧 적색이 켜진다는 경고임을 정한다.",
+   "references": []
   },
   "a red octagonal STOP sign facing the car": {
    "provision": 1584,
-   "reason": "22450(a)가 정지 표지에 접근하는 운전자에게 정지선 또는 횡단보도 앞 정지를 의무로 정한다."
+   "reason": "22450(a)가 정지 표지에 접근하는 운전자에게 정지선 또는 횡단보도 앞 정지를 의무로 정한다.",
+   "references": []
   },
   "a YIELD sign facing the car": {
    "provision": 1470,
-   "reason": "21803(a)가 양보 표지 교차로에서 진입 중이거나 위험하게 접근하는 차량에 통행권을 양보하라고 정한다."
+   "reason": "21803(a)가 양보 표지 교차로에서 진입 중이거나 위험하게 접근하는 차량에 통행권을 양보하라고 정한다.",
+   "references": []
   },
   "a sign that prohibits turning, such as NO TURN or a crossed-out arrow": {
    "provision": 1362,
-   "reason": "22101(d)가 회전 금지 표지의 지시를 어기는 것을 불법으로 정한다."
+   "reason": "22101(d)가 회전 금지 표지의 지시를 어기는 것을 불법으로 정한다.",
+   "references": []
   },
   "a speed limit sign showing a number": {
    "provision": 1478,
-   "reason": "22351(b)가 지정된 제한속도를 초과한 주행을 원칙적으로 불법으로 정한다."
+   "reason": "22351(b)가 지정된 제한속도를 초과한 주행을 원칙적으로 불법으로 정한다.",
+   "references": [
+    592,
+    593
+   ],
+   "reference_reason": "초과 여부를 판단하는 기준인 제한 속도를 제22352조의 항에서 끌어온다."
   },
   "a sign or marking that prohibits passing or overtaking": {
    "provision": 104,
-   "reason": "21460(a)가 이중 실선 황색선이 있으면 선의 왼쪽으로 주행하지 못하게 정한다."
+   "reason": "21460(a)가 이중 실선 황색선이 있으면 선의 왼쪽으로 주행하지 못하게 정한다.",
+   "references": []
   },
   "a pedestrian walking on a crosswalk ahead": {
    "provision": 475,
-   "reason": "21950(a)가 횡단보도를 건너는 보행자에게 통행권을 양보하라고 정한다."
+   "reason": "21950(a)가 횡단보도를 건너는 보행자에게 통행권을 양보하라고 정한다.",
+   "references": []
   },
   "a lane reserved for buses, shown by a sign or BUS painted on the road": {
    "provision": 1346,
-   "reason": "21655.1(a)가 대중교통 전용 차로를 표지 지시에 따른 경우 외에는 운행하지 못하게 정한다."
+   "reason": "21655.1(a)가 대중교통 전용 차로를 표지 지시에 따른 경우 외에는 운행하지 못하게 정한다.",
+   "references": []
   },
   "a lane or track reserved for trams or streetcars": {
    "provision": 1346,
-   "reason": "전차 전용 차로를 직접 정한 항이 없어 대중교통 전용 차로 진입 금지인 21655.1(a)가 가장 가깝다."
+   "reason": "전차 전용 차로를 직접 정한 항이 없어 대중교통 전용 차로 진입 금지인 21655.1(a)가 가장 가깝다.",
+   "references": []
   },
   "a road work zone with cones, barriers or workers": {
    "provision": 145,
-   "reason": "21367(c)가 공사 구간의 경고 표지, 등화, 기타 통제 장치의 지시를 따르라고 정한다."
+   "reason": "21367(c)가 공사 구간의 경고 표지, 등화, 기타 통제 장치의 지시를 따르라고 정한다.",
+   "references": []
   },
   "the car is inside a tunnel, where overtaking is prohibited": {
    "provision": 1296,
-   "reason": "CVC §21752(b) is the only candidate that directly bars driving on the left side of the roadway (passing) in connection with a tunnel, though it covers view-obstructed approach within 100 feet."
+   "reason": "CVC §21752(b) is the only candidate that directly bars driving on the left side of the roadway (passing) in connection with a tunnel, though it covers view-obstructed approach within 100 feet.",
+   "references": []
   },
   "the car is inside a tunnel, where headlights must be on": {
    "provision": null,
-   "reason": "후보 조에 터널 전조등 점등 의무를 정한 항이 없다."
+   "reason": "후보 조에 터널 전조등 점등 의무를 정한 항이 없다.",
+   "references": []
   },
   "the car is on a bridge": {
    "provision": 1423,
-   "reason": "22405(a)가 교량에서 구조물이 안전하게 견디는 최고속도를 넘지 못하게 정한다."
+   "reason": "22405(a)가 교량에서 구조물이 안전하게 견디는 최고속도를 넘지 못하게 정한다.",
+   "references": []
   },
   "a child protection school zone, shown by red pavement, the words 어린이 보호구역 painted on the road or a school zone sign": {
    "provision": 593,
-   "reason": "CVC §22352(b)(2) sets the prima facie 25 mph limit when approaching or passing a posted school and its grounds while children are going to or leaving, the most direct speed duty in a school zone (this version stays in effect until 2031)."
+   "reason": "CVC §22352(b)(2) sets the prima facie 25 mph limit when approaching or passing a posted school and its grounds while children are going to or leaving, the most direct speed duty in a school zone (this version stays in effect until 2031).",
+   "references": []
   }
  }
 }

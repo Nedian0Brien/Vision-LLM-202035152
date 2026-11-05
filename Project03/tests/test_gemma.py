@@ -72,9 +72,29 @@ class ActionTest(unittest.TestCase):
             def create_completion(self, prompt, **kwargs):
                 return {"choices": [{"text": " Stop" if kwargs["max_tokens"] == 1 else " **적색 신호 앞에서 정지하세요.**"}]}
 
-        article = {"id": "제5조", "title": "", "text": "조문"}
+        article = {"id": "제5조", "title": "", "text": "조문", "references": []}
         rule = gemma.read_provision(Llm(), SITUATIONS[0], article)
         self.assertEqual(rule, {"law": "제5조", "action": "STOP", "instruction": "적색 신호 앞에서 정지하세요.", "text": "조문"})
+
+    def test_read_provision_keeps_reference_text_uncut(self):
+        prompts = []
+
+        class Llm:
+            """받은 프롬프트를 모아 두는 시험용 클래스"""
+
+            def tokenize(self, text, add_bos):
+                return [text[0]]
+
+            def create_completion(self, prompt, **kwargs):
+                prompts.append(prompt)
+                return {"choices": [{"text": " Stop" if kwargs["max_tokens"] == 1 else "정지"}]}
+
+        reference = {"id": "제1항", "title": "", "text": "시속 30"}
+        article = {"id": "제3항", "title": "제목", "text": "가" * 300, "references": [reference]}
+        rule = gemma.read_provision(Llm(), SITUATIONS[0], article)
+        self.assertEqual(rule["law"], "제3항")
+        self.assertEqual(rule["text"], "제목: " + "가" * (gemma.READ_CHARS - 4) + " 시속 30")
+        self.assertIn("시속 30", prompts[-1])
 
     def test_action_codes_are_distinct(self):
         self.assertEqual(len(set(gemma.ACTIONS.values())), len(gemma.ACTIONS))

@@ -130,7 +130,10 @@ def load_law(short):
     for situation, pick in picks.items():
         # Sonnet이 맞는 조문을 찾지 못한 상황은 null이고 조문 없이 지시문을 내지 않음
         if pick["provision"] is not None:
-            provisions[situation] = articles[pick["provision"]]
+            # 여러 상황이 같은 항을 고르므로 복사본에 참조를 담음
+            provision = dict(articles[pick["provision"]])
+            provision["references"] = [articles[number] for number in pick["references"]]
+            provisions[situation] = provision
     return provisions
 
 
@@ -193,8 +196,9 @@ def recognize(llm, frame, result):
 
 def read_provision(llm, situation, article):
     """조문을 읽어 행동과 지시문을 만드는 함수"""
-    text = (article["title"] + ": " if article["title"] else "") + article["text"]
-    text = text[:READ_CHARS]
+    # 참조한 항의 내용이 고른 항 뒤에서 잘리지 않도록 항마다 따로 자름
+    parts = [(part["title"] + ": " if part["title"] else "") + part["text"] for part in [article] + article["references"]]
+    text = " ".join([part[:READ_CHARS] for part in parts])
     # create_completion이 BOS를 스스로 붙이므로 프롬프트에 쓰지 않음
     prompt = f"<|turn>user\n{READ_PROMPT}{READ_EXAMPLES}Situation: {situation}\nProvisions:\n[1] {text}\nAnswer:<turn|>\n<|turn>model\n"
     # 행동이 정해진 6개 밖으로 나가지 않도록 첫 토큰을 6개로 제한함
