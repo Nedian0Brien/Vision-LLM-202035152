@@ -32,7 +32,7 @@ SITUATIONS = [
     "a lane reserved for buses, shown by a sign or BUS painted on the road",
     "a lane or track reserved for trams or streetcars",
     "a road work zone with cones, barriers or workers",
-    "the car is inside or entering a tunnel",
+    "the car is inside a tunnel, where overtaking is prohibited",
     "the car is inside a tunnel, where headlights must be on",
     "the car is on a bridge",
 ]

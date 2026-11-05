@@ -46,9 +46,9 @@
    "provision": 13,
    "reason": "공사 구간 운전자의 의무를 직접 정한 항이 없어 교통안전시설의 지시를 따를 일반 의무를 고른다."
   },
-  "the car is inside or entering a tunnel": {
-   "provision": 158,
-   "reason": "터널 안을 운행할 때 전조등 등 등화를 켜야 한다고 정한다."
+  "the car is inside a tunnel, where overtaking is prohibited": {
+   "provision": 103,
+   "reason": "제22조 제3항 제2호가 터널 안에서 다른 차를 앞지르지 못한다고 직접 정한다."
   },
   "the car is inside a tunnel, where headlights must be on": {
    "provision": 158,

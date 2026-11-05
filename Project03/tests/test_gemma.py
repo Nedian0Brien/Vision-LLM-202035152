@@ -44,6 +44,7 @@ class GemmaTest(unittest.TestCase):
         california = load_law("california")
         self.assertEqual(current[SITUATIONS[0]]["id"], "시행규칙 별표 2")
         self.assertEqual(california[SITUATIONS[0]]["id"], "CVC §21453(a)")
+        self.assertEqual(current[SITUATIONS[11]]["id"], "도로교통법 제22조 ③")
         # 캘리포니아에는 터널 등화 조문을 찾지 못해 지시문을 내지 않음
         self.assertNotIn(SITUATIONS[12], california)
         self.assertEqual(len(current), len(SITUATIONS))

@@ -46,9 +46,9 @@
    "provision": 145,
    "reason": "21367(c)가 공사 구간의 경고 표지, 등화, 기타 통제 장치의 지시를 따르라고 정한다."
   },
-  "the car is inside or entering a tunnel": {
-   "provision": 1423,
-   "reason": "22405(a)가 터널에서 구조물이 안전하게 견디는 최고속도를 넘지 못하게 정한다."
+  "the car is inside a tunnel, where overtaking is prohibited": {
+   "provision": 1296,
+   "reason": "CVC §21752(b) is the only candidate that directly bars driving on the left side of the roadway (passing) in connection with a tunnel, though it covers view-obstructed approach within 100 feet."
   },
   "the car is inside a tunnel, where headlights must be on": {
    "provision": null,
