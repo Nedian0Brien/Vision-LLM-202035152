@@ -15,7 +15,7 @@ from hud import button_boxes, draw, draw_panel, draw_rules
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
-VIDEOS = [("원주", "videos/wonju-demo.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4")]
+VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4"), ("보호구역 낱장", "videos/school-zone-stills.mp4")]
 LAWS = [("현행 도로교통법", "current"), ("캘리포니아 차량법", "california")]
 
 parser = argparse.ArgumentParser()

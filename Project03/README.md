@@ -6,8 +6,8 @@
 
 조문 선택은 빌드 단계에서 끝나고, 지시문은 실행 중에 조문을 읽어 만듭니다.
 
-1. 빌드 단계(Mac, 인터넷 필요): 상황 14개마다 임베딩 검색으로 후보 조 50개를 추리고, Sonnet이 라벨을 보지 않고 조문 하나를 고릅니다. 결과는 `index-current.json`, `index-california.json`입니다.
-2. 실행 단계 인식: Gemma E2B가 전체 화면, YOLO로 자른 신호등·표지 크롭, 노면 크롭 3장을 보고 상황 14개 중 있는 것을 고릅니다. 신호 색과 횡단보도 보행자는 YOLO로 자른 크롭을 보여 주고 따로 묻습니다.
+1. 빌드 단계(Mac, 인터넷 필요): 상황 15개마다 임베딩 검색으로 후보 조 50개를 추리고, Sonnet이 라벨을 보지 않고 조문 하나를 고릅니다. 결과는 `index-current.json`, `index-california.json`입니다.
+2. 실행 단계 인식: Gemma E2B가 전체 화면, YOLO로 자른 신호등·표지 크롭, 노면 크롭 3장을 보고 상황 15개 중 있는 것을 고릅니다. 신호 색과 횡단보도 보행자는 YOLO로 자른 크롭을 보여 주고 따로 묻습니다.
 3. 실행 단계 읽기: Gemma E2B가 고른 상황의 조문 앞 240자를 읽고 행동 6개 중 하나를 고른 뒤, 같은 조문으로 한국어 지시문을 씁니다.
 
 ## 개발용 측정
@@ -116,7 +116,7 @@ curl -L -o ../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf "https://h
 mkdir -p videos && curl -L -o videos/wonju-2020-04-16.webm "https://upload.wikimedia.org/wikipedia/commons/c/c3/2020-04-16_%EC%9B%90%EC%A3%BC%EC%8B%9C_%EB%8F%84%EB%A1%9C%EC%A3%BC%ED%96%89.webm"
 ```
 
-시연에는 원본의 86~118초를 1280×720 mp4(`mp4v` 코덱)로 다시 저장한 `videos/wonju-demo.mp4`를 씁니다. Jetson의 OpenCV가 VP9을 읽지 못할 경우에 대비한 파일입니다. Mac에서 OpenCV `VideoWriter`로 만들었습니다.
+이 영상은 개발용 평가에 씁니다. 원본의 86~118초를 다시 저장한 `videos/wonju-demo.mp4`는 시연 버튼에서 뺐고, 터널 안 구간(172~178초)이 약 6초뿐이라 터널 시연은 아래 영상으로 합니다. Mac에서 OpenCV `VideoWriter`로 만들었습니다.
 
 **비벌리힐스 영상(미국 캘리포니아).** 위키미디어 공용의 [Driving through BEVERLY HILLS, Los Angeles, California (HD)](https://commons.wikimedia.org/wiki/File:Driving_through_BEVERLY_HILLS,_Los_Angeles,_California_(HD).webm)을 씁니다. 촬영자는 Kauko Helavuo이고 라이선스는 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0)입니다. 원본은 2014-07-09 촬영, 1920×1080(4:3 화면에 좌우 검은 띠), 25 FPS, 500초, 172MB입니다. 원본을 자르고 크기를 바꿔 시연 영상을 만들었습니다.
 
@@ -128,16 +128,22 @@ curl -L -o videos/beverly-hills.webm "https://upload.wikimedia.org/wikipedia/com
 
 **샌프란시스코 영상(미국 캘리포니아).** 위키미디어 공용의 [San Francisco Downtown Driving Tour, 2023 California, USA](https://commons.wikimedia.org/wiki/File:San_Francisco_Downtown_Driving_Tour,_2023_California,_USA._Travel_Guide,_(4K_HDR).webm)을 씁니다. 촬영자는 ZERO ONE이고 라이선스는 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0)입니다. 시연에는 원본의 860~950초를 1280×720, 30 FPS mp4로 다시 저장한 `videos/sf-demo.mp4`를 씁니다.
 
+**터널 영상(한국 블랙박스).** AI Hub `교통법규 위반 상황 데이터`(71555) 검증 데이터의 터널 진로변경 사례 10개의 프레임을 이어 `videos/tunnel-korea.mp4`(약 86초, 10 FPS, 1280×720)를 만들었습니다. 쓴 사례는 `data/aihub-71555/tunnel/_clip-cases.json`에 있습니다. 사례 경계에서 장면이 끊깁니다. 번호판이 보이는 프레임이 있어 외부 공개 자료에 넣지 않습니다.
+
+**보호구역 영상(한국, 낱장).** AI Hub `생활도로 객체인식 자율주행 데이터`(71784)의 어린이 보호구역 도로 유형 프레임 10장을 4초씩 이어 `videos/school-zone-stills.mp4`(40초, 30 FPS, 1280×720, `mp4v`)를 만들었습니다. 실제 주행 영상이 아니라 서로 다른 장소의 낱장을 이은 것입니다. 노면 숫자가 20인 프레임과 신호등이 보이는 프레임은 뺐습니다. 지시문이 제12조 ③의 `조치`를 말할 뿐 숫자를 쓰지 않고, 횡단보도 조문(제27조 ⑦)은 상황 목록에 없어, 횡단보도 프레임에서는 보호구역 지시문이 나오지 않는 경우가 많습니다.
+
+두 AI Hub 자료와 프레임은 커밋하지 않습니다. 이용 조건은 아직 확인하지 않았습니다.
+
 ### 실행 명령
 
 ```bash
-python main.py videos/wonju-demo.mp4
+python main.py videos/tunnel-korea.mp4
 ```
 
 Jetson에서는 TensorRT 엔진을 넘깁니다.
 
 ```bash
-python main.py videos/wonju-demo.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+python main.py videos/tunnel-korea.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
 ```
 
 YOLO 입력은 736×1280(`detect.IMAGE_SIZE`)입니다. 04 노트북의 `yolo11n_fp16.engine`은 640×640 고정 크기라서, 아래 Jetson 측정 절차대로 엔진을 새로 만들어 넘깁니다. 아직 만들지 않았습니다.
@@ -156,7 +162,7 @@ python -m unittest discover -s tests -t .
 
 ### 1. 전날까지 옮기기
 
-저장소 루트에서 실행합니다. `Project03/data`와 영상 원본(`.webm`)은 시연에 쓰지 않으므로 뺍니다. 옮길 양은 약 5.1GB입니다.
+저장소 루트에서 실행합니다. `Project03/data`와 영상 원본(`.webm`)은 시연에 쓰지 않으므로 뺍니다. 옮길 양은 약 5.2GB입니다.
 
 ```bash
 rsync -avR --exclude '__pycache__' --exclude 'Project03/data' --exclude '*.webm' Project03 src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf src/models/YOLO/yolo11n.pt <사용자>@<Jetson 주소>:vision-llm/
@@ -202,7 +208,7 @@ python -c "import hud; print(hud.FONT_PATH)"
 ```
 
 ```bash
-python -c "import cv2; caps = [(v, cv2.VideoCapture(v)) for v in ['videos/wonju-demo.mp4', 'videos/beverly-demo.mp4', 'videos/sf-demo.mp4']]; [print(v, c.isOpened(), c.get(cv2.CAP_PROP_FPS), c.read()[0]) for v, c in caps]"
+python -c "import cv2; caps = [(v, cv2.VideoCapture(v)) for v in ['videos/tunnel-korea.mp4', 'videos/beverly-demo.mp4', 'videos/sf-demo.mp4', 'videos/school-zone-stills.mp4']]; [print(v, c.isOpened(), c.get(cv2.CAP_PROP_FPS), c.read()[0]) for v, c in caps]"
 ```
 
 ```bash
@@ -230,7 +236,7 @@ YOLO 단독 속도를 잽니다.
 엔진이 `main.py`와 같은 인자로 도는지 첫 프레임으로 봅니다. 두 줄의 박스 수가 비슷해야 합니다.
 
 ```bash
-python -c "import cv2; from ultralytics import YOLO; from detect import CLASSES, DETECT_CONF, IMAGE_SIZE; f = cv2.resize(cv2.VideoCapture('videos/wonju-demo.mp4').read()[1], (1280, 720)); [print(p, len(YOLO(p).predict(source=f, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0].boxes)) for p in ['../src/models/YOLO/yolo11n.pt', '../src/models/YOLO/yolo11n_736x1280_fp16.engine']]"
+python -c "import cv2; from ultralytics import YOLO; from detect import CLASSES, DETECT_CONF, IMAGE_SIZE; f = cv2.resize(cv2.VideoCapture('videos/tunnel-korea.mp4').read()[1], (1280, 720)); [print(p, len(YOLO(p).predict(source=f, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0].boxes)) for p in ['../src/models/YOLO/yolo11n.pt', '../src/models/YOLO/yolo11n_736x1280_fp16.engine']]"
 ```
 
 엔진을 만들지 못하면 640 엔진으로 바꿉니다. `detect.IMAGE_SIZE`를 `640`으로 고치고 `--model ../src/models/YOLO/yolo11n_fp16.engine`을 넘깁니다. 손실은 6단계 표에 있습니다.
@@ -254,7 +260,7 @@ python -c "from gemma import load_gemma; load_gemma(); input('free -m을 본 뒤
 `tests/jetson_timing.py`는 `main.py`를 그대로 실행하면서 시간을 잽니다. `cv2.imshow`와 버튼을 쓰므로 Jetson 화면의 터미널에서 실행합니다. 영상마다 120초쯤 돌리고 `q`로 끝냅니다. 결과는 `jetson-timing.txt`에 이어 쓰고, 멈추면 오류도 같은 파일에 남습니다. `vla-output.jsonl`에 규칙이 쌓이는지도 봅니다.
 
 ```bash
-python tests/jetson_timing.py videos/wonju-demo.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+python tests/jetson_timing.py videos/tunnel-korea.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
 ```
 
 비벌리힐스 영상은 실행 후 법령 버튼을 캘리포니아로 눌러 돌립니다. 이 클릭이 지연 값 1개에 섞일 수 있습니다.
@@ -375,6 +381,7 @@ python build_corpus.py <국가법령정보 Open API 인증키(OC)> data/pubinfo_
 - 실행 중에는 조문을 검색하지 않습니다. 조문 선택은 빌드 단계에서 끝나고, 그래서 같은 법령과 상황이면 지시문이 같습니다. 장면 내용은 지시문에 들어가지 않습니다.
 - 상황 15개 중 14개는 개발용 라벨의 유형에서, 어린이 보호구역은 시연 자료를 본 뒤 사람이 정의했습니다. 목록 밖 상황에는 지시문이 나오지 않습니다.
 - 어린이 보호구역은 현행에서 Sonnet이 제12조 ③을 골랐습니다. 이 항은 숫자 없이 `제1항에 따른 조치`를 가리키므로 지시문이 `어린이 보호구역 조치를 준수하고 안전 운행해야 한다.`로 나오고 `시속 30킬로미터`가 나오지 않습니다. 같은 법령과 상황이면 지시문이 같아 노면 숫자(20, 30)도 반영하지 못합니다.
+- 제27조 ⑦(신호 없는 보호구역 횡단보도 일시정지)은 조문 읽기로는 맞게 나오지만 상황 목록에 없습니다. 객관식에 넣으면 개발용 재현이 현행 35/53에서 33/53, 캘리포니아 28/43에서 25/43으로 떨어지고 횡단보도를 가르지도 못했습니다.
 - 보호구역 상황은 노면 글자 `어린이 보호구역`이 보이면 고르고, 빨간 포장만 보이면 대부분 놓칩니다. 개발용 57프레임의 114사이클 중 샌프란시스코 5사이클에서 잘못 고릅니다. 이 상황에는 정답 라벨이 없어 성능을 재지 않았습니다.
 - 빌드 스크립트는 저장소에 없습니다. 이번 빌드는 Sonnet 서브에이전트로 했고, 법령을 바꾸려면 위 빌드 단계를 다시 하고 Sonnet 접근이 필요합니다. 코퍼스를 다시 만들어 조문 위치가 바뀌어도 인덱스를 다시 만들어야 합니다.
 - Sonnet이 학습한 법 지식이 조문 선택에 섞였는지는 재지 않았습니다.
