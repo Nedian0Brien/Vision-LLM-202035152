@@ -57,6 +57,10 @@
   "the car is on a bridge": {
    "provision": 103,
    "reason": "다리 위에서 다른 차를 앞지르지 못한다고 정한다."
+  },
+  "a child protection school zone, shown by red pavement, the words 어린이 보호구역 painted on the road or a school zone sign": {
+   "provision": 48,
+   "reason": "제12조 3항이 어린이 보호구역에서 속도 제한 조치를 준수하고 어린이 안전에 유의하며 운행할 운전자 의무를 정한다."
   }
  }
 }

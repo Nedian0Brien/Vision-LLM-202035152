@@ -57,6 +57,10 @@
   "the car is on a bridge": {
    "provision": 1423,
    "reason": "22405(a)가 교량에서 구조물이 안전하게 견디는 최고속도를 넘지 못하게 정한다."
+  },
+  "a child protection school zone, shown by red pavement, the words 어린이 보호구역 painted on the road or a school zone sign": {
+   "provision": 593,
+   "reason": "CVC §22352(b)(2) sets the prima facie 25 mph limit when approaching or passing a posted school and its grounds while children are going to or leaving, the most direct speed duty in a school zone (this version stays in effect until 2031)."
   }
  }
 }

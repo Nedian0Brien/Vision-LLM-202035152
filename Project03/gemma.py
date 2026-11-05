@@ -19,7 +19,7 @@ MAX_IMAGE_TOKENS = 560
 # 비전 모듈은 48픽셀 칸 하나를 토큰 하나로 읽음
 TOKEN_PIXELS = 48
 GEMMA_THREADS = 2
-# 개발용 세트의 정답 유형에서 정한 상황이고 이 목록 밖의 상황에는 지시문을 내지 않음
+# 개발용 세트의 정답 유형에서 정한 상황과 시연용 어린이 보호구역이고 이 목록 밖의 상황에는 지시문을 내지 않음
 SITUATIONS = [
     "a red traffic light facing the car",
     "a yellow traffic light facing the car",
@@ -35,6 +35,7 @@ SITUATIONS = [
     "the car is inside a tunnel, where overtaking is prohibited",
     "the car is inside a tunnel, where headlights must be on",
     "the car is on a bridge",
+    "a child protection school zone, shown by red pavement, the words 어린이 보호구역 painted on the road or a school zone sign",
 ]
 RED, YELLOW, PEDESTRIAN = SITUATIONS[0], SITUATIONS[1], SITUATIONS[7]
 # 상황마다 예시를 하나씩 둠. 적색과 보행자를 한 예시에 묶었을 때는 횡단보도 선택 21번이 모두 적색과 함께 나왔음(2026-11-05 개발용 측정)
@@ -56,6 +57,7 @@ RECOGNIZE_PROMPT = (
     "Orange cones close off the right lane. Answer: 11\n"
     "Dark walls and ceiling lamps surround the road. Answer: 12, 13\n"
     "Railings and open water lie on both sides of the road. Answer: 14\n"
+    "Red pavement with a speed number and the words 어린이 보호구역 painted on it. Answer: 15\n"
     "A green light ahead, cars in front, shops on both sides. Answer: 0\n"
     "Parked cars and a street name sign, no rule applies. Answer: 0\n"
     "Which situations are present right now? Reply with only the numbers, separated by commas."
