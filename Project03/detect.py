@@ -1,16 +1,53 @@
-"""YOLO 탐지 결과를 탐지 목록으로 바꾸는 모듈"""
+"""YOLO 탐지 결과를 탐지 목록과 Gemma 입력 크롭으로 바꾸는 모듈"""
+
+import cv2
+import numpy as np
 
 # COCO 클래스 번호: 0 사람, 1 자전거, 2 승용차, 7 트럭, 9 신호등, 11 정지 표지
 CLASS_NAMES = {0: "사람", 1: "자전거", 2: "승용차", 7: "트럭", 9: "신호등", 11: "정지 표지"}
 CLASSES = list(CLASS_NAMES)
+SIGN_CLASSES = [9, 11]
 # 개발용 세트의 신호등과 정지 표지 장면 13개에서 640 입력은 7개, 1280 입력은 12개를 찾음(2026-11-03)
 IMAGE_SIZE = 1280
+# 크롭에는 먼 신호등도 넣으려고 낮은 신뢰도까지 쓰고, 화면에는 기존 기준의 박스만 그림
+DETECT_CONF = 0.25
+SHOW_CONF = 0.4
+STRIP_HEIGHT = 400
 
 
 def detections(result):
-    """탐지 결과에서 박스 좌표와 클래스 이름 목록을 만드는 함수"""
+    """탐지 결과에서 화면에 그릴 박스 좌표와 클래스 이름 목록을 만드는 함수"""
     boxes = []
-    for box, cls in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist()):
-        x1, y1, x2, y2 = map(int, box)
-        boxes.append((x1, y1, x2, y2, CLASS_NAMES[int(cls)]))
+    for box, cls, conf in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist(), result.boxes.conf.tolist()):
+        if conf >= SHOW_CONF:
+            x1, y1, x2, y2 = map(int, box)
+            boxes.append((x1, y1, x2, y2, CLASS_NAMES[int(cls)]))
     return boxes
+
+
+def sign_strip(frame, result):
+    """신호등과 정지 표지 주변을 잘라 가로로 이은 이미지를 만드는 함수"""
+    height, width = frame.shape[:2]
+    areas = []
+    for (x1, y1, x2, y2), cls in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist()):
+        if int(cls) in SIGN_CLASSES:
+            areas.append(((x2 - x1) * (y2 - y1), x1, y1, x2, y2))
+    areas.sort(reverse=True)
+    crops = []
+    for area, x1, y1, x2, y2 in areas[:3]:
+        size = max(x2 - x1, y2 - y1)
+        crop = frame[max(0, int(y1 - size)):min(height, int(y2 + size)), max(0, int(x1 - 1.5 * size)):min(width, int(x2 + 1.5 * size))]
+        # 적색 신호 판정이 전체 프레임에서는 0~2/9, 크롭에서는 9/9였음(2026-11-05 개발용 측정)
+        crop_width = int(crop.shape[1] * STRIP_HEIGHT / crop.shape[0])
+        crops.append(cv2.resize(crop, (crop_width, STRIP_HEIGHT), interpolation=cv2.INTER_CUBIC))
+        crops.append(np.zeros((STRIP_HEIGHT, 16, 3), np.uint8))
+    if crops:
+        return np.hstack(crops)
+    # 박스가 없는 프레임에는 YOLO 크롭 이전 시험에서 쓴 고정 영역을 넣음
+    return frame[int(0.1 * height):int(0.6 * height), :int(0.55 * width)]
+
+
+def road_crop(frame):
+    """노면 글자가 보이는 차로 앞쪽 영역을 자르는 함수"""
+    height, width = frame.shape[:2]
+    return frame[int(0.55 * height):int(0.92 * height), int(0.15 * width):int(0.85 * width)]

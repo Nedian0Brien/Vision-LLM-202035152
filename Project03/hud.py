@@ -1,4 +1,4 @@
-"""탐지 박스와 버튼 패널을 화면에 그리는 모듈"""
+"""탐지 박스, 버튼, 지시문과 근거 조항을 화면에 그리는 모듈"""
 
 import os
 
@@ -14,6 +14,7 @@ FONT_PATHS = [
 FONT_PATH = [path for path in FONT_PATHS if os.path.exists(path)][0]
 SMALL_FONT = ImageFont.truetype(FONT_PATH, 15)
 MEDIUM_FONT = ImageFont.truetype(FONT_PATH, 19)
+LARGE_FONT = ImageFont.truetype(FONT_PATH, 28)
 
 # 1280 픽셀 영상 옆에 붙여 전체 폭이 1920 픽셀 화면에 맞게 함
 PANEL_WIDTH = 640
@@ -30,6 +31,9 @@ LABELS = {}
 
 BUTTON_HEIGHT = 34
 BUTTON_GAP = 8
+# 버튼 두 줄 아래부터 지시문을 그림
+RULES_TOP = 2 * (BUTTON_HEIGHT + BUTTON_GAP) + 24
+RULE_TEXT_LINES = 4
 
 
 def button_boxes(frame_width, groups):
@@ -71,16 +75,47 @@ def draw_panel(height, frame_width, buttons, selected):
     return np.array(image)
 
 
+def wrap(text, font, width):
+    """글자 폭을 재어 패널 폭에 맞게 줄을 나누는 함수"""
+    lines = []
+    line = ""
+    # 한국어 조문은 띄어쓰기가 드물어 낱말이 아니라 글자 단위로 나눔
+    for char in text:
+        if font.getlength(line + char) > width:
+            lines.append(line)
+            line = ""
+        line += char
+    return lines + [line]
+
+
+def draw_rules(panel_image, rules):
+    """패널에 지시문, 근거 조항, 읽은 조문을 그리는 함수"""
+    image = Image.fromarray(panel_image)
+    pen = ImageDraw.Draw(image)
+    width = PANEL_WIDTH - 48
+    y = RULES_TOP
+    for rule in rules:
+        for line in wrap(rule["instruction"], LARGE_FONT, width):
+            pen.text((24, y), line, font=LARGE_FONT, fill=STATE)
+            y += 36
+        pen.text((24, y + 2), rule["law"], font=MEDIUM_FONT, fill=BODY)
+        y += 30
+        for line in wrap(rule["text"], SMALL_FONT, width)[:RULE_TEXT_LINES]:
+            pen.text((24, y), line, font=SMALL_FONT, fill=MUTED)
+            y += 21
+        y += 22
+    return np.array(image)
+
+
 def draw(frame, boxes, panel_image, fps):
     """프레임에 박스와 상태 이름을 그리고 미리 그린 패널을 오른쪽에 붙이는 함수"""
     for x1, y1, x2, y2, state in boxes:
-        cv2.rectangle(frame, (x1, y1), (x2, y2), STATE if state else OTHER, 2)
-        if state:
-            label = label_image(state)
-            height, width = label.shape[:2]
-            top = max(y1 - height, 0)
-            width = min(width, frame.shape[1] - x1)
-            frame[top:top + height, x1:x1 + width] = label[:, :width]
+        cv2.rectangle(frame, (x1, y1), (x2, y2), STATE, 2)
+        label = label_image(state)
+        height, width = label.shape[:2]
+        top = max(y1 - height, 0)
+        width = min(width, frame.shape[1] - x1)
+        frame[top:top + height, x1:x1 + width] = label[:, :width]
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
     canvas[:, frame.shape[1]:] = panel_image
     cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, MUTED, 1)

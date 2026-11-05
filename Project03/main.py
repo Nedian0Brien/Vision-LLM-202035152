@@ -1,17 +1,20 @@
-"""주행 영상에 YOLO 탐지 결과를 그려 보여 주는 실행 파일"""
+"""주행 영상에서 상황을 인식하고 법령 조문을 읽어 지시문을 보여 주는 실행 파일"""
 
 import argparse
+import threading
 import time
 
 import cv2
 from ultralytics import YOLO
 
-from detect import CLASSES, IMAGE_SIZE, detections
-from hud import button_boxes, draw, draw_panel
+from detect import CLASSES, DETECT_CONF, IMAGE_SIZE, detections
+from gemma import load_gemma, load_law, watch
+from hud import button_boxes, draw, draw_panel, draw_rules
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 VIDEOS = [("원주", "videos/wonju-demo.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4")]
+LAWS = [("현행 도로교통법", "current"), ("캘리포니아 차량법", "california")]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
@@ -19,12 +22,12 @@ parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
 video_paths = [path for name, path in VIDEOS]
-selected = {"video": video_paths.index(args.video)}
-buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path in VIDEOS]})
+selected = {"video": video_paths.index(args.video), "law": 0}
+buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]})
 
 
 def on_click(event, x, y, flags, param):
-    """버튼을 누르면 고른 영상 번호를 바꾸는 함수"""
+    """버튼을 누르면 고른 영상이나 법령 번호를 바꾸는 함수"""
     if event == cv2.EVENT_LBUTTONDOWN:
         for group, index, name, (x1, y1, x2, y2) in buttons:
             if x1 <= x <= x2 and y1 <= y <= y2:
@@ -36,7 +39,13 @@ model = YOLO(args.model)
 cv2.namedWindow(WINDOW)
 cv2.setMouseCallback(WINDOW, on_click)
 
+# 영상 루프가 Gemma를 기다리지 않도록 Gemma는 별도 스레드에서 돌림
+shared = {"input": None, "law": LAWS[selected["law"]][1], "rules": []}
+laws = {short: load_law(short) for name, short in LAWS}
+threading.Thread(target=watch, args=(load_gemma(), laws, shared), daemon=True).start()
+
 current_video = None
+drawn_view = None
 displayed_fps = 0.0
 
 while True:
@@ -46,7 +55,6 @@ while True:
         current_video = selected["video"]
         cap = cv2.VideoCapture(VIDEOS[current_video][1])
         video_fps = cap.get(cv2.CAP_PROP_FPS)
-        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected)
 
     ret, frame = cap.read()
 
@@ -56,8 +64,17 @@ while True:
         continue
 
     frame = cv2.resize(frame, FRAME_SIZE)
-    results = model.predict(source=frame, conf=0.4, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)
+    results = model.predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)
     boxes = detections(results[0])
+    # draw가 프레임에 박스를 그리므로 Gemma에는 복사본을 넘김
+    shared["input"] = (frame.copy(), results[0])
+    shared["law"] = LAWS[selected["law"]][1]
+
+    # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
+    view = (selected["video"], selected["law"], shared["rules"])
+    if view != drawn_view:
+        drawn_view = view
+        panel_image = draw_rules(draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected), shared["rules"])
 
     elapsed_time = time.perf_counter() - start_time
     current_fps = 1.0 / elapsed_time
