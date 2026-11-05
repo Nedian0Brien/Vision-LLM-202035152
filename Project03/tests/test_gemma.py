@@ -70,15 +70,14 @@ class ActionTest(unittest.TestCase):
                 return [text[0]]
 
             def create_completion(self, prompt, **kwargs):
-                return {"choices": [{"text": " Stop" if kwargs["max_tokens"] == 1 else " the red light"}]}
+                return {"choices": [{"text": " Stop" if kwargs["max_tokens"] == 1 else " **적색 신호 앞에서 정지하세요.**"}]}
 
         article = {"id": "제5조", "title": "", "text": "조문"}
         rule = gemma.read_provision(Llm(), SITUATIONS[0], article)
-        self.assertEqual(rule, {"law": "제5조", "action": "STOP", "instruction": "Stop for the red light", "text": "조문"})
+        self.assertEqual(rule, {"law": "제5조", "action": "STOP", "instruction": "적색 신호 앞에서 정지하세요.", "text": "조문"})
 
     def test_action_codes_are_distinct(self):
-        codes = [code for code, preposition in gemma.ACTIONS.values()]
-        self.assertEqual(len(set(codes)), len(gemma.ACTIONS))
+        self.assertEqual(len(set(gemma.ACTIONS.values())), len(gemma.ACTIONS))
 
 
 class WatchTest(unittest.TestCase):

@@ -62,14 +62,14 @@ RECOGNIZE_PROMPT = (
 )
 LIGHT_PROMPT = "Which lamp color is lit on the traffic lights that face the camera? Answer with one word: red, yellow, green or none."
 PEDESTRIAN_PROMPT = "Is a person walking on a striped crosswalk in this image? Answer with one word: yes or no."
-# 영어 표현은 프롬프트와 지시문 앞머리에 쓰고, 코드는 지시문 언어가 바뀌어도 그대로 둠
+# 영어 표현은 행동 고르기 프롬프트에만 쓰고, 코드는 지시문 언어와 무관하게 그대로 둠
 ACTIONS = {
-    "Stop": ("STOP", " for"),
-    "Yield": ("YIELD", " to"),
-    "Slow down": ("SLOW_DOWN", " for"),
-    "Keep out": ("KEEP_OUT", " of"),
-    "Overtaking banned": ("NO_OVERTAKING", " at"),
-    "Caution": ("CAUTION", " for"),
+    "Stop": "STOP",
+    "Yield": "YIELD",
+    "Slow down": "SLOW_DOWN",
+    "Keep out": "KEEP_OUT",
+    "Overtaking banned": "NO_OVERTAKING",
+    "Caution": "CAUTION",
 }
 READ_PROMPT = (
     "A camera on a car saw this situation. Some provisions below may not apply. "
@@ -85,6 +85,11 @@ READ_EXAMPLES = (
     "Example:\nSituation: a one-way road against the car's direction\nProvisions:\n[1] No vehicle shall enter a one-way road against its direction.\nAnswer: Keep out of the one-way road\n"
     "Example:\nSituation: a double solid center line on a curve\nProvisions:\n[1] A driver shall not pass another vehicle across a double solid line.\nAnswer: Overtaking banned at the double line\n"
     "Example:\nSituation: a flashing amber beacon over the road\nProvisions:\n[1] A driver shall proceed with care where an amber beacon flashes.\nAnswer: Caution for the flashing beacon\n"
+)
+# 예시와 행동 낱말 없이 조문을 읽게 해야 조문을 베끼지 않고 숫자와 조건까지 답함(2026-11-06 개발용 27개 상황, 형식 8개 비교)
+INSTRUCTION_PROMPT = (
+    "Traffic law text: {text}\nUnder this law, what must a driver do now when the camera sees {situation}? "
+    "Answer in Korean as one short command of at most 10 words."
 )
 # 인식이 완벽하다고 가정한 개발용 수치는 120자 44/53, 240자 46/53, 400자 39/53이었음(2026-11-05)
 READ_CHARS = 240
@@ -195,11 +200,12 @@ def read_provision(llm, situation, article):
     for action in ACTIONS:
         allowed[llm.tokenize(action.encode("utf-8"), add_bos=False)[0]] = 1000.0
     first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=allowed)["choices"][0]["text"].strip()
-    for action, (code, preposition) in ACTIONS.items():
+    for action, code in ACTIONS.items():
         if action.startswith(first):
-            start = action + preposition
-            rest = llm.create_completion(prompt + start, max_tokens=12, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
-            return {"law": article["id"], "action": code, "instruction": (start + rest).strip(), "text": text}
+            ask = f"<|turn>user\n{INSTRUCTION_PROMPT.format(text=text, situation=situation)}<turn|>\n<|turn>model\n"
+            answer = llm.create_completion(ask, max_tokens=30, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
+            # Gemma가 문장을 마크다운 강조로 감싸기도 함
+            return {"law": article["id"], "action": code, "instruction": answer.strip().strip("*"), "text": text}
 
 
 def watch(llm, laws, shared):
