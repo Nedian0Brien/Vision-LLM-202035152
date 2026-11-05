@@ -9,7 +9,7 @@ import llama_cpp.mtmd_cpp as mtmd_cpp
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Gemma4ChatHandler
 
-from detect import road_crop, sign_strip
+from detect import LIGHT_CLASSES, PERSON_CLASSES, SIGN_CLASSES, class_strip, road_crop, upper_left_crop
 
 LLM_PATH = "../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf"
 VISION_PATH = "../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf"
@@ -36,20 +36,32 @@ SITUATIONS = [
     "the car is inside a tunnel, where headlights must be on",
     "the car is on a bridge",
 ]
-# 예시 없는 객관식은 22/53이고 글 예시 6개를 넣으면 26/53이었음(2026-11-05 개발용 측정)
+RED, YELLOW, PEDESTRIAN = SITUATIONS[0], SITUATIONS[1], SITUATIONS[7]
+# 상황마다 예시를 하나씩 둠. 적색과 보행자를 한 예시에 묶었을 때는 횡단보도 선택 21번이 모두 적색과 함께 나왔음(2026-11-05 개발용 측정)
 RECOGNIZE_PROMPT = (
     "Possible situations:\n"
     + "".join([f"{number}. {situation}\n" for number, situation in enumerate(SITUATIONS, 1)])
     + "0. none of these; ordinary driving\n"
     "Examples:\n"
-    "The light ahead is red and a person is crossing on the crosswalk. Answer: 1, 8\n"
-    "A green light ahead, cars in front, shops on both sides. Answer: 0\n"
+    "The traffic light ahead shows a red lamp. Answer: 1\n"
+    "The traffic light ahead shows a yellow lamp. Answer: 2\n"
+    "A red eight-sided sign reading STOP stands at the corner. Answer: 3\n"
+    "A downward triangle sign reading YIELD stands at the junction. Answer: 4\n"
     "A sign with a crossed-out left arrow above the intersection. Answer: 5\n"
-    "Dark walls and ceiling lamps surround the road. Answer: 12, 13\n"
+    "A sign by the road shows the number 40. Answer: 6\n"
+    "A sign shows two cars with a line through them. Answer: 7\n"
+    "A person is walking across the striped crosswalk ahead. Answer: 8\n"
+    "BUS is painted on the lane ahead. Answer: 9\n"
+    "Rails run along the lane ahead. Answer: 10\n"
     "Orange cones close off the right lane. Answer: 11\n"
+    "Dark walls and ceiling lamps surround the road. Answer: 12, 13\n"
+    "Railings and open water lie on both sides of the road. Answer: 14\n"
+    "A green light ahead, cars in front, shops on both sides. Answer: 0\n"
     "Parked cars and a street name sign, no rule applies. Answer: 0\n"
     "Which situations are present right now? Reply with only the numbers, separated by commas."
 )
+LIGHT_PROMPT = "Which lamp color is lit on the traffic lights that face the camera? Answer with one word: red, yellow, green or none."
+PEDESTRIAN_PROMPT = "Is a person walking on a striped crosswalk in this image? Answer with one word: yes or no."
 # 행동 영어 표현마다 패널에 쓰는 한국어 이름과 지시문을 잇는 전치사를 둠
 ACTIONS = {
     "Stop": ("정지", " for"),
@@ -134,12 +146,40 @@ def parse_situations(answer):
     return found
 
 
+def ask_word(llm, image, question, words):
+    """크롭 한 장을 보고 정해진 낱말 중 하나로 답하게 하는 함수"""
+    allowed = {}
+    for word in words:
+        allowed[str(llm.tokenize(word.encode("utf-8"), add_bos=False)[0])] = 1000.0
+    content = [image_part(image, 140), {"type": "text", "text": question}]
+    response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=1, temperature=0, logit_bias=allowed)
+    return response["choices"][0]["message"]["content"].strip().lower()
+
+
 def recognize(llm, frame, result):
-    """프레임과 크롭 두 장을 보고 지금 있는 상황 목록을 만드는 함수"""
+    """프레임과 크롭을 보고 지금 있는 상황 목록을 만드는 함수"""
+    signs = class_strip(frame, result, SIGN_CLASSES)
+    if signs is None:
+        signs = upper_left_crop(frame)
     # 고정 크롭을 YOLO 크롭으로 바꾸어 현행 개발용 수치가 22/53에서 31/53으로 오름(2026-11-05)
-    content = [image_part(frame, 280), image_part(sign_strip(frame, result), 140), image_part(road_crop(frame), 140), {"type": "text", "text": RECOGNIZE_PROMPT}]
+    content = [image_part(frame, 280), image_part(signs, 140), image_part(road_crop(frame), 140), {"type": "text", "text": RECOGNIZE_PROMPT}]
     response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=20, temperature=0)
-    return parse_situations(response["choices"][0]["message"]["content"])
+    found = []
+    # 신호 색과 횡단보도는 객관식에서 오인식이 많아 대상만 자른 크롭으로 따로 물음(2026-11-05 개발용 측정, 현행 28/53에서 31/53)
+    lights = class_strip(frame, result, LIGHT_CLASSES)
+    if lights is not None:
+        color = ask_word(llm, lights, LIGHT_PROMPT, ["red", "yellow", "green", "none"])
+        if color == "red":
+            found.append(RED)
+        if color == "yellow":
+            found.append(YELLOW)
+    for situation in parse_situations(response["choices"][0]["message"]["content"]):
+        if situation not in (RED, YELLOW, PEDESTRIAN):
+            found.append(situation)
+    people = class_strip(frame, result, PERSON_CLASSES)
+    if people is not None and ask_word(llm, people, PEDESTRIAN_PROMPT, ["yes", "no"]) == "yes":
+        found.append(PEDESTRIAN)
+    return found
 
 
 def read_provision(llm, situation, article):

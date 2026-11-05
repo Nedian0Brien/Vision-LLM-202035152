@@ -1,10 +1,10 @@
-"""상황 번호 파싱, 법령 인덱스, 크롭 대체 영역을 확인하는 테스트"""
+"""상황 번호 파싱, 법령 인덱스, 크롭을 확인하는 테스트"""
 
 import unittest
 
 import numpy as np
 
-from detect import road_crop, sign_strip
+from detect import LIGHT_CLASSES, class_strip, road_crop, upper_left_crop
 from gemma import SITUATIONS, load_law, parse_situations
 
 
@@ -45,10 +45,15 @@ class GemmaTest(unittest.TestCase):
         self.assertNotIn(SITUATIONS[12], california)
         self.assertEqual(len(current), len(SITUATIONS))
 
-    def test_sign_strip_uses_only_sign_boxes_and_falls_back(self):
+    def test_class_strip_uses_only_given_classes(self):
         frame = np.zeros((720, 1280, 3), np.uint8)
-        self.assertEqual(sign_strip(frame, Result(Boxes)).shape[0], 400)
-        self.assertEqual(sign_strip(frame, Result(EmptyBoxes)).shape[:2], (360, 704))
+        self.assertEqual(class_strip(frame, Result(Boxes), LIGHT_CLASSES).shape[0], 400)
+        self.assertIsNone(class_strip(frame, Result(Boxes), [11]))
+        self.assertIsNone(class_strip(frame, Result(EmptyBoxes), LIGHT_CLASSES))
+
+    def test_fixed_crops_have_expected_size(self):
+        frame = np.zeros((720, 1280, 3), np.uint8)
+        self.assertEqual(upper_left_crop(frame).shape[:2], (360, 704))
         self.assertEqual(road_crop(frame).shape[:2], (266, 896))
 
 

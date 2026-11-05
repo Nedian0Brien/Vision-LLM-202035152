@@ -6,6 +6,8 @@ import numpy as np
 # COCO 클래스 번호: 0 사람, 1 자전거, 2 승용차, 7 트럭, 9 신호등, 11 정지 표지
 CLASS_NAMES = {0: "사람", 1: "자전거", 2: "승용차", 7: "트럭", 9: "신호등", 11: "정지 표지"}
 CLASSES = list(CLASS_NAMES)
+PERSON_CLASSES = [0]
+LIGHT_CLASSES = [9]
 SIGN_CLASSES = [9, 11]
 # 개발용 세트의 신호등과 정지 표지 장면 13개에서 640 입력은 7개, 1280 입력은 12개를 찾음(2026-11-03)
 IMAGE_SIZE = 1280
@@ -25,13 +27,16 @@ def detections(result):
     return boxes
 
 
-def sign_strip(frame, result):
-    """신호등과 정지 표지 주변을 잘라 가로로 이은 이미지를 만드는 함수"""
+def class_strip(frame, result, classes):
+    """지정한 클래스의 박스 주변을 잘라 가로로 이은 이미지를 만드는 함수"""
     height, width = frame.shape[:2]
     areas = []
     for (x1, y1, x2, y2), cls in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist()):
-        if int(cls) in SIGN_CLASSES:
+        if int(cls) in classes:
             areas.append(((x2 - x1) * (y2 - y1), x1, y1, x2, y2))
+    # 박스가 없으면 Gemma에 물을 대상이 없음을 None으로 알림
+    if not areas:
+        return None
     areas.sort(reverse=True)
     crops = []
     for area, x1, y1, x2, y2 in areas[:3]:
@@ -41,9 +46,12 @@ def sign_strip(frame, result):
         crop_width = int(crop.shape[1] * STRIP_HEIGHT / crop.shape[0])
         crops.append(cv2.resize(crop, (crop_width, STRIP_HEIGHT), interpolation=cv2.INTER_CUBIC))
         crops.append(np.zeros((STRIP_HEIGHT, 16, 3), np.uint8))
-    if crops:
-        return np.hstack(crops)
-    # 박스가 없는 프레임에는 YOLO 크롭 이전 시험에서 쓴 고정 영역을 넣음
+    return np.hstack(crops)
+
+
+def upper_left_crop(frame):
+    """신호등과 표지 박스가 없는 프레임에 대신 넣을 왼쪽 위 영역을 자르는 함수"""
+    height, width = frame.shape[:2]
     return frame[int(0.1 * height):int(0.6 * height), :int(0.55 * width)]
 
 
