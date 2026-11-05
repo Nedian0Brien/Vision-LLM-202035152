@@ -68,7 +68,7 @@ Project03/
 ├── index-current.json   현행 법령의 상황별 조문 (빌드 결과)
 ├── index-california.json  캘리포니아 법령의 상황별 조문 (빌드 결과)
 ├── vla-output.jsonl     VLA 모델에 넘길 규칙 기록 (실행 때 생기고 git이 무시함)
-├── tests/               단위 테스트와 개발용·시험용 라벨
+├── tests/               단위 테스트, 개발용·시험용 라벨, Jetson 시간 측정
 ├── EXPLAIN.md           코드 설명
 └── videos/, data/       git이 무시하는 영상과 원본 자료
 ```
@@ -134,13 +134,13 @@ curl -L -o videos/beverly-hills.webm "https://upload.wikimedia.org/wikipedia/com
 python main.py videos/wonju-demo.mp4
 ```
 
-Jetson에서는 04 노트북에서 만든 TensorRT 엔진을 넘깁니다.
+Jetson에서는 TensorRT 엔진을 넘깁니다.
 
 ```bash
-python main.py videos/wonju-demo.mp4 --model ../src/models/YOLO/yolo11n_fp16.engine
+python main.py videos/wonju-demo.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
 ```
 
-YOLO 입력은 1280이고 1280×720 영상에서는 1280×736으로 추론합니다. 04 노트북의 `yolo11n_fp16.engine`은 640×640 고정 크기라서, Jetson에서는 같은 방식으로 `imgsz=[736, 1280]` 엔진을 새로 만들어 넘겨야 합니다. 아직 만들지 않았습니다.
+YOLO 입력은 736×1280(`detect.IMAGE_SIZE`)입니다. 04 노트북의 `yolo11n_fp16.engine`은 640×640 고정 크기라서, 아래 Jetson 측정 절차대로 엔진을 새로 만들어 넘깁니다. 아직 만들지 않았습니다.
 
 오른쪽 패널의 버튼으로 영상과 법령을 바꿉니다. 법령을 바꾸면 다음 판단부터 그 법령의 조문으로 지시문이 나옵니다. `q`를 누르면 종료합니다.
 
@@ -149,6 +149,178 @@ YOLO 입력은 1280이고 1280×720 영상에서는 1280×736으로 추론합니
 ```bash
 python -m unittest discover -s tests -t .
 ```
+
+## Jetson 측정 절차 (11/07)
+
+측정 기회는 한 번이고 Jetson에서 돌린 적이 없습니다. 아래 순서대로 진행하고 결과를 표에 적습니다. 판단 시간이 3.5초를 넘을 때의 선택은 6단계 표로 정합니다.
+
+### 1. 전날까지 옮기기
+
+저장소 루트에서 실행합니다. `Project03/data`와 영상 원본(`.webm`)은 시연에 쓰지 않으므로 뺍니다. 옮길 양은 약 5.1GB입니다.
+
+```bash
+rsync -avR --exclude '__pycache__' --exclude 'Project03/data' --exclude '*.webm' Project03 src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf src/models/YOLO/yolo11n.pt <사용자>@<Jetson 주소>:vision-llm/
+```
+
+이후 명령은 모두 Jetson의 `vision-llm/Project03/`에서 수업 환경 Python으로 실행합니다.
+
+### 2. 사전 점검
+
+| 점검 | 통과 조건 | 실패하면 |
+|---|---|---|
+| Jetson Linux 판 | 판을 기록합니다. JetPack 6.2.1은 36.4.4입니다 | r36.4.7에는 Gemma 4 E4B의 CUDA 메모리 부족 보고가 있습니다. 4단계에서 메모리를 먼저 봅니다 |
+| 전력 모드 | 2번(MAXN)입니다 | `sudo nvpmodel -m 2`로 바꾸고 04 노트북 안내대로 진행합니다 |
+| ultralytics, torch, CUDA | `torch.cuda.is_available()`가 True입니다 | 04 노트북 설치를 확인합니다 |
+| tensorrt, onnx, onnxslim | import가 됩니다 | 04 노트북의 ONNX 패키지 설치를 확인합니다 |
+| llama-cpp-python | import가 되고 끝 값이 True입니다 | `Gemma4ChatHandler`가 없으면 `gemma.py`가 실행되지 않습니다. 측정을 멈추고 판단합니다 |
+| 한글 글꼴 | 글꼴 경로를 출력합니다 | `IndexError`면 `hud.py`가 실행되지 않습니다. 글꼴 파일을 `hud.FONT_PATHS`의 경로에 복사합니다 |
+| 시연 영상 | 영상마다 True, 0보다 큰 FPS, True입니다 | FPS가 0이면 `main.py`가 0으로 나눕니다. 영상을 다시 만듭니다 |
+| 파일과 메모리 | Gemma 파일이 3.46GB와 0.99GB이고 디스크 여유가 엔진을 만들 만큼 있습니다 | 파일을 다시 옮깁니다 |
+
+```bash
+cat /etc/nv_tegra_release
+```
+
+```bash
+sudo nvpmodel -q
+```
+
+```bash
+python -c "import ultralytics, torch, cv2; print(ultralytics.__version__, torch.__version__, torch.cuda.is_available(), cv2.__version__)"
+```
+
+```bash
+python -c "import tensorrt, onnx, onnxslim; print(tensorrt.__version__, onnx.__version__)"
+```
+
+```bash
+python -c "import llama_cpp, llama_cpp.mtmd_cpp; from llama_cpp.llama_chat_format import Gemma4ChatHandler; print(llama_cpp.__version__, llama_cpp.llama_supports_gpu_offload())"
+```
+
+```bash
+python -c "import hud; print(hud.FONT_PATH)"
+```
+
+```bash
+python -c "import cv2; caps = [(v, cv2.VideoCapture(v)) for v in ['videos/wonju-demo.mp4', 'videos/beverly-demo.mp4', 'videos/sf-demo.mp4']]; [print(v, c.isOpened(), c.get(cv2.CAP_PROP_FPS), c.read()[0]) for v, c in caps]"
+```
+
+```bash
+ls -l ../src/models/Gemma4 && df -h . && free -m
+```
+
+### 3. TensorRT 엔진 만들기
+
+04 노트북의 ONNX 내보내기와 `trtexec --fp16` 순서이고 입력 크기만 다릅니다.
+
+```bash
+python -c "from ultralytics import YOLO; print(YOLO('../src/models/YOLO/yolo11n.pt').export(format='onnx', imgsz=[736, 1280], batch=1, dynamic=False, simplify=True, opset=20))"
+```
+
+```bash
+/usr/src/tensorrt/bin/trtexec --onnx=$HOME/vision-llm/src/models/YOLO/yolo11n.onnx --saveEngine=$HOME/vision-llm/src/models/YOLO/yolo11n_736x1280_fp16.engine --fp16
+```
+
+YOLO 단독 속도를 잽니다.
+
+```bash
+/usr/src/tensorrt/bin/trtexec --loadEngine=$HOME/vision-llm/src/models/YOLO/yolo11n_736x1280_fp16.engine --warmUp=500 --duration=10
+```
+
+엔진이 `main.py`와 같은 인자로 도는지 첫 프레임으로 봅니다. 두 줄의 박스 수가 비슷해야 합니다.
+
+```bash
+python -c "import cv2; from ultralytics import YOLO; from detect import CLASSES, DETECT_CONF, IMAGE_SIZE; f = cv2.resize(cv2.VideoCapture('videos/wonju-demo.mp4').read()[1], (1280, 720)); [print(p, len(YOLO(p).predict(source=f, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0].boxes)) for p in ['../src/models/YOLO/yolo11n.pt', '../src/models/YOLO/yolo11n_736x1280_fp16.engine']]"
+```
+
+엔진을 만들지 못하면 640 엔진으로 바꿉니다. `detect.IMAGE_SIZE`를 `640`으로 고치고 `--model ../src/models/YOLO/yolo11n_fp16.engine`을 넘깁니다. 손실은 6단계 표에 있습니다.
+
+### 4. Gemma 메모리 확인
+
+메모리 기록을 켜고 Gemma만 불러옵니다. 기록은 측정이 끝날 때까지 끄지 않습니다.
+
+```bash
+tegrastats --interval 1000 --logfile jetson-tegrastats.log &
+```
+
+```bash
+python -c "from gemma import load_gemma; load_gemma(); input('free -m을 본 뒤 Enter')"
+```
+
+`cudaMalloc failed`가 나면 브라우저 같은 다른 프로그램을 닫고 다시 합니다. 그래도 안 되면 `gemma.load_gemma`의 `n_gpu_layers`를 줄입니다. 줄인 뒤의 속도와 출력은 미측정입니다. `CUDA_VISIBLE_DEVICES=""`는 보고된 우회 방법이지만 TensorRT도 GPU를 쓰지 못합니다.
+
+### 5. 실행 측정
+
+`tests/jetson_timing.py`는 `main.py`를 그대로 실행하면서 시간을 잽니다. `cv2.imshow`와 버튼을 쓰므로 Jetson 화면의 터미널에서 실행합니다. 영상마다 120초쯤 돌리고 `q`로 끝냅니다. 결과는 `jetson-timing.txt`에 이어 쓰고, 멈추면 오류도 같은 파일에 남습니다. `vla-output.jsonl`에 규칙이 쌓이는지도 봅니다.
+
+```bash
+python tests/jetson_timing.py videos/wonju-demo.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+```
+
+비벌리힐스 영상은 실행 후 법령 버튼을 캘리포니아로 눌러 돌립니다. 이 클릭이 지연 값 1개에 섞일 수 있습니다.
+
+```bash
+python tests/jetson_timing.py videos/beverly-demo.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+```
+
+```bash
+tegrastats --stop
+```
+
+```bash
+grep -o 'RAM [0-9]*' jetson-tegrastats.log | awk '{print $2}' | sort -n | tail -1
+```
+
+| 항목 | 얻는 곳 | Mac 값 | Jetson 값 |
+|---|---|---|---|
+| 판단 전체 중앙값 | `jetson-timing.txt` | 1.16초 | 미측정 |
+| 객관식 호출 | 같은 파일 | 1.15초 | 미측정 |
+| 신호 색 호출 | 같은 파일 | 0.31초 | 미측정 |
+| 횡단보도 호출 | 같은 파일 | 0.23초 | 미측정 |
+| 조문 읽기(법령과 상황마다 처음 한 번) | 같은 파일 | 0.39초 | 미측정 |
+| Gemma가 도는 중 YOLO 프레임 시간 | 같은 파일 | 0.057초 | 미측정 |
+| 실제 FPS | 같은 파일 | 12.3 | 미측정 |
+| 프레임에서 패널까지 지연 | 같은 파일 | 1.71초 | 미측정 |
+| YOLO 단독 FPS | `trtexec` | 해당 없음 | 미측정 |
+| 최대 RAM(MB) | `jetson-tegrastats.log` | 해당 없음 | 미측정 |
+| GPU 사용률, 온도 | 같은 로그의 `GR3D_FREQ`, `gpu@` | 해당 없음 | 미측정 |
+
+Mac 값은 2026-11-06 비벌리힐스 영상 90초 실행이고 값의 표본이 작습니다(호출 3~5번, 지연 2번). 위 개발용 측정 절의 단독 측정값(조문 읽기 0.11초)과 달리 YOLO와 함께 돈 값입니다. 화면의 FPS 숫자는 `draw`, `imshow`, `waitKey` 전에 계산해 실제보다 높으므로 `jetson-timing.txt`의 값을 적습니다.
+
+### 6. 느릴 때 뺄 호출
+
+판단 중앙값이 3.5초 이하면 그대로 둡니다. 3.5초를 넘으면 직전 판단의 상황이 다음 판단 때 바로 만료되어 유지 효과가 사라지고, 화면은 유지 없음과 같아집니다. 그때 아래 표를 보고 고릅니다. 코드 위치는 모두 `gemma.recognize`와 `detect.py`입니다.
+
+값은 재현, 잘못된 지시, 위험 오발령입니다. 두 사이클 값이고 Mac 개발용 측정입니다(2026-11-06, 현재 코드, 호출별 답을 저장해 재조합, 기준은 실제 경로와 114사이클 모두 일치). 화면 값은 재지 않았습니다. 현재 화면 값은 현행 28/53, 캘리포니아 22/43입니다.
+
+| 선택 | 현행 | 캘리포니아 | 줄어드는 Mac 시간 | 고칠 곳 |
+|---|---|---|---|---|
+| 기준 | 34/53, 4/18, 3 | 27/43, 7/24, 5 | | |
+| 횡단보도 호출 제거 | 30/53, 3/18, 2 | 23/43, 6/24, 5 | 0.26초(사이클의 43%에서) | `people` 세 줄을 지우고 `(RED, YELLOW, PEDESTRIAN)`을 `(RED, YELLOW)`로 바꿉니다 |
+| 신호 색 호출 제거 | 35/53, 5/18, 4 | 28/43, 8/24, 6 | 0.27초(사이클의 39%에서) | `lights`부터 `found.append(YELLOW)`까지 지우고 `(RED, YELLOW, PEDESTRIAN)`을 `(PEDESTRIAN,)`로 바꿉니다 |
+| 둘 다 제거 | 31/53, 4/18, 3 | 24/43, 7/24, 6 | 위 둘의 합 | 위 둘을 지우고 `for` 조건을 없애 객관식 답을 모두 넣습니다 |
+| 객관식 제거, 두 호출만 남김 | 12/53, 3/18, 3 | 12/43, 3/24, 2 | 1.54초(모든 사이클에서) | `signs`, `content`, `response`와 객관식 `for`를 지웁니다 |
+| 입력 이미지 줄이기(노면 크롭 제거, 토큰 축소) | 미측정 | 미측정 | 미측정 | `recognize`의 `content` |
+| YOLO 640 엔진 | 전체 경로 미측정 | 전체 경로 미측정 | 미측정 | 3단계 끝. 신호등·정지 표지 장면 13개 중 탐지가 12개에서 7개로 줍니다(2026-11-03) |
+| `HOLD_SECONDS`를 판단 시간보다 길게 | 미측정 | 미측정 | 판단 시간은 그대로입니다 | `gemma.py`. 규칙이 더 오래 남습니다 |
+
+- 신호 색 호출을 빼면 재현이 1건씩 오르지만 잘못된 지시와 위험 오발령이 1건씩 늘어납니다. 개선으로 읽지 않습니다.
+- 두 크롭 호출은 박스가 있을 때만 돌고 Mac에서 판단의 대부분은 객관식입니다. Jetson 판단이 3.5초를 크게 넘으면 두 호출을 빼도 3.5초 아래로 내려가지 못할 수 있습니다.
+- 표의 재현 값은 Mac Metal 빌드의 출력입니다. Jetson CUDA 빌드에서 같은 답이 나오는지는 미측정입니다.
+
+### 영상 재생과 판단 지연
+
+코드를 읽어 확인한 동작입니다.
+
+- `main.py`는 `cap.read()`로 프레임을 건너뛰지 않습니다. 처리가 영상보다 느리면 영상이 `실제 FPS ÷ 영상 FPS` 배속으로 느려집니다. 처리가 빠르면 `waitKey`로 기다려 1배속이 됩니다.
+- `shared["input"]`은 칸 하나를 덮어쓰고 `watch`는 사이클을 시작할 때 최신 프레임을 읽습니다. 대기열이 없어 지연이 쌓이지 않습니다.
+- 벽시계 지연은 재생 속도와 상관없이 판단 시간에 최대 2프레임 간격을 더한 값입니다.
+- 영상 시간으로 본 지연과 유지 시간은 배속만큼 줄어듭니다. 12 FPS로 30 FPS 영상을 틀면 유지 3.5초가 영상 약 1.4초입니다. Jetson에서 FPS가 낮을수록 영상이 느려지고 패널은 영상과 더 맞아 보입니다. 그래서 지연은 벽시계 값으로 적습니다. 실시간 카메라에서는 벽시계 값이 그대로 지연입니다.
+- 화면 값(28/53, 22/43)은 프레임을 건너뛰며 1배속으로 잰 값이라 느려진 `main.py` 재생과 조건이 다릅니다.
+
+### 끝나고 할 일
+
+표를 채우고 `jetson-timing.txt`, `jetson-tegrastats.log`, `vla-output.jsonl`을 보관합니다. 세 파일은 git이 무시합니다.
 
 ## 평가 라벨
 
@@ -223,5 +395,5 @@ python build_corpus.py <국가법령정보 Open API 인증키(OC)> data/pubinfo_
 |---|---|
 | 04 노트북 YOLO 추론과 클래스 선택 | `main.py`: `model.predict(source=frame, conf, iou, verbose=False, classes=CLASSES)` |
 | 04 노트북 FPS 측정 | `main.py`: `time.perf_counter()`와 지수 이동 평균(0.9, 0.1) |
-| 04 노트북 TensorRT 엔진 | Jetson 실행 시 `--model ../src/models/YOLO/yolo11n_fp16.engine` |
+| 04 노트북 TensorRT 엔진 | Jetson 실행 시 `--model ../src/models/YOLO/yolo11n_736x1280_fp16.engine`. 같은 방법으로 입력 크기만 바꿔 만듭니다 |
 | 05 노트북 로컬 Gemma 로드 | `gemma.load_gemma`: `Llama(n_gpu_layers=-1, …)`. 이미지 토큰 때문에 `n_ctx=4096`, `n_batch=512`로 늘림 |
