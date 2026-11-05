@@ -88,6 +88,8 @@ READ_EXAMPLES = (
 )
 # 인식이 완벽하다고 가정한 개발용 수치는 120자 44/53, 240자 46/53, 400자 39/53이었음(2026-11-05)
 READ_CHARS = 240
+# 개발용 지표의 사이클 간격과 같은 값이고 결과를 보고 조정하지 않음
+HOLD_SECONDS = 3.5
 
 default_vision_params = mtmd_cpp.mtmd_context_params_default
 
@@ -205,15 +207,22 @@ def watch(llm, laws, shared):
     # 같은 법령과 상황은 입력이 같아 출력도 같으므로 처음 읽은 결과를 다시 씀(2026-11-05 27개 상황 일치 측정)
     readings = {}
     while True:
-        if shared["input"] is None:
+        # 묶음을 입력보다 먼저 읽어야 새 묶음에 이전 영상 프레임의 판단이 들어가지 않음
+        clip = shared["clip"]
+        current = shared["input"]
+        if current is None:
             time.sleep(0.05)
             continue
-        frame, result = shared["input"]
+        frame, result = current
         law = shared["law"]
+        found = recognize(llm, frame, result)
+        now = time.perf_counter()
+        for situation in found:
+            clip["last_seen"][situation] = now
         rules = []
-        for situation in recognize(llm, frame, result):
-            if situation in laws[law]:
+        for situation, seen in clip["last_seen"].items():
+            if now - seen <= HOLD_SECONDS and situation in laws[law]:
                 if (law, situation) not in readings:
                     readings[(law, situation)] = read_provision(llm, situation, laws[law][situation])
                 rules.append(readings[(law, situation)])
-        shared["rules"] = rules
+        clip["rules"] = rules

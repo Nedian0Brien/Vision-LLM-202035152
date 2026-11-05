@@ -40,7 +40,7 @@ cv2.namedWindow(WINDOW)
 cv2.setMouseCallback(WINDOW, on_click)
 
 # 영상 루프가 Gemma를 기다리지 않도록 Gemma는 별도 스레드에서 돌림
-shared = {"input": None, "law": LAWS[selected["law"]][1], "rules": []}
+shared = {"input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": []}}
 laws = {short: load_law(short) for name, short in LAWS}
 threading.Thread(target=watch, args=(load_gemma(), laws, shared), daemon=True).start()
 
@@ -55,6 +55,10 @@ while True:
         current_video = selected["video"]
         cap = cv2.VideoCapture(VIDEOS[current_video][1])
         video_fps = cap.get(cv2.CAP_PROP_FPS)
+        # 묶음을 새로 만들면 돌고 있던 판단의 결과는 버려진 묶음에 쓰여 화면에 나오지 않음
+        # 입력을 먼저 비워야 watch가 새 묶음과 이전 영상 프레임을 함께 읽지 않음
+        shared["input"] = None
+        shared["clip"] = {"last_seen": {}, "rules": []}
 
     ret, frame = cap.read()
 
@@ -71,10 +75,10 @@ while True:
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
-    view = (selected["video"], selected["law"], shared["rules"])
+    view = (selected["video"], selected["law"], shared["clip"]["rules"])
     if view != drawn_view:
         drawn_view = view
-        panel_image = draw_rules(draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected), shared["rules"])
+        panel_image = draw_rules(draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected), shared["clip"]["rules"])
 
     elapsed_time = time.perf_counter() - start_time
     current_fps = 1.0 / elapsed_time
