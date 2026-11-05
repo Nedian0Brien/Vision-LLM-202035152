@@ -1,6 +1,7 @@
 """주행 영상에서 상황을 인식하고 법령 조문을 읽어 지시문을 보여 주는 실행 파일"""
 
 import argparse
+import json
 import threading
 import time
 
@@ -13,6 +14,7 @@ from hud import button_boxes, draw, draw_panel, draw_rules
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
+OUTPUT_PATH = "vla-output.jsonl"
 VIDEOS = [("원주", "videos/wonju-demo.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4")]
 LAWS = [("현행 도로교통법", "current"), ("캘리포니아 차량법", "california")]
 
@@ -75,10 +77,14 @@ while True:
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
-    view = (selected["video"], selected["law"], shared["clip"]["rules"])
+    rules = shared["clip"]["rules"]
+    view = (selected["video"], selected["law"], rules)
     if view != drawn_view:
         drawn_view = view
-        panel_image = draw_rules(draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected), shared["clip"]["rules"])
+        panel_image = draw_rules(draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected), rules)
+        # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
+        with open(OUTPUT_PATH, "a", encoding="utf-8") as file:
+            file.write(json.dumps({"time": time.time(), "rules": rules}, ensure_ascii=False) + "\n")
 
     elapsed_time = time.perf_counter() - start_time
     current_fps = 1.0 / elapsed_time

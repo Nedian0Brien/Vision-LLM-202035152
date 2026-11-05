@@ -6,3 +6,5 @@ docs/wiki
 .venv-project03
 Project03/videos
 Project03/data
+Project03/vla-output.jsonl
+Project03/jetson-*

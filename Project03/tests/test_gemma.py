@@ -61,6 +61,26 @@ class GemmaTest(unittest.TestCase):
         self.assertEqual(road_crop(frame).shape[:2], (266, 896))
 
 
+class ActionTest(unittest.TestCase):
+    def test_read_provision_returns_action_code(self):
+        class Llm:
+            """토큰화와 생성 결과를 정해 둔 시험용 클래스"""
+
+            def tokenize(self, text, add_bos):
+                return [text[0]]
+
+            def create_completion(self, prompt, **kwargs):
+                return {"choices": [{"text": " Stop" if kwargs["max_tokens"] == 1 else " the red light"}]}
+
+        article = {"id": "제5조", "title": "", "text": "조문"}
+        rule = gemma.read_provision(Llm(), SITUATIONS[0], article)
+        self.assertEqual(rule, {"law": "제5조", "action": "STOP", "instruction": "Stop for the red light", "text": "조문"})
+
+    def test_action_codes_are_distinct(self):
+        codes = [code for code, preposition in gemma.ACTIONS.values()]
+        self.assertEqual(len(set(codes)), len(gemma.ACTIONS))
+
+
 class WatchTest(unittest.TestCase):
     def run_watch(self, answers):
         """가짜 인식 결과를 한 사이클씩 내주며 watch를 돌리는 메서드"""

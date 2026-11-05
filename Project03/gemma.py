@@ -62,14 +62,14 @@ RECOGNIZE_PROMPT = (
 )
 LIGHT_PROMPT = "Which lamp color is lit on the traffic lights that face the camera? Answer with one word: red, yellow, green or none."
 PEDESTRIAN_PROMPT = "Is a person walking on a striped crosswalk in this image? Answer with one word: yes or no."
-# 행동 영어 표현마다 패널에 쓰는 한국어 이름과 지시문을 잇는 전치사를 둠
+# 영어 표현은 프롬프트와 지시문 앞머리에 쓰고, 코드는 지시문 언어가 바뀌어도 그대로 둠
 ACTIONS = {
-    "Stop": ("정지", " for"),
-    "Yield": ("양보", " to"),
-    "Slow down": ("서행", " for"),
-    "Keep out": ("진입·회전 금지", " of"),
-    "Overtaking banned": ("앞지르기·차로 변경 금지", " at"),
-    "Caution": ("주의", " for"),
+    "Stop": ("STOP", " for"),
+    "Yield": ("YIELD", " to"),
+    "Slow down": ("SLOW_DOWN", " for"),
+    "Keep out": ("KEEP_OUT", " of"),
+    "Overtaking banned": ("NO_OVERTAKING", " at"),
+    "Caution": ("CAUTION", " for"),
 }
 READ_PROMPT = (
     "A camera on a car saw this situation. Some provisions below may not apply. "
@@ -195,11 +195,11 @@ def read_provision(llm, situation, article):
     for action in ACTIONS:
         allowed[llm.tokenize(action.encode("utf-8"), add_bos=False)[0]] = 1000.0
     first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=allowed)["choices"][0]["text"].strip()
-    for action, (name, preposition) in ACTIONS.items():
+    for action, (code, preposition) in ACTIONS.items():
         if action.startswith(first):
             start = action + preposition
             rest = llm.create_completion(prompt + start, max_tokens=12, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
-            return {"law": article["id"], "action": name, "instruction": (start + rest).strip(), "text": text}
+            return {"law": article["id"], "action": code, "instruction": (start + rest).strip(), "text": text}
 
 
 def watch(llm, laws, shared):
