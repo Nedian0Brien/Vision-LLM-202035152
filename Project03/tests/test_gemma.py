@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 
 import gemma
-from detect import LIGHT_CLASSES, class_strip, road_crop, upper_left_crop
+from detect import LIGHT_CLASSES, class_strip, road_crop
 from gemma import SITUATIONS, load_law, parse_situations
 
 
@@ -55,9 +55,8 @@ class GemmaTest(unittest.TestCase):
         self.assertIsNone(class_strip(frame, Result(Boxes), [11]))
         self.assertIsNone(class_strip(frame, Result(EmptyBoxes), LIGHT_CLASSES))
 
-    def test_fixed_crops_have_expected_size(self):
+    def test_road_crop_has_expected_size(self):
         frame = np.zeros((720, 1280, 3), np.uint8)
-        self.assertEqual(upper_left_crop(frame).shape[:2], (360, 704))
         self.assertEqual(road_crop(frame).shape[:2], (266, 896))
 
 

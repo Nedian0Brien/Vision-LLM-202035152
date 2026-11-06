@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
+from detect import CLASS_NAMES, SHOW_CONF
+
 FONT_PATHS = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",  # Jetson Ubuntu의 fonts-noto-cjk 글꼴
     "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",  # Ubuntu의 fonts-nanum 글꼴
@@ -27,7 +29,12 @@ MUTED = (130, 130, 130)
 BUTTON = (55, 55, 55)
 CHOSEN = (235, 235, 235)
 
+# 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
 LABELS = {}
+for name in CLASS_NAMES.values():
+    image = Image.new("RGB", (int(MEDIUM_FONT.getlength(name)) + 12, 28), PANEL)
+    ImageDraw.Draw(image).text((6, 2), name, font=MEDIUM_FONT, fill=STATE)
+    LABELS[name] = np.array(image)
 
 BUTTON_HEIGHT = 34
 BUTTON_GAP = 8
@@ -49,32 +56,6 @@ def button_boxes(frame_width, groups):
     return buttons
 
 
-def label_image(text):
-    """클래스 이름 글자를 처음 한 번만 그려 두고 다시 쓰는 함수"""
-    # 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
-    if text not in LABELS:
-        image = Image.new("RGB", (int(MEDIUM_FONT.getlength(text)) + 12, 28), PANEL)
-        ImageDraw.Draw(image).text((6, 2), text, font=MEDIUM_FONT, fill=STATE)
-        LABELS[text] = np.array(image)
-    return LABELS[text]
-
-
-def draw_buttons(pen, frame_width, buttons, selected):
-    """고른 버튼은 밝게, 나머지는 어둡게 버튼을 그리는 함수"""
-    # 버튼 사각형은 클릭 판정에 쓰는 창 좌표라 패널 왼쪽 끝만큼 빼서 그림
-    for group, index, name, (x1, y1, x2, y2) in buttons:
-        chosen = selected[group] == index
-        pen.rectangle((x1 - frame_width, y1, x2 - frame_width, y2), fill=CHOSEN if chosen else BUTTON)
-        pen.text(((x1 + x2) // 2 - frame_width, (y1 + y2) // 2), name, font=SMALL_FONT, fill=PANEL if chosen else BODY, anchor="mm")
-
-
-def draw_panel(height, frame_width, buttons, selected):
-    """버튼을 그린 패널 이미지를 만드는 함수"""
-    image = Image.new("RGB", (PANEL_WIDTH, height), PANEL)
-    draw_buttons(ImageDraw.Draw(image), frame_width, buttons, selected)
-    return np.array(image)
-
-
 def wrap(text, font, width):
     """글자 폭을 재어 패널 폭에 맞게 줄을 나누는 함수"""
     lines = []
@@ -88,10 +69,15 @@ def wrap(text, font, width):
     return lines + [line]
 
 
-def draw_rules(panel_image, rules):
-    """패널에 지시문, 근거 조항, 읽은 조문을 그리는 함수"""
-    image = Image.fromarray(panel_image)
+def draw_panel(height, frame_width, buttons, selected, rules):
+    """버튼, 지시문, 근거 조항, 읽은 조문을 그린 패널 이미지를 만드는 함수"""
+    image = Image.new("RGB", (PANEL_WIDTH, height), PANEL)
     pen = ImageDraw.Draw(image)
+    # 버튼 사각형은 클릭 판정에 쓰는 창 좌표라 패널 왼쪽 끝만큼 빼서 그림
+    for group, index, name, (x1, y1, x2, y2) in buttons:
+        chosen = selected[group] == index
+        pen.rectangle((x1 - frame_width, y1, x2 - frame_width, y2), fill=CHOSEN if chosen else BUTTON)
+        pen.text(((x1 + x2) // 2 - frame_width, (y1 + y2) // 2), name, font=SMALL_FONT, fill=PANEL if chosen else BODY, anchor="mm")
     width = PANEL_WIDTH - 48
     y = RULES_TOP
     for rule in rules:
@@ -107,15 +93,17 @@ def draw_rules(panel_image, rules):
     return np.array(image)
 
 
-def draw(frame, boxes, panel_image, fps):
-    """프레임에 박스와 상태 이름을 그리고 미리 그린 패널을 오른쪽에 붙이는 함수"""
-    for x1, y1, x2, y2, state in boxes:
-        cv2.rectangle(frame, (x1, y1), (x2, y2), STATE, 2)
-        label = label_image(state)
-        height, width = label.shape[:2]
-        top = max(y1 - height, 0)
-        width = min(width, frame.shape[1] - x1)
-        frame[top:top + height, x1:x1 + width] = label[:, :width]
+def draw(frame, result, panel_image, fps):
+    """프레임에 박스와 클래스 이름을 그리고 미리 그린 패널을 오른쪽에 붙이는 함수"""
+    for box, cls, conf in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist(), result.boxes.conf.tolist()):
+        if conf >= SHOW_CONF:
+            x1, y1, x2, y2 = map(int, box)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), STATE, 2)
+            label = LABELS[CLASS_NAMES[int(cls)]]
+            height, width = label.shape[:2]
+            top = max(y1 - height, 0)
+            width = min(width, frame.shape[1] - x1)
+            frame[top:top + height, x1:x1 + width] = label[:, :width]
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
     canvas[:, frame.shape[1]:] = panel_image
     cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, MUTED, 1)

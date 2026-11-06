@@ -9,11 +9,9 @@ import zipfile
 API_URL = "https://www.law.go.kr/DRF/lawService.do?OC={oc}&target=law&type=XML&MST={mst}"
 
 # 법령일련번호(MST)는 Open API 법령 검색(target=eflaw)의 연혁 목록에서 확인함
-# 2021년 판은 제27조 제1항 개정(2022.1.11 공포)과 별표 2 개정(2022.1.21 공포) 직전 공포본임
-VERSIONS = {
-    "corpus-current.json": {"name": "대한민국 도로교통법 (2026-10-13 공포본)", "law": "291133", "rule": "289009"},
-    "corpus-2021.json": {"name": "대한민국 도로교통법 (2021-11-30 공포본)", "law": "237009", "rule": "239101"},
-}
+LAW_MST = "291133"
+RULE_MST = "289009"
+
 
 def fetch(oc, mst):
     with urllib.request.urlopen(API_URL.format(oc=oc, mst=mst)) as response:
@@ -125,7 +123,5 @@ def save(file_name, name, articles):
 
 
 oc, zip_path = sys.argv[1], sys.argv[2]
-for file_name, version in VERSIONS.items():
-    articles = law_articles(fetch(oc, version["law"])) + signal_rows(fetch(oc, version["rule"]))
-    save(file_name, version["name"], articles)
+save("corpus-current.json", "대한민국 도로교통법 (2026-10-13 공포본)", law_articles(fetch(oc, LAW_MST)) + signal_rows(fetch(oc, RULE_MST)))
 save("corpus-california.json", "California Vehicle Code Division 11", california_sections(zip_path))

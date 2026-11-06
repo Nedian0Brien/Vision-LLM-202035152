@@ -8,9 +8,9 @@ import time
 import cv2
 from ultralytics import YOLO
 
-from detect import CLASSES, DETECT_CONF, IMAGE_SIZE, detections
+from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
 from gemma import load_gemma, load_law, watch
-from hud import button_boxes, draw, draw_panel, draw_rules
+from hud import button_boxes, draw, draw_panel
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
@@ -23,8 +23,7 @@ parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
-video_paths = [path for name, path in VIDEOS]
-selected = {"video": video_paths.index(args.video), "law": 0}
+selected = {"video": [path for name, path in VIDEOS].index(args.video), "law": 0}
 buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]})
 
 
@@ -71,7 +70,6 @@ while True:
 
     frame = cv2.resize(frame, FRAME_SIZE)
     results = model.predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)
-    boxes = detections(results[0])
     # draw가 프레임에 박스를 그리므로 Gemma에는 복사본을 넘김
     shared["input"] = (frame.copy(), results[0])
     shared["law"] = LAWS[selected["law"]][1]
@@ -81,7 +79,7 @@ while True:
     view = (selected["video"], selected["law"], rules)
     if view != drawn_view:
         drawn_view = view
-        panel_image = draw_rules(draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected), rules)
+        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules)
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
         with open(OUTPUT_PATH, "a", encoding="utf-8") as file:
             file.write(json.dumps({"time": time.time(), "rules": rules}, ensure_ascii=False) + "\n")
@@ -94,7 +92,7 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, boxes, panel_image, displayed_fps)
+    output_frame = draw(frame, results[0], panel_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 

@@ -1,4 +1,4 @@
-"""YOLO 탐지 결과를 탐지 목록과 Gemma 입력 크롭으로 바꾸는 모듈"""
+"""YOLO 탐지 결과를 Gemma 입력 크롭으로 바꾸는 모듈"""
 
 import cv2
 import numpy as np
@@ -16,16 +16,6 @@ IMAGE_SIZE = [736, 1280]
 DETECT_CONF = 0.25
 SHOW_CONF = 0.4
 STRIP_HEIGHT = 400
-
-
-def detections(result):
-    """탐지 결과에서 화면에 그릴 박스 좌표와 클래스 이름 목록을 만드는 함수"""
-    boxes = []
-    for box, cls, conf in zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist(), result.boxes.conf.tolist()):
-        if conf >= SHOW_CONF:
-            x1, y1, x2, y2 = map(int, box)
-            boxes.append((x1, y1, x2, y2, CLASS_NAMES[int(cls)]))
-    return boxes
 
 
 def class_strip(frame, result, classes):
@@ -48,12 +38,6 @@ def class_strip(frame, result, classes):
         crops.append(cv2.resize(crop, (crop_width, STRIP_HEIGHT), interpolation=cv2.INTER_CUBIC))
         crops.append(np.zeros((STRIP_HEIGHT, 16, 3), np.uint8))
     return np.hstack(crops)
-
-
-def upper_left_crop(frame):
-    """신호등과 표지 박스가 없는 프레임에 대신 넣을 왼쪽 위 영역을 자르는 함수"""
-    height, width = frame.shape[:2]
-    return frame[int(0.1 * height):int(0.6 * height), :int(0.55 * width)]
 
 
 def road_crop(frame):

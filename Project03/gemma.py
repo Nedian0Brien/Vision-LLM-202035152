@@ -9,7 +9,7 @@ import llama_cpp.mtmd_cpp as mtmd_cpp
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Gemma4ChatHandler
 
-from detect import LIGHT_CLASSES, PERSON_CLASSES, SIGN_CLASSES, class_strip, road_crop, upper_left_crop
+from detect import LIGHT_CLASSES, PERSON_CLASSES, SIGN_CLASSES, class_strip, road_crop
 
 LLM_PATH = "../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf"
 VISION_PATH = "../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf"
@@ -122,20 +122,9 @@ def load_gemma():
 
 
 def load_law(short):
-    """법령의 상황별 조문 사전을 만드는 함수"""
-    with open(f"corpus-{short}.json", encoding="utf-8") as file:
-        articles = json.load(file)["articles"]
+    """법령의 상황별 조문 사전을 불러오는 함수"""
     with open(f"index-{short}.json", encoding="utf-8") as file:
-        picks = json.load(file)["picks"]
-    provisions = {}
-    for situation, pick in picks.items():
-        # Sonnet이 맞는 조문을 찾지 못한 상황은 null이고 조문 없이 지시문을 내지 않음
-        if pick["provision"] is not None:
-            # 여러 상황이 같은 항을 고르므로 복사본에 참조를 담음
-            provision = dict(articles[pick["provision"]])
-            provision["references"] = [articles[number] for number in pick["references"]]
-            provisions[situation] = provision
-    return provisions
+        return json.load(file)["picks"]
 
 
 def image_part(image, tokens):
@@ -159,21 +148,25 @@ def parse_situations(answer):
     return found
 
 
+def first_token_bias(llm, words):
+    """답의 첫 토큰을 낱말들의 첫 토큰으로 제한하는 logit_bias를 만드는 함수"""
+    return {llm.tokenize(word.encode("utf-8"), add_bos=False)[0]: 1000.0 for word in words}
+
+
 def ask_word(llm, image, question, words):
     """크롭 한 장을 보고 정해진 낱말 중 하나로 답하게 하는 함수"""
-    allowed = {}
-    for word in words:
-        allowed[str(llm.tokenize(word.encode("utf-8"), add_bos=False)[0])] = 1000.0
     content = [image_part(image, 140), {"type": "text", "text": question}]
-    response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=1, temperature=0, logit_bias=allowed)
+    response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, words))
     return response["choices"][0]["message"]["content"].strip().lower()
 
 
 def recognize(llm, frame, result):
     """프레임과 크롭을 보고 지금 있는 상황 목록을 만드는 함수"""
     signs = class_strip(frame, result, SIGN_CLASSES)
+    # 신호등과 표지 박스가 없으면 왼쪽 위 영역을 대신 넣음
     if signs is None:
-        signs = upper_left_crop(frame)
+        height, width = frame.shape[:2]
+        signs = frame[int(0.1 * height):int(0.6 * height), :int(0.55 * width)]
     # 고정 크롭을 YOLO 크롭으로 바꾸어 현행 개발용 수치가 22/53에서 31/53으로 오름(2026-11-05)
     content = [image_part(frame, 280), image_part(signs, 140), image_part(road_crop(frame), 140), {"type": "text", "text": RECOGNIZE_PROMPT}]
     response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=20, temperature=0)
@@ -205,16 +198,12 @@ def read_provision(llm, situation, article):
     # create_completion이 BOS를 스스로 붙이므로 프롬프트에 쓰지 않음
     prompt = f"<|turn>user\n{READ_PROMPT}{READ_EXAMPLES}Situation: {situation}\nProvisions:\n[1] {text}\nAnswer:<turn|>\n<|turn>model\n"
     # 행동이 정해진 6개 밖으로 나가지 않도록 첫 토큰을 6개로 제한함
-    allowed = {}
-    for action in ACTIONS:
-        allowed[llm.tokenize(action.encode("utf-8"), add_bos=False)[0]] = 1000.0
-    first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=allowed)["choices"][0]["text"].strip()
-    for action, code in ACTIONS.items():
-        if action.startswith(first):
-            ask = f"<|turn>user\n{INSTRUCTION_PROMPT.format(text=text, situation=situation)}<turn|>\n<|turn>model\n"
-            answer = llm.create_completion(ask, max_tokens=30, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
-            # Gemma가 문장을 마크다운 강조로 감싸기도 함
-            return {"law": article["id"], "action": code, "instruction": answer.strip().strip("*"), "text": text}
+    first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, ACTIONS))["choices"][0]["text"].strip()
+    code = [code for action, code in ACTIONS.items() if action.startswith(first)][0]
+    ask = f"<|turn>user\n{INSTRUCTION_PROMPT.format(text=text, situation=situation)}<turn|>\n<|turn>model\n"
+    answer = llm.create_completion(ask, max_tokens=30, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
+    # Gemma가 문장을 마크다운 강조로 감싸기도 함
+    return {"law": article["id"], "action": code, "instruction": answer.strip().strip("*"), "text": text}
 
 
 def watch(llm, laws, shared):
