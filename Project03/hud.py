@@ -48,7 +48,9 @@ CARD_TOP = 424
 IMAGE_SIZE = (292, 164)
 # 호출마다 보여 줄 입력 이미지와 지금 하는 일
 CALLS = {"choice": ("frame", "Gemma가 장면을 보고 있습니다"), "light": ("lights", "Gemma가 신호 색을 읽고 있습니다"),
-         "pedestrian": ("people", "Gemma가 걷는 사람을 찾고 있습니다"), "crosswalk": ("road", "Gemma가 횡단보도를 확인합니다")}
+         "pedestrian": ("people", "Gemma가 걷는 사람을 찾고 있습니다"), "crosswalk": ("road", "Gemma가 횡단보도를 확인합니다"), "wet": ("road", "Gemma가 노면이 젖었는지 봅니다"),
+         "rain": ("frame", "Gemma가 비가 오는지 봅니다"), "puddle": ("road", "Gemma가 고인 물을 찾고 있습니다"), "bus": ("buses", "Gemma가 통학버스인지 봅니다"),
+         "hydrant": ("hydrants", "Gemma가 소화전인지 봅니다"), "zebra": ("road", "Gemma가 보호구역 횡단보도를 찾고 있습니다")}
 
 
 def button_boxes(frame_width, groups):
@@ -59,7 +61,7 @@ def button_boxes(frame_width, groups):
         for index, name in enumerate(names):
             width = int(SMALL_FONT.getlength(name))
             buttons.append((group, index, name, (x, y, x + width, y + 26)))
-            x += width + 26
+            x += width + 22
     return buttons
 
 
@@ -138,10 +140,10 @@ def draw_recognition_card(image, pen, status, scene):
 def draw_law_card(pen, status, rule, phase):
     """새 규칙이 나올 때 조문, 읽기, 출력을 한 단계씩 그리는 함수"""
     if phase == 0:
-        pen.text((28, CARD_TOP), "법령에서 조문을 찾았습니다", font=SMALL_FONT, fill=INK)
+        pen.text((28, CARD_TOP), "법령에서 조문을 찾았습니다" if rule["text"] else "조문을 찾지 않습니다", font=SMALL_FONT, fill=INK)
         pen.text((28, CARD_TOP + 30), rule["law"], font=RESULT_FONT, fill=ACCENT)
     elif phase == 1:
-        pen.text((28, CARD_TOP), "Gemma가 조문을 읽고 행동을 골랐습니다", font=SMALL_FONT, fill=INK)
+        pen.text((28, CARD_TOP), "Gemma가 조문을 읽고 행동을 골랐습니다" if rule["text"] else "Gemma가 조문 없이 행동을 골랐습니다", font=SMALL_FONT, fill=INK)
         odds = status["odds"].get(rule["instruction"], [])
         best = f"  {max(probability for word, probability in odds) * 100:.0f}%" if odds else ""
         pen.text((28, CARD_TOP + 30), rule["action"] + best, font=RESULT_FONT, fill=ACCENT)

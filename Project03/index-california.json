@@ -110,9 +110,38 @@
    "text": "The prima facie limits are as follows and shall be applicable unless changed as authorized in this code and, if so changed, only when signs have been erected giving notice thereof: (b) Twenty-five miles per hour: (1) On any highway in any business or residence district unless a different speed is determined by local authority or the Department of Transportation under procedures set forth in this code. (2) When approaching or passing a school building or the grounds thereof, contiguous to a highway and posted with a standard “SCHOOL” warning sign, while children are going to or leaving the school either during school hours or during the noon recess period. The prima facie limit shall also apply when approaching or passing any school grounds which are not separated from the highway by a fence, gate, or other physical barrier while the grounds are in use by children and the highway is posted with a standard “SCHOOL” warning sign. For purposes of this subparagraph, standard “SCHOOL” warning signs may be placed at any distance up to 500 feet away from school grounds. (3) When passing a senior center or other facility primarily used by senior citizens, contiguous to a street other than a state highway and posted with a standard “SENIOR” warning sign. A local authority may erect a sign pursuant to this paragraph when the local agency makes a determination that the proposed signing should be implemented. A local authority may request grant funding from the Active Transportation Program pursuant to Chapter 8 (commencing with Section 2380) of Division 3 of the Streets and Highways Code, or any other grant funding available to it, and use that grant funding to pay for the erection of those signs, or may utilize any other funds available to it to pay for the erection of those signs, including, but not limited to, donations from private sources.",
    "reason": "CVC §22352(b)(2) sets the prima facie 25 mph limit when approaching or passing a posted school and its grounds while children are going to or leaving, the most direct speed duty in a school zone (this version stays in effect until 2031).",
    "references": []
+  },
+  "a puddle of standing water on the road": {
+   "id": "CVC §22350",
+   "title": "",
+   "text": "No person shall drive a vehicle upon a highway at a speed greater than is reasonable or prudent having due regard for weather, visibility, the traffic on, and the surface and width of, the highway, and in no event at a speed which endangers the safety of persons or property.",
+   "reason": "기본속도법은 도로 표면 상태에 맞게 합리적이고 신중한 속도를 요구하며 물웅덩이는 노면 상태에 해당한다.",
+   "references": []
+  },
+  "a crosswalk with no traffic light inside a child protection school zone": {
+   "id": "CVC §21950(a)",
+   "title": "",
+   "text": "(a) The driver of a vehicle shall yield the right-of-way to a pedestrian crossing the roadway within any marked crosswalk or within any unmarked crosswalk at an intersection, except as otherwise provided in this chapter.",
+   "reason": "신호 없는 횡단보도에서 보행자가 건너면 운전자가 통행권을 양보해야 한다고 직접 정한다.",
+   "references": []
+  },
+  "it is raining on the road": {
+   "id": "CVC §22350",
+   "title": "",
+   "text": "No person shall drive a vehicle upon a highway at a speed greater than is reasonable or prudent having due regard for weather, visibility, the traffic on, and the surface and width of, the highway, and in no event at a speed which endangers the safety of persons or property.",
+   "reason": "22350 조문이 날씨를 고려해 합리적이고 안전한 속도로 운전하도록 직접 정한다.",
+   "references": []
+  },
+  "a fire hydrant beside the road": {
+   "id": "CVC §22514",
+   "title": "",
+   "text": "No person shall stop, park, or leave standing any vehicle within 15 feet of a fire hydrant except as follows:",
+   "reason": "CVC 22514가 소화전 15피트 이내 정차·주차·대기를 금지한다.",
+   "references": []
   }
  },
  "no_provision": {
-  "the car is inside a tunnel, where headlights must be on": "후보 조에 터널 전조등 점등 의무를 정한 항이 없다."
+  "the car is inside a tunnel, where headlights must be on": "후보 조에 터널 전조등 점등 의무를 정한 항이 없다.",
+  "a children's school bus driving ahead of the car": "통학버스에 대한 추월·정지 의무(22454)는 버스가 정차해 적색 점멸등을 켠 경우에만 적용되며 앞서 주행하는 상황에 대한 운전자 의무 조문은 없다."
  }
 }

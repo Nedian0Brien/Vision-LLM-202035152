@@ -9,7 +9,7 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
-from gemma import STATUS, load_gemma, load_law, watch
+from gemma import NO_LAW, STATUS, load_gemma, load_law, watch
 from hud import CALLS, button_boxes, draw, draw_panel
 
 FRAME_SIZE = (1280, 720)
@@ -17,12 +17,13 @@ WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
 # 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
-VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]),
-          ("보호구역 낱장", "videos/school-zone-stills.mp4", [(0, 18)]), ("카메라", CAMERA, [])]
+VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]), ("보호구역", "videos/school-zone-stills.mp4", [(0, 18)]),
+          ("횡단보도", "videos/school-crosswalk-stills.mp4", [(0, 24)]), ("비", "videos/rain-stills.mp4", [(0, 32)]), ("고인 물", "videos/puddle-stills.mp4", [(0, 32)]),
+          ("통학버스", "videos/school-bus-stills.mp4", [(0, 36)]), ("소화전", "videos/hydrant-sf.mp4", [(0, 24)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
 READING_SECONDS = 3
 SCENE_SECONDS = 1
-LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california")]
+LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california"), ("조문 없음", NO_LAW)]
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
     "v4l2src device=/dev/video0 ! "

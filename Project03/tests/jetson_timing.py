@@ -17,7 +17,7 @@ import hud
 
 # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
 RESULT_PATH = "jetson-timing.txt"
-times = {"판단 전체": [], "객관식": [], "신호 색 호출": [], "횡단보도 호출": [], "조문 읽기": [], "YOLO": [], "프레임에서 패널까지": []}
+times = {"판단 전체": [], "객관식": [], "조문 읽기": [], "YOLO": [], "프레임에서 패널까지": []}
 state = {"frame_time": None, "judged_frame": None, "asked": 0.0, "shown": 0, "first_shown": None}
 
 predict, recognize, ask_word, read_provision, draw_panel, imshow = YOLO.predict, gemma.recognize, gemma.ask_word, gemma.read_provision, hud.draw_panel, cv2.imshow
@@ -32,22 +32,22 @@ def timed_predict(self, *args, **kwargs):
     return results
 
 
-def timed_ask_word(llm, image, question, words):
+def timed_ask_word(llm, stage, image, question, words):
     """크롭 호출 시간을 질문별로 재는 함수"""
     start = time.perf_counter()
-    answer = ask_word(llm, image, question, words)
+    answer = ask_word(llm, stage, image, question, words)
     elapsed = time.perf_counter() - start
     state["asked"] += elapsed
-    times["신호 색 호출" if question == gemma.LIGHT_PROMPT else "횡단보도 호출"].append(elapsed)
+    times.setdefault(stage + " 호출", []).append(elapsed)
     return answer
 
 
-def timed_recognize(llm, frame, result):
+def timed_recognize(llm, frame, result, in_school_zone):
     """판단 전체와 객관식 시간을 재고 판단한 프레임의 시각을 남기는 함수"""
     frame_time = state["frame_time"]
     state["asked"] = 0.0
     start = time.perf_counter()
-    found = recognize(llm, frame, result)
+    found = recognize(llm, frame, result, in_school_zone)
     elapsed = time.perf_counter() - start
     times["판단 전체"].append(elapsed)
     times["객관식"].append(elapsed - state["asked"])

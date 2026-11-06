@@ -8,7 +8,7 @@ import numpy as np
 
 import gemma
 from detect import LIGHT_CLASSES, class_strip, road_crop
-from gemma import SITUATIONS, load_law, parse_situations
+from gemma import CROP_SITUATIONS, SITUATIONS, load_law, parse_situations
 
 
 # 시험용 모델에는 점수가 없고 확률은 화면 표시에만 쓰임
@@ -51,7 +51,12 @@ class GemmaTest(unittest.TestCase):
         self.assertEqual(current[SITUATIONS[11]]["id"], "도로교통법 제22조 ③")
         # 캘리포니아에는 터널 등화 조문을 찾지 못해 지시문을 내지 않음
         self.assertNotIn(SITUATIONS[12], california)
-        self.assertEqual(len(current), len(SITUATIONS))
+        self.assertEqual(current[gemma.SCHOOL_CROSSWALK]["id"], "도로교통법 제27조 ⑦")
+        # 2006년 법에는 보호구역 횡단보도 조문이 없음
+        self.assertEqual(load_law("2006")[gemma.SCHOOL_CROSSWALK]["id"], "도로교통법 제12조 ③")
+        self.assertNotIn(gemma.SCHOOL_BUS, california)
+        self.assertEqual(set(load_law(gemma.NO_LAW)), set(SITUATIONS + CROP_SITUATIONS))
+        self.assertEqual(len(current), len(SITUATIONS) + len(CROP_SITUATIONS))
 
     def test_class_strip_uses_only_given_classes(self):
         frame = np.zeros((720, 1280, 3), np.uint8)
@@ -65,7 +70,7 @@ class GemmaTest(unittest.TestCase):
 
 
 class RecognizeTest(unittest.TestCase):
-    def run_recognize(self, boxes, words, choice):
+    def run_recognize(self, boxes, words, choice, in_school_zone=False):
         """정해 둔 답을 내는 시험용 모델로 recognize를 부르는 메서드"""
         answers = list(words)
 
@@ -80,15 +85,15 @@ class RecognizeTest(unittest.TestCase):
             def create_chat_completion(self, messages, max_tokens, temperature, logit_bias=None):
                 return {"choices": [{"message": {"content": answers.pop(0) if logit_bias else choice}}]}
 
-        return gemma.recognize(Llm(), np.zeros((720, 1280, 3), np.uint8), Result(boxes))
+        return gemma.recognize(Llm(), np.zeros((720, 1280, 3), np.uint8), Result(boxes), in_school_zone)
 
     def test_light_answer_decides_signal(self):
-        self.assertEqual(self.run_recognize(Boxes, ["red"], "2, 14"), [SITUATIONS[0], SITUATIONS[13]])
-        self.assertEqual(self.run_recognize(Boxes, ["yellow"], "0"), [SITUATIONS[1]])
-        self.assertEqual(self.run_recognize(Boxes, ["green"], "1"), [])
+        self.assertEqual(self.run_recognize(Boxes, ["red", "no"], "2, 14"), [SITUATIONS[0], SITUATIONS[13]])
+        self.assertEqual(self.run_recognize(Boxes, ["yellow", "no"], "0"), [SITUATIONS[1]])
+        self.assertEqual(self.run_recognize(Boxes, ["green", "no"], "1"), [])
 
     def test_no_boxes_skip_crop_calls(self):
-        self.assertEqual(self.run_recognize(EmptyBoxes, [], "14"), [SITUATIONS[13]])
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["no"], "14"), [SITUATIONS[13]])
         self.assertNotIn("light", gemma.STATUS["answers"])
 
     def test_pedestrian_needs_crosswalk(self):
@@ -98,9 +103,29 @@ class RecognizeTest(unittest.TestCase):
             xyxy = np.array([[100.0, 100.0, 150.0, 200.0]])
             cls = np.array([0.0])
 
-        self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "yes"], "0"), [SITUATIONS[7]])
-        self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "no"], "0"), [])
-        self.assertEqual(self.run_recognize(PersonBoxes, ["no"], "8"), [])
+        self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "yes", "no"], "0"), [SITUATIONS[7]])
+        self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "no", "no"], "0"), [])
+        self.assertEqual(self.run_recognize(PersonBoxes, ["no", "no"], "8"), [])
+
+    def test_wet_road_opens_rain_and_puddle(self):
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["yes", "yes", "yes"], "0"), [gemma.RAIN, gemma.PUDDLE])
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["yes", "no", "no"], "0"), [])
+
+    def test_bus_and_hydrant_need_boxes(self):
+        class VehicleBoxes:
+            """버스와 소화전 박스를 담은 시험용 클래스"""
+
+            xyxy = np.array([[100.0, 100.0, 300.0, 300.0], [600.0, 300.0, 650.0, 400.0]])
+            cls = np.array([5.0, 10.0])
+
+        self.assertEqual(self.run_recognize(VehicleBoxes, ["no", "yes", "hyd"], "0"), [gemma.SCHOOL_BUS, gemma.HYDRANT])
+        self.assertEqual(self.run_recognize(VehicleBoxes, ["no", "no", "cone"], "0"), [])
+
+    def test_school_crosswalk_needs_zone_and_no_light(self):
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["no", "yes"], "0", True), [gemma.SCHOOL_CROSSWALK])
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["no", "yes"], "15"), [gemma.SCHOOL_ZONE, gemma.SCHOOL_CROSSWALK])
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["no"], "0"), [])
+        self.assertEqual(self.run_recognize(Boxes, ["green", "no"], "0", True), [])
 
 
 class ActionTest(unittest.TestCase):
@@ -142,6 +167,25 @@ class ActionTest(unittest.TestCase):
         self.assertEqual(rule["text"], "제목: " + "가" * (gemma.READ_CHARS - 4) + " 시속 30")
         self.assertIn("시속 30", prompts[-1])
 
+    def test_read_provision_without_article_asks_without_law(self):
+        prompts = []
+
+        class Llm:
+            """받은 프롬프트를 모아 두는 시험용 클래스"""
+
+            n_tokens = 0
+
+            def tokenize(self, text, add_bos):
+                return [text[0]]
+
+            def create_completion(self, prompt, **kwargs):
+                prompts.append(prompt)
+                return {"choices": [{"text": " Caution" if kwargs["max_tokens"] == 1 else "**멈추세요.** (Stop.)"}]}
+
+        rule = gemma.read_provision(Llm(), SITUATIONS[0], gemma.NO_ARTICLE)
+        self.assertEqual(rule, {"law": "조문 없음", "action": "CAUTION", "instruction": "멈추세요.", "text": ""})
+        self.assertNotIn("Traffic law text", prompts[-1])
+
     def test_action_codes_are_distinct(self):
         self.assertEqual(len(set(gemma.ACTIONS.values())), len(gemma.ACTIONS))
 
@@ -153,7 +197,7 @@ class WatchTest(unittest.TestCase):
         self.started = threading.Semaphore(0)
         remaining = list(answers)
 
-        def recognize(llm, frame, result):
+        def recognize(llm, frame, result, in_school_zone):
             self.started.release()
             self.go.acquire()
             # 답을 다 내면 SystemExit로 watch 스레드를 끝냄
