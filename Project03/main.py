@@ -129,9 +129,10 @@ while True:
     elapsed_time = time.perf_counter() - start_time
     current_fps = 1.0 / elapsed_time
 
+    # 배속 구간은 모델을 돌리지 않아 처리 속도를 나타내지 않음
     if displayed_fps == 0:
         displayed_fps = current_fps
-    else:
+    elif not fast:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
     output_frame = draw(frame, result, panel_image, displayed_fps)
