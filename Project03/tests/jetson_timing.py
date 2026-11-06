@@ -63,13 +63,13 @@ def timed_read_provision(llm, situation, article):
     return rule
 
 
-def timed_draw_panel(height, frame_width, buttons, selected, rules, status, board, reading):
+def timed_draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase):
     """규칙이 패널에 새로 나올 때 그 프레임부터 걸린 시간을 재는 함수"""
     # 규칙이 비는 경우는 영상 전환이거나 유지가 끝난 경우라 판단한 프레임과 이어지지 않음
     if rules and state["judged_frame"] is not None:
         times["프레임에서 패널까지"].append(time.perf_counter() - state["judged_frame"])
         state["judged_frame"] = None
-    return draw_panel(height, frame_width, buttons, selected, rules, status, board, reading)
+    return draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase)
 
 
 def counted_imshow(window, image):

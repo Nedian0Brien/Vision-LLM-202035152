@@ -5,7 +5,9 @@ import json
 import time
 
 import cv2
+import llama_cpp
 import llama_cpp.mtmd_cpp as mtmd_cpp
+import numpy as np
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Gemma4ChatHandler
 
@@ -64,6 +66,7 @@ RECOGNIZE_PROMPT = (
     "Which situations are present right now? Reply with only the numbers, separated by commas."
 )
 LIGHT_PROMPT = "Which lamp color is lit on the traffic lights that face the camera? Answer with one word: red, yellow, green or none."
+LIGHT_WORDS = ["red", "yellow", "green", "none"]
 PEDESTRIAN_PROMPT = "Is a person walking on a striped crosswalk in this image? Answer with one word: yes or no."
 CROSSWALK_PROMPT = "Is a striped crosswalk painted on the road in this image? Answer with one word: yes or no."
 # 영어 표현은 행동 고르기 프롬프트에만 쓰고, 코드는 지시문 언어와 무관하게 그대로 둠
@@ -102,7 +105,8 @@ HOLD_SECONDS = 3.5
 
 default_vision_params = mtmd_cpp.mtmd_context_params_default
 # 화면이 모듈별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
-STATUS = {"stage": "wait", "cycle": 0, "images": {}, "boxes": {}, "answers": {}, "outputs": 0}
+STATUS = {"stage": "wait", "cycle": 0, "started": 0.0, "images": {}, "boxes": {}, "answers": {}, "odds": {}, "outputs": 0,
+          "prompts": {"choice": "Which situations are present right now?", "light": LIGHT_PROMPT, "pedestrian": PEDESTRIAN_PROMPT, "crosswalk": CROSSWALK_PROMPT}}
 
 
 def vision_params():
@@ -136,9 +140,18 @@ def start_stage(stage):
     STATUS["started"] = time.perf_counter()
 
 
-def end_stage(stage, answer):
-    """모델 호출의 답과 걸린 시간을 화면 상태에 적는 함수"""
-    STATUS["answers"][stage] = (answer, time.perf_counter() - STATUS["started"])
+def end_stage(stage, answer, odds, tokens):
+    """모델 호출의 답, 걸린 시간, 답별 확률, 입력 토큰 수를 화면 상태에 적는 함수"""
+    STATUS["answers"][stage] = (answer, time.perf_counter() - STATUS["started"], odds, tokens)
+
+
+def answer_odds(llm, words):
+    """방금 호출에서 모델이 낱말마다 매긴 점수를 낱말끼리의 확률로 바꾸는 함수"""
+    # 생성이 끝난 뒤 모델의 마지막 점수를 읽기만 하므로 답에는 영향이 없음
+    logits = np.ctypeslib.as_array(llama_cpp.llama_get_logits_ith(llm.ctx, -1), (llm.n_vocab(),))
+    scores = np.array([logits[llm.tokenize(word.encode("utf-8"), add_bos=False)[0]] for word in words])
+    probabilities = np.exp(scores - scores.max())
+    return list(zip(words, (probabilities / probabilities.sum()).tolist()))
 
 
 def image_part(image, tokens):
@@ -191,13 +204,15 @@ def recognize(llm, frame, result):
     start_stage("choice")
     content = [image_part(frame, 280), image_part(signs, 140), image_part(road, 140), {"type": "text", "text": RECOGNIZE_PROMPT}]
     response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=20, temperature=0)
-    end_stage("choice", response["choices"][0]["message"]["content"].strip())
+    # 적색, 황색, 보행자는 크롭 질문의 답을 쓰므로 객관식의 답을 화면에도 내지 않음
+    names = [SITUATION_NAMES[SITUATIONS.index(situation)] for situation in parse_situations(response["choices"][0]["message"]["content"]) if situation not in (RED, YELLOW, PEDESTRIAN)]
+    end_stage("choice", ", ".join(names) if names else "해당 상황 없음", [], llm.n_tokens)
     found = []
     # 신호 색과 횡단보도는 객관식에서 오인식이 많아 대상만 자른 크롭으로 따로 물음(2026-11-05 개발용 측정, 현행 28/53에서 31/53)
     if lights is not None:
         start_stage("light")
-        color = ask_word(llm, lights, LIGHT_PROMPT, ["red", "yellow", "green", "none"])
-        end_stage("light", color)
+        color = ask_word(llm, lights, LIGHT_PROMPT, LIGHT_WORDS)
+        end_stage("light", color, answer_odds(llm, LIGHT_WORDS), llm.n_tokens)
         if color == "red":
             found.append(RED)
         if color == "yellow":
@@ -211,12 +226,12 @@ def recognize(llm, frame, result):
     if people is not None:
         start_stage("pedestrian")
         walking = ask_word(llm, people, PEDESTRIAN_PROMPT, ["yes", "no"])
-        end_stage("pedestrian", walking)
+        end_stage("pedestrian", walking, answer_odds(llm, ["yes", "no"]), llm.n_tokens)
         STATUS["answers"].pop("crosswalk", None)
         if walking == "yes":
             start_stage("crosswalk")
             crosswalk = ask_word(llm, road, CROSSWALK_PROMPT, ["yes", "no"])
-            end_stage("crosswalk", crosswalk)
+            end_stage("crosswalk", crosswalk, answer_odds(llm, ["yes", "no"]), llm.n_tokens)
             if crosswalk == "yes":
                 found.append(PEDESTRIAN)
     else:
@@ -236,13 +251,15 @@ def read_provision(llm, situation, article):
     start_stage("action")
     first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, ACTIONS))["choices"][0]["text"].strip()
     code = [code for action, code in ACTIONS.items() if action.startswith(first)][0]
-    end_stage("action", code)
+    odds = answer_odds(llm, ACTIONS)
+    end_stage("action", code, odds, llm.n_tokens)
     start_stage("instruction")
     ask = f"<|turn>user\n{INSTRUCTION_PROMPT.format(text=text, situation=situation)}<turn|>\n<|turn>model\n"
     answer = llm.create_completion(ask, max_tokens=30, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
     # Gemma가 문장을 마크다운 강조로 감싸기도 함
     instruction = answer.strip().strip("*")
-    end_stage("instruction", instruction)
+    end_stage("instruction", instruction, [], llm.n_tokens)
+    STATUS["odds"][instruction] = odds
     return {"law": article["id"], "action": code, "instruction": instruction, "text": text}
 
 

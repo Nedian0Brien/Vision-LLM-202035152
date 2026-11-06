@@ -9,8 +9,8 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
-from gemma import HOLD_SECONDS, SITUATION_NAMES, SITUATIONS, STATUS, load_gemma, load_law, watch
-from hud import button_boxes, draw, draw_panel
+from gemma import STATUS, load_gemma, load_law, watch
+from hud import CALLS, button_boxes, draw, draw_panel
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
@@ -21,6 +21,7 @@ VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "vide
           ("보호구역 낱장", "videos/school-zone-stills.mp4", [(0, 18)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
 READING_SECONDS = 3
+SCENE_SECONDS = 1
 LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california")]
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
@@ -64,7 +65,9 @@ drawn_view = None
 drawn_state = None
 shown_rules = []
 reading = None
-reading_until = 0.0
+reading_since = 0.0
+scene = "choice"
+scene_since = 0.0
 displayed_fps = 0.0
 
 while True:
@@ -119,23 +122,27 @@ while True:
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
     rules = shared["clip"]["rules"]
     view = (selected["video"], selected["law"], rules)
-    # 전광판이 유지 시간에 따라 어두워지도록 0.5초마다도 다시 그림
     now = time.perf_counter()
-    # 새 규칙이 나오면 조문을 읽는 장면을 3초 보여 줌
+    # 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 줌
     for rule in rules:
         if rule not in shown_rules:
             reading = rule
-            reading_until = now + READING_SECONDS
+            reading_since = now
     shown_rules = rules
-    if now > reading_until:
+    if now - reading_since >= READING_SECONDS:
         reading = None
-    state = (STATUS["cycle"], STATUS["stage"], int(now * 2), reading is None)
+    phase = int(now - reading_since) if reading else 0
+    # 0.2초짜리 호출에 화면이 깜빡이지 않도록 장면을 최소 시간만큼 유지함
+    if fast:
+        scene = "skip"
+        reading = None
+    elif STATUS["stage"] in CALLS and STATUS["stage"] != scene and now - scene_since >= SCENE_SECONDS:
+        scene = STATUS["stage"]
+        scene_since = now
+    state = (scene, reading is None, phase, STATUS["answers"].get(scene))
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        last_seen = shared["clip"]["last_seen"]
-        law = laws[shared["law"]]
-        board = [(name, 1 - (now - last_seen[situation]) / HOLD_SECONDS if situation in last_seen else 0, situation in law) for situation, name in zip(SITUATIONS, SITUATION_NAMES)]
-        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules, STATUS, board, reading)
+        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules, STATUS, scene, reading, phase)
     if view != drawn_view:
         drawn_view = view
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
@@ -152,7 +159,7 @@ while True:
     elif not fast:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, result, panel_image, displayed_fps, STATUS["stage"], reading)
+    output_frame = draw(frame, result, panel_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 

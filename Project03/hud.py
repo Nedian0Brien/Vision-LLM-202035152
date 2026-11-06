@@ -1,7 +1,6 @@
-"""탐지 박스, 버튼, 지시문과 근거 조항을 화면에 그리는 모듈"""
+"""탐지 박스, 탭, 지시문, 근거 조항, 처리 단계를 화면에 그리는 모듈"""
 
 import os
-import time
 
 import cv2
 import numpy as np
@@ -15,61 +14,52 @@ FONT_PATHS = [
     "/System/Library/Fonts/AppleSDGothicNeo.ttc",  # macOS 기본 한글 글꼴
 ]
 FONT_PATH = [path for path in FONT_PATHS if os.path.exists(path)][0]
+TINY_FONT = ImageFont.truetype(FONT_PATH, 14)
 SMALL_FONT = ImageFont.truetype(FONT_PATH, 15)
-MEDIUM_FONT = ImageFont.truetype(FONT_PATH, 19)
-TINY_FONT = ImageFont.truetype(FONT_PATH, 13)
-LARGE_FONT = ImageFont.truetype(FONT_PATH, 28)
+MEDIUM_FONT = ImageFont.truetype(FONT_PATH, 17)
+RESULT_FONT = ImageFont.truetype(FONT_PATH, 26)
+LARGE_FONT = ImageFont.truetype(FONT_PATH, 36)
 
 # 1280 픽셀 영상 옆에 붙여 전체 폭이 1920 픽셀 화면에 맞게 함
 PANEL_WIDTH = 640
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
-PANEL = (34, 31, 28)
-PAINT = (232, 239, 241)
-SIGNAL = (30, 190, 255)
-PROHIBIT = (58, 66, 235)
-MUTED = (150, 147, 144)
-BUTTON = (68, 65, 62)
-# 도로 전광판처럼 어두운 판에 호박색 글자가 켜짐
-BOARD = (14, 12, 10)
-UNLIT = (70, 66, 62)
-# 금지와 정지는 규제 표지의 적색, 나머지는 주의 표지의 황색으로 그림
-ACTION_COLORS = {"STOP": PROHIBIT, "KEEP_OUT": PROHIBIT, "NO_OVERTAKING": PROHIBIT}
+PANEL = (39, 35, 32)
+INK = (236, 234, 232)
+SOFT = (166, 160, 154)
+FAINT = (103, 97, 92)
+ACCENT = (132, 184, 214)
+LINE = (71, 66, 62)
 
 # 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
 FAST_LABEL = "8배속"
 LABELS = {}
 for name in list(CLASS_NAMES.values()) + [FAST_LABEL]:
-    image = Image.new("RGB", (int(MEDIUM_FONT.getlength(name)) + 12, 28), PANEL)
-    ImageDraw.Draw(image).text((6, 2), name, font=MEDIUM_FONT, fill=SIGNAL)
+    image = Image.new("RGB", (int(SMALL_FONT.getlength(name)) + 12, 24), PANEL)
+    ImageDraw.Draw(image).text((6, 2), name, font=SMALL_FONT, fill=INK)
     LABELS[name] = np.array(image)
 
-BUTTON_HEIGHT = 32
-BUTTON_GAP = 8
-# 버튼 두 줄 아래부터 지시문을 그림
-RULES_TOP = 2 * (BUTTON_HEIGHT + BUTTON_GAP) + 12
-RULE_TEXT_LINES = 2
-MAX_RULES = 2
-TILES = ["frame", "signs", "road", "lights", "people"]
-TILE_SIZE = (118, 66)
-TILE_TOP = 306
-# 호출마다 입력으로 받는 이미지 칸
-CALL_TILES = {"choice": [0, 1, 2], "light": [3], "pedestrian": [4], "crosswalk": [2]}
-CALLS = [("choice", "상황 15개 객관식"), ("light", "신호 색"), ("pedestrian", "보행자"), ("crosswalk", "횡단보도"), ("action", "행동"), ("instruction", "지시문")]
-BOARD_TOP = 424
-BOARD_COLUMNS = 5
+TAB_ROWS = [16, 54]
+HERO_TOP = 104
+STEPS = ["보기", "인식", "조문", "읽기", "출력"]
+STEP_X = [60, 190, 320, 450, 580]
+RAIL_Y = 356
+CARD_TOP = 424
+IMAGE_SIZE = (292, 164)
+# 호출마다 보여 줄 입력 이미지와 지금 하는 일
+CALLS = {"choice": ("frame", "Gemma가 장면을 보고 있습니다"), "light": ("lights", "Gemma가 신호 색을 읽고 있습니다"),
+         "pedestrian": ("people", "Gemma가 걷는 사람을 찾고 있습니다"), "crosswalk": ("road", "Gemma가 횡단보도를 확인합니다")}
 
 
 def button_boxes(frame_width, groups):
-    """버튼 묶음마다 한 줄씩 패널 위쪽에 놓을 버튼의 묶음 이름, 번호, 글자, 사각형 목록을 만드는 함수"""
+    """묶음마다 한 줄씩 놓을 탭의 묶음 이름, 번호, 글자, 사각형 목록을 만드는 함수"""
     buttons = []
-    y = BUTTON_GAP
-    for group, names in groups.items():
-        width = (PANEL_WIDTH - 48 - BUTTON_GAP * (len(names) - 1)) // len(names)
+    for (group, names), y in zip(groups.items(), TAB_ROWS):
+        x = frame_width + 28
         for index, name in enumerate(names):
-            x = frame_width + 24 + index * (width + BUTTON_GAP)
-            buttons.append((group, index, name, (x, y, x + width, y + BUTTON_HEIGHT)))
-        y += BUTTON_HEIGHT + BUTTON_GAP
+            width = int(SMALL_FONT.getlength(name))
+            buttons.append((group, index, name, (x, y, x + width, y + 26)))
+            x += width + 26
     return buttons
 
 
@@ -91,122 +81,125 @@ def wrap(text, font, width):
     return lines + [line]
 
 
-def tile_left(index):
-    """이미지 칸의 왼쪽 좌표를 구하는 함수"""
-    return 12 + index * (TILE_SIZE[0] + 6)
-
-
-def draw_recognition(image, pen, status):
-    """모델이 보는 이미지와 호출 진행을 그리는 함수"""
-    stage, answers, images = status["stage"], status["answers"], status["images"]
-    lit_tiles = CALL_TILES.get(stage, [])
-    for index, name in enumerate(TILES):
-        left = tile_left(index)
-        picture = images.get(name)
-        if picture is None:
-            pen.rectangle((left, TILE_TOP, left + TILE_SIZE[0] - 1, TILE_TOP + TILE_SIZE[1] - 1), fill=BOARD)
-            continue
-        small = cv2.resize(picture, TILE_SIZE, interpolation=cv2.INTER_AREA)
-        # 지금 호출의 입력만 밝게 두어 모델이 어디를 보는지 나타냄
-        if stage in CALL_TILES and index not in lit_tiles:
-            small = (small * 0.3).astype(np.uint8)
-        image.paste(Image.fromarray(small), (left, TILE_TOP))
-        if index in lit_tiles:
-            pen.rectangle((left - 2, TILE_TOP - 2, left + TILE_SIZE[0] + 1, TILE_TOP + TILE_SIZE[1] + 1), outline=SIGNAL, width=2)
-    # 호출 진행 막대: 칸 너비가 걸린 시간에 비례함
-    times = [max(answers[call][1], 0.3) if call in answers else 0.3 for call, name in CALLS]
-    x = 12
-    top = TILE_TOP + TILE_SIZE[1] + 8
-    for (call, name), seconds in zip(CALLS, times):
-        width = int(616 * seconds / sum(times))
-        active = stage == call
-        answer = answers.get(call)
-        pen.rectangle((x, top, x + width - 3, top + 3), fill=SIGNAL if active else (PAINT if answer else BUTTON))
-        pen.text((x, top + 6), name, font=TINY_FONT, fill=SIGNAL if active else (PAINT if answer else UNLIT))
-        if answer:
-            pen.text((x, top + 22), wrap(f"{answer[0]}  {answer[1]:.2f}초", TINY_FONT, width - 6)[0], font=TINY_FONT, fill=MUTED)
-        x += width
-
-
-def draw_reading(pen, status, rule):
-    """조문을 읽어 행동 코드가 나오는 순간을 크게 그리는 함수"""
-    answers = status["answers"]
-    pen.text((12, TILE_TOP - 2), rule["law"], font=MEDIUM_FONT, fill=SIGNAL)
-    y = TILE_TOP + 26
-    for line in wrap(rule["text"], SMALL_FONT, 420)[:4]:
-        pen.text((12, y), line, font=SMALL_FONT, fill=PAINT)
-        y += 21
-    middle = TILE_TOP + 54
-    pen.line((442, middle, 462, middle), fill=SIGNAL, width=2)
-    pen.polygon(((462, middle - 6), (472, middle), (462, middle + 6)), fill=SIGNAL)
-    color = ACTION_COLORS.get(rule["action"], SIGNAL)
-    pen.rounded_rectangle((478, middle - 26, 628, middle + 26), 4, fill=color)
-    pen.text((553, middle), rule["action"], font=SMALL_FONT, fill=PAINT if color == PROHIBIT else BOARD, anchor="mm")
-    seconds = answers["action"][1] + answers["instruction"][1] if "action" in answers and "instruction" in answers else None
-    if seconds is not None:
-        pen.text((553, middle + 32), f"Gemma {seconds:.2f}초", font=TINY_FONT, fill=MUTED, anchor="ma")
-
-
-def draw_pipeline(image, pen, status, rules, board, reading):
-    """장면, 상황 전광판, 내보내는 행동을 그리는 함수"""
-    # 새 규칙이 나오면 조문 읽기 장면으로 바꾸고 평소에는 인식 장면을 보여 줌
-    if reading is None:
-        draw_recognition(image, pen, status)
-    else:
-        draw_reading(pen, status, reading)
-    # 상황 전광판: 켜진 상황은 유지 시간이 지나며 어두워짐
-    pen.rounded_rectangle((12, BOARD_TOP, 628, BOARD_TOP + 112), 6, fill=BOARD)
-    width = (616 - 12) // BOARD_COLUMNS
-    for index, (name, glow, has_provision) in enumerate(board):
-        x = 18 + (index % BOARD_COLUMNS) * width
-        y = BOARD_TOP + 6 + (index // BOARD_COLUMNS) * 34
-        if glow > 0 and has_provision:
-            color = tuple(int(u + (s - u) * (0.35 + 0.65 * glow)) for u, s in zip(UNLIT, SIGNAL))
-            pen.rectangle((x, y, x + width - 5, y + 30), fill=tuple(c // 5 for c in color), outline=color)
-            pen.text((x + (width - 5) // 2, y + 15), name, font=TINY_FONT, fill=color, anchor="mm")
-        elif has_provision:
-            pen.text((x + (width - 5) // 2, y + 15), name, font=TINY_FONT, fill=UNLIT, anchor="mm")
+def draw_rail(pen, current):
+    """처리 단계를 가로 한 줄로 그리고 지금 단계를 표시하는 함수"""
+    pen.line((STEP_X[0], RAIL_Y, STEP_X[-1], RAIL_Y), fill=LINE, width=2)
+    if current > 0:
+        pen.line((STEP_X[0], RAIL_Y, STEP_X[current], RAIL_Y), fill=ACCENT, width=2)
+    for index, (x, name) in enumerate(zip(STEP_X, STEPS)):
+        if index == current:
+            pen.ellipse((x - 9, RAIL_Y - 9, x + 9, RAIL_Y + 9), fill=PANEL, outline=ACCENT, width=3)
+            pen.ellipse((x - 4, RAIL_Y - 4, x + 4, RAIL_Y + 4), fill=ACCENT)
+        elif index < current:
+            pen.ellipse((x - 5, RAIL_Y - 5, x + 5, RAIL_Y + 5), fill=ACCENT)
         else:
-            # 고른 법령에 조문이 없는 상황은 취소선으로 나타냄
-            pen.text((x + (width - 5) // 2, y + 15), name, font=TINY_FONT, fill=BUTTON, anchor="mm")
-            pen.line((x + 12, y + 15, x + width - 17, y + 15), fill=BUTTON)
-    # 내보내는 값: 행동 코드를 표지처럼 찍음
-    y = BOARD_TOP + 122
-    for rule in rules[:2]:
-        color = ACTION_COLORS.get(rule["action"], SIGNAL)
-        pen.rounded_rectangle((12, y, 212, y + 42), 4, fill=color)
-        pen.text((112, y + 21), rule["action"], font=MEDIUM_FONT, fill=PAINT if color == PROHIBIT else BOARD, anchor="mm")
-        pen.text((224, y + 21), rule["law"], font=MEDIUM_FONT, fill=PAINT, anchor="lm")
-        y += 48
-    pen.text((12, BOARD_TOP + 222), f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=MUTED)
+            pen.ellipse((x - 5, RAIL_Y - 5, x + 5, RAIL_Y + 5), fill=PANEL, outline=FAINT, width=2)
+        color = INK if index == current else (SOFT if index < current else FAINT)
+        pen.text((x, RAIL_Y + 24), name, font=SMALL_FONT, fill=color, anchor="ma")
 
 
-def draw_panel(height, frame_width, buttons, selected, rules, status, board, reading):
-    """버튼, 지시문, 근거 조항, 읽은 조문, 모듈 상태를 그린 패널 이미지를 만드는 함수"""
+def card_image(image, picture):
+    """지금 호출의 입력 이미지를 비율을 유지해 모서리가 둥근 칸에 그리는 함수"""
+    width, height = IMAGE_SIZE
+    scale = min(width / picture.shape[1], height / picture.shape[0])
+    size = (max(1, int(picture.shape[1] * scale)), max(1, int(picture.shape[0] * scale)))
+    canvas = np.full((height, width, 3), LINE, np.uint8)
+    top, left = (height - size[1]) // 2, (width - size[0]) // 2
+    canvas[top:top + size[1], left:left + size[0]] = cv2.resize(picture, size, interpolation=cv2.INTER_AREA)
+    mask = Image.new("L", IMAGE_SIZE, 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, width - 1, height - 1), 8, fill=255)
+    image.paste(Image.fromarray(canvas), (28, CARD_TOP), mask)
+
+
+def top_odds(answer):
+    """답과 가장 높은 확률을 한 줄 글로 만드는 함수"""
+    if answer[2]:
+        return f"{answer[0]}  {max(probability for word, probability in answer[2]) * 100:.0f}%"
+    return answer[0]
+
+
+def draw_recognition_card(image, pen, status, scene):
+    """지금 호출의 입력 이미지, 하는 일, 답을 그리는 함수"""
+    source, doing = CALLS[scene]
+    picture = status["images"].get(source)
+    if picture is not None:
+        card_image(image, picture)
+    pen.text((344, CARD_TOP + 2), doing, font=SMALL_FONT, fill=INK)
+    answer = status["answers"].get(scene)
+    if answer:
+        y = CARD_TOP + 32
+        for line in wrap(top_odds(answer), RESULT_FONT, 270)[:2]:
+            pen.text((344, y), line, font=RESULT_FONT, fill=ACCENT)
+            y += 34
+        pen.text((344, y + 6), f"입력 {answer[3]}토큰", font=TINY_FONT, fill=SOFT)
+        pen.text((344, y + 28), f"{answer[1]:.2f}초", font=TINY_FONT, fill=SOFT)
+
+
+def draw_law_card(pen, status, rule, phase):
+    """새 규칙이 나올 때 조문, 읽기, 출력을 한 단계씩 그리는 함수"""
+    if phase == 0:
+        pen.text((28, CARD_TOP), "법령에서 조문을 찾았습니다", font=SMALL_FONT, fill=INK)
+        pen.text((28, CARD_TOP + 30), rule["law"], font=RESULT_FONT, fill=ACCENT)
+    elif phase == 1:
+        pen.text((28, CARD_TOP), "Gemma가 조문을 읽고 행동을 골랐습니다", font=SMALL_FONT, fill=INK)
+        odds = status["odds"].get(rule["instruction"], [])
+        best = f"  {max(probability for word, probability in odds) * 100:.0f}%" if odds else ""
+        pen.text((28, CARD_TOP + 30), rule["action"] + best, font=RESULT_FONT, fill=ACCENT)
+        y = CARD_TOP + 76
+        for probability, word in sorted([(probability, word) for word, probability in odds], reverse=True)[1:3]:
+            pen.text((28, y), f"{word}  {probability * 100:.0f}%", font=TINY_FONT, fill=SOFT)
+            y += 22
+    else:
+        pen.text((28, CARD_TOP), "VLA 모델로 내보냅니다", font=SMALL_FONT, fill=INK)
+        pen.text((28, CARD_TOP + 30), rule["action"], font=RESULT_FONT, fill=ACCENT)
+        y = CARD_TOP + 76
+        for line in wrap(f'"law": "{rule["law"]}", "instruction": "{rule["instruction"]}"', SMALL_FONT, 584)[:3]:
+            pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
+            y += 22
+
+
+def draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase):
+    """탭, 지시문, 근거 조항, 처리 단계를 그린 패널 이미지를 만드는 함수"""
     image = Image.new("RGB", (PANEL_WIDTH, height), PANEL)
     pen = ImageDraw.Draw(image)
-    # 버튼 사각형은 클릭 판정에 쓰는 창 좌표라 패널 왼쪽 끝만큼 빼서 그림
+    # 탭 사각형은 클릭 판정에 쓰는 창 좌표라 패널 왼쪽 끝만큼 빼서 그림
     for group, index, name, (x1, y1, x2, y2) in buttons:
         chosen = selected[group] == index
-        pen.rectangle((x1 - frame_width, y1, x2 - frame_width, y2), fill=PAINT if chosen else BUTTON)
-        pen.text(((x1 + x2) // 2 - frame_width, (y1 + y2) // 2), name, font=SMALL_FONT, fill=PANEL if chosen else PAINT, anchor="mm")
-    width = PANEL_WIDTH - 48
-    y = RULES_TOP
-    for rule in rules[:MAX_RULES]:
-        for line in wrap(rule["instruction"], LARGE_FONT, width):
-            pen.text((24, y), line, font=LARGE_FONT, fill=ACTION_COLORS.get(rule["action"], SIGNAL))
-            y += 34
-        pen.text((24, y), rule["law"], font=SMALL_FONT, fill=PAINT)
-        y += 21
-        for line in wrap(rule["text"], SMALL_FONT, width)[:RULE_TEXT_LINES]:
-            pen.text((24, y), line, font=SMALL_FONT, fill=MUTED)
-            y += 20
-        y += 6
-    draw_pipeline(image, pen, status, rules, board, reading)
+        pen.text((x1 - frame_width, y1), name, font=SMALL_FONT, fill=INK if chosen else FAINT)
+        if chosen:
+            pen.line((x1 - frame_width, y2 - 1, x2 - frame_width, y2 - 1), fill=ACCENT, width=2)
+    y = HERO_TOP
+    if rules:
+        rule = rules[0]
+        for line in wrap(rule["instruction"], LARGE_FONT, 584)[:2]:
+            pen.text((28, y), line, font=LARGE_FONT, fill=INK)
+            y += 44
+        pen.text((28, y + 8), rule["law"], font=MEDIUM_FONT, fill=ACCENT)
+        y += 34
+        for line in wrap(rule["text"], SMALL_FONT, 584)[:2]:
+            pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
+            y += 22
+        if len(rules) > 1:
+            pen.text((28, y + 4), f"함께 적용: {rules[1]['instruction']}" + (f" 외 {len(rules) - 2}개" if len(rules) > 2 else ""), font=SMALL_FONT, fill=SOFT)
+    else:
+        pen.text((28, y), "적용할 규칙 없음", font=LARGE_FONT, fill=FAINT)
+    if scene == "skip":
+        draw_rail(pen, -1)
+        pen.text((28, CARD_TOP), "모델을 멈추고 다음 장면으로 건너뜁니다", font=SMALL_FONT, fill=SOFT)
+    elif reading is not None:
+        draw_rail(pen, 2 + phase)
+        draw_law_card(pen, status, reading, phase)
+    else:
+        draw_rail(pen, 1)
+        if scene in CALLS:
+            draw_recognition_card(image, pen, status, scene)
+    pen.text((28, 618), "VLA 출력", font=TINY_FONT, fill=FAINT)
+    pen.text((100, 616), wrap("  ".join([rule["action"] for rule in rules]) if rules else "없음", SMALL_FONT, 500)[0], font=SMALL_FONT, fill=INK if rules else FAINT)
+    pen.text((28, 696), f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=FAINT)
     return np.array(image)
 
 
-def draw(frame, result, panel_image, fps, stage, reading):
+def draw(frame, result, panel_image, fps):
     """프레임에 박스와 클래스 이름을 그리고 미리 그린 패널을 오른쪽에 붙이는 함수"""
     # 배속 구간에는 탐지 결과가 없음
     if result is None:
@@ -218,7 +211,7 @@ def draw(frame, result, panel_image, fps, stage, reading):
     for box, cls, conf in boxes:
         if conf >= SHOW_CONF:
             x1, y1, x2, y2 = map(int, box)
-            cv2.rectangle(frame, (x1, y1), (x2, y2), SIGNAL, 2)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), ACCENT, 1)
             label = LABELS[CLASS_NAMES[int(cls)]]
             height, width = label.shape[:2]
             top = max(y1 - height, 0)
@@ -226,10 +219,5 @@ def draw(frame, result, panel_image, fps, stage, reading):
             frame[top:top + height, x1:x1 + width] = label[:, :width]
     canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
     canvas[:, frame.shape[1]:] = panel_image
-    # 지금 호출의 입력 위로 스캔선을 움직여 처리 중임을 나타냄
-    offset = int(time.perf_counter() * 60) % TILE_SIZE[1]
-    for index in [] if reading else CALL_TILES.get(stage, []):
-        left = frame.shape[1] + tile_left(index)
-        cv2.line(canvas, (left, TILE_TOP + offset), (left + TILE_SIZE[0] - 1, TILE_TOP + offset), SIGNAL, 2)
-    cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, MUTED, 1)
+    cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, FAINT, 1)
     return canvas

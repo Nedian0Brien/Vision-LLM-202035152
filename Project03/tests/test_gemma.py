@@ -11,6 +11,10 @@ from detect import LIGHT_CLASSES, class_strip, road_crop
 from gemma import SITUATIONS, load_law, parse_situations
 
 
+# 시험용 모델에는 점수가 없고 확률은 화면 표시에만 쓰임
+gemma.answer_odds = lambda llm, words: []
+
+
 class Boxes:
     """YOLO 결과의 boxes 자리에 쓰는 시험용 클래스"""
 
@@ -68,6 +72,8 @@ class RecognizeTest(unittest.TestCase):
         class Llm:
             """객관식과 낱말 답을 정해 둔 시험용 클래스"""
 
+            n_tokens = 0
+
             def tokenize(self, text, add_bos):
                 return [text[0]]
 
@@ -102,6 +108,8 @@ class ActionTest(unittest.TestCase):
         class Llm:
             """토큰화와 생성 결과를 정해 둔 시험용 클래스"""
 
+            n_tokens = 0
+
             def tokenize(self, text, add_bos):
                 return [text[0]]
 
@@ -117,6 +125,8 @@ class ActionTest(unittest.TestCase):
 
         class Llm:
             """받은 프롬프트를 모아 두는 시험용 클래스"""
+
+            n_tokens = 0
 
             def tokenize(self, text, add_bos):
                 return [text[0]]
