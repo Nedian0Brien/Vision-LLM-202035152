@@ -19,7 +19,7 @@ CAMERA = "camera"
 # 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
 VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]), ("보호구역", "videos/school-zone-stills.mp4", [(0, 18)]),
           ("횡단보도", "videos/school-crosswalk-stills.mp4", [(0, 24)]), ("비", "videos/rain-stills.mp4", [(0, 32)]), ("고인 물", "videos/puddle-stills.mp4", [(0, 32)]),
-          ("통학버스", "videos/school-bus-stills.mp4", [(0, 36)]), ("소화전", "videos/hydrant-sf.mp4", [(0, 24)]), ("카메라", CAMERA, [])]
+          ("통학버스", "videos/school-bus-stills.mp4", [(0, 36)]), ("소화전", "videos/hydrant-sf.mp4", [(0, 22)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
 READING_SECONDS = 3
 SCENE_SECONDS = 1

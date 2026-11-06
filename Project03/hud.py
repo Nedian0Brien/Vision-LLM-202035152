@@ -172,7 +172,8 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
             pen.line((x1 - frame_width, y2 - 1, x2 - frame_width, y2 - 1), fill=ACCENT, width=2)
     y = HERO_TOP
     if rules:
-        rule = rules[0]
+        # 규칙은 처음 나온 순서로 쌓이므로 가장 새로 나온 규칙을 크게 그림
+        rule = rules[-1]
         for line in wrap(rule["instruction"], LARGE_FONT, 584)[:2]:
             pen.text((28, y), line, font=LARGE_FONT, fill=INK)
             y += 44
@@ -182,7 +183,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
             pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
             y += 22
         if len(rules) > 1:
-            pen.text((28, y + 4), f"함께 적용: {rules[1]['instruction']}" + (f" 외 {len(rules) - 2}개" if len(rules) > 2 else ""), font=SMALL_FONT, fill=SOFT)
+            pen.text((28, y + 4), f"함께 적용: {rules[-2]['instruction']}" + (f" 외 {len(rules) - 2}개" if len(rules) > 2 else ""), font=SMALL_FONT, fill=SOFT)
     else:
         pen.text((28, y), "적용할 규칙 없음", font=LARGE_FONT, fill=FAINT)
     if scene == "skip":
