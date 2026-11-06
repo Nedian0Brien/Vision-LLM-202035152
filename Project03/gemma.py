@@ -38,7 +38,7 @@ SITUATIONS = [
     "a child protection school zone, shown by red pavement, the words 어린이 보호구역 painted on the road or a school zone sign",
 ]
 RED, YELLOW, PEDESTRIAN = SITUATIONS[0], SITUATIONS[1], SITUATIONS[7]
-SITUATION_NAMES = ["적색 신호", "황색 신호", "정지 표지", "양보 표지", "회전 금지", "속도 제한", "앞지르기 금지", "횡단보도 보행자", "버스 전용차로", "노면전차", "공사 구간", "터널 앞지르기", "터널 전조등", "다리 위", "어린이 보호구역"]
+SITUATION_NAMES = ["적색 신호", "황색 신호", "정지 표지", "양보 표지", "회전 금지", "속도 제한", "앞지르기 금지", "횡단 보행자", "버스 전용차로", "노면전차", "공사 구간", "터널 앞지르기", "터널 전조등", "다리 위", "어린이 보호구역"]
 # 상황마다 예시를 하나씩 둠. 적색과 보행자를 한 예시에 묶었을 때는 횡단보도 선택 21번이 모두 적색과 함께 나왔음(2026-11-05 개발용 측정)
 RECOGNIZE_PROMPT = (
     "Possible situations:\n"
@@ -102,7 +102,7 @@ HOLD_SECONDS = 3.5
 
 default_vision_params = mtmd_cpp.mtmd_context_params_default
 # 화면이 모듈별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
-STATUS = {"stage": "wait", "cycle": 0, "images": {}, "boxes": {}, "answers": {}, "found": [], "outputs": 0}
+STATUS = {"stage": "wait", "cycle": 0, "images": {}, "boxes": {}, "answers": {}, "outputs": 0}
 
 
 def vision_params():
@@ -222,7 +222,6 @@ def recognize(llm, frame, result):
     else:
         STATUS["answers"].pop("pedestrian", None)
         STATUS["answers"].pop("crosswalk", None)
-    STATUS["found"] = [SITUATION_NAMES[SITUATIONS.index(situation)] for situation in found]
     return found
 
 

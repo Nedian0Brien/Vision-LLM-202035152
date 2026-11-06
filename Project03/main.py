@@ -9,7 +9,7 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
-from gemma import STATUS, load_gemma, load_law, watch
+from gemma import HOLD_SECONDS, SITUATION_NAMES, SITUATIONS, STATUS, load_gemma, load_law, watch
 from hud import button_boxes, draw, draw_panel
 
 FRAME_SIZE = (1280, 720)
@@ -20,6 +20,7 @@ CAMERA = "camera"
 VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]), ("샌프란시스코", "videos/sf-demo.mp4", [(12, 26)]),
           ("보호구역 낱장", "videos/school-zone-stills.mp4", [(0, 18)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
+READING_SECONDS = 3
 LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california")]
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
@@ -61,6 +62,9 @@ cap = cv2.VideoCapture()
 current_video = None
 drawn_view = None
 drawn_state = None
+shown_rules = []
+reading = None
+reading_until = 0.0
 displayed_fps = 0.0
 
 while True:
@@ -115,10 +119,23 @@ while True:
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
     rules = shared["clip"]["rules"]
     view = (selected["video"], selected["law"], rules)
-    state = (STATUS["cycle"], STATUS["stage"])
+    # 전광판이 유지 시간에 따라 어두워지도록 0.5초마다도 다시 그림
+    now = time.perf_counter()
+    # 새 규칙이 나오면 조문을 읽는 장면을 3초 보여 줌
+    for rule in rules:
+        if rule not in shown_rules:
+            reading = rule
+            reading_until = now + READING_SECONDS
+    shown_rules = rules
+    if now > reading_until:
+        reading = None
+    state = (STATUS["cycle"], STATUS["stage"], int(now * 2), reading is None)
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules, STATUS, LAWS[selected["law"]][0])
+        last_seen = shared["clip"]["last_seen"]
+        law = laws[shared["law"]]
+        board = [(name, 1 - (now - last_seen[situation]) / HOLD_SECONDS if situation in last_seen else 0, situation in law) for situation, name in zip(SITUATIONS, SITUATION_NAMES)]
+        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules, STATUS, board, reading)
     if view != drawn_view:
         drawn_view = view
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
@@ -135,7 +152,7 @@ while True:
     elif not fast:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, result, panel_image, displayed_fps)
+    output_frame = draw(frame, result, panel_image, displayed_fps, STATUS["stage"], reading)
 
     cv2.imshow(WINDOW, output_frame)
 
