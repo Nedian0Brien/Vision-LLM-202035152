@@ -22,15 +22,21 @@ LARGE_FONT = ImageFont.truetype(FONT_PATH, 28)
 PANEL_WIDTH = 640
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
-# 아스팔트 바탕에 노면 표시 색을 씀
-PANEL = (47, 45, 43)
-PAINT = (228, 235, 236)
+PANEL = (30, 28, 27)
+PAINT = (232, 239, 241)
 CENTER_LINE = (24, 197, 245)
-PROHIBIT = (60, 72, 229)
+PROHIBIT = (74, 84, 240)
 MUTED = (150, 147, 144)
 BUTTON = (68, 65, 62)
+ARROW = (150, 150, 146)
 # 금지와 정지는 규제 표지의 적색, 나머지는 주의 표지의 황색으로 그림
 ACTION_COLORS = {"STOP": PROHIBIT, "KEEP_OUT": PROHIBIT, "NO_OVERTAKING": PROHIBIT}
+# 구조도와 같은 색으로 모델, 코드, 산출물, 출력을 구분함. 값은 (바탕, 테두리, 글자)
+MODEL = ((137, 52, 60), (236, 169, 175), (254, 237, 238))
+CODE = ((65, 80, 8), (165, 202, 93), (238, 245, 225))
+DATA = ((65, 68, 68), (169, 178, 180), (232, 239, 241))
+OUTPUT = ((6, 56, 99), (39, 159, 239), (218, 238, 250))
+IDLE = ((42, 40, 39), (78, 76, 74), (120, 118, 116))
 
 # 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
 FAST_LABEL = "8배속"
@@ -46,11 +52,9 @@ BUTTON_GAP = 8
 RULES_TOP = 2 * (BUTTON_HEIGHT + BUTTON_GAP) + 12
 RULE_TEXT_LINES = 2
 MAX_RULES = 2
-PIPELINE_TOP = 316
-SMALL_THUMB = (72, 41)
-LARGE_THUMB = (112, 63)
-# 첫 칸은 이미지 3장을 받는 객관식 호출이라 넓게 잡음
-CALLS = [("choice", "객관식", 24, ["frame", "signs", "road"]), ("light", "신호 색", 262, ["lights"]), ("pedestrian", "보행자", 382, ["people"]), ("crosswalk", "횡단보도", 502, ["road"])]
+# 첫 칸은 이미지 3장을 받는 객관식 호출이라 넓게 잡음. 값은 (호출, 이름, 왼쪽, 오른쪽, 입력 이미지)
+CALLS = [("choice", "객관식", 12, 238, ["frame", "signs", "road"]), ("light", "신호 색", 246, 368, ["lights"]),
+         ("pedestrian", "보행자", 376, 498, ["people"]), ("crosswalk", "횡단보도", 506, 628, ["road"])]
 
 
 def button_boxes(frame_width, groups):
@@ -79,85 +83,87 @@ def wrap(text, font, width):
     return lines + [line]
 
 
-def lane(pen, x1, y1, x2, y2, active):
-    """두 모듈을 잇는 차선을 지금 처리 중이면 황색 실선, 아니면 흰 점선으로 그리는 함수"""
-    color = CENTER_LINE if active else MUTED
-    steps = max(abs(x2 - x1), abs(y2 - y1)) // 12
-    for step in range(steps):
-        start = (x1 + (x2 - x1) * step // steps, y1 + (y2 - y1) * step // steps)
-        finish = (x1 + (x2 - x1) * (step + (1 if active else 0.6)) / steps, y1 + (y2 - y1) * (step + (1 if active else 0.6)) / steps)
-        pen.line((start, finish), fill=color, width=3 if active else 2)
+def arrow(pen, x1, y1, x2, y2, active=False):
+    """모듈을 잇는 화살표를 지금 처리 중이면 황색으로 그리는 함수"""
+    color = CENTER_LINE if active else ARROW
+    pen.line((x1, y1, x2, y2), fill=color, width=2 if active else 1)
     if y1 == y2:
-        pen.polygon(((x2, y2 - 5), (x2 + 8, y2), (x2, y2 + 5)), fill=color)
+        pen.polygon(((x2 - 6, y2 - 4), (x2, y2), (x2 - 6, y2 + 4)), fill=color)
     else:
-        pen.polygon(((x2 - 5, y2), (x2 + 5, y2), (x2, y2 + 8)), fill=color)
+        pen.polygon(((x2 - 4, y2 - 6), (x2 + 4, y2 - 6), (x2, y2)), fill=color)
 
 
-def thumbnail(image, pen, picture, x, y, size):
+def module_box(pen, x1, y1, x2, y2, kind, lines, active=False, pill=False):
+    """구조도의 상자 하나를 그리는 함수"""
+    fill, edge, text = kind
+    radius = (y2 - y1) // 2 if pill else 4
+    pen.rounded_rectangle((x1, y1, x2, y2), radius, fill=fill, outline=CENTER_LINE if active else edge, width=3 if active else 1)
+    line_height = 19
+    y = (y1 + y2) // 2 - line_height * (len(lines) - 1) // 2
+    for line in lines:
+        pen.text(((x1 + x2) // 2, y), wrap(line, SMALL_FONT, x2 - x1 - 14)[0], font=SMALL_FONT, fill=text, anchor="mm")
+        y += line_height
+
+
+def thumbnail(image, pen, picture, x1, y1, x2, y2):
     """모델이 받은 이미지를 작게 그리고 없으면 빈 칸을 그리는 함수"""
     if picture is None:
-        pen.rectangle((x, y, x + size[0] - 1, y + size[1] - 1), fill=BUTTON)
+        pen.rectangle((x1, y1, x2 - 1, y2 - 1), fill=IDLE[0], outline=IDLE[1])
     else:
         # 프레임이 BGR이고 패널도 BGR 순서로 그리므로 색을 바꾸지 않음
-        image.paste(Image.fromarray(cv2.resize(picture, size, interpolation=cv2.INTER_AREA)), (x, y))
-
-
-def module_row(pen, y, name, value, seconds, active, color=PAINT):
-    """모듈 이름, 출력값, 걸린 시간을 한 줄로 그리는 함수"""
-    pen.text((48, y), name, font=SMALL_FONT, fill=CENTER_LINE if active else MUTED)
-    pen.text((160, y - 2), value, font=MEDIUM_FONT, fill=color)
-    if seconds is not None:
-        pen.text((616, y), seconds, font=SMALL_FONT, fill=MUTED, anchor="ra")
+        image.paste(Image.fromarray(cv2.resize(picture, (x2 - x1, y2 - y1), interpolation=cv2.INTER_AREA)), (x1, y1))
 
 
 def draw_pipeline(image, pen, status, rules, law_name):
-    """입력부터 출력까지 모듈마다 입력 이미지, 처리 상태, 출력값을 그리는 함수"""
+    """입력부터 출력까지 구조도와 같은 상자와 화살표로 모듈의 입력, 상태, 출력을 그리는 함수"""
     stage, answers, boxes, images = status["stage"], status["answers"], status["boxes"], status["images"]
-    y = PIPELINE_TOP
-    pen.line((24, y - 8, 616, y - 8), fill=BUTTON, width=1)
-    thumbnail(image, pen, images.get("frame"), 24, y, SMALL_THUMB)
-    lane(pen, 102, y + 20, 128, y + 20, False)
-    pen.text((146, y), "YOLO11n", font=SMALL_FONT, fill=MUTED)
-    pen.text((146, y + 18), f"박스 {boxes.get('all', 0)}개", font=MEDIUM_FONT, fill=PAINT)
-    pen.text((290, y + 20), f"신호등 {boxes.get('lights', 0)}   정지 표지 {boxes.get('stops', 0)}   사람 {boxes.get('people', 0)}", font=SMALL_FONT, fill=MUTED)
-    y += 50
-    # YOLO 결과가 호출 4개로 갈라져 내려감
-    pen.line((30, y - 6, 510, y - 6), fill=MUTED, width=1)
-    for call, name, x, sources in CALLS:
+    thumbnail(image, pen, images.get("frame"), 12, 304, 84, 345)
+    arrow(pen, 84, 324, 104, 324)
+    module_box(pen, 104, 304, 236, 345, MODEL, ["YOLO11n", f"박스 {boxes.get('all', 0)}개"])
+    arrow(pen, 236, 324, 256, 324)
+    module_box(pen, 256, 304, 628, 345, DATA, [f"신호등 {boxes.get('lights', 0)}   정지 표지 {boxes.get('stops', 0)}   사람 {boxes.get('people', 0)}"], pill=True)
+    # YOLO 결과가 호출 4개로 갈라짐
+    pen.line((170, 345, 170, 352), fill=ARROW)
+    pen.line((125, 352, 567, 352), fill=ARROW)
+    for call, name, x1, x2, sources in CALLS:
         active = stage == call
-        lane(pen, x + 6, y - 6, x + 6, y + 2, active)
+        middle = (x1 + x2) // 2
+        arrow(pen, middle, 352, middle, 359, active)
+        width = (x2 - x1 - 2 * (len(sources) - 1)) // len(sources)
         for index, source in enumerate(sources):
-            if len(sources) == 3:
-                thumbnail(image, pen, images.get(source), x + index * 74, y + 11, SMALL_THUMB)
-            else:
-                thumbnail(image, pen, images.get(source), x, y + 11, LARGE_THUMB)
-        pen.text((x, y + 78), f"Gemma {name}", font=SMALL_FONT, fill=CENTER_LINE if active else MUTED)
+            left = x1 + index * (width + 2)
+            thumbnail(image, pen, images.get(source), left, 359, left + width, 402)
+        arrow(pen, middle, 402, middle, 412, active)
         answer = answers.get(call)
-        pen.text((x, y + 97), answer[0] if answer else "호출 없음", font=MEDIUM_FONT, fill=PAINT if answer else MUTED)
         if answer:
-            pen.text((x, y + 121), f"{answer[1]:.2f}초", font=SMALL_FONT, fill=MUTED)
-    # 보행자 답이 yes일 때만 횡단보도를 물음
-    lane(pen, 492, y + 42, 497, y + 42, stage == "crosswalk")
-    y += 148
+            module_box(pen, x1, 412, x2, 458, MODEL, [f"Gemma {name}", f"{answer[0]}  {answer[1]:.2f}초"], active)
+        else:
+            module_box(pen, x1, 412, x2, 458, MODEL if active else IDLE, [f"Gemma {name}", "처리 중" if active else "호출 없음"], active)
+        pen.line((middle, 458, middle, 466), fill=ARROW)
+    # 호출의 답이 하나로 모임
+    pen.line((125, 466, 567, 466), fill=ARROW)
+    arrow(pen, 80, 466, 80, 474)
+    pen.line((80, 466, 125, 466), fill=ARROW)
     found = status["found"]
-    # 호출 4개의 답이 상황 합치기로 모임
-    pen.line((30, y - 6, 510, y - 6), fill=MUTED, width=1)
-    lane(pen, 30, y - 6, 30, y + 4, False)
-    module_row(pen, y + 6, "상황 합치기", "   ".join(found) if found else "해당 상황 없음", None, False, PAINT if found else MUTED)
-    y += 28
-    lane(pen, 30, y + 2, 30, y + 10, False)
-    module_row(pen, y + 12, "조문 찾기", f"{law_name}  {rules[0]['law']}" if rules else law_name, None, False)
-    y += 28
+    module_box(pen, 12, 474, 196, 512, CODE, ["답 합치기, 3.5초 유지"])
+    arrow(pen, 196, 493, 216, 493)
+    module_box(pen, 216, 474, 628, 512, DATA, ["   ".join(found) if found else "해당 상황 없음"], pill=True)
+    arrow(pen, 80, 512, 80, 522)
+    rule = rules[0] if rules else None
+    module_box(pen, 12, 522, 196, 560, CODE, ["조문 찾기"])
+    arrow(pen, 196, 541, 216, 541)
+    module_box(pen, 216, 522, 628, 560, DATA, [f"index  {law_name}  {rule['law']}" if rule else f"index  {law_name}  조문 없음"], pill=True)
+    reading = stage in ("action", "instruction")
+    pen.line((80, 560, 80, 568), fill=CENTER_LINE if reading else ARROW)
+    pen.line((80, 568, 410, 568), fill=CENTER_LINE if reading else ARROW)
+    arrow(pen, 80, 568, 80, 576, stage == "action")
+    arrow(pen, 410, 568, 410, 576, stage == "instruction")
     action, instruction = answers.get("action"), answers.get("instruction")
-    lane(pen, 30, y + 8, 30, y + 16, stage in ("action", "instruction"))
-    module_row(pen, y + 18, "Gemma 행동", rules[0]["action"] if rules else "호출 없음", f"{action[1]:.2f}초" if action else None, stage == "action",
-               ACTION_COLORS.get(rules[0]["action"], CENTER_LINE) if rules else MUTED)
-    y += 26
-    instruction_text = rules[0]["instruction"] if rules else "호출 없음"
-    module_row(pen, y + 18, "Gemma 지시문", instruction_text, f"{instruction[1]:.2f}초" if instruction else None, stage == "instruction", PAINT if rules else MUTED)
-    y += 26
-    lane(pen, 30, y + 18, 30, y + 26, False)
-    module_row(pen, y + 28, "VLA 출력", f"규칙 {len(rules)}개, {status['outputs']}줄", None, False)
+    module_box(pen, 12, 576, 196, 622, MODEL if rule else IDLE, ["Gemma 행동", (rule["action"] + (f"  {action[1]:.2f}초" if action else "")) if rule else "호출 없음"], stage == "action")
+    module_box(pen, 204, 576, 628, 622, MODEL if rule else IDLE, ["Gemma 지시문", (rule["instruction"] if rule else "호출 없음")], stage == "instruction")
+    arrow(pen, 80, 622, 80, 632)
+    arrow(pen, 410, 622, 410, 632)
+    module_box(pen, 12, 632, 628, 670, OUTPUT, [f"vla-output.jsonl  규칙 {len(rules)}개  {status['outputs']}줄"], pill=True)
 
 
 def draw_panel(height, frame_width, buttons, selected, rules, status, law_name):
