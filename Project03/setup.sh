@@ -241,6 +241,9 @@ warn_jetson_state() {
     elif ! echo "$power" | grep -q MAXN; then
         echo "경고: 전력 모드가 MAXN이 아닙니다. 04 노트북 안내대로 바꿉니다."
     fi
+    if [ ! -e /dev/video0 ]; then
+        echo "경고: /dev/video0이 없습니다. 카메라 버튼을 쓰려면 USB 카메라를 연결합니다."
+    fi
 }
 
 check_all() {
@@ -262,6 +265,7 @@ check_all() {
         check "tensorrt, onnx, onnxslim" "$PY" -c 'import tensorrt, onnx, onnxslim'
         check "llama-cpp-python GPU 빌드" "$PY" -c 'import sys, llama_cpp; sys.exit(not llama_cpp.llama_supports_gpu_offload())'
         check "$ENGINE_FILE" test -f "$YOLO_DIR/$ENGINE_FILE"
+        check "OpenCV GStreamer" "$PY" -c "import cv2, sys; sys.exit('GStreamer:                   YES' not in cv2.getBuildInformation())"
         warn_jetson_state
     fi
 }

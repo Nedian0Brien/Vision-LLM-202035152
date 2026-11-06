@@ -160,6 +160,14 @@ python main.py videos/tunnel-korea.mp4 --model ../src/models/YOLO/yolo11n_736x12
 
 YOLO 입력은 736×1280(`detect.IMAGE_SIZE`)입니다. 04 노트북의 `yolo11n_fp16.engine`은 640×640 고정 크기라서, 아래 Jetson 측정 절차대로 엔진을 새로 만들어 넘깁니다. 아직 만들지 않았습니다.
 
+Jetson에 연결한 USB 카메라로 시작하려면 영상 자리에 `camera`를 씁니다. 실행 중에는 `카메라` 버튼으로 바꿉니다.
+
+```bash
+python main.py camera --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+```
+
+카메라는 실습과 같은 `/dev/video0`, YUY2, 640×480, 30 FPS로 열고, 가운데 640×360을 잘라 1280×720으로 키웁니다. 카메라가 없거나 끊기면 첫 영상으로 돌아갑니다.
+
 오른쪽 패널의 버튼으로 영상과 법령을 바꿉니다. 법령을 바꾸면 다음 판단부터 그 법령의 조문으로 지시문이 나옵니다. `q`를 누르면 종료합니다.
 
 ### 테스트
@@ -192,6 +200,8 @@ bash Project03/setup.sh <사용자>@<Jetson 주소>
 | `실패: 한글 글꼴` | 글꼴 파일을 `hud.FONT_PATHS`의 경로에 복사합니다 |
 | `실패:` 영상 이름 | 그 영상을 다시 보냅니다 |
 | `실패: yolo11n_736x1280_fp16.engine` | 3단계 끝의 640 엔진으로 바꿉니다 |
+| `실패: OpenCV GStreamer` | 카메라를 열 수 없습니다. 가상환경이 pip의 `opencv-python`이 아니라 JetPack의 OpenCV를 쓰는지 봅니다 |
+| `경고: /dev/video0이 없습니다` | USB 카메라를 연결합니다. 영상 재생에는 영향이 없습니다 |
 | `실패: 시험 실행` | `setup-report.txt`의 오류를 봅니다. `cudaMalloc failed`면 4단계를 봅니다 |
 
 이후 명령은 모두 Jetson의 `vision-llm/Project03/`에서 실행합니다. 먼저 `Python:` 줄의 가상환경을 활성화합니다.
@@ -256,6 +266,16 @@ python tests/jetson_timing.py videos/tunnel-korea.mp4 --model ../src/models/YOLO
 
 ```bash
 python tests/jetson_timing.py videos/beverly-demo.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+```
+
+카메라로도 같은 시간을 잽니다. 첫 영상으로 돌아가면 카메라가 열리지 않은 것이므로 아래 명령으로 형식을 봅니다.
+
+```bash
+python tests/jetson_timing.py camera --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
+```
+
+```bash
+v4l2-ctl --list-formats-ext -d /dev/video0
 ```
 
 ```bash
@@ -360,6 +380,7 @@ python build_corpus.py <국가법령정보 Open API 인증키(OC)> data/pubinfo_
 
 ## 한계
 
+- 카메라 모드는 실제 카메라로 돌린 적이 없습니다. Mac에는 GStreamer가 없어 640×480 가짜 입력으로 시작, 영상 전환, 다시 열기, 끊김 복귀만 확인했습니다. 640×480을 키우므로 먼 신호등과 표지의 탐지는 영상보다 낮을 수 있고 재지 않았습니다.
 - `setup.sh`는 Jetson 실물에서 돌린 적이 없습니다. Mac과 Docker Ubuntu 22.04 arm64에서 전송, 빈 환경 설치, 모델 재사용, 인터넷 차단, 재실행을 확인했고, Jetson 분기는 가짜 `trtexec`로 명령 순서만 확인했습니다. CUDA 빌드, 실제 엔진 생성, GPU 실행은 측정일에 처음 돕니다.
 - 실행 중에는 조문을 검색하지 않습니다. 조문 선택은 빌드 단계에서 끝나고, 그래서 같은 법령과 상황이면 지시문이 같습니다. 장면 내용은 지시문에 들어가지 않습니다.
 - 상황 15개 중 14개는 개발용 라벨의 유형에서, 어린이 보호구역은 시연 자료를 본 뒤 사람이 정의했습니다. 목록 밖 상황에는 지시문이 나오지 않습니다.
