@@ -64,6 +64,7 @@ RECOGNIZE_PROMPT = (
 )
 LIGHT_PROMPT = "Which lamp color is lit on the traffic lights that face the camera? Answer with one word: red, yellow, green or none."
 PEDESTRIAN_PROMPT = "Is a person walking on a striped crosswalk in this image? Answer with one word: yes or no."
+CROSSWALK_PROMPT = "Is a striped crosswalk painted on the road in this image? Answer with one word: yes or no."
 # 영어 표현은 행동 고르기 프롬프트에만 쓰고, 코드는 지시문 언어와 무관하게 그대로 둠
 ACTIONS = {
     "Stop": "STOP",
@@ -189,8 +190,10 @@ def recognize(llm, frame, result):
         if situation not in (RED, YELLOW, PEDESTRIAN):
             found.append(situation)
     people = class_strip(frame, result, PERSON_CLASSES)
+    # 사람 크롭에는 횡단보도가 보이지 않는 경우가 많아 걷는 사람이면 yes로 답하므로 도로 크롭에서 횡단보도를 확인함(2026-11-06 측정)
     if people is not None and ask_word(llm, people, PEDESTRIAN_PROMPT, ["yes", "no"]) == "yes":
-        found.append(PEDESTRIAN)
+        if ask_word(llm, road_crop(frame), CROSSWALK_PROMPT, ["yes", "no"]) == "yes":
+            found.append(PEDESTRIAN)
     return found
 
 
