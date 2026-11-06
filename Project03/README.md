@@ -62,12 +62,14 @@ Project03/
 ├── hud.py               박스, 버튼, 지시문, 근거 조항 그리기
 ├── gemma.py             상황 인식과 조문 읽기
 ├── build_corpus.py      코퍼스 생성
+├── setup.sh             장비 셋업(패키지, 모델, 글꼴, 엔진, 점검, 시험 실행)
 ├── corpus-current.json  현행 도로교통법과 시행규칙 별표 2
 ├── corpus-2021.json     2021년 공포본 (인덱스가 없어 프로그램이 읽지 않음)
 ├── corpus-california.json  캘리포니아 차량법 제11편
 ├── index-current.json   현행 법령의 상황별 조문 (빌드 결과)
 ├── index-california.json  캘리포니아 법령의 상황별 조문 (빌드 결과)
 ├── vla-output.jsonl     VLA 모델에 넘길 규칙 기록 (실행 때 생기고 git이 무시함)
+├── setup-report.txt     셋업 출력 기록 (실행 때 생기고 git이 무시함)
 ├── tests/               단위 테스트, 개발용·시험용 라벨, Jetson 시간 측정
 ├── EXPLAIN.md           코드 설명
 └── videos/, data/       git이 무시하는 영상과 원본 자료
@@ -77,8 +79,28 @@ Project03/
 
 ### 준비
 
-- 모든 명령은 `Project03/` 폴더에서 실행합니다. `--model` 기본값이 상대 경로 `../src/models/YOLO/yolo11n.pt`이기 때문입니다.
-- Jetson에서는 수업 노트북 `00`, `03`, `04`에서 설치한 환경을 그대로 씁니다. 추가로 설치할 패키지는 없습니다.
+`setup.sh` 하나로 장비를 맞춥니다. Python 3.10이 필요하고 Windows는 지원하지 않습니다.
+
+코드와 AI Hub 영상의 원본이 개발 Mac에만 있으므로 다른 장비는 Mac에서 보냅니다. 저장소 루트에서 실행합니다.
+
+```bash
+bash Project03/setup.sh <사용자>@<주소>
+```
+
+`Project03/`이 이미 있는 장비에서는 그 폴더에서 실행합니다.
+
+```bash
+bash setup.sh
+```
+
+두 명령 모두 여러 번 실행해도 됩니다. 있는 패키지와 파일은 그대로 두고 빠진 것만 맞춥니다.
+
+- **전송:** 코드, 조문 JSON, 시연 영상 4개, `yolo11n.pt`를 `vision-llm/`로 보냅니다(약 600MB). 비밀번호를 여러 번 묻지 않게 하려면 `ssh-copy-id <사용자>@<주소>`를 먼저 실행합니다.
+- **Python:** 활성화된 가상환경, `../.venv-project03` 순서로 씁니다. Jetson에서는 `$HOME` 아래의 수업 `.venv`를 찾아 쓰고, 없으면 `../.venv`를 만듭니다.
+- **패키지:** import가 안 되는 패키지만 아래 표의 버전으로 설치합니다. Jetson은 03, 04, 05 노트북과 같은 명령입니다.
+- **모델:** 없으면 `$HOME` 아래에서 이름과 크기가 같은 파일을 찾아 연결하고, 그래도 없으면 Hugging Face에서 받습니다. 장비가 접속하지 못하면 Mac이 Gemma 파일(4.45GB)을 보냅니다.
+- **글꼴과 엔진:** 한글 글꼴이 없으면 `fonts-noto-cjk`를 설치합니다. Jetson에서는 TensorRT 엔진이 없으면 만듭니다.
+- **점검:** 항목별 통과와 실패를 출력한 뒤 터널 영상 한 프레임을 YOLO와 Gemma로 판단합니다. 마지막에 실행 명령을 출력하고, 출력 전체를 `setup-report.txt`에 남깁니다.
 
 | 패키지 | Jetson 수업 환경 | Mac 개발 환경 (`.venv-project03`) |
 |---|---|---|
@@ -90,18 +112,9 @@ Project03/
 | torch | 2.8.0 | 2.14.1 |
 | llama-cpp-python | 05 노트북 설치본(CUDA 빌드) | 0.3.36(Metal 빌드) |
 
-- Gemma 모델은 05 노트북과 같은 두 파일을 씁니다. 레포에는 넣지 않습니다. 05 노트북의 `hf_hub_download` 셀로 받거나 아래 명령으로 받습니다.
-  - `../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf`(3.46GB, Apache 2.0)
+- Gemma 모델은 05 노트북과 같은 두 파일을 씁니다(Apache 2.0). 레포에는 넣지 않습니다.
+  - `../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf`(3.46GB)
   - `../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf`(0.99GB, 비전 모듈)
-
-```bash
-mkdir -p ../src/models/Gemma4 && curl -L -o ../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf "https://huggingface.co/bartowski/google_gemma-4-E2B-it-GGUF/resolve/main/google_gemma-4-E2B-it-Q4_K_M.gguf"
-```
-
-```bash
-curl -L -o ../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf "https://huggingface.co/bartowski/google_gemma-4-E2B-it-GGUF/resolve/main/mmproj-google_gemma-4-E2B-it-f16.gguf"
-```
-
 - 한글 글꼴은 Noto CJK(`fonts-noto-cjk`), 나눔고딕, Apple SD Gothic Neo 중 설치된 것을 씁니다.
 
 ### 주행 영상
@@ -160,72 +173,49 @@ python -m unittest discover -s tests -t .
 
 측정 기회는 한 번이고 Jetson에서 돌린 적이 없습니다. 아래 순서대로 진행하고 결과를 표에 적습니다. 판단 시간이 3.5초를 넘을 때의 선택은 6단계 표로 정합니다.
 
-### 1. 전날까지 옮기기
+### 1. 전날까지 셋업하기
 
-저장소 루트에서 실행합니다. `Project03/data`와 영상 원본(`.webm`)은 시연에 쓰지 않으므로 뺍니다. 옮길 양은 약 5.2GB입니다.
+Mac의 저장소 루트에서 실행합니다.
 
 ```bash
-rsync -avR --exclude '__pycache__' --exclude 'Project03/data' --exclude '*.webm' Project03 src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf src/models/YOLO/yolo11n.pt <사용자>@<Jetson 주소>:vision-llm/
+bash Project03/setup.sh <사용자>@<Jetson 주소>
 ```
 
-이후 명령은 모두 Jetson의 `vision-llm/Project03/`에서 수업 환경 Python으로 실행합니다.
+마지막 줄에 `모든 점검 통과`와 실행 명령이 나오면 끝입니다. 출력의 `Python:` 줄이 수업 가상환경인지 먼저 확인합니다. `llama-cpp-python`을 새로 빌드하면 수십 분 걸릴 수 있습니다.
 
-### 2. 사전 점검
+| 출력 | 할 일 |
+|---|---|
+| `경고: Jetson Linux R36.4.7` | 05 노트북에 CUDA 메모리 할당 오류 보고가 있습니다. 4단계에서 메모리를 먼저 보고, 오류가 나면 05 노트북의 R36.5 업그레이드 절차를 따릅니다 |
+| `경고: 전력 모드`, `확인 못 함: 전력 모드` | `sudo nvpmodel -q`로 2번(MAXN)인지 보고, 아니면 `sudo nvpmodel -m 2`로 바꿔 04 노트북 안내대로 진행합니다 |
+| `실패: torch CUDA` | 04 노트북 설치를 확인합니다 |
+| `실패: tensorrt, onnx, onnxslim` | 04 노트북의 ONNX 패키지 설치를 확인합니다 |
+| `실패: Gemma4ChatHandler`, `실패: llama-cpp-python GPU 빌드` | `gemma.py`가 실행되지 않거나 CPU로 돕니다. 측정을 멈추고 판단합니다 |
+| `실패: 한글 글꼴` | 글꼴 파일을 `hud.FONT_PATHS`의 경로에 복사합니다 |
+| `실패:` 영상 이름 | 그 영상을 다시 보냅니다 |
+| `실패: yolo11n_736x1280_fp16.engine` | 3단계 끝의 640 엔진으로 바꿉니다 |
+| `실패: 시험 실행` | `setup-report.txt`의 오류를 봅니다. `cudaMalloc failed`면 4단계를 봅니다 |
 
-| 점검 | 통과 조건 | 실패하면 |
-|---|---|---|
-| Jetson Linux 판 | 판을 기록합니다. JetPack 6.2.1은 36.4.4입니다 | r36.4.7에는 Gemma 4 E4B의 CUDA 메모리 부족 보고가 있습니다. 4단계에서 메모리를 먼저 봅니다 |
-| 전력 모드 | 2번(MAXN)입니다 | `sudo nvpmodel -m 2`로 바꾸고 04 노트북 안내대로 진행합니다 |
-| ultralytics, torch, CUDA | `torch.cuda.is_available()`가 True입니다 | 04 노트북 설치를 확인합니다 |
-| tensorrt, onnx, onnxslim | import가 됩니다 | 04 노트북의 ONNX 패키지 설치를 확인합니다 |
-| llama-cpp-python | import가 되고 끝 값이 True입니다 | `Gemma4ChatHandler`가 없으면 `gemma.py`가 실행되지 않습니다. 측정을 멈추고 판단합니다 |
-| 한글 글꼴 | 글꼴 경로를 출력합니다 | `IndexError`면 `hud.py`가 실행되지 않습니다. 글꼴 파일을 `hud.FONT_PATHS`의 경로에 복사합니다 |
-| 시연 영상 | 영상마다 True, 0보다 큰 FPS, True입니다 | FPS가 0이면 `main.py`가 0으로 나눕니다. 영상을 다시 만듭니다 |
-| 파일과 메모리 | Gemma 파일이 3.46GB와 0.99GB이고 디스크 여유가 엔진을 만들 만큼 있습니다 | 파일을 다시 옮깁니다 |
+이후 명령은 모두 Jetson의 `vision-llm/Project03/`에서 실행합니다. 먼저 `Python:` 줄의 가상환경을 활성화합니다.
+
+```bash
+source <가상환경>/bin/activate
+```
+
+### 2. 환경 기록
+
+판을 표에 기록합니다. JetPack 6.2.1은 36.4.4입니다.
 
 ```bash
 cat /etc/nv_tegra_release
 ```
 
 ```bash
-sudo nvpmodel -q
-```
-
-```bash
-python -c "import ultralytics, torch, cv2; print(ultralytics.__version__, torch.__version__, torch.cuda.is_available(), cv2.__version__)"
-```
-
-```bash
-python -c "import tensorrt, onnx, onnxslim; print(tensorrt.__version__, onnx.__version__)"
-```
-
-```bash
-python -c "import llama_cpp, llama_cpp.mtmd_cpp; from llama_cpp.llama_chat_format import Gemma4ChatHandler; print(llama_cpp.__version__, llama_cpp.llama_supports_gpu_offload())"
-```
-
-```bash
-python -c "import hud; print(hud.FONT_PATH)"
-```
-
-```bash
-python -c "import cv2; caps = [(v, cv2.VideoCapture(v)) for v in ['videos/tunnel-korea.mp4', 'videos/beverly-demo.mp4', 'videos/sf-demo.mp4', 'videos/school-zone-stills.mp4']]; [print(v, c.isOpened(), c.get(cv2.CAP_PROP_FPS), c.read()[0]) for v, c in caps]"
-```
-
-```bash
 ls -l ../src/models/Gemma4 && df -h . && free -m
 ```
 
-### 3. TensorRT 엔진 만들기
+### 3. TensorRT 엔진 확인
 
-04 노트북의 ONNX 내보내기와 `trtexec --fp16` 순서이고 입력 크기만 다릅니다.
-
-```bash
-python -c "from ultralytics import YOLO; print(YOLO('../src/models/YOLO/yolo11n.pt').export(format='onnx', imgsz=[736, 1280], batch=1, dynamic=False, simplify=True, opset=20))"
-```
-
-```bash
-/usr/src/tensorrt/bin/trtexec --onnx=$HOME/vision-llm/src/models/YOLO/yolo11n.onnx --saveEngine=$HOME/vision-llm/src/models/YOLO/yolo11n_736x1280_fp16.engine --fp16
-```
+`setup.sh`가 04 노트북의 ONNX 내보내기와 `trtexec --fp16` 순서로 `yolo11n_736x1280_fp16.engine`을 만듭니다. 입력 크기만 04 노트북과 다릅니다.
 
 YOLO 단독 속도를 잽니다.
 
@@ -378,6 +368,7 @@ python build_corpus.py <국가법령정보 Open API 인증키(OC)> data/pubinfo_
 
 ## 한계
 
+- `setup.sh`는 Jetson 실물에서 돌린 적이 없습니다. Mac과 Docker Ubuntu 22.04 arm64에서 전송, 빈 환경 설치, 모델 재사용, 인터넷 차단, 재실행을 확인했고, Jetson 분기는 가짜 `trtexec`로 명령 순서만 확인했습니다. CUDA 빌드, 실제 엔진 생성, GPU 실행은 측정일에 처음 돕니다.
 - 실행 중에는 조문을 검색하지 않습니다. 조문 선택은 빌드 단계에서 끝나고, 그래서 같은 법령과 상황이면 지시문이 같습니다. 장면 내용은 지시문에 들어가지 않습니다.
 - 상황 15개 중 14개는 개발용 라벨의 유형에서, 어린이 보호구역은 시연 자료를 본 뒤 사람이 정의했습니다. 목록 밖 상황에는 지시문이 나오지 않습니다.
 - 어린이 보호구역은 현행에서 Sonnet이 제12조 ③을 골랐고, 이 항이 끌어오는 제12조 ①을 함께 읽어 지시문이 `시속 30킬로미터 이내로 운행해야 합니다.`로 나옵니다. 같은 법령과 상황이면 지시문이 같아 노면 숫자를 반영하지 못합니다. 노면이 20인 구간에서도 30을 말합니다. 캘리포니아는 `속도 제한을 준수해야 합니다.`로 숫자가 나오지 않습니다.
