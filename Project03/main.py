@@ -16,7 +16,7 @@ FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
-VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("비벌리힐스", "videos/beverly-demo.mp4"), ("샌프란시스코", "videos/sf-demo.mp4"), ("보호구역 낱장", "videos/school-zone-stills.mp4"), ("카메라", CAMERA)]
+VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("금문교", "videos/golden-gate.mp4"), ("샌프란시스코", "videos/sf-demo.mp4"), ("보호구역 낱장", "videos/school-zone-stills.mp4"), ("카메라", CAMERA)]
 LAWS = [("현행 도로교통법", "current"), ("캘리포니아 차량법", "california")]
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
