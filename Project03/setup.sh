@@ -293,7 +293,7 @@ result = YOLO(sys.argv[1]).predict(source=frame, conf=DETECT_CONF, iou=0.5, verb
 print("YOLO 탐지", len(result.boxes), "개,", round(time.perf_counter() - start, 2), "초")
 llm = gemma.load_gemma()
 start = time.perf_counter()
-found = gemma.recognize(llm, frame, result)
+found = gemma.recognize(llm, frame, result, False)
 print("Gemma 판단", found, round(time.perf_counter() - start, 2), "초")
 law = gemma.load_law("current")
 situation = found[0] if found and found[0] in law else next(iter(law))
