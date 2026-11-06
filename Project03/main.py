@@ -17,7 +17,7 @@ WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
 # 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
-VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]), ("샌프란시스코", "videos/sf-demo.mp4", [(12, 26)]),
+VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]),
           ("보호구역 낱장", "videos/school-zone-stills.mp4", [(0, 18)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
 READING_SECONDS = 3

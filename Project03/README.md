@@ -192,7 +192,7 @@ mkdir -p videos && curl -L -o videos/wonju-2020-04-16.webm "https://upload.wikim
 
 이 영상은 개발용 평가에 씁니다. 원본의 86~118초를 다시 저장한 `videos/wonju-demo.mp4`는 시연 버튼에서 뺐고, 터널 안 구간(172~178초)이 약 6초뿐이라 터널 시연은 아래 영상으로 합니다. Mac에서 OpenCV `VideoWriter`로 만들었습니다.
 
-**샌프란시스코 영상(미국 캘리포니아).** 위키미디어 공용의 [San Francisco Downtown Driving Tour, 2023 California, USA](https://commons.wikimedia.org/wiki/File:San_Francisco_Downtown_Driving_Tour,_2023_California,_USA._Travel_Guide,_(4K_HDR).webm)을 씁니다. 촬영자는 ZERO ONE이고 라이선스는 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0)입니다. 시연에는 원본의 860~950초를 1280×720, 30 FPS mp4로 다시 저장한 `videos/sf-demo.mp4`를 씁니다. 같은 원본의 1876~1952초를 `videos/golden-gate.mp4`(76초, 30 FPS, `mpeg4`)로 저장했습니다. 금문교를 건너는 구간이고, 같은 장면에서 법령을 바꾸면 현행은 앞지르기 금지, 캘리포니아는 구조물에 안전한 속도로 지시가 달라집니다.
+**샌프란시스코 영상(미국 캘리포니아).** 위키미디어 공용의 [San Francisco Downtown Driving Tour, 2023 California, USA](https://commons.wikimedia.org/wiki/File:San_Francisco_Downtown_Driving_Tour,_2023_California,_USA._Travel_Guide,_(4K_HDR).webm)을 씁니다. 촬영자는 ZERO ONE이고 라이선스는 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0)입니다. 같은 원본의 1876~1952초를 `videos/golden-gate.mp4`(76초, 30 FPS, `mpeg4`)로 저장했습니다. 금문교를 건너는 구간이고, 같은 장면에서 법령을 바꾸면 현행은 앞지르기 금지, 캘리포니아는 구조물에 안전한 속도로 지시가 달라집니다.
 
 **터널 영상(한국 블랙박스).** AI Hub `교통법규 위반 상황 데이터`(71555) 검증 데이터의 터널 진로변경 사례 10개의 프레임을 이어 `videos/tunnel-korea.mp4`(약 86초, 10 FPS, 1280×720)를 만들었습니다. 쓴 사례는 `data/aihub-71555/tunnel/_clip-cases.json`에 있습니다. 사례 경계에서 장면이 끊깁니다. 번호판이 보이는 프레임이 있어 외부 공개 자료에 넣지 않습니다.
 
