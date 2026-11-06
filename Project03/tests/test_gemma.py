@@ -60,6 +60,43 @@ class GemmaTest(unittest.TestCase):
         self.assertEqual(road_crop(frame).shape[:2], (266, 896))
 
 
+class RecognizeTest(unittest.TestCase):
+    def run_recognize(self, boxes, words, choice):
+        """정해 둔 답을 내는 시험용 모델로 recognize를 부르는 메서드"""
+        answers = list(words)
+
+        class Llm:
+            """객관식과 낱말 답을 정해 둔 시험용 클래스"""
+
+            def tokenize(self, text, add_bos):
+                return [text[0]]
+
+            def create_chat_completion(self, messages, max_tokens, temperature, logit_bias=None):
+                return {"choices": [{"message": {"content": answers.pop(0) if logit_bias else choice}}]}
+
+        return gemma.recognize(Llm(), np.zeros((720, 1280, 3), np.uint8), Result(boxes))
+
+    def test_light_answer_decides_signal(self):
+        self.assertEqual(self.run_recognize(Boxes, ["red"], "2, 14"), [SITUATIONS[0], SITUATIONS[13]])
+        self.assertEqual(self.run_recognize(Boxes, ["yellow"], "0"), [SITUATIONS[1]])
+        self.assertEqual(self.run_recognize(Boxes, ["green"], "1"), [])
+
+    def test_no_boxes_skip_crop_calls(self):
+        self.assertEqual(self.run_recognize(EmptyBoxes, [], "14"), [SITUATIONS[13]])
+        self.assertNotIn("light", gemma.STATUS["answers"])
+
+    def test_pedestrian_needs_crosswalk(self):
+        class PersonBoxes:
+            """사람 박스 하나를 담은 시험용 클래스"""
+
+            xyxy = np.array([[100.0, 100.0, 150.0, 200.0]])
+            cls = np.array([0.0])
+
+        self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "yes"], "0"), [SITUATIONS[7]])
+        self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "no"], "0"), [])
+        self.assertEqual(self.run_recognize(PersonBoxes, ["no"], "8"), [])
+
+
 class ActionTest(unittest.TestCase):
     def test_read_provision_returns_action_code(self):
         class Llm:

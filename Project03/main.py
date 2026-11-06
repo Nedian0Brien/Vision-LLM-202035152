@@ -9,15 +9,18 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
-from gemma import load_gemma, load_law, watch
+from gemma import STATUS, load_gemma, load_law, watch
 from hud import button_boxes, draw, draw_panel
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
-VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("금문교", "videos/golden-gate.mp4"), ("샌프란시스코", "videos/sf-demo.mp4"), ("보호구역 낱장", "videos/school-zone-stills.mp4"), ("카메라", CAMERA)]
-LAWS = [("현행 도로교통법", "current"), ("캘리포니아 차량법", "california")]
+# 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
+VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(44, 62)]), ("금문교", "videos/golden-gate.mp4", [(28, 58)]), ("샌프란시스코", "videos/sf-demo.mp4", [(12, 26)]),
+          ("보호구역 낱장", "videos/school-zone-stills.mp4", [(0, 18)]), ("카메라", CAMERA, [])]
+FAST_SPEED = 8
+LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california")]
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
     "v4l2src device=/dev/video0 ! "
@@ -32,8 +35,8 @@ parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
-selected = {"video": [path for name, path in VIDEOS].index(args.video), "law": 0}
-buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]})
+selected = {"video": [path for name, path, focus in VIDEOS].index(args.video), "law": 0}
+buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path, focus in VIDEOS], "law": [name for name, short in LAWS]})
 
 
 def on_click(event, x, y, flags, param):
@@ -57,6 +60,7 @@ threading.Thread(target=watch, args=(load_gemma(), laws, shared), daemon=True).s
 cap = cv2.VideoCapture()
 current_video = None
 drawn_view = None
+drawn_state = None
 displayed_fps = 0.0
 
 while True:
@@ -91,20 +95,36 @@ while True:
     if is_camera:
         frame = frame[60:420]
     frame = cv2.resize(frame, FRAME_SIZE)
-    results = model.predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)
-    # draw가 프레임에 박스를 그리므로 Gemma에는 복사본을 넘김
-    shared["input"] = (frame.copy(), results[0])
+    position = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000
+    fast = not is_camera and not [start for start, end in VIDEOS[current_video][2] if start <= position < end]
+    if fast:
+        # 배속 구간에서는 프레임을 건너뛰고 입력을 비워 YOLO와 Gemma를 돌리지 않음
+        for skipped in range(FAST_SPEED - 1):
+            cap.grab()
+        result = None
+        if shared["input"] is not None:
+            shared["input"] = None
+            shared["clip"] = {"last_seen": {}, "rules": []}
+            STATUS["stage"] = "skip"
+    else:
+        result = model.predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
+        # draw가 프레임에 박스를 그리므로 Gemma에는 복사본을 넘김
+        shared["input"] = (frame.copy(), result)
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
     rules = shared["clip"]["rules"]
     view = (selected["video"], selected["law"], rules)
+    state = (STATUS["cycle"], STATUS["stage"])
+    if view != drawn_view or state != drawn_state:
+        drawn_state = state
+        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules, STATUS, LAWS[selected["law"]][0])
     if view != drawn_view:
         drawn_view = view
-        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules)
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
         with open(OUTPUT_PATH, "a", encoding="utf-8") as file:
             file.write(json.dumps({"time": time.time(), "rules": rules}, ensure_ascii=False) + "\n")
+        STATUS["outputs"] += 1
 
     elapsed_time = time.perf_counter() - start_time
     current_fps = 1.0 / elapsed_time
@@ -114,7 +134,7 @@ while True:
     else:
         displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
 
-    output_frame = draw(frame, results[0], panel_image, displayed_fps)
+    output_frame = draw(frame, result, panel_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 

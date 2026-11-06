@@ -38,6 +38,7 @@ SITUATIONS = [
     "a child protection school zone, shown by red pavement, the words 어린이 보호구역 painted on the road or a school zone sign",
 ]
 RED, YELLOW, PEDESTRIAN = SITUATIONS[0], SITUATIONS[1], SITUATIONS[7]
+SITUATION_NAMES = ["적색 신호", "황색 신호", "정지 표지", "양보 표지", "회전 금지", "속도 제한", "앞지르기 금지", "횡단보도 보행자", "버스 전용차로", "노면전차", "공사 구간", "터널 앞지르기", "터널 전조등", "다리 위", "어린이 보호구역"]
 # 상황마다 예시를 하나씩 둠. 적색과 보행자를 한 예시에 묶었을 때는 횡단보도 선택 21번이 모두 적색과 함께 나왔음(2026-11-05 개발용 측정)
 RECOGNIZE_PROMPT = (
     "Possible situations:\n"
@@ -100,6 +101,8 @@ READ_CHARS = 240
 HOLD_SECONDS = 3.5
 
 default_vision_params = mtmd_cpp.mtmd_context_params_default
+# 화면이 모듈별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
+STATUS = {"stage": "wait", "cycle": 0, "images": {}, "boxes": {}, "answers": {}, "found": [], "outputs": 0}
 
 
 def vision_params():
@@ -125,6 +128,17 @@ def load_law(short):
     """법령의 상황별 조문 사전을 불러오는 함수"""
     with open(f"index-{short}.json", encoding="utf-8") as file:
         return json.load(file)["picks"]
+
+
+def start_stage(stage):
+    """지금 도는 모델 호출을 화면 상태에 적는 함수"""
+    STATUS["stage"] = stage
+    STATUS["started"] = time.perf_counter()
+
+
+def end_stage(stage, answer):
+    """모델 호출의 답과 걸린 시간을 화면 상태에 적는 함수"""
+    STATUS["answers"][stage] = (answer, time.perf_counter() - STATUS["started"])
 
 
 def image_part(image, tokens):
@@ -168,25 +182,47 @@ def recognize(llm, frame, result):
         height, width = frame.shape[:2]
         signs = frame[int(0.1 * height):int(0.6 * height), :int(0.55 * width)]
     # 고정 크롭을 YOLO 크롭으로 바꾸어 현행 개발용 수치가 22/53에서 31/53으로 오름(2026-11-05)
-    content = [image_part(frame, 280), image_part(signs, 140), image_part(road_crop(frame), 140), {"type": "text", "text": RECOGNIZE_PROMPT}]
+    road = road_crop(frame)
+    lights = class_strip(frame, result, LIGHT_CLASSES)
+    people = class_strip(frame, result, PERSON_CLASSES)
+    classes = result.boxes.cls.tolist()
+    STATUS.update(cycle=STATUS["cycle"] + 1, images={"frame": frame, "signs": signs, "road": road, "lights": lights, "people": people},
+                  boxes={"all": len(classes), "lights": classes.count(9.0), "stops": classes.count(11.0), "people": classes.count(0.0)})
+    start_stage("choice")
+    content = [image_part(frame, 280), image_part(signs, 140), image_part(road, 140), {"type": "text", "text": RECOGNIZE_PROMPT}]
     response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=20, temperature=0)
+    end_stage("choice", response["choices"][0]["message"]["content"].strip())
     found = []
     # 신호 색과 횡단보도는 객관식에서 오인식이 많아 대상만 자른 크롭으로 따로 물음(2026-11-05 개발용 측정, 현행 28/53에서 31/53)
-    lights = class_strip(frame, result, LIGHT_CLASSES)
     if lights is not None:
+        start_stage("light")
         color = ask_word(llm, lights, LIGHT_PROMPT, ["red", "yellow", "green", "none"])
+        end_stage("light", color)
         if color == "red":
             found.append(RED)
         if color == "yellow":
             found.append(YELLOW)
+    else:
+        STATUS["answers"].pop("light", None)
     for situation in parse_situations(response["choices"][0]["message"]["content"]):
         if situation not in (RED, YELLOW, PEDESTRIAN):
             found.append(situation)
-    people = class_strip(frame, result, PERSON_CLASSES)
     # 사람 크롭에는 횡단보도가 보이지 않는 경우가 많아 걷는 사람이면 yes로 답하므로 도로 크롭에서 횡단보도를 확인함(2026-11-06 측정)
-    if people is not None and ask_word(llm, people, PEDESTRIAN_PROMPT, ["yes", "no"]) == "yes":
-        if ask_word(llm, road_crop(frame), CROSSWALK_PROMPT, ["yes", "no"]) == "yes":
-            found.append(PEDESTRIAN)
+    if people is not None:
+        start_stage("pedestrian")
+        walking = ask_word(llm, people, PEDESTRIAN_PROMPT, ["yes", "no"])
+        end_stage("pedestrian", walking)
+        STATUS["answers"].pop("crosswalk", None)
+        if walking == "yes":
+            start_stage("crosswalk")
+            crosswalk = ask_word(llm, road, CROSSWALK_PROMPT, ["yes", "no"])
+            end_stage("crosswalk", crosswalk)
+            if crosswalk == "yes":
+                found.append(PEDESTRIAN)
+    else:
+        STATUS["answers"].pop("pedestrian", None)
+        STATUS["answers"].pop("crosswalk", None)
+    STATUS["found"] = [SITUATION_NAMES[SITUATIONS.index(situation)] for situation in found]
     return found
 
 
@@ -198,12 +234,17 @@ def read_provision(llm, situation, article):
     # create_completion이 BOS를 스스로 붙이므로 프롬프트에 쓰지 않음
     prompt = f"<|turn>user\n{READ_PROMPT}{READ_EXAMPLES}Situation: {situation}\nProvisions:\n[1] {text}\nAnswer:<turn|>\n<|turn>model\n"
     # 행동이 정해진 6개 밖으로 나가지 않도록 첫 토큰을 6개로 제한함
+    start_stage("action")
     first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, ACTIONS))["choices"][0]["text"].strip()
     code = [code for action, code in ACTIONS.items() if action.startswith(first)][0]
+    end_stage("action", code)
+    start_stage("instruction")
     ask = f"<|turn>user\n{INSTRUCTION_PROMPT.format(text=text, situation=situation)}<turn|>\n<|turn>model\n"
     answer = llm.create_completion(ask, max_tokens=30, temperature=0, stop=["\n", "<turn|>"])["choices"][0]["text"]
     # Gemma가 문장을 마크다운 강조로 감싸기도 함
-    return {"law": article["id"], "action": code, "instruction": answer.strip().strip("*"), "text": text}
+    instruction = answer.strip().strip("*")
+    end_stage("instruction", instruction)
+    return {"law": article["id"], "action": code, "instruction": instruction, "text": text}
 
 
 def watch(llm, laws, shared):
@@ -230,3 +271,4 @@ def watch(llm, laws, shared):
                     readings[(law, situation)] = read_provision(llm, situation, laws[law][situation])
                 rules.append(readings[(law, situation)])
         clip["rules"] = rules
+        STATUS["stage"] = "wait"
