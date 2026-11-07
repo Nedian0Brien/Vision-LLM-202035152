@@ -117,7 +117,7 @@ class RecognizeTest(unittest.TestCase):
 
             def create_completion(self, tokens, **kwargs):
                 Llm.asked.append(tokens)
-                return {"choices": [{"text": " Roundabout ahead; none"}]}
+                return {"choices": [{"text": " Roundabout ahead; headlights on; Ordinary driving; no specific hazards visible; none"}]}
 
         self.assertEqual(gemma.describe_scene(Llm()), ["roundabout ahead"])
         self.assertEqual(Llm.asked, [[5, 6, 9]])

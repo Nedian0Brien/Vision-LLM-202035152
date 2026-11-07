@@ -145,6 +145,9 @@ FREE_PROMPT = (
 # 앞 호출의 답 뒤에 모델 차례를 닫고 사용자 차례와 새 모델 차례를 여는 Gemma 4 대화 형식(llama-cpp-python 0.3.26 이상의 GGUF 템플릿)
 NEXT_TURN = "<turn|>\n<|turn>user\n{prompt}<turn|>\n<|turn>model\n"
 FREE_PHRASES = 3
+# 장면에 있는 대상이 아니라 "특별한 것 없음"이나 행동을 적은 구절은 검색하면 장면과 관계없는 규칙을 끌어와 불용어처럼 뺌(2026-11-08 사용자 지시, 개발용 47장에서 나온 구절)
+STOP_PHRASES = ["none", "ordinary driving", "headlights on"]
+STOP_PREFIXES = ["no specific", "no special", "no traffic"]
 # 한 프레임의 구절 묶음을 상황 하나로 다루고, 검색할 때 다시 구절로 나눔
 PHRASE_JOIN = "; "
 NO_LAW = "none"
@@ -471,7 +474,7 @@ def describe_scene(llm):
     phrases = []
     for part in answer.split(";"):
         phrase = part.strip(" .\n").lower()
-        if phrase and phrase != "none" and phrase not in phrases:
+        if phrase and phrase not in STOP_PHRASES and not phrase.startswith(tuple(STOP_PREFIXES)) and phrase not in phrases:
             phrases.append(phrase)
     phrases = phrases[:FREE_PHRASES]
     end_stage("free", ", ".join(phrases) if phrases else "없음", [], llm.n_tokens)
