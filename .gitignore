@@ -7,6 +7,7 @@ docs/wiki
 Project03/videos
 Project03/data
 Project03/output
+Project03/EXPLAIN.md
 src/models/*
 src/datasets/*
 .env
