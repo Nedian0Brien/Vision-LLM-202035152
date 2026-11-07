@@ -53,8 +53,8 @@ parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
-selected = {"video": [path for name, path, focus in VIDEOS].index(args.video), "law": 0}
-buttons = button_boxes(VIDEO_WIDTH, {"video": [name for name, path, focus in VIDEOS], "law": [name for name, short in LAWS]})
+selected = {"video": [path for name, path in VIDEOS].index(args.video), "law": 0}
+buttons = button_boxes(VIDEO_WIDTH, {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]})
 
 
 def toggle_listening():
