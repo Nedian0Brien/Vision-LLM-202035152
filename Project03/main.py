@@ -9,8 +9,9 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
-from gemma import NO_LAW, STATUS, load_gemma, load_law, watch
-from hud import CALLS, VIDEO_WIDTH, button_boxes, draw, draw_nodes, draw_panel
+from gemma import NO_LAW, STATUS, load_corpus, load_embedder, load_gemma, load_law, watch
+from hud import CALLS, MIC_BOX, VIDEO_WIDTH, button_boxes, draw, draw_nodes, draw_panel
+from voice import listen, speak_loop
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
@@ -23,6 +24,8 @@ VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(0, 18)]), ("금문교", "video
 FAST_SPEED = 8
 # YOLO 결과가 약 3프레임 늦게 나오므로 화면도 그만큼 늦춰 박스를 맞춤(2026-11-07 Mac 측정, 어긋남 평균 2.3프레임에서 0.7프레임)
 DISPLAY_DELAY = 3
+ANSWER_SECONDS = 15
+SPEECH_REPEAT_SECONDS = 10
 READING_SECONDS = 3
 SCENE_SECONDS = 1
 LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california"), ("조문 없음", NO_LAW)]
@@ -52,9 +55,30 @@ selected = {"video": [path for name, path, focus in VIDEOS].index(args.video), "
 buttons = button_boxes(VIDEO_WIDTH, {"video": [name for name, path, focus in VIDEOS], "law": [name for name, short in LAWS]})
 
 
+def start_listening():
+    """듣는 중이 아니면 음성 질문 스레드를 시작하는 함수"""
+    if not shared["listening"]:
+        threading.Thread(target=listen, args=(shared,), daemon=True).start()
+
+
+def terminal_questions():
+    """터미널에 입력한 줄을 질문 칸에 넣는 함수"""
+    # OpenCV 창은 한글 조합 입력을 받지 못해 터미널에서 받음
+    # 터미널 없이 실행하면 입력이 바로 끝나므로 이 스레드만 멈춤
+    try:
+        while True:
+            line = input().strip()
+            if line:
+                shared["question"] = line
+    except EOFError:
+        return
+
+
 def on_click(event, x, y, flags, param):
-    """버튼을 누르면 고른 영상이나 법령 번호를 바꾸는 함수"""
+    """버튼을 누르면 고른 영상이나 법령 번호를 바꾸거나 음성 질문을 시작하는 함수"""
     if event == cv2.EVENT_LBUTTONDOWN:
+        if MIC_BOX[0] <= x <= MIC_BOX[2] and MIC_BOX[1] <= y <= MIC_BOX[3]:
+            start_listening()
         for group, index, name, (x1, y1, x2, y2) in buttons:
             if x1 <= x <= x2 and y1 <= y <= y2:
                 selected[group] = index
@@ -96,14 +120,20 @@ def detect_boxes():
 
 
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
-shared = {"frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
+shared = {"question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
+          "frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
 laws = {short: load_law(short) for name, short in LAWS}
-threading.Thread(target=watch, args=(load_gemma(), laws, shared), daemon=True).start()
+corpora = {short: load_corpus(short) for name, short in LAWS}
+threading.Thread(target=watch, args=(load_gemma(), laws, shared, load_embedder(), corpora), daemon=True).start()
+threading.Thread(target=speak_loop, args=(shared,), daemon=True).start()
+threading.Thread(target=terminal_questions, daemon=True).start()
+print("터미널에 질문을 입력하거나 창에서 m 키로 음성 질문을 시작합니다")
 
 cap = cv2.VideoCapture()
 current_video = None
 threading.Thread(target=detect_boxes, daemon=True).start()
 waiting = []
+spoken_time = {}
 shown_time = time.perf_counter()
 next_time = shown_time
 drawn_view = None
@@ -175,11 +205,17 @@ while True:
     rules = shared["clip"]["rules"]
     view = (selected["video"], selected["law"], rules)
     now = time.perf_counter()
-    # 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 줌
+    if shared["answer"] and now - shared["answer_time"] >= ANSWER_SECONDS:
+        shared["answer"] = None
+    # 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 주고 읽어 줌
     for rule in rules:
         if rule not in shown_rules:
             reading = rule
             reading_since = now
+            # 유지 시간이 끊겼다 다시 나온 같은 지시는 다시 읽지 않고, 답변을 읽는 동안에도 끼어들지 않음
+            if now - spoken_time.get(rule["instruction"], -SPEECH_REPEAT_SECONDS) >= SPEECH_REPEAT_SECONDS and not shared["answer"]:
+                shared["speech"] = rule["instruction"]
+                spoken_time[rule["instruction"]] = now
     shown_rules = rules
     if now - reading_since >= READING_SECONDS:
         reading = None
@@ -191,8 +227,12 @@ while True:
     elif STATUS["stage"] in CALLS and STATUS["stage"] != scene and now - scene_since >= SCENE_SECONDS:
         scene = STATUS["stage"]
         scene_since = now
-    state = (scene, reading is None, phase, STATUS["answers"].get(scene))
+    answer = shared["answer"]
+    voice = {"listening": shared["listening"], "thinking": shared["thinking"], "answer": answer, "error": shared["voice_error"]}
+    state = (scene, reading is None, phase, STATUS["answers"].get(scene), voice["listening"], voice["thinking"], id(answer), voice["error"])
     nodes = shared["clip"]["nodes"]
+    if answer:
+        nodes = [{"situation": article["id"], "article": article, "fresh": True, "instruction": "질문의 근거 후보"} for article in answer["articles"]]
     # 생성 중인 노드가 있을 때만 스피너 번호가 바뀌어 열을 다시 그림
     spinner = int(now * 8) % 8 if [node for node in nodes if node["instruction"] is None] else 0
     node_state = ([(node["situation"], node["fresh"], node["instruction"]) for node in nodes], spinner)
@@ -201,7 +241,7 @@ while True:
         nodes_image = draw_nodes(FRAME_SIZE[1], nodes, spinner)
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        panel_image = draw_panel(FRAME_SIZE[1], VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase)
+        panel_image = draw_panel(FRAME_SIZE[1], VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
     if view != drawn_view:
         drawn_view = view
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
@@ -226,8 +266,11 @@ while True:
     # waitKey가 요청보다 오래 걸려도 오차가 쌓이지 않도록 재생 시각을 기준으로 기다림(2026-11-07 Mac 측정, 25 FPS에서 29 FPS)
     next_time = max(next_time + frame_ms / 1000, time.perf_counter())
     wait_ms = max(1, int((next_time - time.perf_counter()) * 1000))
-    if cv2.waitKey(wait_ms) & 0xFF == ord("q"):
+    key = cv2.waitKey(wait_ms) & 0xFF
+    if key == ord("q"):
         break
+    if key == ord("m"):
+        start_listening()
 
 cap.release()
 cv2.destroyAllWindows()

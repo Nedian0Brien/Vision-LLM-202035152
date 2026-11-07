@@ -7,6 +7,7 @@ import unittest
 import numpy as np
 
 import gemma
+import voice
 from detect import LIGHT_CLASSES, class_strip, road_crop
 from gemma import CROP_SITUATIONS, SITUATIONS, load_law, parse_situations
 
@@ -190,6 +191,53 @@ class ActionTest(unittest.TestCase):
         self.assertEqual(len(set(gemma.ACTIONS.values())), len(gemma.ACTIONS))
 
 
+class QuestionTest(unittest.TestCase):
+    def test_search_returns_closest_articles(self):
+        class Embedder:
+            """질문을 고정 벡터로 바꾸는 시험용 클래스"""
+
+            def embed(self, text, normalize):
+                return [1.0, 0.0]
+
+        corpus = {"articles": [{"id": "a"}, {"id": "b"}, {"id": "c"}, {"id": "d"}], "vectors": np.array([[0.0, 1.0], [1.0, 0.0], [0.5, 0.5], [0.9, 0.1]], dtype=np.float32)}
+        self.assertEqual([article["id"] for article in gemma.search_law(Embedder(), "질문", corpus)], ["b", "d", "c"])
+
+    def test_no_law_answers_without_search(self):
+        class Model:
+            """프롬프트를 저장하고 고정 답을 내는 시험용 클래스"""
+
+            def create_completion(self, prompt, **kwargs):
+                self.prompt = prompt
+                return {"choices": [{"text": " **답** "}]}
+
+        model = Model()
+        result = gemma.answer_question(model, None, "질문", {"articles": [], "vectors": None})
+        self.assertEqual((result["answer"], result["articles"]), ("답", []))
+        self.assertNotIn("Traffic law text", model.prompt)
+
+
+class VoiceTest(unittest.TestCase):
+    def test_listen_reports_missing_microphone(self):
+        original = voice.speech_to_text
+        self.addCleanup(lambda: setattr(voice, "speech_to_text", original))
+
+        def fail():
+            raise OSError
+
+        voice.speech_to_text = fail
+        shared = {"listening": False, "speaking": False, "question": None, "voice_error": None}
+        voice.listen(shared)
+        self.assertEqual((shared["listening"], shared["question"], shared["voice_error"]), (False, None, "마이크를 쓸 수 없습니다"))
+
+    def test_listen_puts_question(self):
+        original = voice.speech_to_text
+        self.addCleanup(lambda: setattr(voice, "speech_to_text", original))
+        voice.speech_to_text = lambda: "소화전 앞에 세워도 되나요"
+        shared = {"listening": False, "speaking": False, "question": None, "voice_error": None}
+        voice.listen(shared)
+        self.assertEqual(shared["question"], "소화전 앞에 세워도 되나요")
+
+
 class WatchTest(unittest.TestCase):
     def run_watch(self, answers):
         """가짜 인식 결과를 한 사이클씩 내주며 watch를 돌리는 메서드"""
@@ -209,8 +257,8 @@ class WatchTest(unittest.TestCase):
         gemma.recognize = recognize
         gemma.read_provision = lambda llm, situation, article: {"law": situation, "instruction": situation}
         self.addCleanup(lambda: (setattr(gemma, "recognize", original[0]), setattr(gemma, "read_provision", original[1])))
-        self.shared = {"input": ("frame", "result"), "law": "current", "clip": {"last_seen": {}, "rules": []}}
-        self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared), daemon=True)
+        self.shared = {"question": None, "input": ("frame", "result"), "law": "current", "clip": {"last_seen": {}, "rules": []}}
+        self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared, None, {}), daemon=True)
         self.thread.start()
         self.addCleanup(self.finish)
 

@@ -15,6 +15,7 @@ from detect import BUS_CLASSES, HYDRANT_CLASSES, LIGHT_CLASSES, PERSON_CLASSES, 
 
 LLM_PATH = "../src/models/Gemma4/google_gemma-4-E2B-it-Q4_K_M.gguf"
 VISION_PATH = "../src/models/Gemma4/mmproj-google_gemma-4-E2B-it-f16.gguf"
+EMBED_PATH = "../src/models/EmbeddingGemma/embeddinggemma-300M-Q8_0.gguf"
 # 비전 모듈은 48픽셀 칸 하나를 토큰 하나로 읽음
 TOKEN_PIXELS = 48
 GEMMA_THREADS = 2
@@ -109,6 +110,14 @@ INSTRUCTION_PROMPT = (
 )
 # 조문 없음 모드의 지시문이고 조문을 읽는 프롬프트와 다른 점은 법령 본문이 없다는 것뿐임
 CLOSED_PROMPT = "What must a driver do now under traffic law when the camera sees {situation}? Answer in Korean as one short command of at most 10 words."
+# 질문에 답할 때도 조문 없음 모드와 조문을 읽는 프롬프트의 차이는 법령 본문뿐임
+ANSWER_PROMPT = (
+    "Traffic law text:\n{text}\nA driver asks: {question}\n"
+    "Answer in Korean in at most two short sentences using only this law text. If this text does not answer the question, say 해당 조문을 찾지 못했습니다."
+)
+CLOSED_ANSWER_PROMPT = "A driver asks: {question}\nAnswer in Korean in at most two short sentences."
+# 질문 18개로 쟀을 때 상위 3개에 정답 조문이 든 비율이 키워드 검색보다 높았음(2026-11-07 개발용, 현행 14/17, 2006년 14/16, 캘리포니아 8/11)
+SEARCH_TOP = 3
 NO_LAW = "none"
 NO_ARTICLE = {"id": "조문 없음", "title": "", "text": "", "references": []}
 # 인식이 완벽하다고 가정한 개발용 수치는 120자 44/53, 240자 46/53, 400자 39/53이었음(2026-11-05)
@@ -137,6 +146,37 @@ def load_law(short):
         return {situation: NO_ARTICLE for situation in SITUATIONS + CROP_SITUATIONS}
     with open(f"index-{short}.json", encoding="utf-8") as file:
         return json.load(file)["picks"]
+
+
+def load_embedder():
+    """질문을 벡터로 바꾸는 임베딩 모델을 불러오는 함수"""
+    return Llama(model_path=EMBED_PATH, embedding=True, pooling_type=llama_cpp.LLAMA_POOLING_TYPE_MEAN, n_ctx=2048, n_batch=2048, n_ubatch=2048,
+                 n_gpu_layers=0, n_threads=GEMMA_THREADS, verbose=False)
+
+
+def load_corpus(short):
+    """법령의 전체 항목과 미리 만든 벡터를 불러오는 함수"""
+    if short == NO_LAW:
+        return {"articles": [], "vectors": None}
+    with open(f"corpus-{short}.json", encoding="utf-8") as file:
+        return {"articles": json.load(file)["articles"], "vectors": np.load(f"vectors-{short}.npy")}
+
+
+def search_law(embedder, question, corpus):
+    """질문과 가장 가까운 법령 항목을 찾는 함수"""
+    query = np.array(embedder.embed("task: search result | query: " + question, normalize=True), dtype=np.float32)
+    order = np.argsort(-(corpus["vectors"] @ query))
+    return [corpus["articles"][int(index)] for index in order[:SEARCH_TOP]]
+
+
+def answer_question(llm, embedder, question, corpus):
+    """질문에 맞는 조문을 찾아 읽고 답을 만드는 함수"""
+    articles = search_law(embedder, question, corpus) if corpus["articles"] else []
+    text = "\n".join([f"[{article['id']}] {article['title']} {article['text'][:READ_CHARS]}" for article in articles])
+    prompt = ANSWER_PROMPT.format(text=text, question=question) if articles else CLOSED_ANSWER_PROMPT.format(question=question)
+    ask = f"<|turn>user\n{prompt}<turn|>\n<|turn>model\n"
+    answer = llm.create_completion(ask, max_tokens=80, temperature=0, stop=["<turn|>"])["choices"][0]["text"]
+    return {"question": question, "answer": answer.strip().replace("**", ""), "articles": articles}
 
 
 def start_stage(stage):
@@ -272,11 +312,21 @@ def read_provision(llm, situation, article):
     return {"law": article["id"], "action": code, "instruction": instruction, "text": text}
 
 
-def watch(llm, laws, shared):
+def watch(llm, laws, shared, embedder, corpora):
     """최신 프레임으로 상황을 인식하고 조문을 읽어 규칙 목록을 계속 갱신하는 함수"""
     # 같은 법령과 상황은 입력이 같아 출력도 같으므로 처음 읽은 결과를 다시 씀(2026-11-05 27개 상황 일치 측정)
     readings = {}
     while True:
+        # Llama 객체는 동시에 부를 수 없어 판단 주기 사이에 질문을 처리함
+        if shared["question"] is not None:
+            question = shared["question"]
+            shared["question"] = None
+            shared["thinking"] = question
+            shared["answer"] = answer_question(llm, embedder, question, corpora[shared["law"]])
+            shared["answer_time"] = time.perf_counter()
+            shared["thinking"] = None
+            shared["speech"] = shared["answer"]["answer"]
+            continue
         # 묶음을 입력보다 먼저 읽어야 새 묶음에 이전 영상 프레임의 판단이 들어가지 않음
         clip = shared["clip"]
         current = shared["input"]

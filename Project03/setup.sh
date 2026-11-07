@@ -31,7 +31,7 @@ send_and_setup() {
     rsync -avRP "${includes[@]}" --include 'Project03/videos/*-meta.txt' --exclude 'Project03/videos/*' \
         --exclude 'Project03/data' --exclude '__pycache__' --exclude '.ruff_cache' \
         --exclude 'Project03/setup-report.txt' --exclude 'Project03/jetson-*' --exclude 'Project03/vla-output.jsonl' \
-        Project03 src/models/YOLO/yolo11n.pt "$target:$REMOTE_DIR/" || exit 1
+        Project03 src/models/YOLO/yolo11n.pt src/models/EmbeddingGemma/embeddinggemma-300M-Q8_0.gguf "$target:$REMOTE_DIR/" || exit 1
     ssh -t "$target" "cd $REMOTE_DIR/Project03 && bash setup.sh"
     status=$?
     # 장비가 Hugging Face에 접속하지 못할 때만 이 컴퓨터의 Gemma 파일을 보냄

@@ -54,6 +54,8 @@ RAIL_Y = 356
 ROW_HEIGHT = 27
 RAIL_GAP = 18
 CARD_TOP = 424
+# 법령 탭 줄의 오른쪽 끝에 놓는 버튼의 창 좌표
+MIC_BOX = (VIDEO_WIDTH + 540, TAB_ROWS[1], VIDEO_WIDTH + PANEL_WIDTH - 28, TAB_ROWS[1] + 26)
 IMAGE_SIZE = (292, 164)
 # 호출마다 보여 줄 입력 이미지와 지금 하는 일
 CALLS = {"choice": ("frame", "Gemma가 장면을 보고 있습니다"), "light": ("lights", "Gemma가 신호 색을 읽고 있습니다"),
@@ -168,7 +170,24 @@ def draw_law_card(pen, status, rule, phase):
             y += 22
 
 
-def draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase):
+def draw_answer_card(pen, voice):
+    """질문과 답 또는 음성 입력 상태를 그리는 함수"""
+    y = CARD_TOP
+    if voice["listening"]:
+        pen.text((28, y), "듣고 있습니다", font=RESULT_FONT, fill=ACCENT)
+        return
+    if voice["thinking"]:
+        pen.text((28, y), wrap(voice["thinking"], MEDIUM_FONT, 584)[0], font=MEDIUM_FONT, fill=SOFT)
+        pen.text((28, y + 32), "법령을 찾아 답을 쓰고 있습니다", font=RESULT_FONT, fill=ACCENT)
+        return
+    pen.text((28, y), wrap(voice["answer"]["question"], MEDIUM_FONT, 584)[0], font=MEDIUM_FONT, fill=SOFT)
+    y += 30
+    for line in wrap(voice["answer"]["answer"], RESULT_FONT, 584)[:4]:
+        pen.text((28, y), line, font=RESULT_FONT, fill=INK)
+        y += 34
+
+
+def draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase, voice):
     """탭, 지시문, 근거 조항, 처리 단계를 그린 패널 이미지를 만드는 함수"""
     image = Image.new("RGB", (PANEL_WIDTH, height), PANEL)
     pen = ImageDraw.Draw(image)
@@ -178,6 +197,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
         pen.text((x1 - frame_width, y1), name, font=SMALL_FONT, fill=INK if chosen else FAINT)
         if chosen:
             pen.line((x1 - frame_width, y2 - 1, x2 - frame_width, y2 - 1), fill=ACCENT, width=2)
+    pen.text((MIC_BOX[0] - frame_width, MIC_BOX[1]), "음성 질문", font=SMALL_FONT, fill=ACCENT if voice["listening"] else SOFT)
     y = HERO_TOP
     if rules:
         # 규칙은 처음 나온 순서로 쌓이므로 가장 새로 나온 규칙을 크게 그림
@@ -203,7 +223,10 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
             pen.text((28, y), f"외 {hidden}개", font=SMALL_FONT, fill=SOFT)
     else:
         pen.text((28, y), "적용할 규칙 없음", font=LARGE_FONT, fill=FAINT)
-    if scene == "skip":
+    if voice["listening"] or voice["thinking"] or voice["answer"]:
+        draw_rail(pen, 1 if voice["listening"] else 3 if voice["thinking"] else 4)
+        draw_answer_card(pen, voice)
+    elif scene == "skip":
         draw_rail(pen, -1)
         pen.text((28, CARD_TOP), "모델을 멈추고 다음 장면으로 건너뜁니다", font=SMALL_FONT, fill=SOFT)
     elif reading is not None:
@@ -215,7 +238,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
             draw_recognition_card(image, pen, status, scene)
     pen.text((28, 618), "VLA 출력", font=TINY_FONT, fill=FAINT)
     pen.text((100, 616), wrap("  ".join([rule["action"] for rule in rules]) if rules else "없음", SMALL_FONT, 500)[0], font=SMALL_FONT, fill=INK if rules else FAINT)
-    pen.text((28, 696), f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=FAINT)
+    pen.text((28, 696), voice["error"] or f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=ACCENT if voice["error"] else FAINT)
     return np.array(image)
 
 

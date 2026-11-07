@@ -13,3 +13,5 @@ src/models/*
 src/datasets/*
 .env
 __pycache__/
+.venv-piper
+Project03/speech

@@ -74,6 +74,10 @@
 |---|---|---|
 | `load_gemma()` | 비전 모듈을 붙인 Gemma를 불러온다. | `main.py` |
 | `load_law(short)` | 법령의 상황별 조문 사전을 불러온다. | `main.py` |
+| `load_embedder()` | 질문을 벡터로 바꾸는 임베딩 모델을 불러온다. | `main.py` |
+| `load_corpus(short)` | 법령의 전체 항목과 미리 만든 벡터를 불러온다. | `main.py` |
+| `search_law(embedder, question, corpus)` | 질문과 가장 가까운 법령 항목을 찾는다. | `answer_question` |
+| `answer_question(llm, embedder, question, corpus)` | 질문에 맞는 조문을 찾아 읽고 답을 만든다. | `watch` |
 | `start_stage(stage)` | 지금 도는 모델 호출을 화면 상태에 적는다. | `recognize`, `read_provision` |
 | `end_stage(stage, answer, odds, tokens)` | 모델 호출의 답, 걸린 시간, 답별 확률, 입력 토큰 수를 화면 상태에 적는다. | `recognize`, `read_provision` |
 | `answer_odds(llm, words)` | 방금 호출에서 모델이 낱말마다 매긴 점수를 낱말끼리의 확률로 바꾼다. | `recognize`, `read_provision` |
@@ -97,6 +101,7 @@
 | `draw_law_card(pen, status, rule, phase)` | 새 규칙이 나올 때 조문, 읽기, 출력을 한 단계씩 그린다. | `draw_panel` |
 | `draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase)` | 탭, 지시문, 근거 조항, 처리 단계를 그린 패널 이미지를 만든다. | `main.py` 영상 루프 |
 | `wrap(text, font, width)` | 글자 폭을 재어 패널 폭에 맞게 줄을 나눈다. | `draw_panel` |
+| `draw_answer_card(pen, voice)` | 질문과 답 또는 음성 입력 상태를 그린다. | `draw_panel` |
 | `draw(frame, result, panel_image, nodes_image, fps)` | 프레임에 박스와 클래스 이름을 그리고 패널과 조문 열을 붙인 화면을 만든다. | `main.py` 영상 루프 |
 
 ### main.py
@@ -104,6 +109,8 @@
 | 함수 | 하는 일 | 호출 위치 |
 |---|---|---|
 | `detect_boxes()` | 가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘긴다. | `threading.Thread` |
+| `start_listening()` | 듣는 중이 아니면 음성 질문 스레드를 시작한다. | `on_click`, 영상 루프 |
+| `terminal_questions()` | 터미널에 입력한 줄을 질문 칸에 넣는다. | `threading.Thread` |
 | `on_click(event, x, y, flags, param)` | 버튼을 누르면 고른 영상이나 법령 번호를 바꾼다. | `cv2.setMouseCallback`을 통해 OpenCV 창이 부른다. |
 
 ### build_corpus.py
@@ -126,7 +133,8 @@
 | `ultralytics` | YOLO11n 탐지 |
 | `llama_cpp` | Gemma E2B 실행, 이미지 입력, 답 제한, 마지막 점수 읽기 |
 | `PIL` | 패널의 한글 그리기 |
-| `threading` | 영상 루프와 YOLO, Gemma 스레드 분리 |
+| `threading` | 영상 루프와 YOLO, Gemma, 음성, 터미널 입력 스레드 분리 |
+| `subprocess` | Whisper, Piper, 녹음, 재생 명령 실행 |
 | `base64` | 이미지를 data URL로 변환 |
 | `json` | 인덱스 읽기, VLA 출력 쓰기 |
 | `argparse`, `time`, `os` | 실행 인자, 시간 측정, 글꼴 경로 확인 |
