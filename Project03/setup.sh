@@ -15,7 +15,7 @@ VISION_FILE=mmproj-google_gemma-4-E2B-it-f16.gguf
 GEMMA_URL=https://huggingface.co/bartowski/google_gemma-4-E2B-it-GGUF/resolve/main
 YOLO_URL=https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt
 ENGINE_FILE=yolo11n_736x1280_fp16.engine
-VIDEOS=(tunnel-seoul.mp4 bridge-olympic.mp4 school-zone-busan.mp4 rain-seoul.mp4 school-bus-korea.mp4 hydrant-sf.mp4)
+VIDEOS=(tunnel-seoul.mp4 golden-gate.mp4 school-zone-busan.mp4 rain-seoul.mp4 school-bus-korea.mp4 hydrant-sf.mp4)
 EXIT_NO_DOWNLOAD=3
 # Jetson 수업 환경과 같은 버전을 받는 torch 저장소(03 노트북)
 JETSON_INDEX=https://pypi.jetson-ai-lab.io/jp6/cu126
