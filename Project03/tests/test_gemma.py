@@ -72,7 +72,7 @@ class GemmaTest(unittest.TestCase):
 
 
 class RecognizeTest(unittest.TestCase):
-    def run_recognize(self, boxes, words, choice, in_school_zone=False):
+    def run_recognize(self, boxes, words, choice, in_school_zone=False, free="none"):
         """정해 둔 답을 내는 시험용 모델로 recognize를 부르는 메서드"""
         answers = list(words)
 
@@ -85,6 +85,8 @@ class RecognizeTest(unittest.TestCase):
                 return [text[0]]
 
             def create_chat_completion(self, messages, max_tokens, temperature, logit_bias=None):
+                if messages[0]["content"][-1]["text"] == gemma.FREE_PROMPT:
+                    return {"choices": [{"message": {"content": free}}]}
                 return {"choices": [{"message": {"content": answers.pop(0) if logit_bias else choice}}]}
 
         return gemma.recognize(Llm(), np.zeros((720, 1280, 3), np.uint8), Result(boxes), in_school_zone)
@@ -93,6 +95,12 @@ class RecognizeTest(unittest.TestCase):
         self.assertEqual(self.run_recognize(Boxes, ["red", "no"], "2, 14"), [SITUATIONS[0], SITUATIONS[13]])
         self.assertEqual(self.run_recognize(Boxes, ["yellow", "no"], "0"), [SITUATIONS[1]])
         self.assertEqual(self.run_recognize(Boxes, ["green", "no"], "1"), [])
+
+    def test_free_phrases_become_one_situation(self):
+        found = self.run_recognize(EmptyBoxes, ["no"], "0", free="Inside a road tunnel; speed limit sign 40.; none")
+        self.assertEqual(found, ["inside a road tunnel; speed limit sign 40"])
+        self.assertTrue(gemma.is_free(found[0]))
+        self.assertFalse(gemma.is_free(SITUATIONS[0]) or gemma.is_free(CROP_SITUATIONS[0]))
 
     def test_no_boxes_skip_crop_calls(self):
         self.assertEqual(self.run_recognize(EmptyBoxes, ["no"], "14"), [SITUATIONS[13]])
@@ -317,6 +325,46 @@ class FindRulesTest(unittest.TestCase):
         found = gemma.find_rules(Llm(), Embedder(), np.zeros((720, 1280, 3), np.uint8), "situation", {"id": "z"}, corpus)
         self.assertEqual([rule["law"] for rule in found], ["z", "x"])
 
+    def test_free_phrases_search_each_phrase_without_excluded_rules(self):
+        names = ["x", "y", "z"]
+        rules = [{"id": name, "title": "", "text": "", "action": "CAUTION", "instruction": name, "instruction_en": name, "scene": name, "general": name == "x"} for name in names]
+        corpus = {"rules": rules, "rule_vectors": np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]], np.float32)}
+        searched = []
+
+        class Embedder:
+            def embed(self, text, normalize):
+                searched.append(text)
+                return [1.0, 0.9, 0.0] if text.endswith("p") else [0.0, 0.0, 1.0]
+
+        class Llm:
+            n_tokens = 0
+            prompt = None
+
+            def create_chat_completion(self, messages, **kwargs):
+                Llm.prompt = messages[0]["content"][-1]["text"]
+                return {"choices": [{"message": {"content": "1, 2"}}]}
+
+        original = gemma.RULE_TOP
+        gemma.RULE_TOP = 1
+        self.addCleanup(lambda: setattr(gemma, "RULE_TOP", original))
+        found = gemma.find_rules(Llm(), Embedder(), np.zeros((720, 1280, 3), np.uint8), "p; q", {"id": None}, corpus, {("x", "x")})
+        self.assertEqual(len(searched), 2)
+        self.assertEqual([rule["law"] for rule in found], ["y", "z"])
+        self.assertIn("this image: p; q.", Llm.prompt)
+
+    def test_free_situation_skips_general_and_taken_rules(self):
+        self.addCleanup(gemma.WATCHING.clear)
+        rules = [{"id": name, "instruction": name, "general": name == "g"} for name in ("g", "t", "n")]
+        clip = {"last_seen": {SITUATIONS[0]: time.perf_counter()}}
+        gemma.WATCHING.update({"clip": clip, "llm": None, "embedder": None, "frame": None, "laws": {"current": {}}, "corpora": {"current": {"rules": rules}},
+                               "readings": {("current", SITUATIONS[0]): [{"law": "t", "instruction": "t"}]}})
+        calls = []
+        original = gemma.find_rules
+        gemma.find_rules = lambda llm, embedder, frame, situation, article, corpus, exclude=(): calls.append((article, exclude)) or []
+        self.addCleanup(lambda: setattr(gemma, "find_rules", original))
+        gemma.find_law_rules("current", "a red fire truck")
+        self.assertEqual(calls, [({"id": None}, {("g", "g"), ("t", "t")})])
+
 
 class PublishTest(unittest.TestCase):
     def setUp(self):
@@ -324,6 +372,10 @@ class PublishTest(unittest.TestCase):
         gemma.find_rules = lambda llm, embedder, frame, situation, article, corpus: [rule(situation)]
         self.addCleanup(lambda: setattr(gemma, "find_rules", original))
         self.addCleanup(gemma.WATCHING.clear)
+        # 시험용 상황 a, b를 목록 상황으로 다룸
+        free = gemma.is_free
+        gemma.is_free = lambda situation: False
+        self.addCleanup(lambda: setattr(gemma, "is_free", free))
         self.clip = {"last_seen": {}, "rules": []}
         laws = {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}
         gemma.WATCHING.update({"shared": {"clip": self.clip}, "clip": self.clip, "law": "current", "laws": laws, "llm": None, "embedder": None, "corpora": {"current": None}, "frame": None,
@@ -358,6 +410,10 @@ class WatchTest(unittest.TestCase):
         gemma.recognize = recognize
         gemma.find_rules = lambda llm, embedder, frame, situation, article, corpus: [rule(situation)]
         self.addCleanup(lambda: (setattr(gemma, "recognize", original[0]), setattr(gemma, "find_rules", original[1])))
+        # 시험용 상황 a, b를 목록 상황으로 다룸
+        free = gemma.is_free
+        gemma.is_free = lambda situation: False
+        self.addCleanup(lambda: setattr(gemma, "is_free", free))
         self.shared = {"question": None, "input": ("frame", "result"), "law": "current", "clip": {"last_seen": {}, "rules": []}}
         self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared, None, {"current": None}), daemon=True)
         self.thread.start()

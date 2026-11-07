@@ -127,6 +127,23 @@ CHOOSE_PROMPT = (
     "A self-driving car sees this image: {situation}.\nTraffic rules found for this scene:\n{options}0. none of these rules applies now\n"
     "Which rules must the car follow right now? Reply with only the numbers of all rules that apply, separated by commas, or 0."
 )
+# 정해 둔 상황 목록 밖의 장면도 찾도록 Gemma가 장면을 짧은 영어 구절로 적음(2026-11-07 사용자 지시, PC 실험 fD)
+FREE_PROMPT = (
+    "You are the eyes of a self-driving car. Name what traffic law cares about in this road scene: places such as tunnels, bridges, "
+    "school zones, crossings or work zones, and signs, road markings, lights and road users ahead. "
+    "Reply with at most three short English phrases separated by semicolons, or none if it is ordinary driving.\n"
+    "Examples:\n"
+    "Dark walls and ceiling lamps surround the road. Answer: inside a road tunnel\n"
+    "Railings and open water lie on both sides of the road. Answer: on a bridge over a river\n"
+    "Red pavement with 어린이 보호구역 painted on it. Answer: child protection school zone\n"
+    "Barriers close a lane and a gate arm is down across rails. Answer: railroad crossing with a lowered gate\n"
+    "A sign by the road shows the number 40. Answer: speed limit sign 40\n"
+    "A green light ahead and cars in front. Answer: none\n"
+    "Answer:"
+)
+FREE_PHRASES = 3
+# 한 프레임의 구절 묶음을 상황 하나로 다루고, 검색할 때 다시 구절로 나눔
+PHRASE_JOIN = "; "
 NO_LAW = "none"
 NO_ARTICLE = {"id": "조문 없음", "title": "", "text": "", "references": []}
 # 인식이 완벽하다고 가정한 개발용 수치는 120자 44/53, 240자 46/53, 400자 39/53이었음(2026-11-05)
@@ -259,15 +276,22 @@ def ask_word(llm, stage, image, question, words):
     return answer
 
 
-def find_rules(llm, embedder, frame, situation, article, corpus):
+def find_rules(llm, embedder, frame, situation, article, corpus, exclude=()):
     """빌드 때 고른 조문의 요약을 기본 규칙으로 두고, 검색한 관련 규칙 가운데 Gemma가 고른 것을 덧붙이는 함수"""
     start_stage("search")
-    query = np.array(embedder.embed("task: search result | query: " + situation, normalize=True), dtype=np.float32)
-    scores = corpus["rule_vectors"] @ query
+    # 목록 상황은 문장 하나이고, 자유 구절 묶음은 구절마다 검색해 후보를 모음
+    queries = [np.array(embedder.embed("task: search result | query: " + phrase, normalize=True), dtype=np.float32) for phrase in situation.split(PHRASE_JOIN)]
+    allowed = np.array([(rule["id"], rule["instruction"]) not in exclude for rule in corpus["rules"]])
     # 한 조문에서 조건별 요약이 여러 개 나오므로 상황 문장과 가장 가까운 요약을 기본 규칙으로 씀
     own = [position for position, rule in enumerate(corpus["rules"]) if rule["id"] == article["id"]]
-    found = [corpus["rules"][max(own, key=lambda position: scores[position])]] if own else []
-    others = [corpus["rules"][int(position)] for position in np.argsort(-scores)[:RULE_TOP] if corpus["rules"][int(position)] not in found]
+    found = [corpus["rules"][max(own, key=lambda position: corpus["rule_vectors"][position] @ queries[0])]] if own else []
+    others = []
+    for query in queries:
+        scores = np.where(allowed, corpus["rule_vectors"] @ query, -np.inf)
+        for position in np.argsort(-scores)[:RULE_TOP]:
+            rule = corpus["rules"][int(position)]
+            if allowed[int(position)] and rule not in found and rule not in others:
+                others.append(rule)
     end_stage("search", f"후보 {len(others)}개", [], 0)
     if others:
         start_stage("choose")
@@ -291,7 +315,7 @@ def publish(found):
     now = time.perf_counter()
     for situation in found:
         clip["last_seen"][situation] = now
-    recent = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS]
+    recent = recent_situations(clip)
     active = recent
     # 이미 찾은 규칙은 바로 올리고, 새 상황의 규칙은 찾을 때마다 뒤에 붙여 가장 새 규칙으로 보이게 함
     pending = [situation for situation in active if (law, situation) not in readings]
@@ -309,9 +333,27 @@ def find_law_rules(law, situation):
     """한 법령과 상황의 규칙을 찾는 함수"""
     if law == NO_LAW:
         return [read_provision(WATCHING["llm"], situation, NO_ARTICLE)]
+    corpus = WATCHING["corpora"][law]
+    if is_free(situation):
+        # 어디서나 적용되는 일반 규칙을 빼야 장면에 맞지 않는 지시가 줄고, 목록 상황에서 이미 찾은 규칙은 다시 고르지 않음(2026-11-07 PC 실험, 현행 잘못된 지시 13에서 9)
+        taken = {(rule["law"], rule["instruction"]) for situation_seen in recent_situations(WATCHING["clip"]) if not is_free(situation_seen)
+                 for rule in WATCHING["readings"].get((law, situation_seen), [])}
+        general = {(rule["id"], rule["instruction"]) for rule in corpus["rules"] if rule["general"]}
+        return find_rules(WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, {"id": None}, corpus, general | taken)
     # 빌드 때 기본 조문을 정하지 못한 상황도 관련 규칙은 검색해 Gemma가 고르게 함(2026-11-07 사용자 지시, 캘리포니아 통학버스 §22454)
     article = WATCHING["laws"][law].get(situation, {"id": None})
-    return find_rules(WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, article, WATCHING["corpora"][law])
+    return find_rules(WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, article, corpus)
+
+
+def is_free(situation):
+    """상황이 Gemma가 적은 자유 구절 묶음인지 가리는 함수"""
+    return situation not in SITUATIONS and situation not in CROP_SITUATIONS
+
+
+def recent_situations(clip):
+    """최근 HOLD_SECONDS 안에 본 상황 목록을 만드는 함수"""
+    now = time.perf_counter()
+    return [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS]
 
 
 def compare_rules(recent):
@@ -328,8 +370,7 @@ def fill_compare():
     if "clip" not in WATCHING or judging_old_clip():
         return
     clip, laws, readings = WATCHING["clip"], WATCHING["laws"], WATCHING["readings"]
-    now = time.perf_counter()
-    recent = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS]
+    recent = recent_situations(clip)
     for short in laws:
         for situation in recent:
             if (short, situation) not in readings:
@@ -407,7 +448,27 @@ def recognize(llm, frame, result, in_school_zone):
         if ask_word(llm, "zebra", road, ZEBRA_PROMPT, YES_NO) == "yes":
             found.append(SCHOOL_CROSSWALK)
             publish(found)
+    # 목록 상황 판단을 먼저 화면에 내고, 마지막에 목록 밖 장면을 자유 구절로 찾음
+    phrases = describe_scene(llm, frame, signs, road)
+    if phrases:
+        found.append(PHRASE_JOIN.join(phrases))
+        publish(found)
     return found
+
+
+def describe_scene(llm, frame, signs, road):
+    """장면에서 교통법규와 관련된 것을 짧은 영어 구절 목록으로 적게 하는 함수"""
+    start_stage("free")
+    content = [image_part(frame, 280), image_part(signs, 140), image_part(road, 140), {"type": "text", "text": FREE_PROMPT}]
+    answer = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=24, temperature=0)["choices"][0]["message"]["content"]
+    phrases = []
+    for part in answer.split(";"):
+        phrase = part.strip(" .\n").lower()
+        if phrase and phrase != "none" and phrase not in phrases:
+            phrases.append(phrase)
+    phrases = phrases[:FREE_PHRASES]
+    end_stage("free", ", ".join(phrases) if phrases else "없음", [], llm.n_tokens)
+    return phrases
 
 
 def read_provision(llm, situation, article):

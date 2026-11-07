@@ -6,7 +6,8 @@
 "instruction": "교통 정리 요원이 지시하면 그 지시를 따르십시오.",
 "instruction_en": "Obey directions from an authorized traffic regulator wearing official insignia.",
 "action": "CAUTION",
-"scene": "Person in official insignia directing traffic in the road"
+"scene": "Person in official insignia directing traffic in the road",
+"general": false
 },
 {
 "id": "CVC §21209(a)",
@@ -15,7 +16,8 @@
 "instruction": "자전거 차로 주행 금지, 회전 준비는 교차로 200피트 이내만 가능.",
 "instruction_en": "Stay out of bicycle lanes except to park, enter, exit, or turn within 200 feet.",
 "action": "KEEP_OUT",
-"scene": "Marked bicycle lane beside the car lane on a roadway"
+"scene": "Marked bicycle lane beside the car lane on a roadway",
+"general": false
 },
 {
 "id": "CVC §21452(a)",
@@ -24,7 +26,8 @@
 "instruction": "황색 신호에서는 녹색 종료와 적색 임박을 경고하니 주의하십시오.",
 "instruction_en": "A steady yellow signal warns that green is ending and red follows.",
 "action": "CAUTION",
-"scene": "Steady yellow traffic signal ahead at an intersection"
+"scene": "Steady yellow traffic signal ahead at an intersection",
+"general": false
 },
 {
 "id": "CVC §21454(b)",
@@ -33,7 +36,8 @@
 "instruction": "차로 신호가 황색이면 차로 변경이 진행 중이니 주의하십시오.",
 "instruction_en": "A steady yellow lane signal warns that a lane control change is being made.",
 "action": "CAUTION",
-"scene": "Steady yellow lane-use control signal above a lane"
+"scene": "Steady yellow lane-use control signal above a lane",
+"general": false
 },
 {
 "id": "CVC §21454(c)",
@@ -42,7 +46,8 @@
 "instruction": "적색 차로 신호가 켜진 차로에는 진입·주행하지 마십시오.",
 "instruction_en": "Do not enter or travel in a lane showing a steady red lane signal.",
 "action": "KEEP_OUT",
-"scene": "Red X lane-use control signal above a lane"
+"scene": "Red X lane-use control signal above a lane",
+"general": false
 },
 {
 "id": "CVC §21455",
@@ -51,7 +56,8 @@
 "instruction": "교차로 밖 신호등에서는 정지선이나 횡단보도 앞에서 정지하십시오.",
 "instruction_en": "At a signal outside an intersection, stop at the sign, crosswalk, or limit line.",
 "action": "STOP",
-"scene": "Traffic signal at a freeway on-ramp or midblock with limit line"
+"scene": "Traffic signal at a freeway on-ramp or midblock with limit line",
+"general": false
 },
 {
 "id": "CVC §21457(b)",
@@ -60,7 +66,8 @@
 "instruction": "점멸 황색 신호에서는 주의하며 통과하십시오.",
 "instruction_en": "Proceed only with caution past a flashing yellow signal.",
 "action": "CAUTION",
-"scene": "Flashing yellow signal at an intersection"
+"scene": "Flashing yellow signal at an intersection",
+"general": false
 },
 {
 "id": "CVC §21460(a)",
@@ -69,7 +76,8 @@
 "instruction": "이중 황색 실선 구간에서는 선의 왼쪽으로 주행하지 마십시오.",
 "instruction_en": "Do not drive to the left of double solid yellow lines.",
 "action": "KEEP_OUT",
-"scene": "Double solid yellow center lines on a two-way road"
+"scene": "Double solid yellow center lines on a two-way road",
+"general": false
 },
 {
 "id": "CVC §21460(b)",
@@ -78,7 +86,8 @@
 "instruction": "이중 백색 실선 구간에서는 선을 넘지 마십시오.",
 "instruction_en": "Do not cross double solid white lines.",
 "action": "KEEP_OUT",
-"scene": "Double solid white lines separating lanes"
+"scene": "Double solid white lines separating lanes",
+"general": false
 },
 {
 "id": "CVC §21460(c)",
@@ -87,7 +96,8 @@
 "instruction": "한쪽이 점선인 이중선은 점선 쪽에서 앞지를 때만 넘으십시오.",
 "instruction_en": "Cross double lines with one broken line only when overtaking from the broken side.",
 "action": "NO_OVERTAKING",
-"scene": "Double yellow lines, one solid and one broken, on a road"
+"scene": "Double yellow lines, one solid and one broken, on a road",
+"general": false
 },
 {
 "id": "CVC §21460.5(c)",
@@ -96,7 +106,8 @@
 "instruction": "양방향 좌회전 차선에서는 좌회전·U턴 준비나 실행 때만 주행하십시오.",
 "instruction_en": "Use a two-way left-turn lane only to prepare for or make left turns or U-turns.",
 "action": "KEEP_OUT",
-"scene": "Center lane with dashed and solid double yellow lines"
+"scene": "Center lane with dashed and solid double yellow lines",
+"general": false
 },
 {
 "id": "CVC §21460.5(c)",
@@ -105,7 +116,8 @@
 "instruction": "양방향 좌회전 차선에서는 200피트를 넘게 주행하지 마십시오.",
 "instruction_en": "Do not drive more than 200 feet in a two-way left-turn lane.",
 "action": "KEEP_OUT",
-"scene": "Center two-way left-turn lane with left-turn arrows"
+"scene": "Center two-way left-turn lane with left-turn arrows",
+"general": false
 },
 {
 "id": "CVC §21460.5(c)",
@@ -114,7 +126,8 @@
 "instruction": "양방향 좌회전 차선이 있으면 다른 차로에서 좌회전·U턴하지 마십시오.",
 "instruction_en": "Do not turn left or U-turn from another lane where a two-way left-turn lane exists.",
 "action": "KEEP_OUT",
-"scene": "Road with center two-way left-turn lane, car in outer lane"
+"scene": "Road with center two-way left-turn lane, car in outer lane",
+"general": false
 },
 {
 "id": "CVC §21462(a)",
@@ -123,7 +136,8 @@
 "instruction": "신호는 경찰관 지시나 충돌 회피·비상 때를 제외하고 따르십시오.",
 "instruction_en": "Obey official traffic signals unless an officer directs otherwise or to avoid collision.",
 "action": "CAUTION",
-"scene": "Traffic signal at an intersection, possibly with an officer"
+"scene": "Traffic signal at an intersection, possibly with an officer",
+"general": true
 },
 {
 "id": "CVC §21454(d)",
@@ -132,7 +146,8 @@
 "instruction": "점멸 황색 차로 신호 아래 차로는 좌회전 목적으로만 쓰십시오.",
 "instruction_en": "Use a lane under a flashing yellow lane signal only for left turns.",
 "action": "CAUTION",
-"scene": "Overhead flashing yellow lane control signal above a lane"
+"scene": "Overhead flashing yellow lane control signal above a lane",
+"general": false
 },
 {
 "id": "CVC §21367(b)",
@@ -141,7 +156,8 @@
 "instruction": "공사 구간에서는 교통 통제 요원의 지시를 따르십시오.",
 "instruction_en": "Obey the person directing traffic in the road work zone.",
 "action": "CAUTION",
-"scene": "Worker directing traffic in a highway construction zone"
+"scene": "Worker directing traffic in a highway construction zone",
+"general": false
 },
 {
 "id": "CVC §21367(c)",
@@ -150,7 +166,8 @@
 "instruction": "공사 구간에서는 경고 표지와 신호 등 통제 장치를 따르십시오.",
 "instruction_en": "Comply with warning signs and lights in the road work zone.",
 "action": "CAUTION",
-"scene": "Warning signs and flashing lights at highway construction site"
+"scene": "Warning signs and flashing lights at highway construction site",
+"general": false
 },
 {
 "id": "CVC §21211(a)",
@@ -159,7 +176,8 @@
 "instruction": "자전거도로에서는 자전거 통행을 막는 정차를 하지 마십시오.",
 "instruction_en": "Do not stop on a bike path where you block bicyclists.",
 "action": "KEEP_OUT",
-"scene": "Vehicle stopped on a bike path with bicyclists approaching"
+"scene": "Vehicle stopped on a bike path with bicyclists approaching",
+"general": false
 },
 {
 "id": "CVC §21211(b)",
@@ -168,7 +186,8 @@
 "instruction": "자전거도로에는 자전거 통행을 막는 주차를 하지 마십시오.",
 "instruction_en": "Do not park on a bikeway where you block bicyclists.",
 "action": "KEEP_OUT",
-"scene": "Parked vehicle blocking a marked bikeway"
+"scene": "Parked vehicle blocking a marked bikeway",
+"general": false
 },
 {
 "id": "CVC §21260(a)",
@@ -177,7 +196,8 @@
 "instruction": "제한속도 35마일 초과 도로에서는 저속 차량을 운행하지 마십시오.",
 "instruction_en": "Do not operate a low-speed vehicle on roads above 35 mph.",
 "action": "KEEP_OUT",
-"scene": "Low-speed vehicle entering a road with speed limit above 35 mph"
+"scene": "Low-speed vehicle entering a road with speed limit above 35 mph",
+"general": false
 },
 {
 "id": "CVC §21655.9(b)",
@@ -186,7 +206,8 @@
 "instruction": "HOV 차로에 혼자 탄 채 진입하려면 식별 스티커를 부착하십시오.",
 "instruction_en": "Single occupant in HOV lane requires the decal displayed and registration carried.",
 "action": "KEEP_OUT",
-"scene": "HOV lane entrance with sign, vehicle with single occupant"
+"scene": "HOV lane entrance with sign, vehicle with single occupant",
+"general": false
 },
 {
 "id": "CVC §21656",
@@ -195,7 +216,8 @@
 "instruction": "뒤에 차량 5대 이상이 따르면 가장 가까운 대피 구간으로 비켜 주십시오.",
 "instruction_en": "With five or more vehicles queued behind, pull into the nearest turnout.",
 "action": "YIELD",
-"scene": "Slow vehicle on two-lane road, long queue behind, turnout sign ahead"
+"scene": "Slow vehicle on two-lane road, long queue behind, turnout sign ahead",
+"general": false
 },
 {
 "id": "CVC §21660",
@@ -204,7 +226,8 @@
 "instruction": "마주 오는 차와는 서로 오른쪽으로 지나가십시오.",
 "instruction_en": "Pass oncoming vehicles to the right.",
 "action": "CAUTION",
-"scene": "Oncoming vehicle approaching on a two-way road"
+"scene": "Oncoming vehicle approaching on a two-way road",
+"general": false
 },
 {
 "id": "CVC §21660",
@@ -213,7 +236,8 @@
 "instruction": "차로 구분이 없으면 마주 오는 차에 도로 절반 이상을 내주십시오.",
 "instruction_en": "On undivided roads, give oncoming drivers at least half the roadway.",
 "action": "YIELD",
-"scene": "Narrow road without lane markings, oncoming vehicle"
+"scene": "Narrow road without lane markings, oncoming vehicle",
+"general": false
 },
 {
 "id": "CVC §21664",
@@ -222,7 +246,8 @@
 "instruction": "고속도로는 지정된 진입 램프와 진출 램프로만 드나드십시오.",
 "instruction_en": "Enter or exit freeways only via designated on-ramps and off-ramps.",
 "action": "KEEP_OUT",
-"scene": "Freeway edge with no ramp, access-controlled barrier"
+"scene": "Freeway edge with no ramp, access-controlled barrier",
+"general": false
 },
 {
 "id": "CVC §21703",
@@ -231,7 +256,8 @@
 "instruction": "앞차와는 속도와 도로 상태에 맞게 합당한 안전거리를 유지하십시오.",
 "instruction_en": "Keep a reasonable, prudent following distance from the vehicle ahead.",
 "action": "CAUTION",
-"scene": "Vehicle directly ahead on the road at close range"
+"scene": "Vehicle directly ahead on the road at close range",
+"general": true
 },
 {
 "id": "CVC §21705",
@@ -240,7 +266,8 @@
 "instruction": "시가지 밖 차량 행렬 주행 시 차 사이를 100피트 이상 띄우십시오.",
 "instruction_en": "In a caravan outside town, keep at least 100 feet between vehicles.",
 "action": "CAUTION",
-"scene": "Convoy of vehicles driving on a rural highway"
+"scene": "Convoy of vehicles driving on a rural highway",
+"general": false
 },
 {
 "id": "CVC §21708",
@@ -249,7 +276,8 @@
 "instruction": "소방 호스 위나 옆을 지나 호스를 손상시키며 주행하지 마십시오.",
 "instruction_en": "Do not drive over or damage a fire hose.",
 "action": "KEEP_OUT",
-"scene": "Fire hose lying across the road"
+"scene": "Fire hose lying across the road",
+"general": false
 },
 {
 "id": "CVC §21711",
@@ -258,7 +286,8 @@
 "instruction": "견인 중 뒤 차량이 좌우로 흔들리면 그 상태로 주행하지 마십시오.",
 "instruction_en": "Do not drive a towed train whose vehicle whips or swerves sideways.",
 "action": "CAUTION",
-"scene": "Towed trailer swerving side to side behind towing vehicle"
+"scene": "Towed trailer swerving side to side behind towing vehicle",
+"general": false
 },
 {
 "id": "CVC §21712(a)",
@@ -267,7 +296,8 @@
 "instruction": "차량의 승객용이 아닌 부분에 사람을 알고도 태우지 마십시오.",
 "instruction_en": "Do not knowingly let anyone ride on a non-passenger part of the vehicle.",
 "action": "CAUTION",
-"scene": "Person riding on the outside of a vehicle"
+"scene": "Person riding on the outside of a vehicle",
+"general": false
 },
 {
 "id": "CVC §21712(c)",
@@ -276,7 +306,8 @@
 "instruction": "차량 트렁크에 사람을 알고도 태우지 마십시오.",
 "instruction_en": "Do not knowingly let anyone ride in the trunk.",
 "action": "CAUTION",
-"scene": "Vehicle with a person inside the open trunk"
+"scene": "Vehicle with a person inside the open trunk",
+"general": false
 },
 {
 "id": "CVC §21712(g)",
@@ -285,7 +316,8 @@
 "instruction": "트레일러를 견인할 때는 트레일러 안에 승객을 태우지 마십시오.",
 "instruction_en": "Do not tow a trailer coach or camp trailer containing a passenger.",
 "action": "CAUTION",
-"scene": "Pickup towing a camp trailer on a road"
+"scene": "Pickup towing a camp trailer on a road",
+"general": false
 },
 {
 "id": "CVC §21712(h)",
@@ -294,7 +326,8 @@
 "instruction": "오토바이, 자전거, 스케이트 등에 탄 사람을 알고도 견인하지 마십시오.",
 "instruction_en": "Do not knowingly tow a person riding a bicycle, skates, or sled.",
 "action": "CAUTION",
-"scene": "Person on bicycle or skates holding onto a vehicle for towing"
+"scene": "Person on bicycle or skates holding onto a vehicle for towing",
+"general": false
 },
 {
 "id": "CVC §21716",
@@ -303,7 +336,8 @@
 "instruction": "골프카트는 시속 25마일 이하 속도 구역 밖 도로에서 운행하지 마십시오.",
 "instruction_en": "Golf carts may use highways only in speed zones of 25 mph or less.",
 "action": "KEEP_OUT",
-"scene": "Golf cart on a road with higher speed limit sign"
+"scene": "Golf cart on a road with higher speed limit sign",
+"general": false
 },
 {
 "id": "CVC §21750(a)",
@@ -312,7 +346,8 @@
 "instruction": "앞지를 때는 앞차에 지장 없는 안전거리를 두고 왼쪽으로 지나가십시오.",
 "instruction_en": "Pass overtaken vehicles on the left at a safe distance.",
 "action": "CAUTION",
-"scene": "Vehicle ahead moving slower in same direction, left lane open"
+"scene": "Vehicle ahead moving slower in same direction, left lane open",
+"general": true
 },
 {
 "id": "CVC §21755(a)",
@@ -321,7 +356,8 @@
 "instruction": "오른쪽 앞지르기는 안전이 확보될 때만 하십시오.",
 "instruction_en": "Pass on the right only when it can be done safely.",
 "action": "NO_OVERTAKING",
-"scene": "Slower vehicle ahead with space on its right side"
+"scene": "Slower vehicle ahead with space on its right side",
+"general": false
 },
 {
 "id": "CVC §21755(a)",
@@ -330,7 +366,8 @@
 "instruction": "앞지르려고 포장된 주행 부분 밖으로 나가지 마십시오.",
 "instruction_en": "Never pass by driving off the paved or main-traveled roadway.",
 "action": "NO_OVERTAKING",
-"scene": "Vehicle ahead and unpaved shoulder beside the roadway"
+"scene": "Vehicle ahead and unpaved shoulder beside the roadway",
+"general": false
 },
 {
 "id": "CVC §23109(a)",
@@ -339,7 +376,8 @@
 "instruction": "도로나 노외주차장에서 속도 경쟁을 하지 마십시오.",
 "instruction_en": "Do not engage in a speed contest on highways or parking facilities.",
 "action": "SLOW_DOWN",
-"scene": "Vehicles racing side by side on a road"
+"scene": "Vehicles racing side by side on a road",
+"general": true
 },
 {
 "id": "CVC §23109(c)",
@@ -348,7 +386,8 @@
 "instruction": "도로나 노외주차장에서 속도 과시 주행을 하지 마십시오.",
 "instruction_en": "Do not perform exhibitions of speed on highways or parking facilities.",
 "action": "SLOW_DOWN",
-"scene": "Vehicle accelerating aggressively or drifting on a road"
+"scene": "Vehicle accelerating aggressively or drifting on a road",
+"general": true
 },
 {
 "id": "CVC §23123.5(a)",
@@ -357,7 +396,8 @@
 "instruction": "운전 중에는 휴대전화를 손에 들고 조작하지 마십시오.",
 "instruction_en": "Do not hold and operate a phone while driving.",
 "action": "CAUTION",
-"scene": "Driver holding a phone while the car moves on a road"
+"scene": "Driver holding a phone while the car moves on a road",
+"general": true
 },
 {
 "id": "CVC §21760(b)",
@@ -366,7 +406,8 @@
 "instruction": "자전거를 추월할 때는 안전한 거리를 두십시오.",
 "instruction_en": "Pass a bicycle at a safe distance.",
 "action": "CAUTION",
-"scene": "Bicycle ahead traveling in the same direction on the road"
+"scene": "Bicycle ahead traveling in the same direction on the road",
+"general": false
 },
 {
 "id": "CVC §21760(d)",
@@ -375,7 +416,8 @@
 "instruction": "3피트를 둘 수 없으면 합리적이고 신중한 속도로 감속하십시오.",
 "instruction_en": "If three feet is impossible, slow to a reasonable and prudent speed.",
 "action": "SLOW_DOWN",
-"scene": "Cyclist ahead on narrow road with traffic blocking lane change"
+"scene": "Cyclist ahead on narrow road with traffic blocking lane change",
+"general": false
 },
 {
 "id": "CVC §21800(a)",
@@ -384,7 +426,8 @@
 "instruction": "교차로 접근 시 다른 도로에서 먼저 진입한 차량에 양보하십시오.",
 "instruction_en": "Yield to vehicles already in the intersection from another road.",
 "action": "YIELD",
-"scene": "Vehicle already inside intersection crossing from a different road"
+"scene": "Vehicle already inside intersection crossing from a different road",
+"general": false
 },
 {
 "id": "CVC §21800(b)",
@@ -393,7 +436,8 @@
 "instruction": "동시에 교차로에 진입하면 왼쪽 차량은 오른쪽 차량에 양보하십시오.",
 "instruction_en": "When entering together, the left vehicle yields to the right vehicle.",
 "action": "YIELD",
-"scene": "Two vehicles entering an intersection at the same time from different roads"
+"scene": "Two vehicles entering an intersection at the same time from different roads",
+"general": false
 },
 {
 "id": "CVC §21800(b)",
@@ -402,7 +446,8 @@
 "instruction": "끝나는 도로에서 진입할 때는 계속되는 도로의 차량에 양보하십시오.",
 "instruction_en": "On a terminating highway, yield to vehicles on the continuing highway.",
 "action": "YIELD",
-"scene": "T-intersection where the car's road ends at a continuing road"
+"scene": "T-intersection where the car's road ends at a continuing road",
+"general": false
 },
 {
 "id": "CVC §21800(c)",
@@ -411,7 +456,8 @@
 "instruction": "전방향 정지 표지 교차로에서 동시 진입 시 왼쪽 차량이 양보하십시오.",
 "instruction_en": "At an all-way stop, the left vehicle yields to the right vehicle.",
 "action": "YIELD",
-"scene": "Intersection with stop signs on all sides and vehicles arriving together"
+"scene": "Intersection with stop signs on all sides and vehicles arriving together",
+"general": false
 },
 {
 "id": "CVC §21758",
@@ -420,7 +466,8 @@
 "instruction": "시가지 밖 경사로 20마일 미만 차는 10마일 이상 빨라야 추월하십시오.",
 "instruction_en": "On grades, pass a vehicle under 20 mph only if 10 mph faster.",
 "action": "NO_OVERTAKING",
-"scene": "Slow vehicle climbing a grade outside town on an open road"
+"scene": "Slow vehicle climbing a grade outside town on an open road",
+"general": false
 },
 {
 "id": "CVC §21758",
@@ -429,7 +476,8 @@
 "instruction": "시가지 밖 경사로에서는 4분의 1마일 안에 추월을 끝내십시오.",
 "instruction_en": "On grades outside districts, complete passing within one-quarter mile.",
 "action": "NO_OVERTAKING",
-"scene": "Slow vehicle ahead on an uphill road outside residential area"
+"scene": "Slow vehicle ahead on an uphill road outside residential area",
+"general": false
 },
 {
 "id": "CVC §21950(a)",
@@ -438,7 +486,8 @@
 "instruction": "횡단보도(교차로의 비표시 포함)를 건너는 보행자에게 양보하십시오.",
 "instruction_en": "Yield to pedestrians crossing in a marked or unmarked crosswalk.",
 "action": "YIELD",
-"scene": "Pedestrian crossing the road within a crosswalk ahead"
+"scene": "Pedestrian crossing the road within a crosswalk ahead",
+"general": false
 },
 {
 "id": "CVC §21950(c)",
@@ -447,7 +496,8 @@
 "instruction": "횡단보도의 보행자에게 접근할 때는 감속하십시오.",
 "instruction_en": "Reduce speed when approaching a pedestrian in a crosswalk.",
 "action": "SLOW_DOWN",
-"scene": "Pedestrian standing or walking in a crosswalk ahead"
+"scene": "Pedestrian standing or walking in a crosswalk ahead",
+"general": false
 },
 {
 "id": "CVC §21952",
@@ -456,7 +506,8 @@
 "instruction": "인도로 진입하기 전에 다가오는 보행자에게 양보하십시오.",
 "instruction_en": "Before driving over a sidewalk, yield to approaching pedestrians.",
 "action": "YIELD",
-"scene": "Driveway crossing a sidewalk with a pedestrian approaching"
+"scene": "Driveway crossing a sidewalk with a pedestrian approaching",
+"general": false
 },
 {
 "id": "CVC §22102",
@@ -465,7 +516,8 @@
 "instruction": "상업지구에서는 교차로나 중앙분리대 개구부 외에서 유턴하지 마십시오.",
 "instruction_en": "In business districts, U-turn only at intersections or divided-highway openings.",
 "action": "KEEP_OUT",
-"scene": "Busy commercial street with shops and mid-block, no intersection"
+"scene": "Busy commercial street with shops and mid-block, no intersection",
+"general": false
 },
 {
 "id": "CVC §22102",
@@ -474,7 +526,8 @@
 "instruction": "상업지구 유턴 시 차로가 여럿이면 가장 왼쪽 가장자리에 붙으십시오.",
 "instruction_en": "Start a business district U-turn from the extreme left edge.",
 "action": "CAUTION",
-"scene": "Multi-lane commercial street where the car begins a U-turn"
+"scene": "Multi-lane commercial street where the car begins a U-turn",
+"general": false
 },
 {
 "id": "CVC §22105",
@@ -483,7 +536,8 @@
 "instruction": "양방향 200피트 시야가 막히면 유턴하지 마십시오.",
 "instruction_en": "Do not U-turn without a 200 feet clear view both ways.",
 "action": "KEEP_OUT",
-"scene": "Road with a blind curve or crest limiting view ahead"
+"scene": "Road with a blind curve or crest limiting view ahead",
+"general": false
 },
 {
 "id": "CVC §22348(a)",
@@ -492,7 +546,8 @@
 "instruction": "제한속도가 설정된 도로에서는 제한속도를 넘지 마십시오.",
 "instruction_en": "Do not exceed the posted speed limit.",
 "action": "SLOW_DOWN",
-"scene": "Highway with a posted speed limit sign ahead"
+"scene": "Highway with a posted speed limit sign ahead",
+"general": true
 },
 {
 "id": "CVC §23221(a)",
@@ -501,7 +556,8 @@
 "instruction": "운전 중에는 술을 마시거나 대마를 흡입·섭취하지 마십시오.",
 "instruction_en": "Do not drink alcohol or use marijuana while driving.",
 "action": "CAUTION",
-"scene": "Driver consuming a drink or smoking while the car moves"
+"scene": "Driver consuming a drink or smoking while the car moves",
+"general": true
 },
 {
 "id": "CVC §23330(c)",
@@ -510,7 +566,8 @@
 "instruction": "차량 통행 교량에는 폭 102인치 초과 차량으로 진입하지 마십시오.",
 "instruction_en": "Do not enter a vehicular crossing if vehicle width exceeds 102 inches.",
 "action": "KEEP_OUT",
-"scene": "Bridge or tunnel entrance with a very wide vehicle or load"
+"scene": "Bridge or tunnel entrance with a very wide vehicle or load",
+"general": false
 },
 {
 "id": "CVC §22350",
@@ -519,7 +576,8 @@
 "instruction": "날씨·시야·교통·노면에 맞는 안전한 속도로 주행하십시오.",
 "instruction_en": "Drive at a speed safe for weather, visibility, traffic and road surface.",
 "action": "SLOW_DOWN",
-"scene": "Road in rain, fog or heavy traffic with reduced visibility"
+"scene": "Road in rain, fog or heavy traffic with reduced visibility",
+"general": true
 },
 {
 "id": "CVC §22357.1",
@@ -528,7 +586,8 @@
 "instruction": "공원 놀이터 옆 도로에서 표지된 시간에는 25마일 이하로 가십시오.",
 "instruction_en": "Drive 25 mph or less beside a park playground during posted hours.",
 "action": "SLOW_DOWN",
-"scene": "Street beside a public park playground with posted speed sign"
+"scene": "Street beside a public park playground with posted speed sign",
+"general": false
 },
 {
 "id": "CVC §22409",
@@ -537,7 +596,8 @@
 "instruction": "솔리드 타이어 1만~1.6만파운드 차량은 25마일을 넘지 마십시오.",
 "instruction_en": "Solid-tire vehicles of 10,000 to 16,000 lbs: do not exceed 25 mph.",
 "action": "SLOW_DOWN",
-"scene": "Medium truck with solid rubber tires on a road"
+"scene": "Medium truck with solid rubber tires on a road",
+"general": false
 },
 {
 "id": "CVC §22409",
@@ -546,7 +606,8 @@
 "instruction": "솔리드 타이어 1.6만~2.2만파운드 차량은 15마일을 넘지 마십시오.",
 "instruction_en": "Solid-tire vehicles of 16,000 to 22,000 lbs: do not exceed 15 mph.",
 "action": "SLOW_DOWN",
-"scene": "Heavy truck with solid rubber tires on a road"
+"scene": "Heavy truck with solid rubber tires on a road",
+"general": false
 },
 {
 "id": "CVC §22409",
@@ -555,7 +616,8 @@
 "instruction": "솔리드 타이어 2.2만파운드 이상 차량은 12마일을 넘지 마십시오.",
 "instruction_en": "Solid-tire vehicles of 22,000 lbs or more: do not exceed 12 mph.",
 "action": "SLOW_DOWN",
-"scene": "Very heavy truck with solid rubber tires on a road"
+"scene": "Very heavy truck with solid rubber tires on a road",
+"general": false
 },
 {
 "id": "CVC §21056",
@@ -564,7 +626,8 @@
 "instruction": "도로에서 운전할 때는 모든 도로 이용자의 안전을 고려해 운전하십시오.",
 "instruction_en": "Drive with due regard for the safety of all road users.",
 "action": "CAUTION",
-"scene": "Road with vehicles, cyclists and pedestrians sharing the roadway"
+"scene": "Road with vehicles, cyclists and pedestrians sharing the roadway",
+"general": true
 },
 {
 "id": "CVC §21107.9(d)",
@@ -573,7 +636,8 @@
 "instruction": "이동식 주택단지 내 도로에서는 시속 15마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 15 mph on roads inside a mobilehome park.",
 "action": "SLOW_DOWN",
-"scene": "Narrow private road between parked mobile homes in a residential park"
+"scene": "Narrow private road between parked mobile homes in a residential park",
+"general": false
 },
 {
 "id": "CVC §21116(a)",
@@ -582,7 +646,8 @@
 "instruction": "허가 필요 표지가 있는 제방·둑 도로에는 허가 없이 진입하지 마십시오.",
 "instruction_en": "Do not enter signed levee or canal bank roads without permission.",
 "action": "KEEP_OUT",
-"scene": "Gravel road atop a levee or canal bank with permit-required sign"
+"scene": "Gravel road atop a levee or canal bank with permit-required sign",
+"general": false
 },
 {
 "id": "CVC §22452(b)",
@@ -591,7 +656,8 @@
 "instruction": "버스는 철도 건널목 레일 앞 15~50피트에서 정지하십시오.",
 "instruction_en": "Buses must stop 15 to 50 feet before the nearest rail.",
 "action": "STOP",
-"scene": "Bus approaching a railroad crossing with tracks ahead"
+"scene": "Bus approaching a railroad crossing with tracks ahead",
+"general": false
 },
 {
 "id": "CVC §22452(b)",
@@ -600,7 +666,8 @@
 "instruction": "정지 후 양방향 열차를 확인하고 안전할 때만 건너십시오.",
 "instruction_en": "After stopping, look both ways and cross only when safe.",
 "action": "STOP",
-"scene": "Stopped bus at railroad crossing, tracks visible both directions"
+"scene": "Stopped bus at railroad crossing, tracks visible both directions",
+"general": false
 },
 {
 "id": "CVC §22452(b)",
@@ -609,7 +676,8 @@
 "instruction": "건널목을 건너는 동안 수동으로 기어를 변속하지 마십시오.",
 "instruction_en": "Do not shift gears manually while crossing the tracks.",
 "action": "CAUTION",
-"scene": "Vehicle driving over railroad tracks at a crossing"
+"scene": "Vehicle driving over railroad tracks at a crossing",
+"general": false
 },
 {
 "id": "CVC §22452(c)",
@@ -618,7 +686,8 @@
 "instruction": "상용차는 철도 건널목 레일 앞에서 정지할 수 있는 속도로 접근하십시오.",
 "instruction_en": "Commercial vehicles: approach crossings at a speed allowing a stop before the rail.",
 "action": "SLOW_DOWN",
-"scene": "Truck approaching a railroad grade crossing"
+"scene": "Truck approaching a railroad grade crossing",
+"general": false
 },
 {
 "id": "CVC §22500(a)",
@@ -627,7 +696,8 @@
 "instruction": "교차로 안에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within an intersection.",
 "action": "KEEP_OUT",
-"scene": "Vehicle about to stop in the middle of an intersection"
+"scene": "Vehicle about to stop in the middle of an intersection",
+"general": false
 },
 {
 "id": "CVC §22500(b)",
@@ -636,7 +706,8 @@
 "instruction": "횡단보도 위에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park on a crosswalk.",
 "action": "KEEP_OUT",
-"scene": "Crosswalk markings on the road with a vehicle stopping on them"
+"scene": "Crosswalk markings on the road with a vehicle stopping on them",
+"general": false
 },
 {
 "id": "CVC §22500(c)",
@@ -645,7 +716,8 @@
 "instruction": "안전지대와 우측 연석 사이에는 정차하지 마십시오.",
 "instruction_en": "Do not stop between a safety zone and the right-hand curb.",
 "action": "KEEP_OUT",
-"scene": "Safety zone beside the curb marked by sign or red paint"
+"scene": "Safety zone beside the curb marked by sign or red paint",
+"general": false
 },
 {
 "id": "CVC §22500(d)",
@@ -654,7 +726,8 @@
 "instruction": "소방서 진입로 15피트 이내에는 정차하지 마십시오.",
 "instruction_en": "Do not stop within 15 feet of a fire station driveway.",
 "action": "KEEP_OUT",
-"scene": "Fire station driveway entrance beside the curb"
+"scene": "Fire station driveway entrance beside the curb",
+"general": false
 },
 {
 "id": "CVC §22500(g)",
@@ -663,7 +736,8 @@
 "instruction": "통행을 막는 경우 굴착·장애물 옆과 맞은편에 정차하지 마십시오.",
 "instruction_en": "Do not stop beside or opposite a road excavation if it blocks traffic.",
 "action": "KEEP_OUT",
-"scene": "Road excavation or obstruction beside the traffic lane"
+"scene": "Road excavation or obstruction beside the traffic lane",
+"general": false
 },
 {
 "id": "CVC §22500(h)",
@@ -672,7 +746,8 @@
 "instruction": "연석에 정차한 차량의 차도 쪽에는 정차하지 마십시오.",
 "instruction_en": "Do not stop on the roadway side of a parked vehicle.",
 "action": "KEEP_OUT",
-"scene": "Parked car at the curb with open lane alongside it"
+"scene": "Parked car at the curb with open lane alongside it",
+"general": false
 },
 {
 "id": "CVC §22500(j)",
@@ -681,7 +756,8 @@
 "instruction": "터널 안에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park inside a tunnel.",
 "action": "KEEP_OUT",
-"scene": "Vehicle inside a tunnel with lit walls"
+"scene": "Vehicle inside a tunnel with lit walls",
+"general": false
 },
 {
 "id": "CVC §22500(m)",
@@ -690,7 +766,8 @@
 "instruction": "버스 전용으로 지정된 도로 구간에는 정차하지 마십시오.",
 "instruction_en": "Do not stop in a lane designated for exclusive bus use.",
 "action": "KEEP_OUT",
-"scene": "Bus-only lane marked on the pavement"
+"scene": "Bus-only lane marked on the pavement",
+"general": false
 },
 {
 "id": "CVC §22500(n)",
@@ -699,7 +776,8 @@
 "instruction": "횡단보도 접근 쪽 20피트 이내에는 정차하지 마십시오.",
 "instruction_en": "Do not stop within 20 feet of a crosswalk on the approach side.",
 "action": "KEEP_OUT",
-"scene": "Marked or unmarked crosswalk just ahead beside the curb"
+"scene": "Marked or unmarked crosswalk just ahead beside the curb",
+"general": false
 },
 {
 "id": "CVC §22500(n)",
@@ -708,7 +786,8 @@
 "instruction": "연석 확장부가 있는 횡단보도 15피트 이내에는 정차하지 마십시오.",
 "instruction_en": "Do not stop within 15 feet of a crosswalk with a curb extension.",
 "action": "KEEP_OUT",
-"scene": "Crosswalk with a curb extension bulb-out ahead"
+"scene": "Crosswalk with a curb extension bulb-out ahead",
+"general": false
 },
 {
 "id": "CVC §22504(a)",
@@ -717,7 +796,8 @@
 "instruction": "미편입 지역 도로에서는 가능하면 차도 밖에 정차하십시오.",
 "instruction_en": "In unincorporated areas, stop off the roadway when practicable.",
 "action": "CAUTION",
-"scene": "Rural highway with a shoulder and no adjacent curbs"
+"scene": "Rural highway with a shoulder and no adjacent curbs",
+"general": false
 },
 {
 "id": "CVC §22504(a)",
@@ -726,7 +806,8 @@
 "instruction": "미편입 지역 도로에서 정차할 때 맞은편에 통행 폭을 남기십시오.",
 "instruction_en": "In unincorporated areas, leave unobstructed width opposite a standing vehicle.",
 "action": "CAUTION",
-"scene": "Rural two-lane road with a vehicle standing on the roadway"
+"scene": "Rural two-lane road with a vehicle standing on the roadway",
+"general": false
 },
 {
 "id": "CVC §22504(a)",
@@ -735,7 +816,8 @@
 "instruction": "미편입 지역 도로에서는 양방향 200피트에서 보이게 정차하십시오.",
 "instruction_en": "In unincorporated areas, stay visible from 200 feet in each direction.",
 "action": "CAUTION",
-"scene": "Rural highway with a standing vehicle near a bend or crest"
+"scene": "Rural highway with a standing vehicle near a bend or crest",
+"general": false
 },
 {
 "id": "CVC §22511.1(a)",
@@ -744,7 +826,8 @@
 "instruction": "충전 전용 주차면에는 충전을 연결하지 않고 주차하지 마십시오.",
 "instruction_en": "Do not park in an EV charging stall unless connected to charge.",
 "action": "KEEP_OUT",
-"scene": "Parking stall marked for electric vehicle charging with a charger"
+"scene": "Parking stall marked for electric vehicle charging with a charger",
+"general": false
 },
 {
 "id": "CVC §22511.1(b)",
@@ -753,7 +836,8 @@
 "instruction": "전기차 충전 전용 주차면의 접근을 막지 마십시오.",
 "instruction_en": "Do not block access to electric vehicle charging stalls.",
 "action": "KEEP_OUT",
-"scene": "Row of EV charging stalls with a vehicle blocking the entrance"
+"scene": "Row of EV charging stalls with a vehicle blocking the entrance",
+"general": false
 },
 {
 "id": "CVC §21451(a)",
@@ -762,7 +846,8 @@
 "instruction": "녹색 신호에서도 교차로·횡단보도 안의 보행자와 차량에 양보하십시오.",
 "instruction_en": "Even on green, yield to pedestrians and vehicles in the intersection.",
 "action": "YIELD",
-"scene": "Green circular signal with pedestrians in crosswalk ahead"
+"scene": "Green circular signal with pedestrians in crosswalk ahead",
+"general": false
 },
 {
 "id": "CVC §21451(a)",
@@ -771,7 +856,8 @@
 "instruction": "U턴 금지 표지가 있으면 녹색 신호에서도 U턴하지 마십시오.",
 "instruction_en": "Do not U-turn on green where a sign prohibits U-turns.",
 "action": "KEEP_OUT",
-"scene": "Green light with no U-turn sign at intersection"
+"scene": "Green light with no U-turn sign at intersection",
+"general": false
 },
 {
 "id": "CVC §21451(b)",
@@ -780,7 +866,8 @@
 "instruction": "녹색 화살표 신호에서는 화살표가 가리키는 방향으로만 진입하십시오.",
 "instruction_en": "On a green arrow, enter only to make the indicated movement.",
 "action": "CAUTION",
-"scene": "Green arrow signal at an intersection"
+"scene": "Green arrow signal at an intersection",
+"general": false
 },
 {
 "id": "CVC §21451(b)",
@@ -789,7 +876,8 @@
 "instruction": "녹색 화살표에서도 교차로·횡단보도 안의 보행자와 차량에 양보하십시오.",
 "instruction_en": "On a green arrow, yield to pedestrians and traffic in the intersection.",
 "action": "YIELD",
-"scene": "Green arrow with pedestrians crossing in adjacent crosswalk"
+"scene": "Green arrow with pedestrians crossing in adjacent crosswalk",
+"general": false
 },
 {
 "id": "CVC §21453(a)",
@@ -798,7 +886,8 @@
 "instruction": "적색 신호에는 정지선, 없으면 횡단보도, 교차로 앞에 정지하십시오.",
 "instruction_en": "On red, stop at the limit line, crosswalk, or intersection edge.",
 "action": "STOP",
-"scene": "Steady red circular signal ahead with stop line"
+"scene": "Steady red circular signal ahead with stop line",
+"general": false
 },
 {
 "id": "CVC §21453(a)",
@@ -807,7 +896,8 @@
 "instruction": "적색 신호에서는 진행 신호가 나올 때까지 정지 상태를 유지하십시오.",
 "instruction_en": "Remain stopped on red until a proceed indication appears.",
 "action": "STOP",
-"scene": "Stopped at red light waiting at intersection"
+"scene": "Stopped at red light waiting at intersection",
+"general": false
 },
 {
 "id": "CVC §21453(b)",
@@ -816,7 +906,8 @@
 "instruction": "적색 신호에서 우회전하려면 정지 후 보행자와 접근 차량에 양보하십시오.",
 "instruction_en": "After stopping on red, turn right only while yielding to pedestrians and vehicles.",
 "action": "YIELD",
-"scene": "Stopped at red light preparing right turn with crosswalk"
+"scene": "Stopped at red light preparing right turn with crosswalk",
+"general": false
 },
 {
 "id": "CVC §21453(b)",
@@ -825,7 +916,8 @@
 "instruction": "회전 금지 표지가 있으면 적색 신호 중 회전하지 마십시오.",
 "instruction_en": "Do not turn on red where a sign prohibits turns.",
 "action": "KEEP_OUT",
-"scene": "Red light with no-turn-on-red sign"
+"scene": "Red light with no-turn-on-red sign",
+"general": false
 },
 {
 "id": "CVC §21453(c)",
@@ -834,7 +926,8 @@
 "instruction": "적색 화살표 신호에서는 화살표 방향으로 교차로에 진입하지 마십시오.",
 "instruction_en": "On a red arrow, do not enter the intersection for that movement.",
 "action": "KEEP_OUT",
-"scene": "Steady red arrow signal at an intersection"
+"scene": "Steady red arrow signal at an intersection",
+"general": false
 },
 {
 "id": "CVC §21453(c)",
@@ -843,7 +936,8 @@
 "instruction": "적색 화살표 신호에는 정지선, 없으면 횡단보도 앞에서 정지하십시오.",
 "instruction_en": "On a red arrow, stop at the limit line or crosswalk.",
 "action": "STOP",
-"scene": "Red arrow signal with limit line ahead"
+"scene": "Red arrow signal with limit line ahead",
+"general": false
 },
 {
 "id": "CVC §22514",
@@ -852,7 +946,8 @@
 "instruction": "소화전 15피트 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 15 feet of a fire hydrant.",
 "action": "KEEP_OUT",
-"scene": "Fire hydrant beside the curb ahead"
+"scene": "Fire hydrant beside the curb ahead",
+"general": false
 },
 {
 "id": "CVC §22521",
@@ -861,7 +956,8 @@
 "instruction": "철도 선로 위나 레일 7 1/2피트 이내에는 주차하지 마십시오.",
 "instruction_en": "Do not park on railroad tracks or within 7.5 feet of a rail.",
 "action": "KEEP_OUT",
-"scene": "Railroad tracks crossing or alongside the road"
+"scene": "Railroad tracks crossing or alongside the road",
+"general": false
 },
 {
 "id": "CVC §22523(a)",
@@ -870,7 +966,8 @@
 "instruction": "도로에 차량을 방치하지 마십시오.",
 "instruction_en": "Do not abandon a vehicle on a highway.",
 "action": "KEEP_OUT",
-"scene": "Roadway shoulder or lane where vehicle would be left"
+"scene": "Roadway shoulder or lane where vehicle would be left",
+"general": false
 },
 {
 "id": "CVC §22523(b)",
@@ -879,7 +976,8 @@
 "instruction": "소유자 동의 없이 공유지·사유지에 차량을 방치하지 마십시오.",
 "instruction_en": "Do not abandon a vehicle on property without the owner's consent.",
 "action": "KEEP_OUT",
-"scene": "Parking lot or private property without permission signs"
+"scene": "Parking lot or private property without permission signs",
+"general": false
 },
 {
 "id": "CVC §22526(a)",
@@ -888,7 +986,8 @@
 "instruction": "건너편 공간이 부족하면 진행 신호에도 교차로에 진입하지 마십시오.",
 "instruction_en": "Do not enter an intersection if no space beyond for your vehicle.",
 "action": "KEEP_OUT",
-"scene": "Green light with traffic backed up beyond intersection"
+"scene": "Green light with traffic backed up beyond intersection",
+"general": false
 },
 {
 "id": "CVC §22526(b)",
@@ -897,7 +996,8 @@
 "instruction": "황색 신호에 회전할 때 건너편 공간이 부족하면 진입하지 마십시오.",
 "instruction_en": "Turning on yellow, do not enter without space on the far side.",
 "action": "KEEP_OUT",
-"scene": "Yellow signal with congested cross street ahead of turn"
+"scene": "Yellow signal with congested cross street ahead of turn",
+"general": false
 },
 {
 "id": "CVC §22526(c)",
@@ -906,7 +1006,8 @@
 "instruction": "철도 건널목은 차량 하부 여유 공간이 부족하면 진입하지 마십시오.",
 "instruction_en": "Do not enter a rail crossing without sufficient undercarriage clearance.",
 "action": "KEEP_OUT",
-"scene": "Rail crossing with raised track bed ahead"
+"scene": "Rail crossing with raised track bed ahead",
+"general": false
 },
 {
 "id": "CVC §22526(d)",
@@ -915,7 +1016,8 @@
 "instruction": "철도 건널목 건너편에 차량이 들어갈 공간이 없으면 진입하지 마십시오.",
 "instruction_en": "Do not enter a rail crossing without space to clear it.",
 "action": "KEEP_OUT",
-"scene": "Rail crossing with stopped traffic beyond the tracks"
+"scene": "Rail crossing with stopped traffic beyond the tracks",
+"general": false
 },
 {
 "id": "CVC §21461(a)",
@@ -924,7 +1026,8 @@
 "instruction": "규제 표지판과 신호는 반드시 따르십시오.",
 "instruction_en": "Obey all regulatory signs and signals.",
 "action": "CAUTION",
-"scene": "Regulatory traffic sign or signal beside the road"
+"scene": "Regulatory traffic sign or signal beside the road",
+"general": true
 },
 {
 "id": "CVC §21709",
@@ -933,7 +1036,8 @@
 "instruction": "안전지대 안으로는 진입하거나 통과하지 마십시오.",
 "instruction_en": "Do not drive through or within a safety zone.",
 "action": "KEEP_OUT",
-"scene": "Raised safety zone island marked in the roadway"
+"scene": "Raised safety zone island marked in the roadway",
+"general": false
 },
 {
 "id": "CVC §21710",
@@ -942,7 +1046,8 @@
 "instruction": "내리막길에서는 기어를 중립에 놓고 타력 주행하지 마십시오.",
 "instruction_en": "On a downgrade, do not coast with the gears in neutral.",
 "action": "CAUTION",
-"scene": "Long steep downhill road ahead"
+"scene": "Long steep downhill road ahead",
+"general": false
 },
 {
 "id": "CVC §21717",
@@ -951,7 +1056,8 @@
 "instruction": "자전거 도로를 가로질러 회전하려면 먼저 자전거 도로로 진입하십시오.",
 "instruction_en": "To turn across an adjacent bicycle lane, enter it first.",
 "action": "CAUTION",
-"scene": "Bicycle lane beside the travel lane at an approaching turn"
+"scene": "Bicycle lane beside the travel lane at an approaching turn",
+"general": false
 },
 {
 "id": "CVC §22356(b)",
@@ -960,7 +1066,8 @@
 "instruction": "70마일 속도 표지 구간에서는 시속 70마일을 넘기지 마십시오.",
 "instruction_en": "Do not exceed 70 miles per hour where posted.",
 "action": "SLOW_DOWN",
-"scene": "Highway with posted 70 mph speed limit sign"
+"scene": "Highway with posted 70 mph speed limit sign",
+"general": false
 },
 {
 "id": "CVC §22505(b)",
@@ -969,7 +1076,8 @@
 "instruction": "주정차 제한 표지·표시가 있는 곳에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park where signs or markings prohibit it.",
 "action": "KEEP_OUT",
-"scene": "No stopping or no parking sign beside the highway shoulder"
+"scene": "No stopping or no parking sign beside the highway shoulder",
+"general": false
 },
 {
 "id": "CVC §22515(a)",
@@ -978,7 +1086,8 @@
 "instruction": "차를 무인으로 세울 때는 브레이크를 걸고 엔진을 끄십시오.",
 "instruction_en": "Before leaving a vehicle unattended, set the brakes and stop the engine.",
 "action": "CAUTION",
-"scene": "Vehicle parked at roadside with no driver inside"
+"scene": "Vehicle parked at roadside with no driver inside",
+"general": false
 },
 {
 "id": "CVC §22516",
@@ -987,7 +1096,8 @@
 "instruction": "탈출할 수 없는 사람이 있으면 차를 잠근 채 세워 두지 마십시오.",
 "instruction_en": "Do not leave a locked vehicle standing if someone inside cannot escape.",
 "action": "CAUTION",
-"scene": "Locked parked car with a child inside"
+"scene": "Locked parked car with a child inside",
+"general": false
 },
 {
 "id": "CVC §22517",
@@ -996,7 +1106,8 @@
 "instruction": "통행 차량 쪽 문은 안전할 때만 열고 오래 열어 두지 마십시오.",
 "instruction_en": "Open doors on the traffic side only when safe, and not longer than necessary.",
 "action": "CAUTION",
-"scene": "Parked car door opening toward passing traffic lane"
+"scene": "Parked car door opening toward passing traffic lane",
+"general": false
 },
 {
 "id": "CVC §21650",
@@ -1005,7 +1116,8 @@
 "instruction": "도로의 오른쪽 절반으로 주행하십시오.",
 "instruction_en": "Drive on the right half of the roadway.",
 "action": "CAUTION",
-"scene": "Two-way road with centerline and own lane on the right"
+"scene": "Two-way road with centerline and own lane on the right",
+"general": true
 },
 {
 "id": "CVC §21651(b)",
@@ -1014,7 +1126,8 @@
 "instruction": "대향 차로를 나눈 분리대의 오른쪽으로만 주행하십시오.",
 "instruction_en": "Drive only to the right of a barrier separating opposing lanes.",
 "action": "KEEP_OUT",
-"scene": "Median barrier separating opposing lanes of traffic"
+"scene": "Median barrier separating opposing lanes of traffic",
+"general": false
 },
 {
 "id": "CVC §21751",
@@ -1023,7 +1136,8 @@
 "instruction": "2차로에서는 마주 오는 차 없이 앞이 충분히 보일 때만 앞지르십시오.",
 "instruction_en": "On a two-lane highway, pass only when the way ahead is clear of oncoming traffic.",
 "action": "NO_OVERTAKING",
-"scene": "Two-lane road with slower vehicle ahead and oncoming lane view"
+"scene": "Two-lane road with slower vehicle ahead and oncoming lane view",
+"general": false
 },
 {
 "id": "CVC §23111",
@@ -1032,7 +1146,8 @@
 "instruction": "차량에서 도로로 불붙은 담배나 성냥을 던지지 마십시오.",
 "instruction_en": "Do not throw lit cigarettes or matches from the vehicle onto the road.",
 "action": "CAUTION",
-"scene": "Dry roadside grass beside the road ahead of the vehicle"
+"scene": "Dry roadside grass beside the road ahead of the vehicle",
+"general": true
 },
 {
 "id": "CVC §23112(a)",
@@ -1041,7 +1156,8 @@
 "instruction": "도로에 병, 캔, 쓰레기, 못을 버리지 마십시오.",
 "instruction_en": "Do not throw bottles, cans, trash, or nails onto the highway.",
 "action": "CAUTION",
-"scene": "Litter and debris scattered on the road surface ahead"
+"scene": "Litter and debris scattered on the road surface ahead",
+"general": true
 },
 {
 "id": "CVC §23112(b)",
@@ -1050,7 +1166,8 @@
 "instruction": "관할 기관 동의 없이 도로에 돌, 쓰레기, 흙을 버리지 마십시오.",
 "instruction_en": "Do not dump rocks, refuse, or dirt on a highway without agency consent.",
 "action": "CAUTION",
-"scene": "Truck dumping dirt and rubble beside the highway"
+"scene": "Truck dumping dirt and rubble beside the highway",
+"general": false
 },
 {
 "id": "CVC §21652",
@@ -1059,7 +1176,8 @@
 "instruction": "분리된 서비스 도로와 본선은 연석 개구부로만 드나드십시오.",
 "instruction_en": "Cross between service road and main road only through dividing-curb openings.",
 "action": "KEEP_OUT",
-"scene": "Service road separated from the main highway by a curb divider"
+"scene": "Service road separated from the main highway by a curb divider",
+"general": false
 },
 {
 "id": "CVC §21654(a)",
@@ -1068,7 +1186,8 @@
 "instruction": "교통 흐름보다 느리면 우측 차로나 우측 가장자리로 주행하십시오.",
 "instruction_en": "When slower than traffic, drive in the right lane or near the right edge.",
 "action": "CAUTION",
-"scene": "Slow vehicle on a multi-lane highway with faster traffic behind"
+"scene": "Slow vehicle on a multi-lane highway with faster traffic behind",
+"general": false
 },
 {
 "id": "CVC §21752(a)",
@@ -1077,7 +1196,8 @@
 "instruction": "시야가 막힌 언덕 정상이나 커브에서는 도로 왼쪽으로 주행하지 마십시오.",
 "instruction_en": "Do not drive on the left side at a crest or curve with obstructed view.",
 "action": "NO_OVERTAKING",
-"scene": "Road crest or sharp curve with blocked view of oncoming lane"
+"scene": "Road crest or sharp curve with blocked view of oncoming lane",
+"general": false
 },
 {
 "id": "CVC §21752(b)",
@@ -1086,7 +1206,8 @@
 "instruction": "교량·터널 100피트 이내에서 시야가 막히면 왼쪽으로 주행하지 마십시오.",
 "instruction_en": "Do not drive on the left near a bridge or tunnel with obstructed view.",
 "action": "NO_OVERTAKING",
-"scene": "Approach to a bridge or tunnel entrance with limited visibility"
+"scene": "Approach to a bridge or tunnel entrance with limited visibility",
+"general": false
 },
 {
 "id": "CVC §21752(c)",
@@ -1095,7 +1216,8 @@
 "instruction": "철도 건널목 100피트 이내와 통과 중에는 왼쪽으로 주행하지 마십시오.",
 "instruction_en": "Do not drive on the left within 100 feet of or crossing a railroad crossing.",
 "action": "NO_OVERTAKING",
-"scene": "Railroad grade crossing with crossbuck sign ahead"
+"scene": "Railroad grade crossing with crossbuck sign ahead",
+"general": false
 },
 {
 "id": "CVC §21752(d)",
@@ -1104,7 +1226,8 @@
 "instruction": "교차로 100피트 이내와 통과 중에는 왼쪽으로 주행하지 마십시오.",
 "instruction_en": "Do not drive on the left within 100 feet of or crossing an intersection.",
 "action": "NO_OVERTAKING",
-"scene": "Two-way road approaching an intersection"
+"scene": "Two-way road approaching an intersection",
+"general": false
 },
 {
 "id": "CVC §21753",
@@ -1113,7 +1236,8 @@
 "instruction": "추월 신호를 받으면 우측으로 비키고 가속하지 마십시오.",
 "instruction_en": "When signaled to be passed, move right and do not speed up.",
 "action": "YIELD",
-"scene": "Vehicle behind flashing headlights to pass on a two-lane road"
+"scene": "Vehicle behind flashing headlights to pass on a two-lane road",
+"general": false
 },
 {
 "id": "CVC §21754",
@@ -1122,7 +1246,8 @@
 "instruction": "앞차 좌회전·다차로·일방통행 외에는 우측으로 추월하지 마십시오.",
 "instruction_en": "Pass on the right only if vehicle turns left, or on multilane or one-way roads.",
 "action": "NO_OVERTAKING",
-"scene": "Vehicle ahead on a road with open lane to its right"
+"scene": "Vehicle ahead on a road with open lane to its right",
+"general": false
 },
 {
 "id": "CVC §21970(a)",
@@ -1131,7 +1256,8 @@
 "instruction": "불필요하게 정차해 횡단보도나 인도를 막지 마십시오.",
 "instruction_en": "Do not stop unnecessarily and block a crosswalk or sidewalk.",
 "action": "KEEP_OUT",
-"scene": "Stopped queue of cars covering a crosswalk at an intersection"
+"scene": "Stopped queue of cars covering a crosswalk at an intersection",
+"general": false
 },
 {
 "id": "CVC §22518(a)",
@@ -1140,7 +1266,8 @@
 "instruction": "교통 환승 주차장에는 30피트 이상 길이의 차량을 주차하지 마십시오.",
 "instruction_en": "Do not park a vehicle 30 feet or longer in a park-and-ride lot.",
 "action": "KEEP_OUT",
-"scene": "Park-and-ride parking lot with a long vehicle entering"
+"scene": "Park-and-ride parking lot with a long vehicle entering",
+"general": false
 },
 {
 "id": "CVC §22518(a)",
@@ -1149,7 +1276,8 @@
 "instruction": "환승 주차장은 자전거, 대중교통, 카풀 이용자만 사용하십시오.",
 "instruction_en": "Use park-and-ride lots only for bicycle, transit, or ridesharing trips.",
 "action": "CAUTION",
-"scene": "Park-and-ride lot entrance with commuter parking signs"
+"scene": "Park-and-ride lot entrance with commuter parking signs",
+"general": false
 },
 {
 "id": "CVC §23113(a)",
@@ -1158,7 +1286,8 @@
 "instruction": "도로에 물질을 떨어뜨렸다면 즉시 치우십시오.",
 "instruction_en": "Immediately remove any material you drop or deposit on the highway.",
 "action": "CAUTION",
-"scene": "Spilled cargo and debris lying on the travel lane ahead"
+"scene": "Spilled cargo and debris lying on the travel lane ahead",
+"general": false
 },
 {
 "id": "CVC §21655.1(a)",
@@ -1167,7 +1296,8 @@
 "instruction": "버스 전용차로는 경찰관이나 교통신호 지시가 없으면 진입하지 마십시오.",
 "instruction_en": "Do not enter a transit-only lane unless directed by an officer or device.",
 "action": "KEEP_OUT",
-"scene": "Red-painted bus-only lane marked BUS ONLY beside the travel lane"
+"scene": "Red-painted bus-only lane marked BUS ONLY beside the travel lane",
+"general": false
 },
 {
 "id": "CVC §21756(a)",
@@ -1176,7 +1306,8 @@
 "instruction": "승객이 타고 내리는 전차 뒤에서는 승객이 안전해질 때까지 정지하십시오.",
 "instruction_en": "Stop behind a streetcar loading passengers until all have reached safety.",
 "action": "STOP",
-"scene": "Streetcar stopped with doors open and passengers boarding"
+"scene": "Streetcar stopped with doors open and passengers boarding",
+"general": false
 },
 {
 "id": "CVC §21756(b)",
@@ -1185,7 +1316,8 @@
 "instruction": "안전지대·신호 교차로에서는 전차 옆을 시속 10마일 이하로 지나가십시오.",
 "instruction_en": "At a safety zone or signal intersection, pass a streetcar at 10 mph or less.",
 "action": "SLOW_DOWN",
-"scene": "Streetcar beside a safety zone at a signal-controlled intersection"
+"scene": "Streetcar beside a safety zone at a signal-controlled intersection",
+"general": false
 },
 {
 "id": "CVC §21756(c)",
@@ -1194,7 +1326,8 @@
 "instruction": "안전지대에 정차한 버스 옆은 시속 10마일 이하로 지나가십시오.",
 "instruction_en": "Pass a bus stopped at a safety zone at no more than 10 mph.",
 "action": "SLOW_DOWN",
-"scene": "Bus stopped at a safety zone with passengers getting on or off"
+"scene": "Bus stopped at a safety zone with passengers getting on or off",
+"general": false
 },
 {
 "id": "CVC §21757",
@@ -1203,7 +1336,8 @@
 "instruction": "같은 방향 노면전차의 왼쪽으로 추월하거나 주행하지 마십시오.",
 "instruction_en": "Do not pass or drive on the left of a streetcar going the same direction.",
 "action": "NO_OVERTAKING",
-"scene": "Streetcar on tracks ahead moving in the same direction"
+"scene": "Streetcar on tracks ahead moving in the same direction",
+"general": false
 },
 {
 "id": "CVC §21759",
@@ -1212,7 +1346,8 @@
 "instruction": "말이나 가축에 접근하면 필요에 따라 감속하거나 정지하십시오.",
 "instruction_en": "Approaching horses or livestock, slow down or stop as necessary.",
 "action": "SLOW_DOWN",
-"scene": "Rider on horseback or livestock on or beside the road ahead"
+"scene": "Rider on horseback or livestock on or beside the road ahead",
+"general": false
 },
 {
 "id": "CVC §22100.5",
@@ -1221,7 +1356,8 @@
 "instruction": "신호 교차로에서는 맨 왼쪽 차로에서만 유턴하십시오.",
 "instruction_en": "At a signal-controlled intersection, U-turn only from the far left lane.",
 "action": "CAUTION",
-"scene": "Signal-controlled intersection with U-turn from the leftmost lane"
+"scene": "Signal-controlled intersection with U-turn from the leftmost lane",
+"general": false
 },
 {
 "id": "CVC §22101(d)",
@@ -1230,7 +1366,8 @@
 "instruction": "회전 금지·지정 표지가 있는 교차로에서는 표지에 따르십시오.",
 "instruction_en": "Obey turn prohibition or turn requirement signs at intersections.",
 "action": "CAUTION",
-"scene": "No Left Turn or No Right Turn sign at an intersection"
+"scene": "No Left Turn or No Right Turn sign at an intersection",
+"general": false
 },
 {
 "id": "CVC §22103",
@@ -1239,7 +1376,8 @@
 "instruction": "주거 지역에서는 200피트 이내에 접근 차량이 있으면 유턴하지 마십시오.",
 "instruction_en": "In residence districts, do not U-turn with traffic approaching within 200 feet.",
 "action": "KEEP_OUT",
-"scene": "Residential street with approaching vehicle while preparing a U-turn"
+"scene": "Residential street with approaching vehicle while preparing a U-turn",
+"general": false
 },
 {
 "id": "CVC §22104",
@@ -1248,7 +1386,8 @@
 "instruction": "소방서 진입로 앞에서는 유턴하거나 진입로로 방향을 바꾸지 마십시오.",
 "instruction_en": "Do not U-turn in front of or use a fire station driveway to turn around.",
 "action": "KEEP_OUT",
-"scene": "Fire station driveway entrance with apparatus bay doors beside road"
+"scene": "Fire station driveway entrance with apparatus bay doors beside road",
+"general": false
 },
 {
 "id": "CVC §22400(a)",
@@ -1257,7 +1396,8 @@
 "instruction": "교통 흐름을 막을 만큼 느리게 주행하지 마십시오.",
 "instruction_en": "Do not drive so slowly that you impede normal traffic movement.",
 "action": "CAUTION",
-"scene": "Vehicle driving very slowly with line of traffic behind"
+"scene": "Vehicle driving very slowly with line of traffic behind",
+"general": true
 },
 {
 "id": "CVC §22400(a)",
@@ -1266,7 +1406,8 @@
 "instruction": "교통을 막으며 도로에서 완전히 정지하지 마십시오.",
 "instruction_en": "Do not stop completely on the highway and block traffic.",
 "action": "CAUTION",
-"scene": "Vehicle stopped in a travel lane blocking following traffic"
+"scene": "Vehicle stopped in a travel lane blocking following traffic",
+"general": false
 },
 {
 "id": "CVC §22522",
@@ -1275,7 +1416,8 @@
 "instruction": "표지나 붉은 칠이 된 연석 경사로 3피트 이내에는 주차하지 마십시오.",
 "instruction_en": "Do not park within 3 feet of a marked or red-painted curb access ramp.",
 "action": "KEEP_OUT",
-"scene": "Sidewalk access ramp with red painted curb beside parking space"
+"scene": "Sidewalk access ramp with red painted curb beside parking space",
+"general": false
 },
 {
 "id": "CVC §23253",
@@ -1284,7 +1426,8 @@
 "instruction": "유료도로에서는 고속도로순찰대원의 지시에 따르십시오.",
 "instruction_en": "On toll highways, obey lawful directions of highway patrol officers.",
 "action": "CAUTION",
-"scene": "Highway patrol officer directing traffic on a toll road"
+"scene": "Highway patrol officer directing traffic on a toll road",
+"general": false
 },
 {
 "id": "CVC §21655.8(a)",
@@ -1293,7 +1436,8 @@
 "instruction": "HOV 차로 오른쪽에 이중 실선이 있으면 넘어서 드나들지 마십시오.",
 "instruction_en": "Do not cross double solid lines to enter or exit an HOV lane.",
 "action": "KEEP_OUT",
-"scene": "HOV lane separated by double solid lines on a freeway"
+"scene": "HOV lane separated by double solid lines on a freeway",
+"general": false
 },
 {
 "id": "CVC §21655.8(b)",
@@ -1302,7 +1446,8 @@
 "instruction": "긴급차량이 접근하면 HOV 차로에서 안전할 때 즉시 빠져나오십시오.",
 "instruction_en": "In an HOV lane, exit immediately when safe if an emergency vehicle approaches.",
 "action": "YIELD",
-"scene": "Emergency vehicle with lights approaching from behind in HOV lane"
+"scene": "Emergency vehicle with lights approaching from behind in HOV lane",
+"general": false
 },
 {
 "id": "CVC §21761(a)",
@@ -1311,7 +1456,8 @@
 "instruction": "황색등이 켜진 청소차를 추월할 때는 인접 차로로 옮겨 지나가십시오.",
 "instruction_en": "Passing a stopped waste truck with amber lights, move to the adjacent lane.",
 "action": "CAUTION",
-"scene": "Stopped garbage truck with flashing amber lights in lane ahead"
+"scene": "Stopped garbage truck with flashing amber lights in lane ahead",
+"general": false
 },
 {
 "id": "CVC §21761(b)",
@@ -1320,7 +1466,8 @@
 "instruction": "차로를 옮길 수 없으면 정차한 청소차 옆에서 안전한 속도로 감속하십시오.",
 "instruction_en": "If you cannot change lanes, slow to a safe speed near the waste truck.",
 "action": "SLOW_DOWN",
-"scene": "Stopped garbage truck with amber lights and no free adjacent lane"
+"scene": "Stopped garbage truck with amber lights and no free adjacent lane",
+"general": false
 },
 {
 "id": "CVC §21801(a)",
@@ -1329,7 +1476,8 @@
 "instruction": "좌회전이나 유턴할 때 위험한 거리의 맞은편 차량에게 양보하십시오.",
 "instruction_en": "When turning left or making a U-turn, yield to close oncoming vehicles.",
 "action": "YIELD",
-"scene": "Oncoming vehicles approaching while waiting to turn left"
+"scene": "Oncoming vehicles approaching while waiting to turn left",
+"general": false
 },
 {
 "id": "CVC §21801(b)",
@@ -1338,7 +1486,8 @@
 "instruction": "양보하고 신호를 낸 좌회전 차량에게 맞은편 차량은 양보하십시오.",
 "instruction_en": "Oncoming drivers must yield to a vehicle that yielded, signaled, and turns left.",
 "action": "YIELD",
-"scene": "Oncoming vehicle with left turn signal turning across your lane"
+"scene": "Oncoming vehicle with left turn signal turning across your lane",
+"general": false
 },
 {
 "id": "CVC §22106",
@@ -1347,7 +1496,8 @@
 "instruction": "출발하거나 후진할 때는 안전이 확보된 뒤에 하십시오.",
 "instruction_en": "Start from a stop or back up only when it can be done safely.",
 "action": "CAUTION",
-"scene": "Parked vehicle at the curb pulling out into traffic"
+"scene": "Parked vehicle at the curb pulling out into traffic",
+"general": false
 },
 {
 "id": "CVC §22107",
@@ -1356,7 +1506,8 @@
 "instruction": "방향을 바꾸거나 차로를 옮길 때는 안전을 확인하고 신호를 내십시오.",
 "instruction_en": "Turn or change lanes only when safe, and signal if others are affected.",
 "action": "CAUTION",
-"scene": "Multi-lane road with vehicles in adjacent lane during a lane change"
+"scene": "Multi-lane road with vehicles in adjacent lane during a lane change",
+"general": true
 },
 {
 "id": "CVC §22108",
@@ -1365,7 +1516,8 @@
 "instruction": "회전하기 전 마지막 100피트 동안 방향지시등을 계속 켜십시오.",
 "instruction_en": "Signal continuously during the last 100 feet before turning.",
 "action": "CAUTION",
-"scene": "Approach to an intersection or driveway before a turn"
+"scene": "Approach to an intersection or driveway before a turn",
+"general": true
 },
 {
 "id": "CVC §22109",
@@ -1374,7 +1526,8 @@
 "instruction": "정지하거나 급감속하기 전에 뒤차에 신호를 내십시오.",
 "instruction_en": "Signal to the vehicle behind before stopping or suddenly slowing.",
 "action": "CAUTION",
-"scene": "Following vehicle close behind as traffic ahead slows"
+"scene": "Following vehicle close behind as traffic ahead slows",
+"general": false
 },
 {
 "id": "CVC §22110(a)",
@@ -1383,7 +1536,8 @@
 "instruction": "방향 신호는 방향지시등으로 내십시오.",
 "instruction_en": "Give required turn signals with the vehicle's signal lamps.",
 "action": "CAUTION",
-"scene": "Vehicle approaching a turn with turn signal lamp flashing"
+"scene": "Vehicle approaching a turn with turn signal lamp flashing",
+"general": true
 },
 {
 "id": "CVC §22405(a)",
@@ -1392,7 +1546,8 @@
 "instruction": "교량·고가구조물·터널에서는 안전 최고속도를 넘지 마십시오.",
 "instruction_en": "Do not exceed the safe maximum speed on bridges or tunnels.",
 "action": "SLOW_DOWN",
-"scene": "Approaching a bridge or tunnel entrance with a speed sign"
+"scene": "Approaching a bridge or tunnel entrance with a speed sign",
+"general": false
 },
 {
 "id": "CVC §22507.8(a)",
@@ -1401,7 +1556,8 @@
 "instruction": "장애인 전용 주차 구역에는 표지나 번호판 없이 주차하지 마십시오.",
 "instruction_en": "Do not park in a disabled space without a plate or placard.",
 "action": "KEEP_OUT",
-"scene": "Parking stall marked with the disabled symbol"
+"scene": "Parking stall marked with the disabled symbol",
+"general": false
 },
 {
 "id": "CVC §22507.8(b)",
@@ -1410,7 +1566,8 @@
 "instruction": "장애인 전용 주차 구역으로의 접근을 막지 마십시오.",
 "instruction_en": "Do not block access to disabled parking spaces.",
 "action": "KEEP_OUT",
-"scene": "Disabled parking stall with an access aisle in a lot"
+"scene": "Disabled parking stall with an access aisle in a lot",
+"general": false
 },
 {
 "id": "CVC §23123(a)",
@@ -1419,7 +1576,8 @@
 "instruction": "운전 중에는 핸즈프리가 아닌 무선 전화를 사용하지 마십시오.",
 "instruction_en": "Do not use a wireless phone while driving unless hands-free.",
 "action": "CAUTION",
-"scene": "Driver holding a phone while driving on a road"
+"scene": "Driver holding a phone while driving on a road",
+"general": true
 },
 {
 "id": "CVC §21657",
@@ -1428,7 +1586,8 @@
 "instruction": "일방통행으로 지정된 도로·차로에서는 지정된 방향으로만 주행하십시오.",
 "instruction_en": "On one-way roads or lanes, drive only in the designated direction.",
 "action": "KEEP_OUT",
-"scene": "One-way sign with an arrow along a roadway"
+"scene": "One-way sign with an arrow along a roadway",
+"general": false
 },
 {
 "id": "CVC §21658(a)",
@@ -1437,7 +1596,8 @@
 "instruction": "다차로 도로에서는 한 차로로 주행하고 안전할 때만 변경하십시오.",
 "instruction_en": "Stay within one lane and change lanes only when reasonably safe.",
 "action": "CAUTION",
-"scene": "One-way road with several clearly marked lanes"
+"scene": "One-way road with several clearly marked lanes",
+"general": true
 },
 {
 "id": "CVC §21658(b)",
@@ -1446,7 +1606,8 @@
 "instruction": "차로를 지정하는 표지가 있으면 그 지시에 따르십시오.",
 "instruction_en": "Obey signs that assign slow traffic or specified lanes.",
 "action": "CAUTION",
-"scene": "Overhead sign assigning slow vehicles to a designated lane"
+"scene": "Overhead sign assigning slow vehicles to a designated lane",
+"general": false
 },
 {
 "id": "CVC §21659",
@@ -1455,7 +1616,8 @@
 "instruction": "일방통행이 아닌 3차로 도로에서는 맨 왼쪽 차로로 주행하지 마십시오.",
 "instruction_en": "On a three-lane roadway, never drive in the extreme left lane.",
 "action": "KEEP_OUT",
-"scene": "Two-way roadway with three lanes and the leftmost lane ahead"
+"scene": "Two-way roadway with three lanes and the leftmost lane ahead",
+"general": false
 },
 {
 "id": "CVC §21659",
@@ -1464,7 +1626,8 @@
 "instruction": "양방향 3차로 도로의 가운데 차로는 앞지르기·좌회전 때만 쓰십시오.",
 "instruction_en": "On a three-lane roadway, use the center lane only to pass or turn left.",
 "action": "KEEP_OUT",
-"scene": "Two-way three-lane roadway with the center lane ahead"
+"scene": "Two-way three-lane roadway with the center lane ahead",
+"general": false
 },
 {
 "id": "CVC §21802(a)",
@@ -1473,7 +1636,8 @@
 "instruction": "정지 표지 앞에서는 완전히 정지하십시오.",
 "instruction_en": "Stop completely at a stop sign.",
 "action": "STOP",
-"scene": "Red octagonal stop sign at an intersection entrance"
+"scene": "Red octagonal stop sign at an intersection entrance",
+"general": false
 },
 {
 "id": "CVC §21802(a)",
@@ -1482,7 +1646,8 @@
 "instruction": "정지 후에는 교차 도로 차량과 임박한 위험 차량에 양보하십시오.",
 "instruction_en": "After stopping, yield to cross traffic and any immediate hazard.",
 "action": "YIELD",
-"scene": "Stopped at a stop sign with cross traffic approaching"
+"scene": "Stopped at a stop sign with cross traffic approaching",
+"general": false
 },
 {
 "id": "CVC §21802(b)",
@@ -1491,7 +1656,8 @@
 "instruction": "정지 표지에서 양보를 마치고 진입하는 차량에는 양보하십시오.",
 "instruction_en": "Yield to a vehicle that has yielded and is entering the intersection.",
 "action": "YIELD",
-"scene": "Vehicle from a stop sign entering the intersection ahead"
+"scene": "Vehicle from a stop sign entering the intersection ahead",
+"general": false
 },
 {
 "id": "CVC §21803(a)",
@@ -1500,7 +1666,8 @@
 "instruction": "양보 표지에서는 교차로에 진입한 차량과 임박한 위험 차량에 양보하십시오.",
 "instruction_en": "At a yield sign, yield to vehicles in or approaching the intersection.",
 "action": "YIELD",
-"scene": "Yield sign with vehicles on the intersecting road"
+"scene": "Yield sign with vehicles on the intersecting road",
+"general": false
 },
 {
 "id": "CVC §21803(b)",
@@ -1509,7 +1676,8 @@
 "instruction": "양보 표지에서 양보를 마치고 진입하는 차량에는 양보하십시오.",
 "instruction_en": "Yield to a vehicle that has yielded and is entering the intersection.",
 "action": "YIELD",
-"scene": "Vehicle from a yield sign entering the intersection ahead"
+"scene": "Vehicle from a yield sign entering the intersection ahead",
+"general": false
 },
 {
 "id": "CVC §21804(a)",
@@ -1518,7 +1686,8 @@
 "instruction": "사유지·골목에서 도로로 진입할 때는 접근하는 차량에 양보하십시오.",
 "instruction_en": "When entering a road from property or an alley, yield to traffic.",
 "action": "YIELD",
-"scene": "Driveway or alley exit onto a road with approaching traffic"
+"scene": "Driveway or alley exit onto a road with approaching traffic",
+"general": false
 },
 {
 "id": "CVC §21804(b)",
@@ -1527,7 +1696,8 @@
 "instruction": "사유지·골목에서 양보를 마치고 도로로 진입하는 차량에는 양보하십시오.",
 "instruction_en": "Yield to a vehicle that has yielded and is entering the road.",
 "action": "YIELD",
-"scene": "Vehicle pulling out of a driveway onto the road ahead"
+"scene": "Vehicle pulling out of a driveway onto the road ahead",
+"general": false
 },
 {
 "id": "CVC §22349(a)",
@@ -1536,7 +1706,8 @@
 "instruction": "도로에서는 시속 65마일을 넘지 마십시오.",
 "instruction_en": "Do not drive faster than 65 miles per hour.",
 "action": "SLOW_DOWN",
-"scene": "Open highway with a 65 mph speed limit sign"
+"scene": "Open highway with a 65 mph speed limit sign",
+"general": false
 },
 {
 "id": "CVC §22349(b)",
@@ -1545,7 +1716,8 @@
 "instruction": "상향 표지 없는 2차로 비분리 도로에서는 55마일을 넘지 마십시오.",
 "instruction_en": "On two-lane undivided highways, do not exceed 55 mph unless posted higher.",
 "action": "SLOW_DOWN",
-"scene": "Two-lane undivided highway with no posted higher limit"
+"scene": "Two-lane undivided highway with no posted higher limit",
+"general": false
 },
 {
 "id": "CVC §22410",
@@ -1554,7 +1726,8 @@
 "instruction": "금속 타이어 차량은 노면에서 시속 6마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed six miles per hour with metal tires on the road.",
 "action": "SLOW_DOWN",
-"scene": "Vehicle with metal tires on a road surface"
+"scene": "Vehicle with metal tires on a road surface",
+"general": false
 },
 {
 "id": "CVC §22406(a)",
@@ -1563,7 +1736,8 @@
 "instruction": "3축 이상이거나 다른 차를 끄는 화물차는 55마일을 넘지 마십시오.",
 "instruction_en": "Trucks with three or more axles or towing must not exceed 55 mph.",
 "action": "SLOW_DOWN",
-"scene": "Heavy multi-axle truck or truck towing another vehicle on a highway"
+"scene": "Heavy multi-axle truck or truck towing another vehicle on a highway",
+"general": false
 },
 {
 "id": "CVC §22406(b)",
@@ -1572,7 +1746,8 @@
 "instruction": "다른 차량을 끄는 승용차·버스는 시속 55마일을 넘지 마십시오.",
 "instruction_en": "Passenger vehicles or buses towing another vehicle must not exceed 55 mph.",
 "action": "SLOW_DOWN",
-"scene": "Passenger vehicle or bus towing a trailer on a highway"
+"scene": "Passenger vehicle or bus towing a trailer on a highway",
+"general": false
 },
 {
 "id": "CVC §22406(c)",
@@ -1581,7 +1756,8 @@
 "instruction": "학생을 태운 스쿨버스는 시속 55마일을 넘지 마십시오.",
 "instruction_en": "A schoolbus carrying pupils must not exceed 55 mph.",
 "action": "SLOW_DOWN",
-"scene": "Yellow schoolbus carrying students on a highway"
+"scene": "Yellow schoolbus carrying students on a highway",
+"general": false
 },
 {
 "id": "CVC §22406(d)",
@@ -1590,7 +1766,8 @@
 "instruction": "승객을 태운 농장 노동자 차량은 시속 55마일을 넘지 마십시오.",
 "instruction_en": "A farm labor vehicle carrying passengers must not exceed 55 mph.",
 "action": "SLOW_DOWN",
-"scene": "Farm labor vehicle carrying passengers on a rural road"
+"scene": "Farm labor vehicle carrying passengers on a rural road",
+"general": false
 },
 {
 "id": "CVC §22406(e)",
@@ -1599,7 +1776,8 @@
 "instruction": "폭발물을 운반하는 차량은 시속 55마일을 넘지 마십시오.",
 "instruction_en": "A vehicle transporting explosives must not exceed 55 mph.",
 "action": "SLOW_DOWN",
-"scene": "Truck with explosives placards on a highway"
+"scene": "Truck with explosives placards on a highway",
+"general": false
 },
 {
 "id": "CVC §22406(f)",
@@ -1608,7 +1786,8 @@
 "instruction": "트레일러 버스는 시속 55마일을 넘지 마십시오.",
 "instruction_en": "A trailer bus must not exceed 55 mph.",
 "action": "SLOW_DOWN",
-"scene": "Bus pulling a trailer on a highway"
+"scene": "Bus pulling a trailer on a highway",
+"general": false
 },
 {
 "id": "CVC §21662",
@@ -1617,7 +1796,8 @@
 "instruction": "산악도로·협곡을 지날 때는 항상 차량을 통제하십시오.",
 "instruction_en": "Keep the vehicle under control in canyons and on mountain highways.",
 "action": "CAUTION",
-"scene": "Winding mountain highway through a canyon"
+"scene": "Winding mountain highway through a canyon",
+"general": false
 },
 {
 "id": "CVC §21662(a)",
@@ -1626,7 +1806,8 @@
 "instruction": "중앙선 없는 산악도로·협곡에서는 도로 오른쪽 끝에 붙어 주행하십시오.",
 "instruction_en": "On mountain roads without a centerline, drive near the right edge.",
 "action": "CAUTION",
-"scene": "Narrow mountain road with no centerline"
+"scene": "Narrow mountain road with no centerline",
+"general": false
 },
 {
 "id": "CVC §21662(b)",
@@ -1635,7 +1816,8 @@
 "instruction": "폭이 좁고 200피트 안이 가려진 산악 커브에서는 경적을 울리십시오.",
 "instruction_en": "On narrow mountain roads, honk before curves with view blocked within 200 feet.",
 "action": "CAUTION",
-"scene": "Blind curve on a narrow mountain road"
+"scene": "Blind curve on a narrow mountain road",
+"general": false
 },
 {
 "id": "CVC §21663",
@@ -1644,7 +1826,8 @@
 "instruction": "인접 부지 출입 외에는 보도 위로 주행하지 마십시오.",
 "instruction_en": "Do not drive on a sidewalk except to enter or leave adjacent property.",
 "action": "KEEP_OUT",
-"scene": "Sidewalk beside a road with a curb"
+"scene": "Sidewalk beside a road with a curb",
+"general": false
 },
 {
 "id": "CVC §21700",
@@ -1653,7 +1836,8 @@
 "instruction": "시야나 조작을 방해하도록 싣거나 앞좌석에 태우고 주행하지 마십시오.",
 "instruction_en": "Do not drive with a load or passengers blocking view or control.",
 "action": "CAUTION",
-"scene": "Vehicle cargo or crowded front seat obstructing the driver's view"
+"scene": "Vehicle cargo or crowded front seat obstructing the driver's view",
+"general": true
 },
 {
 "id": "CVC §21661",
@@ -1662,7 +1846,8 @@
 "instruction": "폭이 좁은 비탈길에서는 내려가는 차가 올라오는 차에 양보하십시오.",
 "instruction_en": "On narrow grades, the descending vehicle yields to the ascending vehicle.",
 "action": "YIELD",
-"scene": "Narrow sloped road with an oncoming vehicle climbing"
+"scene": "Narrow sloped road with an oncoming vehicle climbing",
+"general": false
 },
 {
 "id": "CVC §21805(b)",
@@ -1671,7 +1856,8 @@
 "instruction": "표지된 승마 횡단로에서는 건너는 기수에게 양보하십시오.",
 "instruction_en": "Yield to horseback riders at marked equestrian crossings.",
 "action": "YIELD",
-"scene": "Equestrian crossing sign with a horse rider crossing"
+"scene": "Equestrian crossing sign with a horse rider crossing",
+"general": false
 },
 {
 "id": "CVC §21951",
@@ -1680,7 +1866,8 @@
 "instruction": "횡단보도에 정차한 차량은 뒤에서 추월하지 마십시오.",
 "instruction_en": "Do not pass a vehicle stopped at a crosswalk.",
 "action": "NO_OVERTAKING",
-"scene": "Car stopped before crosswalk with pedestrian crossing, vehicle approaching from behind"
+"scene": "Car stopped before crosswalk with pedestrian crossing, vehicle approaching from behind",
+"general": false
 },
 {
 "id": "CVC §22450(a)",
@@ -1689,7 +1876,8 @@
 "instruction": "정지 표지판 앞에서는 정지선 또는 횡단보도 앞에 정지하십시오.",
 "instruction_en": "Stop at the limit line or before the crosswalk at a stop sign.",
 "action": "STOP",
-"scene": "Red stop sign at intersection with white limit line and crosswalk"
+"scene": "Red stop sign at intersection with white limit line and crosswalk",
+"general": false
 },
 {
 "id": "CVC §22450(a)",
@@ -1698,7 +1886,8 @@
 "instruction": "정지선과 횡단보도가 없으면 교차 도로 입구에 정지하십시오.",
 "instruction_en": "With no limit line or crosswalk, stop at the intersecting roadway entrance.",
 "action": "STOP",
-"scene": "Stop sign at intersection with no limit line or crosswalk"
+"scene": "Stop sign at intersection with no limit line or crosswalk",
+"general": false
 },
 {
 "id": "CVC §22450(b)",
@@ -1707,7 +1896,8 @@
 "instruction": "건널목 정지 표지판 앞에서는 정지선 또는 첫 선로 앞에 정지하십시오.",
 "instruction_en": "Stop at the limit line or before the first track at a crossing stop sign.",
 "action": "STOP",
-"scene": "Stop sign at railroad grade crossing with tracks ahead"
+"scene": "Stop sign at railroad grade crossing with tracks ahead",
+"general": false
 },
 {
 "id": "CVC §23302.5(a)",
@@ -1716,7 +1906,8 @@
 "instruction": "유료도로와 통행료 시설에서는 통행료 납부를 회피하지 마십시오.",
 "instruction_en": "Do not evade payment of tolls on a toll road or crossing.",
 "action": "CAUTION",
-"scene": "Toll plaza with toll booths and electronic toll gantry ahead"
+"scene": "Toll plaza with toll booths and electronic toll gantry ahead",
+"general": false
 },
 {
 "id": "CVC §21704(a)",
@@ -1725,7 +1916,8 @@
 "instruction": "시가지 밖 편도 1차로에서는 제한속도 차량과 300피트 띄우십시오.",
 "instruction_en": "Outside towns on two-lane roads, stay 300 feet behind restricted-speed vehicles.",
 "action": "CAUTION",
-"scene": "Truck towing trailer ahead on rural two-lane highway outside town"
+"scene": "Truck towing trailer ahead on rural two-lane highway outside town",
+"general": false
 },
 {
 "id": "CVC §21706",
@@ -1734,7 +1926,8 @@
 "instruction": "사이렌을 울리는 긴급차량의 300피트 이내로 따라가지 마십시오.",
 "instruction_en": "Do not follow within 300 feet of an emergency vehicle with siren.",
 "action": "KEEP_OUT",
-"scene": "Ambulance with flashing lights and siren driving ahead on road"
+"scene": "Ambulance with flashing lights and siren driving ahead on road",
+"general": false
 },
 {
 "id": "CVC §21706.5(b)",
@@ -1743,7 +1936,8 @@
 "instruction": "고속도로 정차 긴급차량 500피트 이내에서는 위반 없이 운전하십시오.",
 "instruction_en": "Near a stopped emergency vehicle on a freeway, drive without violations within 500 feet.",
 "action": "CAUTION",
-"scene": "Freeway with stationary police car, flashing lights on, ahead in travel direction"
+"scene": "Freeway with stationary police car, flashing lights on, ahead in travel direction",
+"general": false
 },
 {
 "id": "CVC §21954(b)",
@@ -1752,7 +1946,8 @@
 "instruction": "차도에 있는 보행자의 안전을 위해 항상 주의를 기울이십시오.",
 "instruction_en": "Always exercise due care for pedestrians on the roadway.",
 "action": "CAUTION",
-"scene": "Pedestrian walking on roadway outside any crosswalk"
+"scene": "Pedestrian walking on roadway outside any crosswalk",
+"general": false
 },
 {
 "id": "CVC §22451(a)",
@@ -1761,7 +1956,8 @@
 "instruction": "열차 접근 신호가 있으면 선로 15피트 전에 정지하십시오.",
 "instruction_en": "Stop 15 feet from the rail when a signal or flagman warns of a train.",
 "action": "STOP",
-"scene": "Railroad crossing with flashing red signals and crossbuck warning of train"
+"scene": "Railroad crossing with flashing red signals and crossbuck warning of train",
+"general": false
 },
 {
 "id": "CVC §22451(a)",
@@ -1770,7 +1966,8 @@
 "instruction": "열차가 보이거나 들리고 위험하면 선로 15피트 전에 정지하십시오.",
 "instruction_en": "Stop 15 feet from the rail if a visible or audible train is hazardous.",
 "action": "STOP",
-"scene": "Train approaching railroad crossing close to the road"
+"scene": "Train approaching railroad crossing close to the road",
+"general": false
 },
 {
 "id": "CVC §22451(b)",
@@ -1779,7 +1976,8 @@
 "instruction": "철도 건널목 차단기가 내려와 있으면 통과하거나 우회하지 마십시오.",
 "instruction_en": "Do not go through or around a closed railroad crossing gate.",
 "action": "KEEP_OUT",
-"scene": "Lowered railroad crossing gate arm blocking the lane"
+"scene": "Lowered railroad crossing gate arm blocking the lane",
+"general": false
 },
 {
 "id": "CVC §23103(a)",
@@ -1788,7 +1986,8 @@
 "instruction": "도로에서 안전을 고의로 무시하는 운전을 하지 마십시오.",
 "instruction_en": "Do not drive with willful or wanton disregard for safety on a highway.",
 "action": "CAUTION",
-"scene": "Busy road with vehicles and pedestrians nearby"
+"scene": "Busy road with vehicles and pedestrians nearby",
+"general": true
 },
 {
 "id": "CVC §23103(b)",
@@ -1797,7 +1996,8 @@
 "instruction": "주차장 안에서도 안전을 고의로 무시하는 운전을 하지 마십시오.",
 "instruction_en": "Do not drive with willful or wanton disregard for safety in a parking facility.",
 "action": "CAUTION",
-"scene": "Parking lot with parked cars and pedestrians walking between them"
+"scene": "Parking lot with parked cars and pedestrians walking between them",
+"general": false
 },
 {
 "id": "CVC §23332",
@@ -1806,7 +2006,8 @@
 "instruction": "허가 없이 공공 이용이 아닌 차량 통행 구조물에 들어가지 마십시오.",
 "instruction_en": "Do not enter a vehicular crossing not intended for public use.",
 "action": "KEEP_OUT",
-"scene": "Bridge approach with closed private access sign and barrier"
+"scene": "Bridge approach with closed private access sign and barrier",
+"general": false
 },
 {
 "id": "CVC §22455(a)",
@@ -1815,7 +2016,8 @@
 "instruction": "주거 지역에서 판매하려면 완전히 정지해 연석 옆에 주차하십시오.",
 "instruction_en": "In a residence district, vend only after fully stopping and parking at the curb.",
 "action": "STOP",
-"scene": "Vending truck stopping at residential curb with customers nearby"
+"scene": "Vending truck stopping at residential curb with customers nearby",
+"general": false
 },
 {
 "id": "CVC §23333",
@@ -1824,7 +2026,8 @@
 "instruction": "교량 등 차량 통행 구조물 위에서는 정차하거나 주차하지 마십시오.",
 "instruction_en": "Do not stop, stand, or park on a vehicular crossing.",
 "action": "KEEP_OUT",
-"scene": "Bridge roadway with no shoulder and traffic lanes ahead"
+"scene": "Bridge roadway with no shoulder and traffic lanes ahead",
+"general": false
 },
 {
 "id": "CVC §21457(a)",
@@ -1833,7 +2036,8 @@
 "instruction": "점멸하는 적색등에서는 정지선 앞에서 정지하십시오.",
 "instruction_en": "At a flashing red light, stop at the limit line.",
 "action": "STOP",
-"scene": "Flashing red signal with a painted stop line ahead"
+"scene": "Flashing red signal with a painted stop line ahead",
+"general": false
 },
 {
 "id": "CVC §21457(a)",
@@ -1842,7 +2046,8 @@
 "instruction": "정지선 없는 점멸 적색등에서는 횡단보도 앞에서 정지하십시오.",
 "instruction_en": "At a flashing red with no limit line, stop before the crosswalk.",
 "action": "STOP",
-"scene": "Flashing red signal and a crosswalk, no stop line"
+"scene": "Flashing red signal and a crosswalk, no stop line",
+"general": false
 },
 {
 "id": "CVC §21457(a)",
@@ -1851,7 +2056,8 @@
 "instruction": "정지선·횡단보도 없는 점멸 적색등에서는 시야 확보 지점에서 정지하십시오.",
 "instruction_en": "With no line or crosswalk, stop where you can see cross traffic.",
 "action": "STOP",
-"scene": "Flashing red signal at intersection without line or crosswalk"
+"scene": "Flashing red signal at intersection without line or crosswalk",
+"general": false
 },
 {
 "id": "CVC §21457(a)",
@@ -1860,7 +2066,8 @@
 "instruction": "점멸 적색등에서 정지한 뒤 정지 표지 규칙대로 진행하십시오.",
 "instruction_en": "After stopping at a flashing red, proceed under stop sign rules.",
 "action": "YIELD",
-"scene": "Stopped vehicle at flashing red with cross traffic approaching"
+"scene": "Stopped vehicle at flashing red with cross traffic approaching",
+"general": false
 },
 {
 "id": "CVC §21458(a)",
@@ -1869,7 +2076,8 @@
 "instruction": "적색 연석 구간에서는 정지·정차·주차하지 마십시오.",
 "instruction_en": "Do not stop, stand, or park at a red curb.",
 "action": "KEEP_OUT",
-"scene": "Curb painted red along the roadside"
+"scene": "Curb painted red along the roadside",
+"general": false
 },
 {
 "id": "CVC §21458(a)",
@@ -1878,7 +2086,8 @@
 "instruction": "황색 연석 구간에서는 승객·화물 승하차 때만 정차하십시오.",
 "instruction_en": "At a yellow curb, stop only to load or unload.",
 "action": "KEEP_OUT",
-"scene": "Curb painted yellow along the roadside"
+"scene": "Curb painted yellow along the roadside",
+"general": false
 },
 {
 "id": "CVC §21458(a)",
@@ -1887,7 +2096,8 @@
 "instruction": "백색 연석 구간에서는 승객 승하차·우편물 투입 때만 정차하십시오.",
 "instruction_en": "At a white curb, stop only for passengers or mail.",
 "action": "KEEP_OUT",
-"scene": "Curb painted white next to a mailbox or passenger drop-off"
+"scene": "Curb painted white next to a mailbox or passenger drop-off",
+"general": false
 },
 {
 "id": "CVC §21458(a)",
@@ -1896,7 +2106,8 @@
 "instruction": "녹색 연석 구간에서는 지정된 시간 제한에 맞춰 주차하십시오.",
 "instruction_en": "At a green curb, park within the posted time limit.",
 "action": "CAUTION",
-"scene": "Curb painted green along the roadside"
+"scene": "Curb painted green along the roadside",
+"general": false
 },
 {
 "id": "CVC §21458(a)",
@@ -1905,7 +2116,8 @@
 "instruction": "청색 연석 구간에는 장애인 차량만 주차하십시오.",
 "instruction_en": "Park at a blue curb only if you are a disabled-person vehicle.",
 "action": "KEEP_OUT",
-"scene": "Curb painted blue disabled parking space"
+"scene": "Curb painted blue disabled parking space",
+"general": false
 },
 {
 "id": "CVC §21655(b)",
@@ -1914,7 +2126,8 @@
 "instruction": "표지로 차로를 지정하면 트레일러 버스는 그 차로로 주행하십시오.",
 "instruction_en": "Trailer buses must use the lane designated by signs.",
 "action": "CAUTION",
-"scene": "Sign designating a lane for trailer buses and towing vehicles"
+"scene": "Sign designating a lane for trailer buses and towing vehicles",
+"general": false
 },
 {
 "id": "CVC §21655(b)",
@@ -1923,7 +2136,8 @@
 "instruction": "차로 지정이 없으면 트레일러 버스는 우측 차로로 주행하십시오.",
 "instruction_en": "Without lane designation, trailer buses must drive in the right lane.",
 "action": "CAUTION",
-"scene": "Multi-lane road with no lane designation signs, trailer bus ahead"
+"scene": "Multi-lane road with no lane designation signs, trailer bus ahead",
+"general": false
 },
 {
 "id": "CVC §21655.5(b)",
@@ -1932,7 +2146,8 @@
 "instruction": "전용·우대 차로에서는 교통 표지 지시대로만 주행하십시오.",
 "instruction_en": "In exclusive or preferential lanes, drive only as the signs instruct.",
 "action": "KEEP_OUT",
-"scene": "High-occupancy vehicle lane with diamond marking and restriction signs"
+"scene": "High-occupancy vehicle lane with diamond marking and restriction signs",
+"general": false
 },
 {
 "id": "CVC §21655.10(a)",
@@ -1941,7 +2156,8 @@
 "instruction": "올림픽 경기 전용 차로에서는 교통 표지 지시대로만 주행하십시오.",
 "instruction_en": "In Games route lanes, drive only as traffic signs instruct.",
 "action": "KEEP_OUT",
-"scene": "Dedicated Olympic games route lane with traffic control signs"
+"scene": "Dedicated Olympic games route lane with traffic control signs",
+"general": false
 },
 {
 "id": "CVC §21718(a)",
@@ -1950,7 +2166,8 @@
 "instruction": "출입 통제 고속도로에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop, park, or stand on a controlled-access freeway.",
 "action": "KEEP_OUT",
-"scene": "Freeway lane or shoulder with no crossings at grade"
+"scene": "Freeway lane or shoulder with no crossings at grade",
+"general": false
 },
 {
 "id": "CVC §21718(a)",
@@ -1959,7 +2176,8 @@
 "instruction": "충분한 갓길 보도가 없으면 버스는 고속도로에서 정차하지 마십시오.",
 "instruction_en": "Buses must not stop on freeways without a wide shoulder sidewalk.",
 "action": "KEEP_OUT",
-"scene": "Bus on freeway shoulder with no sidewalk or bus stop"
+"scene": "Bus on freeway shoulder with no sidewalk or bus stop",
+"general": false
 },
 {
 "id": "CVC §21719(a)",
@@ -1968,7 +2186,8 @@
 "instruction": "중앙분리대·갓길을 주행하는 견인차는 안전한 속도를 넘지 마십시오.",
 "instruction_en": "Tow trucks on median or shoulder must not exceed a safe speed.",
 "action": "SLOW_DOWN",
-"scene": "Tow truck driving on freeway shoulder or center median"
+"scene": "Tow truck driving on freeway shoulder or center median",
+"general": false
 },
 {
 "id": "CVC §21719(a)",
@@ -1977,7 +2196,8 @@
 "instruction": "중앙분리대·갓길을 주행하는 견인차는 황색 점멸등을 켜십시오.",
 "instruction_en": "Tow trucks on median or shoulder must show flashing amber lamps.",
 "action": "CAUTION",
-"scene": "Tow truck with flashing amber lamps on shoulder or median"
+"scene": "Tow truck with flashing amber lamps on shoulder or median",
+"general": false
 },
 {
 "id": "CVC §23114(b)",
@@ -1986,7 +2206,8 @@
 "instruction": "골재는 화물칸에만 싣고 운행하십시오.",
 "instruction_en": "Carry aggregate material only inside the cargo area.",
 "action": "CAUTION",
-"scene": "Dump truck hauling gravel on a highway"
+"scene": "Dump truck hauling gravel on a highway",
+"general": false
 },
 {
 "id": "CVC §23114(e)",
@@ -1995,7 +2216,8 @@
 "instruction": "고속도로에서 골재를 싣고 가려면 적재물을 덮으십시오.",
 "instruction_en": "Cover aggregate loads when driving on a highway.",
 "action": "CAUTION",
-"scene": "Truck carrying open gravel load on road"
+"scene": "Truck carrying open gravel load on road",
+"general": false
 },
 {
 "id": "CVC §23114(f)",
@@ -2004,7 +2226,8 @@
 "instruction": "덮지 않은 골재 차량은 출구에서 200야드 넘게 가지 마십시오.",
 "instruction_en": "Do not drive an uncovered aggregate load over 200 yards from exit.",
 "action": "KEEP_OUT",
-"scene": "Uncovered gravel truck leaving quarry exit onto public road"
+"scene": "Uncovered gravel truck leaving quarry exit onto public road",
+"general": false
 },
 {
 "id": "CVC §23123.5(c)",
@@ -2013,7 +2236,8 @@
 "instruction": "휴대전화는 대시보드나 앞유리에 거치할 때만 손으로 조작하십시오.",
 "instruction_en": "Use a handheld phone only when mounted on windshield or dashboard.",
 "action": "CAUTION",
-"scene": "Driver phone mounted on dashboard in view"
+"scene": "Driver phone mounted on dashboard in view",
+"general": false
 },
 {
 "id": "CVC §23123.5(c)",
@@ -2022,7 +2246,8 @@
 "instruction": "거치한 휴대전화는 한 번의 스와이프나 탭으로만 조작하십시오.",
 "instruction_en": "Operate a mounted phone with a single swipe or tap only.",
 "action": "CAUTION",
-"scene": "Driver finger touching mounted phone screen"
+"scene": "Driver finger touching mounted phone screen",
+"general": false
 },
 {
 "id": "CVC §21760(c)",
@@ -2031,7 +2256,8 @@
 "instruction": "자전거를 앞지를 때 3피트 미만으로 접근하지 마십시오.",
 "instruction_en": "Do not pass a bicycle with less than three feet clearance.",
 "action": "NO_OVERTAKING",
-"scene": "Cyclist riding ahead in the same lane"
+"scene": "Cyclist riding ahead in the same lane",
+"general": false
 },
 {
 "id": "CVC §21760(c)",
@@ -2040,7 +2266,8 @@
 "instruction": "자전거를 앞지를 때 다른 차로가 있으면 차로를 바꾸십시오.",
 "instruction_en": "Change lanes to pass a bicycle when another lane is available.",
 "action": "NO_OVERTAKING",
-"scene": "Cyclist ahead with open adjacent lane"
+"scene": "Cyclist ahead with open adjacent lane",
+"general": false
 },
 {
 "id": "CVC §21800(d)",
@@ -2049,7 +2276,8 @@
 "instruction": "신호등이 꺼진 교차로에서는 정지하십시오.",
 "instruction_en": "Stop at an intersection with inoperative traffic signals.",
 "action": "STOP",
-"scene": "Intersection with dark traffic signals"
+"scene": "Intersection with dark traffic signals",
+"general": false
 },
 {
 "id": "CVC §21800(d)",
@@ -2058,7 +2286,8 @@
 "instruction": "신호등이 꺼진 교차로에 동시 진입하면 오른쪽 차량에 양보하십시오.",
 "instruction_en": "At dark signals, yield to the vehicle on your right.",
 "action": "YIELD",
-"scene": "Dark-signal intersection with vehicle approaching from right"
+"scene": "Dark-signal intersection with vehicle approaching from right",
+"general": false
 },
 {
 "id": "CVC §21800(d)",
@@ -2067,7 +2296,8 @@
 "instruction": "꺼진 신호등 교차로에서 종단 도로 차량은 연속 도로에 양보하십시오.",
 "instruction_en": "At dark signals, terminating-road drivers yield to the continuing highway.",
 "action": "YIELD",
-"scene": "Dark-signal T-intersection with traffic on continuing road"
+"scene": "Dark-signal T-intersection with traffic on continuing road",
+"general": false
 },
 {
 "id": "CVC §21809(a)",
@@ -2076,7 +2306,8 @@
 "instruction": "정차한 비상·작업 차량 옆으로 지날 때는 주의하며 접근하십시오.",
 "instruction_en": "Approach stopped emergency or warning-light vehicles with due caution.",
 "action": "CAUTION",
-"scene": "Stopped vehicle with flashing lights ahead on roadside"
+"scene": "Stopped vehicle with flashing lights ahead on roadside",
+"general": false
 },
 {
 "id": "CVC §21809(a)",
@@ -2085,7 +2316,8 @@
 "instruction": "정차한 경고등 차량 옆 차로라면 인접하지 않은 차로로 옮기십시오.",
 "instruction_en": "Move to a non-adjacent lane before passing flashing-light vehicles.",
 "action": "CAUTION",
-"scene": "Flashing-light vehicle on shoulder with free lane beside"
+"scene": "Flashing-light vehicle on shoulder with free lane beside",
+"general": false
 },
 {
 "id": "CVC §21809(a)",
@@ -2094,7 +2326,8 @@
 "instruction": "차로를 바꿀 수 없으면 안전한 속도로 감속하십시오.",
 "instruction_en": "If you cannot change lanes, slow to a safe speed.",
 "action": "SLOW_DOWN",
-"scene": "Flashing-light vehicle beside lane, adjacent lane occupied"
+"scene": "Flashing-light vehicle beside lane, adjacent lane occupied",
+"general": false
 },
 {
 "id": "CVC §22100(a)",
@@ -2103,7 +2336,8 @@
 "instruction": "우회전은 가능한 한 오른쪽 연석 가까이에서 진입하고 도십시오.",
 "instruction_en": "Approach and make right turns as close to the right curb as practicable.",
 "action": "CAUTION",
-"scene": "Intersection ahead, vehicle in right lane preparing right turn"
+"scene": "Intersection ahead, vehicle in right lane preparing right turn",
+"general": false
 },
 {
 "id": "CVC §22100(b)",
@@ -2112,7 +2346,8 @@
 "instruction": "좌회전은 가능한 한 가장 왼쪽 차로 왼쪽 가장자리에서 진입하십시오.",
 "instruction_en": "Approach left turns in the extreme left lane, near its left edge.",
 "action": "CAUTION",
-"scene": "Intersection with left-turn lane ahead"
+"scene": "Intersection with left-turn lane ahead",
+"general": false
 },
 {
 "id": "CVC §22100(b)",
@@ -2121,7 +2356,8 @@
 "instruction": "교차로에서 좌회전은 교차로에 진입한 뒤에 하십시오.",
 "instruction_en": "Do not turn left until you have entered the intersection.",
 "action": "CAUTION",
-"scene": "Vehicle waiting to turn left inside intersection entrance"
+"scene": "Vehicle waiting to turn left inside intersection entrance",
+"general": false
 },
 {
 "id": "CVC §22100(b)",
@@ -2130,7 +2366,8 @@
 "instruction": "좌회전한 뒤에는 진행 방향이 허용된 차로로 나가십시오.",
 "instruction_en": "After a left turn, exit into a lane lawful for your direction.",
 "action": "CAUTION",
-"scene": "Intersection exit lanes on the cross street"
+"scene": "Intersection exit lanes on the cross street",
+"general": false
 },
 {
 "id": "CVC §22348(b)",
@@ -2139,7 +2376,8 @@
 "instruction": "시속 100마일을 초과해 주행하지 마십시오.",
 "instruction_en": "Do not drive faster than 100 miles per hour.",
 "action": "SLOW_DOWN",
-"scene": "Open freeway with high-speed traffic"
+"scene": "Open freeway with high-speed traffic",
+"general": false
 },
 {
 "id": "CVC §22348(c)",
@@ -2148,7 +2386,8 @@
 "instruction": "55마일 제한 차량은 지정 차로나 맨 오른쪽 차로로 주행하십시오.",
 "instruction_en": "Speed-restricted vehicles drive in the designated or right-hand lane.",
 "action": "KEEP_OUT",
-"scene": "Heavy truck on multi-lane highway"
+"scene": "Heavy truck on multi-lane highway",
+"general": false
 },
 {
 "id": "CVC §23302(a)",
@@ -2157,7 +2396,8 @@
 "instruction": "유료도로와 교량에 진입할 때는 통행료를 내십시오.",
 "instruction_en": "Pay the toll when driving onto a toll highway or crossing.",
 "action": "CAUTION",
-"scene": "Toll plaza or toll bridge entrance ahead"
+"scene": "Toll plaza or toll bridge entrance ahead",
+"general": false
 },
 {
 "id": "CVC §23302(a)",
@@ -2166,7 +2406,8 @@
 "instruction": "전자 통행료 장치는 차량 밖에서 보이는 위치에 두십시오.",
 "instruction_en": "Keep the toll transponder visible on the vehicle at all times.",
 "action": "CAUTION",
-"scene": "Toll lane with transponder reader gantry overhead"
+"scene": "Toll lane with transponder reader gantry overhead",
+"general": false
 },
 {
 "id": "CVC §23302(c)",
@@ -2175,7 +2416,8 @@
 "instruction": "현금, 단말기, 유효한 번호판이 없으면 유료도로에 진입하지 마십시오.",
 "instruction_en": "Enter pay-by-plate toll roads only with cash, transponder, or valid plates.",
 "action": "KEEP_OUT",
-"scene": "Toll road entrance with pay-by-plate cameras"
+"scene": "Toll road entrance with pay-by-plate cameras",
+"general": false
 },
 {
 "id": "CVC §23302(d)",
@@ -2184,7 +2426,8 @@
 "instruction": "단말기나 유효 번호판이 없으면 전자 유료도로에 진입하지 마십시오.",
 "instruction_en": "Enter electronic-only toll roads only with transponder or valid plates.",
 "action": "KEEP_OUT",
-"scene": "All-electronic toll gantry over road lanes"
+"scene": "All-electronic toll gantry over road lanes",
+"general": false
 },
 {
 "id": "CVC §22352(a)",
@@ -2193,7 +2436,8 @@
 "instruction": "시야가 막힌 철도 건널목에서는 시속 15마일로 감속하십시오.",
 "instruction_en": "Slow to 15 mph at railway crossings with obstructed view.",
 "action": "SLOW_DOWN",
-"scene": "Railway crossing ahead with blocked view of tracks"
+"scene": "Railway crossing ahead with blocked view of tracks",
+"general": false
 },
 {
 "id": "CVC §22352(a)",
@@ -2202,7 +2446,8 @@
 "instruction": "시야가 막힌 교차로에서는 시속 15마일로 감속하십시오.",
 "instruction_en": "Slow to 15 mph at intersections with obstructed view.",
 "action": "SLOW_DOWN",
-"scene": "Uncontrolled intersection with blocked sight lines"
+"scene": "Uncontrolled intersection with blocked sight lines",
+"general": false
 },
 {
 "id": "CVC §22352(a)",
@@ -2211,7 +2456,8 @@
 "instruction": "골목길에서는 시속 15마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 15 mph in an alley.",
 "action": "SLOW_DOWN",
-"scene": "Narrow alley between buildings"
+"scene": "Narrow alley between buildings",
+"general": false
 },
 {
 "id": "CVC §22352(a)",
@@ -2220,7 +2466,8 @@
 "instruction": "시야가 막힌 철도 건널목에서는 시속 15마일로 감속하십시오.",
 "instruction_en": "Slow to 15 mph at railway crossings with obstructed view.",
 "action": "SLOW_DOWN",
-"scene": "Railway crossing ahead with blocked view of tracks"
+"scene": "Railway crossing ahead with blocked view of tracks",
+"general": false
 },
 {
 "id": "CVC §22352(a)",
@@ -2229,7 +2476,8 @@
 "instruction": "시야가 막힌 교차로에서는 시속 15마일로 감속하십시오.",
 "instruction_en": "Slow to 15 mph at intersections with obstructed view.",
 "action": "SLOW_DOWN",
-"scene": "Uncontrolled intersection with blocked sight lines"
+"scene": "Uncontrolled intersection with blocked sight lines",
+"general": false
 },
 {
 "id": "CVC §22352(a)",
@@ -2238,7 +2486,8 @@
 "instruction": "골목길에서는 시속 15마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 15 mph in an alley.",
 "action": "SLOW_DOWN",
-"scene": "Narrow alley between buildings"
+"scene": "Narrow alley between buildings",
+"general": false
 },
 {
 "id": "CVC §22352(b)",
@@ -2247,7 +2496,8 @@
 "instruction": "주택가나 상업지구 도로에서는 시속 25마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 25 mph in business or residence districts.",
 "action": "SLOW_DOWN",
-"scene": "Residential street with houses along both sides"
+"scene": "Residential street with houses along both sides",
+"general": false
 },
 {
 "id": "CVC §22352(b)",
@@ -2256,7 +2506,8 @@
 "instruction": "등하교 중 SCHOOL 표지 학교 앞은 시속 25마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 25 mph by posted school grounds when children are present.",
 "action": "SLOW_DOWN",
-"scene": "School sign with children near school grounds"
+"scene": "School sign with children near school grounds",
+"general": false
 },
 {
 "id": "CVC §22352(b)",
@@ -2265,7 +2516,8 @@
 "instruction": "SENIOR 표지 노인 시설 앞은 시속 25마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 25 mph passing a posted senior facility.",
 "action": "SLOW_DOWN",
-"scene": "SENIOR warning sign beside street"
+"scene": "SENIOR warning sign beside street",
+"general": false
 },
 {
 "id": "CVC §22352(c)",
@@ -2274,7 +2526,8 @@
 "instruction": "주택가나 상업지구 도로에서는 시속 25마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 25 mph in business or residence districts.",
 "action": "SLOW_DOWN",
-"scene": "Residential street with houses along both sides"
+"scene": "Residential street with houses along both sides",
+"general": false
 },
 {
 "id": "CVC §22352(c)",
@@ -2283,7 +2536,8 @@
 "instruction": "SENIOR 표지 노인 시설 앞은 시속 25마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 25 mph passing a posted senior facility.",
 "action": "SLOW_DOWN",
-"scene": "SENIOR warning sign beside street"
+"scene": "SENIOR warning sign beside street",
+"general": false
 },
 {
 "id": "CVC §22358.4(b)",
@@ -2292,7 +2546,8 @@
 "instruction": "표지된 주택가 2차로 학교 구역은 시속 15마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 15 mph in a signed residential school zone.",
 "action": "SLOW_DOWN",
-"scene": "15 mph school sign on two-lane residential road"
+"scene": "15 mph school sign on two-lane residential road",
+"general": false
 },
 {
 "id": "CVC §22358.4(b)",
@@ -2301,7 +2556,8 @@
 "instruction": "학교 구역 500~1,000피트 전부터 시속 25마일을 넘지 마십시오.",
 "instruction_en": "Do not exceed 25 mph 500-1,000 feet before a school zone.",
 "action": "SLOW_DOWN",
-"scene": "25 mph sign on approach to school zone"
+"scene": "25 mph sign on approach to school zone",
+"general": false
 },
 {
 "id": "CVC §22406.5",
@@ -2310,7 +2566,8 @@
 "instruction": "인화성 액체 500갤런 초과 탱크차는 제한속도를 넘지 마십시오.",
 "instruction_en": "Tank vehicles carrying over 500 gallons of flammable liquid obey speed limits.",
 "action": "SLOW_DOWN",
-"scene": "Tanker truck with hazmat placards on highway"
+"scene": "Tanker truck with hazmat placards on highway",
+"general": false
 },
 {
 "id": "CVC §21113(a)",
@@ -2319,7 +2576,8 @@
 "instruction": "학교·공원·공항 부지에는 허가 없이 진입·정차하지 마십시오.",
 "instruction_en": "Do not drive or park on public school, park, or airport grounds without permission.",
 "action": "KEEP_OUT",
-"scene": "Entrance to school, park, or airport grounds with driveways and parking lots"
+"scene": "Entrance to school, park, or airport grounds with driveways and parking lots",
+"general": false
 },
 {
 "id": "CVC §22454(a)",
@@ -2328,7 +2586,8 @@
 "instruction": "점멸하는 적색등을 켠 통학버스 앞뒤에서는 즉시 정지하십시오.",
 "instruction_en": "Stop before passing a school bus showing flashing red lights.",
 "action": "STOP",
-"scene": "School bus stopped with flashing red lights and stop arm extended"
+"scene": "School bus stopped with flashing red lights and stop arm extended",
+"general": false
 },
 {
 "id": "CVC §22500(e)",
@@ -2337,7 +2596,8 @@
 "instruction": "사유·공용 진입로 앞에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park in front of a driveway.",
 "action": "KEEP_OUT",
-"scene": "Curb cut of a driveway entrance beside the roadway"
+"scene": "Curb cut of a driveway entrance beside the roadway",
+"general": false
 },
 {
 "id": "CVC §22500(f)",
@@ -2346,7 +2606,8 @@
 "instruction": "인도 위나 인도에 걸쳐 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park on or over a sidewalk.",
 "action": "KEEP_OUT",
-"scene": "Sidewalk beside the curb with a vehicle partly on it"
+"scene": "Sidewalk beside the curb with a vehicle partly on it",
+"general": false
 },
 {
 "id": "CVC §22500(k)",
@@ -2355,7 +2616,8 @@
 "instruction": "교량 위에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park on a bridge.",
 "action": "KEEP_OUT",
-"scene": "Bridge deck with railings and no roadside parking space"
+"scene": "Bridge deck with railings and no roadside parking space",
+"general": false
 },
 {
 "id": "CVC §22500(k)",
@@ -2364,7 +2626,8 @@
 "instruction": "휠체어용으로 낮춘 연석 앞이나 위에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park at a lowered wheelchair-access curb.",
 "action": "KEEP_OUT",
-"scene": "Lowered curb ramp at a sidewalk corner for wheelchair access"
+"scene": "Lowered curb ramp at a sidewalk corner for wheelchair access",
+"general": false
 },
 {
 "id": "CVC §22500(i)",
@@ -2373,7 +2636,8 @@
 "instruction": "횡단보도 20피트(연석 확장부 15피트) 안에 정차·주차 마십시오.",
 "instruction_en": "Do not stop or park within 20 feet of a crosswalk.",
 "action": "KEEP_OUT",
-"scene": "Marked or unmarked crosswalk with curb space just before it"
+"scene": "Marked or unmarked crosswalk with curb space just before it",
+"general": false
 },
 {
 "id": "CVC §22510(a)",
@@ -2382,7 +2646,8 @@
 "instruction": "제설 금지 표지가 선 구간에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park in a posted snow removal area.",
 "action": "KEEP_OUT",
-"scene": "Snow-covered street with posted snow removal parking prohibition signs"
+"scene": "Snow-covered street with posted snow removal parking prohibition signs",
+"general": false
 },
 {
 "id": "CVC §22510(c)",
@@ -2391,7 +2656,8 @@
 "instruction": "주 고속도로의 제설 주차 제한 표지 구간에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park where snow removal restriction signs are posted.",
 "action": "KEEP_OUT",
-"scene": "State highway shoulder with snow removal parking restriction signs"
+"scene": "State highway shoulder with snow removal parking restriction signs",
+"general": false
 },
 {
 "id": "CVC §22511.3(c)",
@@ -2400,7 +2666,8 @@
 "instruction": "특수 번호판 차량도 주정차 금지 구역과 주차 시간 제한을 지키십시오.",
 "instruction_en": "Special-plate vehicles must still obey no-stopping zones and parking time limits.",
 "action": "KEEP_OUT",
-"scene": "No-stopping sign and parking time limit sign at curb"
+"scene": "No-stopping sign and parking time limit sign at curb",
+"general": false
 },
 {
 "id": "CVC §22511.3(c)",
@@ -2409,7 +2676,8 @@
 "instruction": "주 공무원 전용으로 지정된 주 주차시설에는 주차하지 마십시오.",
 "instruction_en": "Do not park in state parking facilities reserved for state employees.",
 "action": "KEEP_OUT",
-"scene": "Sign reserving state parking facility for state employees"
+"scene": "Sign reserving state parking facility for state employees",
+"general": false
 },
 {
 "id": "CVC §22511.3(c)",
@@ -2418,7 +2686,8 @@
 "instruction": "공공 주차시설에서는 영업시간과 최대 허용 시간을 넘겨 주차하지 마십시오.",
 "instruction_en": "Do not park beyond business hours or maximum time at public facilities.",
 "action": "KEEP_OUT",
-"scene": "Public parking facility entrance with posted hours and time limit"
+"scene": "Public parking facility entrance with posted hours and time limit",
+"general": false
 },
 {
 "id": "CVC §21451(e)",
@@ -2427,7 +2696,8 @@
 "instruction": "차도 안의 보행자에게는 늘 주의를 기울이십시오.",
 "instruction_en": "Always exercise due care for pedestrians in the roadway.",
 "action": "CAUTION",
-"scene": "Pedestrian walking within the roadway ahead of the vehicle"
+"scene": "Pedestrian walking within the roadway ahead of the vehicle",
+"general": false
 },
 {
 "id": "CVC §22651(a)",
@@ -2436,7 +2706,8 @@
 "instruction": "다리·고가·터널에서는 교통을 막는 채로 차를 두지 마십시오.",
 "instruction_en": "Do not leave a vehicle obstructing traffic on a bridge or in a tunnel.",
 "action": "KEEP_OUT",
-"scene": "Unattended vehicle blocking lane on bridge or inside tunnel"
+"scene": "Unattended vehicle blocking lane on bridge or inside tunnel",
+"general": false
 },
 {
 "id": "CVC §22651(b)",
@@ -2445,7 +2716,8 @@
 "instruction": "교통 흐름을 막거나 위험을 만드는 위치에 주정차하지 마십시오.",
 "instruction_en": "Do not park where you obstruct traffic or create a hazard.",
 "action": "KEEP_OUT",
-"scene": "Vehicle stopped in travel lane obstructing traffic"
+"scene": "Vehicle stopped in travel lane obstructing traffic",
+"general": false
 },
 {
 "id": "CVC §22651(d)",
@@ -2454,7 +2726,8 @@
 "instruction": "사유 진입로 앞을 막고 주차하지 마십시오.",
 "instruction_en": "Do not park blocking a private driveway entrance.",
 "action": "KEEP_OUT",
-"scene": "Parked vehicle blocking a private driveway entrance"
+"scene": "Parked vehicle blocking a private driveway entrance",
+"general": false
 },
 {
 "id": "CVC §22651(e)",
@@ -2463,7 +2736,8 @@
 "instruction": "소화전 앞에 소방 장비 접근을 막고 주차하지 마십시오.",
 "instruction_en": "Do not park where firefighting equipment cannot reach a fire hydrant.",
 "action": "KEEP_OUT",
-"scene": "Fire hydrant at curb with vehicle parked in front"
+"scene": "Fire hydrant at curb with vehicle parked in front",
+"general": false
 },
 {
 "id": "CVC §22651(f)",
@@ -2472,7 +2746,8 @@
 "instruction": "완전 출입통제 고속도로 용지에 4시간 넘게 정차하지 마십시오.",
 "instruction_en": "Do not stop over four hours on a controlled-access freeway right-of-way.",
 "action": "KEEP_OUT",
-"scene": "Vehicle stopped on freeway shoulder or right-of-way"
+"scene": "Vehicle stopped on freeway shoulder or right-of-way",
+"general": false
 },
 {
 "id": "CVC §22651(k)",
@@ -2481,7 +2756,8 @@
 "instruction": "같은 도로에 72시간 이상 연속으로 주차하지 마십시오.",
 "instruction_en": "Do not park on the same highway for 72 or more consecutive hours.",
 "action": "KEEP_OUT",
-"scene": "Long-parked vehicle on street with removal ordinance sign"
+"scene": "Long-parked vehicle on street with removal ordinance sign",
+"general": false
 },
 {
 "id": "CVC §22651(k)",
@@ -2490,7 +2766,8 @@
 "instruction": "도로 청소·보수 중 주정차 금지 표지가 있으면 주차하지 마십시오.",
 "instruction_en": "Do not park where signs forbid parking for road cleaning or repair.",
 "action": "KEEP_OUT",
-"scene": "Temporary no-parking sign for road cleaning or construction"
+"scene": "Temporary no-parking sign for road cleaning or construction",
+"general": false
 },
 {
 "id": "CVC §22651(m)",
@@ -2499,7 +2776,8 @@
 "instruction": "행사나 특수 운송으로 도로가 쓰이는 구간에는 주차하지 마십시오.",
 "instruction_en": "Do not park where the road is authorized for events or oversize loads.",
 "action": "KEEP_OUT",
-"scene": "Street with posted temporary no-parking notice for parade or event"
+"scene": "Street with posted temporary no-parking notice for parade or event",
+"general": false
 },
 {
 "id": "CVC §22651(n)",
@@ -2508,7 +2786,8 @@
 "instruction": "주차를 금지하고 견인을 예고한 표지 구간에는 주차하지 마십시오.",
 "instruction_en": "Do not park where signs prohibit parking and warn of removal.",
 "action": "KEEP_OUT",
-"scene": "No-parking tow-away sign beside the curb"
+"scene": "No-parking tow-away sign beside the curb",
+"general": false
 },
 {
 "id": "CVC §22651(q)",
@@ -2517,7 +2796,8 @@
 "instruction": "주택단지 내 도로 표지가 있으면 24시간 넘게 주차하지 마십시오.",
 "instruction_en": "Do not park over 24 hours on posted common-interest development streets.",
 "action": "KEEP_OUT",
-"scene": "Residential complex street with 24-hour parking limit sign"
+"scene": "Residential complex street with 24-hour parking limit sign",
+"general": false
 },
 {
 "id": "CVC §22651(s)",
@@ -2526,7 +2806,8 @@
 "instruction": "도로변 휴게소와 전망대에는 8시간 넘게 정차하지 마십시오.",
 "instruction_en": "Do not stay over eight hours in a roadside rest area or viewpoint.",
 "action": "KEEP_OUT",
-"scene": "Roadside rest area or scenic viewpoint parking lot"
+"scene": "Roadside rest area or scenic viewpoint parking lot",
+"general": false
 },
 {
 "id": "CVC §22651(s)",
@@ -2535,7 +2816,8 @@
 "instruction": "상업용 차량은 도로변 휴게소에 10시간 넘게 정차하지 마십시오.",
 "instruction_en": "Commercial vehicles must not stay over ten hours in a rest area.",
 "action": "KEEP_OUT",
-"scene": "Truck parked in roadside rest area or viewpoint"
+"scene": "Truck parked in roadside rest area or viewpoint",
+"general": false
 },
 {
 "id": "CVC §22502(a)",
@@ -2544,7 +2826,8 @@
 "instruction": "연석 옆에 주차할 때는 오른쪽 바퀴를 연석 18인치 이내에 붙이십시오.",
 "instruction_en": "When parking at a curb, keep right wheels parallel and within 18 inches of it.",
 "action": "CAUTION",
-"scene": "Vehicle parking along a right-hand curb on a two-way street"
+"scene": "Vehicle parking along a right-hand curb on a two-way street",
+"general": false
 },
 {
 "id": "CVC §21651(a)",
@@ -2553,7 +2836,8 @@
 "instruction": "분리된 도로의 구분 구역 위로 주행하지 마십시오.",
 "instruction_en": "Do not drive over or across a divided highway median section.",
 "action": "KEEP_OUT",
-"scene": "Divided road with curbed median or double lines between roadways"
+"scene": "Divided road with curbed median or double lines between roadways",
+"general": false
 },
 {
 "id": "CVC §21651(a)",
@@ -2562,7 +2846,8 @@
 "instruction": "분리된 도로에서는 지정 개구부 외에서 유턴하지 마십시오.",
 "instruction_en": "On a divided highway, do not turn left or U-turn except at openings.",
 "action": "KEEP_OUT",
-"scene": "Divided highway with median and no marked opening ahead"
+"scene": "Divided highway with median and no marked opening ahead",
+"general": false
 },
 {
 "id": "CVC §21963",
@@ -2571,7 +2856,8 @@
 "instruction": "흰 지팡이나 안내견을 쓰는 시각장애 보행자에게는 양보하십시오.",
 "instruction_en": "Yield to blind pedestrians using a white cane or guide dog.",
 "action": "YIELD",
-"scene": "Pedestrian with white cane or guide dog at roadway crossing"
+"scene": "Pedestrian with white cane or guide dog at roadway crossing",
+"general": false
 },
 {
 "id": "CVC §21961(b)",
@@ -2580,7 +2866,8 @@
 "instruction": "도로 위 보행자의 안전을 위해 주의를 기울이십시오.",
 "instruction_en": "Exercise due care for the safety of pedestrians in the roadway.",
 "action": "CAUTION",
-"scene": "Pedestrians walking within the roadway ahead of vehicle"
+"scene": "Pedestrians walking within the roadway ahead of vehicle",
+"general": false
 },
 {
 "id": "CVC §22362",
@@ -2589,7 +2876,8 @@
 "instruction": "작업자가 있는 표지된 공사 구간에서는 표시된 제한속도를 넘지 마십시오.",
 "instruction_en": "In a signed work zone with workers present, do not exceed the posted limit.",
 "action": "SLOW_DOWN",
-"scene": "Road work zone with workers near the lane and speed limit sign"
+"scene": "Road work zone with workers near the lane and speed limit sign",
+"general": false
 },
 {
 "id": "CVC §22400(b)",
@@ -2598,7 +2886,8 @@
 "instruction": "최저속도 표지가 있는 주 고속도로에서는 그 미만으로 주행하지 마십시오.",
 "instruction_en": "On a state highway with a minimum speed sign, do not drive below it.",
 "action": "CAUTION",
-"scene": "Highway with minimum speed limit sign above the lane"
+"scene": "Highway with minimum speed limit sign above the lane",
+"general": false
 },
 {
 "id": "CVC §22507.8(c)",
@@ -2607,7 +2896,8 @@
 "instruction": "장애인 주차구획의 경계선 위에는 주차나 정차를 하지 마십시오.",
 "instruction_en": "Do not park or stand on the boundary lines of a disabled parking stall.",
 "action": "KEEP_OUT",
-"scene": "Blue disabled parking stall with painted boundary lines"
+"scene": "Blue disabled parking stall with painted boundary lines",
+"general": false
 },
 {
 "id": "CVC §22507.8(c)",
@@ -2616,7 +2906,8 @@
 "instruction": "장애인 주차구획 옆 빗금 승하차 구역에는 주차나 정차를 하지 마십시오.",
 "instruction_en": "Do not park or stand in the crosshatched loading area beside a disabled stall.",
 "action": "KEEP_OUT",
-"scene": "Crosshatched loading area next to a disabled parking space"
+"scene": "Crosshatched loading area next to a disabled parking space",
+"general": false
 },
 {
 "id": "CVC §23270(a)",
@@ -2625,7 +2916,8 @@
 "instruction": "횡단 시설에서는 승인 없이 다른 차량을 견인하거나 밀지 마십시오.",
 "instruction_en": "On a vehicular crossing, do not tow or push another vehicle without authorization.",
 "action": "CAUTION",
-"scene": "Vehicle being towed or pushed on a bridge crossing"
+"scene": "Vehicle being towed or pushed on a bridge crossing",
+"general": false
 },
 {
 "id": "CVC §23127",
@@ -2634,7 +2926,8 @@
 "instruction": "자동차 금지 표지가 있는 산책로·자전거 도로에 진입하지 마십시오.",
 "instruction_en": "Do not enter marked hiking, horse or bike trails closed to motor vehicles.",
 "action": "KEEP_OUT",
-"scene": "Narrow trail or bike path with no motor vehicles sign"
+"scene": "Narrow trail or bike path with no motor vehicles sign",
+"general": false
 },
 {
 "id": "CVC §21806(a)",
@@ -2643,7 +2936,8 @@
 "instruction": "사이렌과 적색등의 긴급차량이 접근하면 우측에 정차하십시오.",
 "instruction_en": "Yield to an approaching siren emergency vehicle; pull right and stop.",
 "action": "YIELD",
-"scene": "Emergency vehicle with siren and red lights approaching from behind"
+"scene": "Emergency vehicle with siren and red lights approaching from behind",
+"general": false
 },
 {
 "id": "CVC §21806(a)",
@@ -2652,7 +2946,8 @@
 "instruction": "긴급차량이 접근하면 전용 차로에서 안전하게 즉시 나가십시오.",
 "instruction_en": "Exit an exclusive or preferential lane immediately when an emergency vehicle approaches.",
 "action": "YIELD",
-"scene": "Emergency vehicle approaching behind a car in an HOV lane"
+"scene": "Emergency vehicle approaching behind a car in an HOV lane",
+"general": false
 },
 {
 "id": "CVC §22355",
@@ -2661,7 +2956,8 @@
 "instruction": "고속도로의 가변 속도 표지판에 표시된 제한속도를 따르십시오.",
 "instruction_en": "On a freeway, follow the speed limit shown on the variable sign.",
 "action": "SLOW_DOWN",
-"scene": "Freeway overhead electronic sign displaying a speed limit"
+"scene": "Freeway overhead electronic sign displaying a speed limit",
+"general": false
 },
 {
 "id": "CVC §21707",
@@ -2670,7 +2966,8 @@
 "instruction": "소방차가 출동한 사고 구역이 있는 블록 안으로는 진입하지 마십시오.",
 "instruction_en": "Do not drive into the block of a fire department emergency scene.",
 "action": "KEEP_OUT",
-"scene": "Fire trucks stopped at an emergency scene blocking the street"
+"scene": "Fire trucks stopped at an emergency scene blocking the street",
+"general": false
 },
 {
 "id": "CVC §21707",
@@ -2679,7 +2976,8 @@
 "instruction": "교차로가 300피트 넘게 멀면 사고 지점 300피트 안은 피하십시오.",
 "instruction_en": "If the nearest intersection is over 300 feet away, stay out of 300 feet.",
 "action": "KEEP_OUT",
-"scene": "Fire trucks at an emergency scene mid-block, far from intersection"
+"scene": "Fire trucks at an emergency scene mid-block, far from intersection",
+"general": false
 },
 {
 "id": "CVC §22500.1",
@@ -2688,6 +2986,7 @@
 "instruction": "소방차로로 지정된 구역에는 정차나 주차를 하지 마십시오.",
 "instruction_en": "Do not stop, park or stand in a designated fire lane.",
 "action": "KEEP_OUT",
-"scene": "Red curb painted with FIRE LANE marking"
+"scene": "Red curb painted with FIRE LANE marking",
+"general": false
 }
 ]

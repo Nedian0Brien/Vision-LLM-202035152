@@ -6,7 +6,8 @@
 "instruction": "교통안전시설의 신호와 경찰공무원의 지시에 따르십시오.",
 "instruction_en": "Obey traffic signals and police officers' directions.",
 "action": "CAUTION",
-"scene": "a traffic light and a police officer directing traffic"
+"scene": "a traffic light and a police officer directing traffic",
+"general": true
 },
 {
 "id": "도로교통법 제5조 ②",
@@ -15,7 +16,8 @@
 "instruction": "신호와 경찰공무원 지시가 다르면 경찰공무원 지시를 따르십시오.",
 "instruction_en": "If signal and officer differ, follow the officer.",
 "action": "CAUTION",
-"scene": "a police officer directing traffic at an intersection with a signal"
+"scene": "a police officer directing traffic at an intersection with a signal",
+"general": false
 },
 {
 "id": "도로교통법 제12조 ③",
@@ -24,7 +26,8 @@
 "instruction": "어린이 보호구역에서는 제한속도(시속 30킬로미터 이내)를 지키십시오.",
 "instruction_en": "Keep within the school zone limit of 30 km/h.",
 "action": "SLOW_DOWN",
-"scene": "a children protection zone sign with a 30 km/h speed limit"
+"scene": "a children protection zone sign with a 30 km/h speed limit",
+"general": false
 },
 {
 "id": "도로교통법 제12조 ③",
@@ -33,7 +36,8 @@
 "instruction": "어린이 보호구역에서는 어린이 안전에 유의하며 운행하십시오.",
 "instruction_en": "Drive carefully for children's safety in a school zone.",
 "action": "CAUTION",
-"scene": "a school zone with children near the road"
+"scene": "a school zone with children near the road",
+"general": false
 },
 {
 "id": "도로교통법 제12조의2 ③",
@@ -42,7 +46,8 @@
 "instruction": "노인·장애인 보호구역에서는 통행 제한과 금지를 지키십시오.",
 "instruction_en": "Obey traffic restrictions in senior and disabled protection zones.",
 "action": "KEEP_OUT",
-"scene": "a senior or disabled protection zone sign beside the road"
+"scene": "a senior or disabled protection zone sign beside the road",
+"general": false
 },
 {
 "id": "도로교통법 제12조의2 ③",
@@ -51,7 +56,8 @@
 "instruction": "노인·장애인 보호구역에서는 노인·장애인 안전에 유의하십시오.",
 "instruction_en": "Drive carefully for seniors and disabled people in protection zones.",
 "action": "CAUTION",
-"scene": "a protection zone with elderly pedestrians near the road"
+"scene": "a protection zone with elderly pedestrians near the road",
+"general": false
 },
 {
 "id": "도로교통법 제13조 ①",
@@ -60,7 +66,8 @@
 "instruction": "보도와 차도가 구분된 도로에서는 차도로 통행하십시오.",
 "instruction_en": "Drive on the roadway where sidewalk and roadway are separate.",
 "action": "CAUTION",
-"scene": "a road with a sidewalk separated from the roadway"
+"scene": "a road with a sidewalk separated from the roadway",
+"general": false
 },
 {
 "id": "도로교통법 제13조 ②",
@@ -69,7 +76,8 @@
 "instruction": "보도를 횡단하기 직전에는 일시정지하여 좌우를 살피십시오.",
 "instruction_en": "Stop before crossing a sidewalk and check left and right.",
 "action": "STOP",
-"scene": "a driveway crossing a sidewalk with pedestrians"
+"scene": "a driveway crossing a sidewalk with pedestrians",
+"general": false
 },
 {
 "id": "도로교통법 제13조 ③",
@@ -78,7 +86,8 @@
 "instruction": "중앙선이 있는 도로에서는 중앙선 우측으로 통행하십시오.",
 "instruction_en": "Drive on the right side of the center line.",
 "action": "CAUTION",
-"scene": "a road with a center line and own lane on the right"
+"scene": "a road with a center line and own lane on the right",
+"general": true
 },
 {
 "id": "도로교통법 제13조 ⑤",
@@ -87,7 +96,8 @@
 "instruction": "진입금지 표지가 있는 안전지대에는 들어가지 마십시오.",
 "instruction_en": "Do not enter a safety zone marked as no entry.",
 "action": "KEEP_OUT",
-"scene": "a safety zone marked with road markings and a no entry sign"
+"scene": "a safety zone marked with road markings and a no entry sign",
+"general": false
 },
 {
 "id": "도로교통법 제13조 ⑥",
@@ -96,7 +106,8 @@
 "instruction": "허용 표지가 없으면 자전거도로로 통행하지 마십시오.",
 "instruction_en": "Do not drive in a bicycle lane unless a sign allows it.",
 "action": "KEEP_OUT",
-"scene": "a marked bicycle lane along the edge of the road"
+"scene": "a marked bicycle lane along the edge of the road",
+"general": false
 },
 {
 "id": "도로교통법 제14조 ②",
@@ -105,7 +116,8 @@
 "instruction": "차로가 설치된 도로에서는 차로를 따라 통행하십시오.",
 "instruction_en": "Stay within your lane on roads with marked lanes.",
 "action": "CAUTION",
-"scene": "a multi-lane road with painted lane lines"
+"scene": "a multi-lane road with painted lane lines",
+"general": true
 },
 {
 "id": "도로교통법 제14조 ⑤",
@@ -114,7 +126,8 @@
 "instruction": "진로변경 금지 표지가 있는 곳에서는 진로를 바꾸지 마십시오.",
 "instruction_en": "Do not change lanes where lane changes are prohibited.",
 "action": "CAUTION",
-"scene": "solid lane lines with a no lane change sign"
+"scene": "solid lane lines with a no lane change sign",
+"general": false
 },
 {
 "id": "도로교통법 제15조 ③",
@@ -123,7 +136,8 @@
 "instruction": "통행 가능한 차가 아니면 전용차로로 통행하지 마십시오.",
 "instruction_en": "Do not use a dedicated lane unless your vehicle is allowed.",
 "action": "KEEP_OUT",
-"scene": "a dedicated bus lane with colored pavement and signs"
+"scene": "a dedicated bus lane with colored pavement and signs",
+"general": false
 },
 {
 "id": "도로교통법 제15조의2 ③",
@@ -132,7 +146,8 @@
 "instruction": "자전거가 자전거횡단도를 지나고 있으면 그 앞에서 일시정지하십시오.",
 "instruction_en": "Stop before a bicycle crossing while a cyclist is crossing.",
 "action": "STOP",
-"scene": "a bicycle crossing with a cyclist crossing the road"
+"scene": "a bicycle crossing with a cyclist crossing the road",
+"general": false
 },
 {
 "id": "도로교통법 제16조 ②",
@@ -141,7 +156,8 @@
 "instruction": "노면전차 전용도로·전용차로로는 통행하지 마십시오.",
 "instruction_en": "Do not drive on a tram-only road or lane.",
 "action": "KEEP_OUT",
-"scene": "tram tracks in a dedicated lane in the road"
+"scene": "tram tracks in a dedicated lane in the road",
+"general": false
 },
 {
 "id": "도로교통법 제17조 ③",
@@ -150,7 +166,8 @@
 "instruction": "최고속도보다 빠르게 운전하지 마십시오.",
 "instruction_en": "Do not exceed the maximum speed limit.",
 "action": "SLOW_DOWN",
-"scene": "a speed limit sign beside the road"
+"scene": "a speed limit sign beside the road",
+"general": true
 },
 {
 "id": "도로교통법 제17조 ③",
@@ -159,7 +176,8 @@
 "instruction": "교통이 밀리지 않으면 최저속도보다 느리게 운전하지 마십시오.",
 "instruction_en": "Do not drive below the minimum speed unless traffic is congested.",
 "action": "SLOW_DOWN",
-"scene": "a minimum speed sign above a highway lane"
+"scene": "a minimum speed sign above a highway lane",
+"general": false
 },
 {
 "id": "도로교통법 제18조 ①",
@@ -168,7 +186,8 @@
 "instruction": "보행자나 다른 차의 통행을 방해할 우려가 있으면 유턴·후진하지 마십시오.",
 "instruction_en": "Do not U-turn or reverse if it may obstruct pedestrians or vehicles.",
 "action": "CAUTION",
-"scene": "a vehicle about to make a U-turn with pedestrians and traffic nearby"
+"scene": "a vehicle about to make a U-turn with pedestrians and traffic nearby",
+"general": false
 },
 {
 "id": "도로교통법 제18조 ③",
@@ -177,7 +196,8 @@
 "instruction": "건물·주차장에서 도로에 들어갈 때는 일단 정지 후 서행하십시오.",
 "instruction_en": "Stop, then proceed slowly when entering a road from a building or lot.",
 "action": "STOP",
-"scene": "a parking lot exit onto a road"
+"scene": "a parking lot exit onto a road",
+"general": false
 },
 {
 "id": "도로교통법 제19조 ①",
@@ -186,7 +206,8 @@
 "instruction": "앞차를 따를 때는 충돌을 피할 안전거리를 확보하십시오.",
 "instruction_en": "Keep a safe following distance behind the car ahead.",
 "action": "CAUTION",
-"scene": "a vehicle directly ahead in the same lane"
+"scene": "a vehicle directly ahead in the same lane",
+"general": true
 },
 {
 "id": "도로교통법 제19조 ②",
@@ -195,7 +216,8 @@
 "instruction": "자전거 옆을 지날 때는 충돌을 피할 거리를 확보하십시오.",
 "instruction_en": "Keep a safe distance when passing a cyclist.",
 "action": "CAUTION",
-"scene": "a cyclist riding in the same direction beside the road"
+"scene": "a cyclist riding in the same direction beside the road",
+"general": false
 },
 {
 "id": "도로교통법 제19조 ③",
@@ -204,7 +226,8 @@
 "instruction": "진로를 바꿀 방향의 차 통행에 장애가 되면 진로를 바꾸지 마십시오.",
 "instruction_en": "Do not change lanes if it obstructs a car in the target lane.",
 "action": "CAUTION",
-"scene": "a car approaching in the adjacent lane"
+"scene": "a car approaching in the adjacent lane",
+"general": true
 },
 {
 "id": "도로교통법 제19조 ④",
@@ -213,7 +236,8 @@
 "instruction": "위험 방지나 부득이한 경우가 아니면 급제동하지 마십시오.",
 "instruction_en": "Do not brake suddenly unless needed to avoid danger.",
 "action": "CAUTION",
-"scene": "a vehicle ahead on a road with no hazard"
+"scene": "a vehicle ahead on a road with no hazard",
+"general": true
 },
 {
 "id": "도로교통법 제20조 ①",
@@ -222,7 +246,8 @@
 "instruction": "뒤차보다 느리게 갈 때는 우측 가장자리로 피해 양보하십시오.",
 "instruction_en": "Move to the right edge to let faster cars behind pass.",
 "action": "YIELD",
-"scene": "a faster vehicle approaching from behind"
+"scene": "a faster vehicle approaching from behind",
+"general": false
 },
 {
 "id": "도로교통법 제20조 ②",
@@ -231,7 +256,8 @@
 "instruction": "비탈진 좁은 도로에서 마주 보면 올라가는 차가 우측으로 양보하십시오.",
 "instruction_en": "On a narrow slope, the uphill car yields to the right edge.",
 "action": "YIELD",
-"scene": "a narrow sloped road with an oncoming car"
+"scene": "a narrow sloped road with an oncoming car",
+"general": false
 },
 {
 "id": "도로교통법 제20조 ②",
@@ -240,7 +266,8 @@
 "instruction": "비탈 아닌 좁은 도로에서 마주 보면 동승자·짐 없는 차가 양보하십시오.",
 "instruction_en": "On a narrow road, the car without passengers or cargo yields.",
 "action": "YIELD",
-"scene": "a narrow road with an oncoming car"
+"scene": "a narrow road with an oncoming car",
+"general": false
 },
 {
 "id": "도로교통법 제21조 ①",
@@ -249,7 +276,8 @@
 "instruction": "앞지를 때는 앞차의 좌측으로 통행하십시오.",
 "instruction_en": "Overtake on the left side of the vehicle ahead.",
 "action": "CAUTION",
-"scene": "a slower vehicle ahead with a clear left lane"
+"scene": "a slower vehicle ahead with a clear left lane",
+"general": true
 },
 {
 "id": "도로교통법 제21조 ③",
@@ -258,7 +286,8 @@
 "instruction": "앞지를 때는 반대방향과 앞쪽 교통을 살피고 안전한 속도로 하십시오.",
 "instruction_en": "When overtaking, watch oncoming and forward traffic and keep a safe speed.",
 "action": "CAUTION",
-"scene": "a vehicle overtaking with oncoming traffic ahead"
+"scene": "a vehicle overtaking with oncoming traffic ahead",
+"general": true
 },
 {
 "id": "도로교통법 제21조 ④",
@@ -267,7 +296,8 @@
 "instruction": "다른 차가 앞지르는 중이면 속도를 높이거나 앞을 막지 마십시오.",
 "instruction_en": "Do not speed up or block a car that is overtaking you.",
 "action": "CAUTION",
-"scene": "a vehicle overtaking from behind in the adjacent lane"
+"scene": "a vehicle overtaking from behind in the adjacent lane",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ①",
@@ -276,7 +306,8 @@
 "instruction": "앞차의 좌측에 다른 차가 나란히 가면 앞지르지 마십시오.",
 "instruction_en": "Do not overtake if another car is beside the car ahead.",
 "action": "NO_OVERTAKING",
-"scene": "two cars side by side ahead in adjacent lanes"
+"scene": "two cars side by side ahead in adjacent lanes",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ①",
@@ -285,7 +316,8 @@
 "instruction": "앞차가 다른 차를 앞지르는 중이면 앞지르지 마십시오.",
 "instruction_en": "Do not overtake a car that is itself overtaking.",
 "action": "NO_OVERTAKING",
-"scene": "the car ahead overtaking another vehicle"
+"scene": "the car ahead overtaking another vehicle",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ②",
@@ -294,7 +326,8 @@
 "instruction": "법령에 따라 정지·서행 중인 차는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake a car stopped or slowing as required by law.",
 "action": "NO_OVERTAKING",
-"scene": "a car stopped at a signal or sign ahead"
+"scene": "a car stopped at a signal or sign ahead",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ②",
@@ -303,7 +336,8 @@
 "instruction": "경찰공무원 지시로 정지·서행 중인 차는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake a car stopped by a police officer's order.",
 "action": "NO_OVERTAKING",
-"scene": "a car stopped at a police officer's direction"
+"scene": "a car stopped at a police officer's direction",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ②",
@@ -312,7 +346,8 @@
 "instruction": "위험 방지로 정지·서행 중인 차는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake a car stopped or slow to avoid danger.",
 "action": "NO_OVERTAKING",
-"scene": "a car stopped or slowing for a hazard ahead"
+"scene": "a car stopped or slowing for a hazard ahead",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ③",
@@ -321,7 +356,8 @@
 "instruction": "교차로에서는 다른 차를 앞지르지 마십시오.",
 "instruction_en": "Do not overtake at an intersection.",
 "action": "NO_OVERTAKING",
-"scene": "an intersection with crossing roads ahead"
+"scene": "an intersection with crossing roads ahead",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ③",
@@ -330,7 +366,8 @@
 "instruction": "터널 안에서는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake inside a tunnel.",
 "action": "NO_OVERTAKING",
-"scene": "inside a road tunnel with lane lines"
+"scene": "inside a road tunnel with lane lines",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ③",
@@ -339,7 +376,8 @@
 "instruction": "다리 위에서는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake on a bridge.",
 "action": "NO_OVERTAKING",
-"scene": "a road on a bridge with railings"
+"scene": "a road on a bridge with railings",
+"general": false
 },
 {
 "id": "도로교통법 제22조 ③",
@@ -348,7 +386,8 @@
 "instruction": "표지가 지정한 커브·고갯마루·급내리막에서는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake on signed curves, hilltops, or steep descents.",
 "action": "NO_OVERTAKING",
-"scene": "a sharp curve or hilltop with a no overtaking sign"
+"scene": "a sharp curve or hilltop with a no overtaking sign",
+"general": false
 },
 {
 "id": "도로교통법 제23조",
@@ -357,7 +396,8 @@
 "instruction": "정지·서행 중인 차 앞으로 끼어들지 마십시오.",
 "instruction_en": "Do not cut in front of a stopped or slowing car.",
 "action": "CAUTION",
-"scene": "a stopped or slow car with a gap ahead of it"
+"scene": "a stopped or slow car with a gap ahead of it",
+"general": false
 },
 {
 "id": "도로교통법 제24조 ①",
@@ -366,7 +406,8 @@
 "instruction": "철길 건널목 앞에서는 일시정지하고 안전을 확인한 뒤 통과하십시오.",
 "instruction_en": "Stop before a railroad crossing, check safety, then cross.",
 "action": "STOP",
-"scene": "a railroad crossing with tracks across the road"
+"scene": "a railroad crossing with tracks across the road",
+"general": false
 },
 {
 "id": "도로교통법 제24조 ②",
@@ -375,7 +416,8 @@
 "instruction": "차단기가 내려가거나 경보기가 울리면 건널목에 들어가지 마십시오.",
 "instruction_en": "Do not enter a crossing when the barrier is down or alarm sounds.",
 "action": "KEEP_OUT",
-"scene": "a railroad crossing with a lowered barrier and flashing lights"
+"scene": "a railroad crossing with a lowered barrier and flashing lights",
+"general": false
 },
 {
 "id": "도로교통법 제24조 ③",
@@ -384,7 +426,8 @@
 "instruction": "건널목 안에서 고장 나면 즉시 승객을 대피시키고 알리십시오.",
 "instruction_en": "If stalled on a crossing, evacuate passengers and notify authorities.",
 "action": "CAUTION",
-"scene": "a stalled vehicle on railroad tracks at a crossing"
+"scene": "a stalled vehicle on railroad tracks at a crossing",
+"general": false
 },
 {
 "id": "도로교통법 제25조 ①",
@@ -393,7 +436,8 @@
 "instruction": "교차로에서 우회전할 때는 우측 가장자리로 서행하십시오.",
 "instruction_en": "Slow down and keep right when turning right at an intersection.",
 "action": "SLOW_DOWN",
-"scene": "an intersection where the vehicle turns right near the curb"
+"scene": "an intersection where the vehicle turns right near the curb",
+"general": false
 },
 {
 "id": "도로교통법 제25조 ①",
@@ -402,7 +446,8 @@
 "instruction": "우회전할 때는 신호에 따라 가는 보행자·자전거에 주의하십시오.",
 "instruction_en": "When turning right, watch pedestrians and cyclists crossing.",
 "action": "CAUTION",
-"scene": "pedestrians and cyclists at a crosswalk after a right turn"
+"scene": "pedestrians and cyclists at a crosswalk after a right turn",
+"general": false
 },
 {
 "id": "도로교통법 제25조 ②",
@@ -411,7 +456,8 @@
 "instruction": "교차로에서 좌회전할 때는 중앙선을 따라 서행하십시오.",
 "instruction_en": "Slow down along the center line when turning left at an intersection.",
 "action": "SLOW_DOWN",
-"scene": "an intersection where the vehicle turns left from the center"
+"scene": "an intersection where the vehicle turns left from the center",
+"general": false
 },
 {
 "id": "도로교통법 제25조 ④",
@@ -420,7 +466,8 @@
 "instruction": "좌·우회전 신호를 한 앞차의 진행을 방해하지 마십시오.",
 "instruction_en": "Do not obstruct a car ahead signaling a turn.",
 "action": "CAUTION",
-"scene": "a car ahead with a turn signal flashing at an intersection"
+"scene": "a car ahead with a turn signal flashing at an intersection",
+"general": false
 },
 {
 "id": "도로교통법 제25조 ⑤",
@@ -429,7 +476,8 @@
 "instruction": "앞이 막혀 교차로에 정지할 우려가 있으면 들어가지 마십시오.",
 "instruction_en": "Do not enter a signal intersection if you may get stuck in it.",
 "action": "KEEP_OUT",
-"scene": "a congested signal intersection with traffic blocking the exit"
+"scene": "a congested signal intersection with traffic blocking the exit",
+"general": false
 },
 {
 "id": "도로교통법 제25조 ⑥",
@@ -438,7 +486,8 @@
 "instruction": "일시정지·양보 표지가 있는 교차로에서는 일시정지하거나 양보하십시오.",
 "instruction_en": "Stop or yield at an intersection with a stop or yield sign.",
 "action": "STOP",
-"scene": "an uncontrolled intersection with a stop or yield sign"
+"scene": "an uncontrolled intersection with a stop or yield sign",
+"general": false
 },
 {
 "id": "도로교통법 제25조의2 ①",
@@ -447,7 +496,8 @@
 "instruction": "회전교차로에서는 반시계방향으로 통행하십시오.",
 "instruction_en": "Drive counterclockwise in a roundabout.",
 "action": "CAUTION",
-"scene": "a roundabout with a central island"
+"scene": "a roundabout with a central island",
+"general": false
 },
 {
 "id": "도로교통법 제25조의2 ②",
@@ -456,7 +506,8 @@
 "instruction": "회전교차로에 진입할 때는 서행하거나 일시정지하십시오.",
 "instruction_en": "Slow down or stop when entering a roundabout.",
 "action": "SLOW_DOWN",
-"scene": "the entrance of a roundabout"
+"scene": "the entrance of a roundabout",
+"general": false
 },
 {
 "id": "도로교통법 제25조의2 ②",
@@ -465,7 +516,8 @@
 "instruction": "회전교차로 안에 다른 차가 있으면 그 차에 양보하십시오.",
 "instruction_en": "Yield to cars already inside the roundabout.",
 "action": "YIELD",
-"scene": "a vehicle already circulating in a roundabout"
+"scene": "a vehicle already circulating in a roundabout",
+"general": false
 },
 {
 "id": "도로교통법 제25조의2 ③",
@@ -474,7 +526,8 @@
 "instruction": "회전교차로에서 신호한 앞차의 진행을 방해하지 마십시오.",
 "instruction_en": "Do not obstruct a car ahead signaling in a roundabout.",
 "action": "CAUTION",
-"scene": "a car with turn signal flashing in a roundabout"
+"scene": "a car with turn signal flashing in a roundabout",
+"general": false
 },
 {
 "id": "도로교통법 제26조 ①",
@@ -483,7 +536,8 @@
 "instruction": "신호 없는 교차로에서 이미 진입한 차가 있으면 양보하십시오.",
 "instruction_en": "Yield to cars already in an intersection without signals.",
 "action": "YIELD",
-"scene": "an intersection without signals with a car inside"
+"scene": "an intersection without signals with a car inside",
+"general": false
 },
 {
 "id": "도로교통법 제26조 ②",
@@ -492,7 +546,8 @@
 "instruction": "교차 도로가 더 넓은 신호 없는 교차로에서는 서행하십시오.",
 "instruction_en": "Slow down at an unsignaled intersection with a wider crossing road.",
 "action": "SLOW_DOWN",
-"scene": "an unsignaled intersection with a wider crossing road"
+"scene": "an unsignaled intersection with a wider crossing road",
+"general": false
 },
 {
 "id": "도로교통법 제26조 ②",
@@ -501,7 +556,8 @@
 "instruction": "교차 도로가 더 넓으면 그 도로에서 진입하는 차에 양보하십시오.",
 "instruction_en": "Yield to cars entering from the wider crossing road.",
 "action": "YIELD",
-"scene": "a wider road with a car entering the intersection"
+"scene": "a wider road with a car entering the intersection",
+"general": false
 },
 {
 "id": "도로교통법 제26조 ③",
@@ -510,7 +566,8 @@
 "instruction": "신호 없는 교차로에 동시에 진입하면 우측 도로의 차에 양보하십시오.",
 "instruction_en": "At an uncontrolled intersection, yield to the vehicle on your right.",
 "action": "YIELD",
-"scene": "an intersection without traffic signals and a vehicle approaching from the right"
+"scene": "an intersection without traffic signals and a vehicle approaching from the right",
+"general": false
 },
 {
 "id": "도로교통법 제26조 ④",
@@ -519,7 +576,8 @@
 "instruction": "신호 없는 교차로에서 좌회전할 때 직진·우회전 차에 양보하십시오.",
 "instruction_en": "When turning left at an uncontrolled intersection, yield to straight or right-turning vehicles.",
 "action": "YIELD",
-"scene": "an intersection without signals with oncoming vehicles going straight or turning right"
+"scene": "an intersection without signals with oncoming vehicles going straight or turning right",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ①",
@@ -528,7 +586,8 @@
 "instruction": "보행자가 횡단보도를 건너려 하면 정지선 앞에서 일시정지하십시오.",
 "instruction_en": "Stop at the stop line when a pedestrian is crossing or about to cross.",
 "action": "STOP",
-"scene": "a pedestrian at a crosswalk with a stop line ahead"
+"scene": "a pedestrian at a crosswalk with a stop line ahead",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ②",
@@ -537,7 +596,8 @@
 "instruction": "신호 교차로에서 좌·우회전할 때 횡단 보행자의 통행을 방해하지 마십시오.",
 "instruction_en": "When turning at a signalized intersection, do not obstruct crossing pedestrians.",
 "action": "YIELD",
-"scene": "pedestrians crossing at a signalized intersection while turning"
+"scene": "pedestrians crossing at a signalized intersection while turning",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ③",
@@ -546,7 +606,8 @@
 "instruction": "신호 없는 교차로 부근에서 횡단하는 보행자의 통행을 방해하지 마십시오.",
 "instruction_en": "Do not obstruct pedestrians crossing at or near an uncontrolled intersection.",
 "action": "YIELD",
-"scene": "a pedestrian crossing near an intersection without signals"
+"scene": "a pedestrian crossing near an intersection without signals",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ④",
@@ -555,7 +616,8 @@
 "instruction": "안전지대에 보행자가 있으면 안전한 거리를 두고 서행하십시오.",
 "instruction_en": "Slow down and keep a safe distance from pedestrians on a safety zone.",
 "action": "SLOW_DOWN",
-"scene": "pedestrians standing on a traffic island safety zone"
+"scene": "pedestrians standing on a traffic island safety zone",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ④",
@@ -564,7 +626,8 @@
 "instruction": "차로 없는 좁은 도로에서 보행자 옆은 안전한 거리로 서행하십시오.",
 "instruction_en": "Slow down and keep a safe distance passing pedestrians on a narrow laneless road.",
 "action": "SLOW_DOWN",
-"scene": "a narrow road without lane markings and a pedestrian beside the vehicle"
+"scene": "a narrow road without lane markings and a pedestrian beside the vehicle",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ⑤",
@@ -573,7 +636,8 @@
 "instruction": "횡단보도 없는 도로를 보행자가 건너면 안전거리를 두고 일시정지하십시오.",
 "instruction_en": "Stop at a safe distance when a pedestrian crosses where there is no crosswalk.",
 "action": "STOP",
-"scene": "a pedestrian crossing a road with no crosswalk"
+"scene": "a pedestrian crossing a road with no crosswalk",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ⑥",
@@ -582,7 +646,8 @@
 "instruction": "보도·차도 구분 없고 중앙선 없는 도로에서 보행자 옆은 서행하십시오.",
 "instruction_en": "Slow down when passing pedestrians on roads without sidewalks or a center line.",
 "action": "SLOW_DOWN",
-"scene": "a road without sidewalk or center line, pedestrian walking beside"
+"scene": "a road without sidewalk or center line, pedestrian walking beside",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ⑥",
@@ -591,7 +656,8 @@
 "instruction": "보행자우선도로에서 보행자 옆을 지날 때 안전한 거리를 두고 서행하십시오.",
 "instruction_en": "Slow down and keep a safe distance from pedestrians on a pedestrian-priority road.",
 "action": "SLOW_DOWN",
-"scene": "a pedestrian-priority road with pedestrians walking in the roadway"
+"scene": "a pedestrian-priority road with pedestrians walking in the roadway",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ⑥",
@@ -600,7 +666,8 @@
 "instruction": "도로 외의 곳에서 보행자 옆을 지날 때 안전한 거리를 두고 서행하십시오.",
 "instruction_en": "Slow down and keep a safe distance from pedestrians when driving off the road.",
 "action": "SLOW_DOWN",
-"scene": "pedestrians beside a vehicle in a parking lot off the road"
+"scene": "pedestrians beside a vehicle in a parking lot off the road",
+"general": false
 },
 {
 "id": "도로교통법 제27조 ⑦",
@@ -609,7 +676,8 @@
 "instruction": "어린이 보호구역의 신호 없는 횡단보도 앞에서는 항상 일시정지하십시오.",
 "instruction_en": "Always stop before an unsignalized crosswalk in a school zone.",
 "action": "STOP",
-"scene": "a crosswalk without traffic lights in a children's protection zone"
+"scene": "a crosswalk without traffic lights in a children's protection zone",
+"general": false
 },
 {
 "id": "도로교통법 제28조 ②",
@@ -618,7 +686,8 @@
 "instruction": "보행자전용도로로는 통행하지 마십시오.",
 "instruction_en": "Do not drive on a pedestrian-only road.",
 "action": "KEEP_OUT",
-"scene": "a pedestrian-only road with a no-vehicle sign and walkers"
+"scene": "a pedestrian-only road with a no-vehicle sign and walkers",
+"general": false
 },
 {
 "id": "도로교통법 제28조 ③",
@@ -627,7 +696,8 @@
 "instruction": "허용된 보행자전용도로에서는 걸음 속도로 운행하거나 일시정지하십시오.",
 "instruction_en": "On a permitted pedestrian-only road, drive at walking speed or stop.",
 "action": "SLOW_DOWN",
-"scene": "pedestrians walking on a pedestrian road where vehicles are allowed"
+"scene": "pedestrians walking on a pedestrian road where vehicles are allowed",
+"general": false
 },
 {
 "id": "도로교통법 제28조의2",
@@ -636,7 +706,8 @@
 "instruction": "속도를 제한한 보행자우선도로에서는 시속 20킬로미터 이내로 운행하십시오.",
 "instruction_en": "On a speed-limited pedestrian-priority road, drive within 20 km/h.",
 "action": "SLOW_DOWN",
-"scene": "a pedestrian-priority road with a 20 km/h speed limit sign"
+"scene": "a pedestrian-priority road with a 20 km/h speed limit sign",
+"general": false
 },
 {
 "id": "도로교통법 제29조 ④",
@@ -645,7 +716,8 @@
 "instruction": "교차로 부근에 긴급자동차가 접근하면 교차로를 피해 일시정지하십시오.",
 "instruction_en": "Clear the intersection and stop when an emergency vehicle approaches.",
 "action": "STOP",
-"scene": "an emergency vehicle with flashing lights approaching near an intersection"
+"scene": "an emergency vehicle with flashing lights approaching near an intersection",
+"general": false
 },
 {
 "id": "도로교통법 제29조 ⑤",
@@ -654,7 +726,8 @@
 "instruction": "교차로 밖에서 긴급자동차가 접근하면 진로를 양보하십시오.",
 "instruction_en": "Yield the way when an emergency vehicle approaches away from an intersection.",
 "action": "YIELD",
-"scene": "an emergency vehicle with sirens approaching from behind on a road"
+"scene": "an emergency vehicle with sirens approaching from behind on a road",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ①",
@@ -663,7 +736,8 @@
 "instruction": "신호 없는 교차로에서는 서행하십시오.",
 "instruction_en": "Slow down at an intersection without traffic signals.",
 "action": "SLOW_DOWN",
-"scene": "an intersection without traffic signals"
+"scene": "an intersection without traffic signals",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ①",
@@ -672,7 +746,8 @@
 "instruction": "도로가 구부러진 부근에서는 서행하십시오.",
 "instruction_en": "Slow down near a curve in the road.",
 "action": "SLOW_DOWN",
-"scene": "a sharp curve in the road ahead"
+"scene": "a sharp curve in the road ahead",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ①",
@@ -681,7 +756,8 @@
 "instruction": "비탈길의 고갯마루 부근에서는 서행하십시오.",
 "instruction_en": "Slow down near the crest of a hill.",
 "action": "SLOW_DOWN",
-"scene": "the crest of a hill with the road disappearing ahead"
+"scene": "the crest of a hill with the road disappearing ahead",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ①",
@@ -690,7 +766,8 @@
 "instruction": "가파른 비탈길의 내리막에서는 서행하십시오.",
 "instruction_en": "Slow down on a steep downhill slope.",
 "action": "SLOW_DOWN",
-"scene": "a steep downhill road ahead"
+"scene": "a steep downhill road ahead",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ①",
@@ -699,7 +776,8 @@
 "instruction": "서행 안전표지가 지정된 곳에서는 서행하십시오.",
 "instruction_en": "Slow down where a slow-driving traffic sign designates it.",
 "action": "SLOW_DOWN",
-"scene": "a roadside slow-down traffic sign"
+"scene": "a roadside slow-down traffic sign",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ②",
@@ -708,7 +786,8 @@
 "instruction": "신호 없고 좌우가 안 보이거나 혼잡한 교차로에서는 일시정지하십시오.",
 "instruction_en": "Stop at an uncontrolled intersection with poor visibility or heavy traffic.",
 "action": "STOP",
-"scene": "an unsignaled intersection with blocked side views or busy cross traffic"
+"scene": "an unsignaled intersection with blocked side views or busy cross traffic",
+"general": false
 },
 {
 "id": "도로교통법 제31조 ②",
@@ -717,7 +796,8 @@
 "instruction": "일시정지 안전표지가 지정된 곳에서는 일시정지하십시오.",
 "instruction_en": "Stop where a stop traffic sign designates it.",
 "action": "STOP",
-"scene": "a roadside stop sign at a junction"
+"scene": "a roadside stop sign at a junction",
+"general": false
 },
 {
 "id": "도로교통법 제33조",
@@ -726,7 +806,8 @@
 "instruction": "터널 안에서는 주차하지 마십시오.",
 "instruction_en": "Do not park inside a tunnel.",
 "action": "KEEP_OUT",
-"scene": "inside a road tunnel with lane lines"
+"scene": "inside a road tunnel with lane lines",
+"general": false
 },
 {
 "id": "도로교통법 제33조",
@@ -735,7 +816,8 @@
 "instruction": "다리 위에서는 주차하지 마십시오.",
 "instruction_en": "Do not park on a bridge.",
 "action": "KEEP_OUT",
-"scene": "a road on a bridge with railings"
+"scene": "a road on a bridge with railings",
+"general": false
 },
 {
 "id": "도로교통법 제33조",
@@ -744,7 +826,8 @@
 "instruction": "도로공사 구역 양쪽 가장자리 5미터 이내에는 주차하지 마십시오.",
 "instruction_en": "Do not park within 5 meters of either edge of a road construction zone.",
 "action": "KEEP_OUT",
-"scene": "a road construction zone with cones and workers"
+"scene": "a road construction zone with cones and workers",
+"general": false
 },
 {
 "id": "도로교통법 제33조",
@@ -753,7 +836,8 @@
 "instruction": "지정된 다중이용업소 건축물 5미터 이내에는 주차하지 마십시오.",
 "instruction_en": "Do not park within 5 meters of a designated high-occupancy business building.",
 "action": "KEEP_OUT",
-"scene": "a building entrance with a no-parking designation beside the road"
+"scene": "a building entrance with a no-parking designation beside the road",
+"general": false
 },
 {
 "id": "도로교통법 제33조",
@@ -762,7 +846,8 @@
 "instruction": "경찰청장이 지정한 주차금지 장소에는 주차하지 마십시오.",
 "instruction_en": "Do not park at places designated as no-parking.",
 "action": "KEEP_OUT",
-"scene": "a no-parking sign beside the road"
+"scene": "a no-parking sign beside the road",
+"general": false
 },
 {
 "id": "도로교통법 제34조",
@@ -771,7 +856,8 @@
 "instruction": "정차하거나 주차할 때는 차도의 우측 가장자리에 세우십시오.",
 "instruction_en": "When stopping or parking, stay at the right edge of the roadway.",
 "action": "CAUTION",
-"scene": "the right edge of a roadway with a curb"
+"scene": "the right edge of a roadway with a curb",
+"general": false
 },
 {
 "id": "도로교통법 제34조의3",
@@ -780,7 +866,8 @@
 "instruction": "경사진 곳 정차·주차 시 고임목을 놓거나 조향장치를 길가로 돌리십시오.",
 "instruction_en": "On a slope, set a wheel chock or turn the wheels toward the roadside.",
 "action": "CAUTION",
-"scene": "a vehicle parked on a sloped road"
+"scene": "a vehicle parked on a sloped road",
+"general": false
 },
 {
 "id": "도로교통법 제37조 ①",
@@ -789,7 +876,8 @@
 "instruction": "밤에는 전조등·차폭등·미등을 켜십시오.",
 "instruction_en": "Turn on headlights, position lights, and taillights at night.",
 "action": "CAUTION",
-"scene": "a dark road at night with headlights lighting the lane"
+"scene": "a dark road at night with headlights lighting the lane",
+"general": false
 },
 {
 "id": "도로교통법 제37조 ①",
@@ -798,7 +886,8 @@
 "instruction": "안개가 끼거나 비·눈이 올 때는 전조등·차폭등·미등을 켜십시오.",
 "instruction_en": "Turn on headlights and taillights in fog, rain, or snow.",
 "action": "CAUTION",
-"scene": "a road in heavy fog, rain, or snow with low visibility"
+"scene": "a road in heavy fog, rain, or snow with low visibility",
+"general": false
 },
 {
 "id": "도로교통법 제37조 ①",
@@ -807,7 +896,8 @@
 "instruction": "터널 안에서는 전조등·차폭등·미등을 켜십시오.",
 "instruction_en": "Turn on headlights and taillights inside a tunnel.",
 "action": "CAUTION",
-"scene": "inside a road tunnel with lane lines"
+"scene": "inside a road tunnel with lane lines",
+"general": false
 },
 {
 "id": "도로교통법 제37조 ②",
@@ -816,7 +906,8 @@
 "instruction": "밤에 마주 오는 차가 있으면 등화의 밝기를 줄이십시오.",
 "instruction_en": "At night, dim your lights for oncoming vehicles.",
 "action": "CAUTION",
-"scene": "an oncoming vehicle with bright headlights on a dark road"
+"scene": "an oncoming vehicle with bright headlights on a dark road",
+"general": false
 },
 {
 "id": "도로교통법 제37조 ②",
@@ -825,7 +916,8 @@
 "instruction": "밤에 앞차 바로 뒤를 따라갈 때는 등화의 밝기를 줄이십시오.",
 "instruction_en": "At night, dim your lights when following closely behind a vehicle.",
 "action": "CAUTION",
-"scene": "taillights of a vehicle directly ahead on a dark road"
+"scene": "taillights of a vehicle directly ahead on a dark road",
+"general": false
 },
 {
 "id": "도로교통법 제38조 ①",
@@ -834,7 +926,8 @@
 "instruction": "좌·우회전, 유턴, 진로 변경 시 끝날 때까지 방향지시기로 신호하십시오.",
 "instruction_en": "Signal until finished when turning, U-turning, or changing lanes.",
 "action": "CAUTION",
-"scene": "a vehicle turning or changing lanes with turn signal blinking"
+"scene": "a vehicle turning or changing lanes with turn signal blinking",
+"general": true
 },
 {
 "id": "도로교통법 제38조 ①",
@@ -843,7 +936,8 @@
 "instruction": "서행·정지·후진할 때는 끝날 때까지 손이나 등화로 신호하십시오.",
 "instruction_en": "Signal with hand or lights while slowing, stopping, or reversing.",
 "action": "CAUTION",
-"scene": "brake lights on as a vehicle slows to a stop"
+"scene": "brake lights on as a vehicle slows to a stop",
+"general": false
 },
 {
 "id": "도로교통법 제38조 ①",
@@ -852,7 +946,8 @@
 "instruction": "회전교차로에 진입하거나 진출할 때는 신호하십시오.",
 "instruction_en": "Signal when entering or exiting a roundabout.",
 "action": "CAUTION",
-"scene": "a roundabout entrance with a circular central island"
+"scene": "a roundabout entrance with a circular central island",
+"general": false
 },
 {
 "id": "도로교통법 제39조 ③",
@@ -861,7 +956,8 @@
 "instruction": "운전 중 타고 내리는 사람이 떨어지지 않게 문을 정확히 닫으십시오.",
 "instruction_en": "While driving, close the doors properly so riders cannot fall out.",
 "action": "CAUTION",
-"scene": "a vehicle door being closed as a passenger boards or exits"
+"scene": "a vehicle door being closed as a passenger boards or exits",
+"general": false
 },
 {
 "id": "도로교통법 제39조 ④",
@@ -870,7 +966,8 @@
 "instruction": "운전 중 화물이 떨어지지 않도록 덮개를 씌우거나 묶어 고정하십시오.",
 "instruction_en": "Cover or tie down cargo so it does not fall during driving.",
 "action": "CAUTION",
-"scene": "a truck on the road carrying tied-down cargo"
+"scene": "a truck on the road carrying tied-down cargo",
+"general": false
 },
 {
 "id": "도로교통법 제39조 ⑤",
@@ -879,7 +976,8 @@
 "instruction": "영유아나 동물을 안고 운전 장치를 조작하지 마십시오.",
 "instruction_en": "Do not operate the controls while holding an infant or animal.",
 "action": "CAUTION",
-"scene": "a driver at the steering wheel holding a small child or pet"
+"scene": "a driver at the steering wheel holding a small child or pet",
+"general": true
 },
 {
 "id": "도로교통법 제46조 ①",
@@ -888,7 +986,8 @@
 "instruction": "도로에서 둘 이상이 줄지어 통행하며 다른 사람에게 위험을 주지 마십시오.",
 "instruction_en": "Do not drive in groups in formation and endanger others on the road.",
 "action": "CAUTION",
-"scene": "several vehicles driving side by side or in a line"
+"scene": "several vehicles driving side by side or in a line",
+"general": false
 },
 {
 "id": "도로교통법 제46조의3",
@@ -897,7 +996,8 @@
 "instruction": "신호위반·중앙선 침범·속도위반 등을 연달아 해 위협을 주지 마십시오.",
 "instruction_en": "Do not repeat violations like signal or speeding and threaten others.",
 "action": "CAUTION",
-"scene": "a vehicle weaving through traffic across the center line"
+"scene": "a vehicle weaving through traffic across the center line",
+"general": true
 },
 {
 "id": "도로교통법 제48조 ①",
@@ -906,7 +1006,8 @@
 "instruction": "다른 사람에게 위험을 주는 속도나 방법으로 운전하지 마십시오.",
 "instruction_en": "Do not drive at a speed or manner that endangers others.",
 "action": "CAUTION",
-"scene": "a busy road with vehicles, pedestrians, and traffic around"
+"scene": "a busy road with vehicles, pedestrians, and traffic around",
+"general": true
 },
 {
 "id": "도로교통법 제50조 ①",
@@ -915,7 +1016,8 @@
 "instruction": "운전할 때는 좌석안전띠를 매고 동승자에게도 매게 하십시오.",
 "instruction_en": "Wear your seat belt and make all passengers wear theirs.",
 "action": "CAUTION",
-"scene": "a driver with a fastened seat belt inside a car cabin"
+"scene": "a driver with a fastened seat belt inside a car cabin",
+"general": true
 },
 {
 "id": "도로교통법 제51조 ①",
@@ -924,7 +1026,8 @@
 "instruction": "점멸등 켠 통학버스의 차로와 옆 차로에서는 일시정지 후 서행하십시오.",
 "instruction_en": "Stop then slow down in the lanes beside a flashing school bus.",
 "action": "STOP",
-"scene": "a stopped children's school bus with flashing lights and children getting off"
+"scene": "a stopped children's school bus with flashing lights and children getting off",
+"general": false
 },
 {
 "id": "도로교통법 제51조 ②",
@@ -933,7 +1036,8 @@
 "instruction": "편도 1차로에서 반대편 통학버스가 점멸 중이면 일시정지 후 서행하십시오.",
 "instruction_en": "On a one-lane road, stop then slow for an oncoming flashing school bus.",
 "action": "STOP",
-"scene": "an oncoming children's school bus with flashing lights on a one-lane road"
+"scene": "an oncoming children's school bus with flashing lights on a one-lane road",
+"general": false
 },
 {
 "id": "도로교통법 제51조 ②",
@@ -942,7 +1046,8 @@
 "instruction": "중앙선 없는 도로에서 맞은편 통학버스가 점멸 중이면 일시정지하십시오.",
 "instruction_en": "Without a center line, stop then slow for an oncoming flashing school bus.",
 "action": "STOP",
-"scene": "an oncoming school bus with flashing lights, no center line"
+"scene": "an oncoming school bus with flashing lights, no center line",
+"general": false
 },
 {
 "id": "도로교통법 제51조 ③",
@@ -951,7 +1056,8 @@
 "instruction": "어린이 표시를 한 통학버스는 앞지르지 마십시오.",
 "instruction_en": "Do not overtake a school bus displaying a child-carrying sign.",
 "action": "NO_OVERTAKING",
-"scene": "a children's school bus driving ahead with a child-carrying sign"
+"scene": "a children's school bus driving ahead with a child-carrying sign",
+"general": false
 },
 {
 "id": "도로교통법 제53조의5",
@@ -960,7 +1066,8 @@
 "instruction": "보호자 없는 통학버스는 어린이 승하차 때 내려서 확인하십시오.",
 "instruction_en": "If no guardian is aboard, step out and check children board or alight safely.",
 "action": "CAUTION",
-"scene": "a stopped yellow school bus with children getting on or off"
+"scene": "a stopped yellow school bus with children getting on or off",
+"general": false
 },
 {
 "id": "도로교통법 제54조 ①",
@@ -969,7 +1076,8 @@
 "instruction": "교통사고를 내면 즉시 정차해 사상자를 구호하십시오.",
 "instruction_en": "After a crash, stop immediately and help the injured.",
 "action": "STOP",
-"scene": "a collision between vehicles with an injured person on the road"
+"scene": "a collision between vehicles with an injured person on the road",
+"general": false
 },
 {
 "id": "도로교통법 제54조 ①",
@@ -978,7 +1086,8 @@
 "instruction": "교통사고를 내면 피해자에게 성명·전화번호·주소를 알리십시오.",
 "instruction_en": "After a crash, give the victim your name, phone number and address.",
 "action": "CAUTION",
-"scene": "two damaged vehicles and a victim at an accident scene"
+"scene": "two damaged vehicles and a victim at an accident scene",
+"general": false
 },
 {
 "id": "도로교통법 제54조 ②",
@@ -987,7 +1096,8 @@
 "instruction": "교통사고를 내면 사고 장소와 사상자 수를 경찰에 신고하십시오.",
 "instruction_en": "After a crash, report the location and casualties to the police.",
 "action": "CAUTION",
-"scene": "a traffic accident scene with a police officer or police station nearby"
+"scene": "a traffic accident scene with a police officer or police station nearby",
+"general": false
 },
 {
 "id": "도로교통법 제56조의2 ①",
@@ -996,7 +1106,8 @@
 "instruction": "자율주행시스템이 직접 운전을 요구하면 지체 없이 직접 조작하십시오.",
 "instruction_en": "Take manual control immediately when the self-driving system requests it.",
 "action": "CAUTION",
-"scene": "a dashboard takeover request warning in a self-driving car"
+"scene": "a dashboard takeover request warning in a self-driving car",
+"general": false
 },
 {
 "id": "도로교통법 제60조 ①",
@@ -1005,7 +1116,8 @@
 "instruction": "고속도로에서는 갓길로 통행하지 마십시오.",
 "instruction_en": "Do not drive on the shoulder of an expressway.",
 "action": "KEEP_OUT",
-"scene": "an expressway with an emergency shoulder beside the lanes"
+"scene": "an expressway with an emergency shoulder beside the lanes",
+"general": false
 },
 {
 "id": "도로교통법 제60조 ①",
@@ -1014,7 +1126,8 @@
 "instruction": "고속도로에서는 지정된 차로로 통행하십시오.",
 "instruction_en": "Drive in the designated lane on an expressway.",
 "action": "CAUTION",
-"scene": "a multi-lane expressway with lane markings and signs"
+"scene": "a multi-lane expressway with lane markings and signs",
+"general": false
 },
 {
 "id": "도로교통법 제60조 ②",
@@ -1023,7 +1136,8 @@
 "instruction": "고속도로에서 앞지를 때는 방향지시기·등화·경음기를 쓰십시오.",
 "instruction_en": "When overtaking on an expressway, use turn signal, lights or horn.",
 "action": "CAUTION",
-"scene": "a car overtaking a slower vehicle on an expressway"
+"scene": "a car overtaking a slower vehicle on an expressway",
+"general": false
 },
 {
 "id": "도로교통법 제62조",
@@ -1032,7 +1146,8 @@
 "instruction": "고속도로에서는 횡단, 유턴, 후진을 하지 마십시오.",
 "instruction_en": "Do not cross, make a U-turn or reverse on an expressway.",
 "action": "KEEP_OUT",
-"scene": "an expressway median opening with fast traffic on both sides"
+"scene": "an expressway median opening with fast traffic on both sides",
+"general": false
 },
 {
 "id": "도로교통법 제65조 ①",
@@ -1041,7 +1156,8 @@
 "instruction": "고속도로에 진입할 때 본선 차량의 통행을 방해하지 마십시오.",
 "instruction_en": "When entering an expressway, do not obstruct traffic already on it.",
 "action": "YIELD",
-"scene": "an on-ramp merging into expressway traffic"
+"scene": "an on-ramp merging into expressway traffic",
+"general": false
 },
 {
 "id": "도로교통법 제65조 ②",
@@ -1050,7 +1166,8 @@
 "instruction": "긴급자동차가 고속도로에 진입할 때 방해하지 마십시오.",
 "instruction_en": "Do not obstruct an emergency vehicle entering an expressway.",
 "action": "YIELD",
-"scene": "an emergency vehicle with flashing lights at an expressway on-ramp"
+"scene": "an emergency vehicle with flashing lights at an expressway on-ramp",
+"general": false
 },
 {
 "id": "도로교통법 제66조",
@@ -1059,7 +1176,8 @@
 "instruction": "고속도로에서 운행 불능이면 고장자동차 표지를 설치하십시오.",
 "instruction_en": "If disabled on an expressway, set up the breakdown warning sign.",
 "action": "CAUTION",
-"scene": "a broken-down car on an expressway with a warning triangle"
+"scene": "a broken-down car on an expressway with a warning triangle",
+"general": false
 },
 {
 "id": "도로교통법 제67조 ②",
@@ -1068,7 +1186,8 @@
 "instruction": "고속도로에서 고장 나면 우측 가장자리에 정지하십시오.",
 "instruction_en": "If broken down on an expressway, stop at the right edge.",
 "action": "STOP",
-"scene": "a disabled car at the right edge of an expressway"
+"scene": "a disabled car at the right edge of an expressway",
+"general": false
 },
 {
 "id": "도로교통법 제68조 ③",
@@ -1077,7 +1196,8 @@
 "instruction": "주행 중 차 밖으로 물건을 던지지 마십시오.",
 "instruction_en": "Do not throw objects out of a moving vehicle.",
 "action": "CAUTION",
-"scene": "a hand throwing an object out of a moving car window"
+"scene": "a hand throwing an object out of a moving car window",
+"general": true
 },
 {
 "id": "도로교통법 제92조 ②",
@@ -1086,7 +1206,8 @@
 "instruction": "운전 중 경찰공무원이 면허증 제시를 요구하면 응하십시오.",
 "instruction_en": "Comply when a police officer asks to see your license while driving.",
 "action": "CAUTION",
-"scene": "a police officer on the road signaling a driver to stop"
+"scene": "a police officer on the road signaling a driver to stop",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1095,7 +1216,8 @@
 "instruction": "황색 신호에는 정지선·횡단보도·교차로 직전에 정지하십시오.",
 "instruction_en": "Stop before the stop line, crosswalk or intersection on a yellow light.",
 "action": "STOP",
-"scene": "a yellow traffic light ahead at an intersection with a stop line"
+"scene": "a yellow traffic light ahead at an intersection with a stop line",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1104,7 +1226,8 @@
 "instruction": "이미 교차로에 진입했다면 황색 신호에 신속히 교차로 밖으로 나가십시오.",
 "instruction_en": "If already inside the intersection on yellow, clear it quickly.",
 "action": "CAUTION",
-"scene": "vehicle inside an intersection while the traffic light is yellow"
+"scene": "vehicle inside an intersection while the traffic light is yellow",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1113,7 +1236,8 @@
 "instruction": "황색 신호에 우회전할 때는 보행자의 횡단을 방해하지 마십시오.",
 "instruction_en": "Do not obstruct pedestrians crossing when turning right on yellow.",
 "action": "YIELD",
-"scene": "a right turn at an intersection with pedestrians in the crosswalk"
+"scene": "a right turn at an intersection with pedestrians in the crosswalk",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1122,7 +1246,8 @@
 "instruction": "적색 신호에는 정지선·횡단보도·교차로 직전에서 정지하십시오.",
 "instruction_en": "Stop before the stop line, crosswalk or intersection on a red light.",
 "action": "STOP",
-"scene": "a red traffic light ahead at an intersection with a stop line"
+"scene": "a red traffic light ahead at an intersection with a stop line",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1131,7 +1256,8 @@
 "instruction": "적색 신호에 우회전하려면 정지 후 다른 교통을 방해하지 마십시오.",
 "instruction_en": "To turn right on red, stop first and do not obstruct other traffic.",
 "action": "YIELD",
-"scene": "a right turn at a red light with cross traffic moving"
+"scene": "a right turn at a red light with cross traffic moving",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1140,7 +1266,8 @@
 "instruction": "우회전 삼색등이 적색이면 우회전하지 마십시오.",
 "instruction_en": "Do not turn right when the right-turn signal is red.",
 "action": "STOP",
-"scene": "a red right-turn traffic light at an intersection"
+"scene": "a red right-turn traffic light at an intersection",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1149,7 +1276,8 @@
 "instruction": "황색 점멸 신호에는 다른 교통과 안전표지에 주의하며 진행하십시오.",
 "instruction_en": "On a flashing yellow light, proceed watching other traffic and signs.",
 "action": "CAUTION",
-"scene": "a flashing yellow traffic light over an intersection"
+"scene": "a flashing yellow traffic light over an intersection",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1158,7 +1286,8 @@
 "instruction": "적색 점멸 신호에는 정지선·횡단보도·교차로 직전에 일시정지하십시오.",
 "instruction_en": "On a flashing red light, stop before the line, then proceed with caution.",
 "action": "STOP",
-"scene": "a flashing red traffic light over an intersection with a stop line"
+"scene": "a flashing red traffic light over an intersection with a stop line",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1167,7 +1296,8 @@
 "instruction": "황색 화살표 신호에 그 방향으로 가려면 정지선 직전에 정지하십시오.",
 "instruction_en": "Stop before the stop line when heading the direction of a yellow arrow.",
 "action": "STOP",
-"scene": "a yellow arrow traffic light at an intersection with a stop line"
+"scene": "a yellow arrow traffic light at an intersection with a stop line",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1176,7 +1306,8 @@
 "instruction": "황색 화살표 신호에 이미 진입했다면 신속히 교차로를 벗어나십시오.",
 "instruction_en": "If already in the intersection on a yellow arrow, clear it quickly.",
 "action": "CAUTION",
-"scene": "vehicle inside an intersection while the arrow signal is yellow"
+"scene": "vehicle inside an intersection while the arrow signal is yellow",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1185,7 +1316,8 @@
 "instruction": "적색 화살표 방향으로 가려면 정지선·횡단보도·교차로 직전에 정지하십시오.",
 "instruction_en": "Stop before the line when heading the direction of a red arrow.",
 "action": "STOP",
-"scene": "a red arrow traffic light at an intersection with a stop line"
+"scene": "a red arrow traffic light at an intersection with a stop line",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1194,7 +1326,8 @@
 "instruction": "황색 화살표 점멸에는 다른 교통에 주의하며 그 방향으로 진행하십시오.",
 "instruction_en": "On a flashing yellow arrow, proceed in that direction watching other traffic.",
 "action": "CAUTION",
-"scene": "a flashing yellow arrow traffic light at an intersection"
+"scene": "a flashing yellow arrow traffic light at an intersection",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1203,7 +1336,8 @@
 "instruction": "적색 화살표 점멸에는 정지선 직전에 일시정지한 뒤 주의하며 진행하십시오.",
 "instruction_en": "On a flashing red arrow, stop before the line, then proceed with caution.",
 "action": "STOP",
-"scene": "a flashing red arrow traffic light at an intersection"
+"scene": "a flashing red arrow traffic light at an intersection",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1212,7 +1346,8 @@
 "instruction": "적색 × 표시가 있는 차로로는 진행하지 마십시오.",
 "instruction_en": "Do not drive in a lane marked with a red X.",
 "action": "KEEP_OUT",
-"scene": "an overhead lane signal showing a red X above a lane"
+"scene": "an overhead lane signal showing a red X above a lane",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1221,7 +1356,8 @@
 "instruction": "적색 × 점멸 차로에는 진입하지 마십시오.",
 "instruction_en": "Do not enter a lane with a flashing red X.",
 "action": "KEEP_OUT",
-"scene": "an overhead lane signal showing a flashing red X above a lane"
+"scene": "an overhead lane signal showing a flashing red X above a lane",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1230,7 +1366,8 @@
 "instruction": "적색 × 점멸 차로에 이미 진입했다면 신속히 차로를 변경하십시오.",
 "instruction_en": "If already in a lane with a flashing red X, change lanes quickly.",
 "action": "CAUTION",
-"scene": "vehicle in a lane under a flashing red X lane signal"
+"scene": "vehicle in a lane under a flashing red X lane signal",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1239,7 +1376,8 @@
 "instruction": "버스전용차로에서 황색 버스 신호에는 정지선 직전에 정지하십시오.",
 "instruction_en": "In a bus lane, stop before the stop line on a yellow bus signal.",
 "action": "STOP",
-"scene": "a yellow bus signal light over a dedicated bus lane"
+"scene": "a yellow bus signal light over a dedicated bus lane",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1248,7 +1386,8 @@
 "instruction": "버스전용차로에서 이미 교차로에 진입했다면 황색 신호에 신속히 나가십시오.",
 "instruction_en": "In a bus lane, if already in the intersection on yellow, clear it quickly.",
 "action": "CAUTION",
-"scene": "bus lane vehicle inside an intersection while the bus signal is yellow"
+"scene": "bus lane vehicle inside an intersection while the bus signal is yellow",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1257,7 +1396,8 @@
 "instruction": "버스전용차로에서 적색 버스 신호에는 정지선 직전에서 정지하십시오.",
 "instruction_en": "In a bus lane, stop before the stop line on a red bus signal.",
 "action": "STOP",
-"scene": "a red bus signal light over a dedicated bus lane"
+"scene": "a red bus signal light over a dedicated bus lane",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1266,7 +1406,8 @@
 "instruction": "버스전용차로에서 황색 점멸 신호에는 다른 교통에 주의하며 진행하십시오.",
 "instruction_en": "In a bus lane, on flashing yellow, proceed watching other traffic and signs.",
 "action": "CAUTION",
-"scene": "a flashing yellow bus signal light over a dedicated bus lane"
+"scene": "a flashing yellow bus signal light over a dedicated bus lane",
+"general": false
 },
 {
 "id": "시행규칙 별표 2",
@@ -1275,7 +1416,8 @@
 "instruction": "버스전용차로에서 적색 점멸 신호에는 정지선 직전에 일시정지하십시오.",
 "instruction_en": "In a bus lane, on flashing red, stop before the line, then proceed carefully.",
 "action": "STOP",
-"scene": "a flashing red bus signal light over a dedicated bus lane"
+"scene": "a flashing red bus signal light over a dedicated bus lane",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1284,7 +1426,8 @@
 "instruction": "교차로·횡단보도·건널목에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park at intersections, crosswalks or railroad crossings.",
 "action": "KEEP_OUT",
-"scene": "Intersection, crosswalk or railroad crossing ahead"
+"scene": "Intersection, crosswalk or railroad crossing ahead",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1293,7 +1436,8 @@
 "instruction": "보도와 차도가 구분된 도로의 보도에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park on a sidewalk separated from the roadway.",
 "action": "KEEP_OUT",
-"scene": "Sidewalk separated from the roadway by a curb"
+"scene": "Sidewalk separated from the roadway by a curb",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1302,7 +1446,8 @@
 "instruction": "교차로 가장자리·도로 모퉁이 5미터 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 5 meters of an intersection edge or road corner.",
 "action": "KEEP_OUT",
-"scene": "Road corner or intersection edge close ahead"
+"scene": "Road corner or intersection edge close ahead",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1311,7 +1456,8 @@
 "instruction": "안전지대 사방 10미터 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 10 meters of a safety zone.",
 "action": "KEEP_OUT",
-"scene": "Painted or built safety zone island on the road"
+"scene": "Painted or built safety zone island on the road",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1320,7 +1466,8 @@
 "instruction": "버스 정류지 표지·선 10미터 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 10 meters of a bus stop sign or line.",
 "action": "KEEP_OUT",
-"scene": "Bus stop pole, sign or painted line at roadside"
+"scene": "Bus stop pole, sign or painted line at roadside",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1329,7 +1476,8 @@
 "instruction": "건널목 가장자리·횡단보도 10미터 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 10 meters of a railroad crossing or crosswalk.",
 "action": "KEEP_OUT",
-"scene": "Crosswalk or railroad crossing within ten meters ahead"
+"scene": "Crosswalk or railroad crossing within ten meters ahead",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1338,7 +1486,8 @@
 "instruction": "소방용수시설·비상소화장치 5미터 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 5 meters of a fire hydrant or emergency extinguisher.",
 "action": "KEEP_OUT",
-"scene": "Fire hydrant or emergency fire extinguisher cabinet at roadside"
+"scene": "Fire hydrant or emergency fire extinguisher cabinet at roadside",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1347,7 +1496,8 @@
 "instruction": "대통령령으로 정한 소방시설 5미터 이내에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park within 5 meters of designated fire-protection facilities.",
 "action": "KEEP_OUT",
-"scene": "Fire-protection facility entrance or equipment at roadside"
+"scene": "Fire-protection facility entrance or equipment at roadside",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1356,7 +1506,8 @@
 "instruction": "시·도경찰청장이 지정한 곳에는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park where the police commissioner has designated.",
 "action": "KEEP_OUT",
-"scene": "No-stopping sign or marking at roadside"
+"scene": "No-stopping sign or marking at roadside",
+"general": false
 },
 {
 "id": "도로교통법 제32조",
@@ -1365,7 +1516,8 @@
 "instruction": "어린이 보호구역에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park in a child protection zone.",
 "action": "KEEP_OUT",
-"scene": "School zone signs with children near the road"
+"scene": "School zone signs with children near the road",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1374,7 +1526,8 @@
 "instruction": "물이 고인 곳에서는 물을 튀기지 않게 운행하십시오.",
 "instruction_en": "Drive so you do not splash water on others through puddles.",
 "action": "SLOW_DOWN",
-"scene": "Puddle on road with pedestrians nearby"
+"scene": "Puddle on road with pedestrians nearby",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1383,7 +1536,8 @@
 "instruction": "위험한 어린이를 발견하면 일시정지하십시오.",
 "instruction_en": "Stop when you see a child at risk on the road.",
 "action": "STOP",
-"scene": "Unaccompanied child crossing, sitting, standing or playing on road"
+"scene": "Unaccompanied child crossing, sitting, standing or playing on road",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1392,7 +1546,8 @@
 "instruction": "흰 지팡이·안내견 동반 시각장애인이 횡단하면 일시정지하십시오.",
 "instruction_en": "Stop for a blind person with a white cane or guide dog crossing.",
 "action": "STOP",
-"scene": "Blind pedestrian with white cane or guide dog crossing"
+"scene": "Blind pedestrian with white cane or guide dog crossing",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1401,7 +1556,8 @@
 "instruction": "횡단시설을 못 쓰는 지체장애인·노인이 횡단하면 일시정지하십시오.",
 "instruction_en": "Stop for a disabled or elderly person crossing without crossing facilities.",
 "action": "STOP",
-"scene": "Elderly or disabled pedestrian crossing the road slowly"
+"scene": "Elderly or disabled pedestrian crossing the road slowly",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1410,7 +1566,8 @@
 "instruction": "도로에 차를 세운 채 다투어 통행을 방해하지 마십시오.",
 "instruction_en": "Do not block traffic by stopping on the road to argue.",
 "action": "KEEP_OUT",
-"scene": "Stopped vehicles with drivers arguing blocking the lane"
+"scene": "Stopped vehicles with drivers arguing blocking the lane",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1419,7 +1576,8 @@
 "instruction": "차를 떠날 때는 사고와 무단 운전을 막는 조치를 하십시오.",
 "instruction_en": "When leaving the vehicle, prevent accidents and unauthorized driving.",
 "action": "CAUTION",
-"scene": "Parked vehicle with driver stepping out"
+"scene": "Parked vehicle with driver stepping out",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1428,7 +1586,8 @@
 "instruction": "문을 열거나 내리기 전에 안전을 확인하십시오.",
 "instruction_en": "Check that it is safe before opening a door or getting out.",
 "action": "CAUTION",
-"scene": "Parked car at roadside with traffic approaching from behind"
+"scene": "Parked car at roadside with traffic approaching from behind",
+"general": false
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1437,7 +1596,8 @@
 "instruction": "정당한 사유 없이 급출발·급가속으로 소음을 내지 마십시오.",
 "instruction_en": "Do not start or accelerate abruptly and cause noise without good reason.",
 "action": "CAUTION",
-"scene": "Vehicle at a stop with residential street ahead"
+"scene": "Vehicle at a stop with residential street ahead",
+"general": true
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1446,7 +1606,8 @@
 "instruction": "정당한 사유 없이 경음기를 반복해 울리지 마십시오.",
 "instruction_en": "Do not repeatedly sound the horn without good reason.",
 "action": "CAUTION",
-"scene": "Road with vehicles and pedestrians where horn may be used"
+"scene": "Road with vehicles and pedestrians where horn may be used",
+"general": true
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1455,7 +1616,8 @@
 "instruction": "운전 중에는 휴대용 전화를 사용하지 마십시오.",
 "instruction_en": "Do not use a mobile phone while driving.",
 "action": "CAUTION",
-"scene": "Moving vehicle on road with driver holding a phone"
+"scene": "Moving vehicle on road with driver holding a phone",
+"general": true
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1464,7 +1626,8 @@
 "instruction": "운전 중에는 영상을 보이게 하거나 영상장치를 조작하지 마십시오.",
 "instruction_en": "Do not display video or operate video devices while driving.",
 "action": "CAUTION",
-"scene": "Driver cabin with a video screen in view while moving"
+"scene": "Driver cabin with a video screen in view while moving",
+"general": true
 },
 {
 "id": "도로교통법 제49조 ①",
@@ -1473,7 +1636,8 @@
 "instruction": "화물 적재함에 사람을 태우고 운행하지 마십시오.",
 "instruction_en": "Do not drive with people riding in the cargo bed.",
 "action": "CAUTION",
-"scene": "Cargo truck with people riding in the open cargo bed"
+"scene": "Cargo truck with people riding in the open cargo bed",
+"general": false
 },
 {
 "id": "도로교통법 제64조",
@@ -1482,6 +1646,7 @@
 "instruction": "고속도로에서는 정차·주차하지 마십시오.",
 "instruction_en": "Do not stop or park on an expressway.",
 "action": "KEEP_OUT",
-"scene": "Expressway lanes with shoulder and no stopping area"
+"scene": "Expressway lanes with shoulder and no stopping area",
+"general": false
 }
 ]
