@@ -53,7 +53,7 @@ HERO_TOP = 104
 STEPS = ["보기", "인식", "조문", "읽기", "출력"]
 STEP_X = [60, 190, 320, 450, 580]
 RAIL_Y = 440
-# 지시문 목록 한 줄의 높이와 단계 표시 위 여백
+# 지시문 목록과 단계 표시 사이 여백
 RAIL_GAP = 18
 CARD_TOP = 508
 # 법령 탭 줄의 오른쪽 끝에 놓는 버튼의 창 좌표
@@ -239,6 +239,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
                 y += 22
     else:
         pen.text((28, y), "적용할 규칙 없음", font=RESULT_FONT, fill=FAINT)
+    # 아래 카드는 음성 질문, 새 규칙의 조문, 지금 호출 순서로 하나만 그림
     if voice["listening"] or voice["thinking"] or voice["answer"]:
         draw_rail(pen, 1 if voice["listening"] else 3 if voice["thinking"] else 4)
         draw_answer_card(pen, voice)

@@ -125,9 +125,9 @@ READ_CHARS = 240
 # Jetson 판단 약 5초와 처음 읽는 조문 약 5초 동안 지시가 사라지지 않도록 다음 판단까지 유지함(2026-11-07 Jetson 측정, 사용자 지시)
 HOLD_SECONDS = 8.0
 
-# 화면이 모듈별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
-# watch가 지금 판단 중인 묶음과 공유 사전이고 영상이 바뀌어 버려진 묶음인지 가리는 데 씀
+# watch가 판단 중인 묶음, 법령, 모델을 담아 publish가 쓰고, 영상이 바뀌어 버려진 묶음인지 가리는 데도 씀
 WATCHING = {}
+# 화면이 호출별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
 STATUS = {"stage": "wait", "started": 0.0, "images": {}, "answers": {}, "odds": {}, "outputs": 0}
 
 
@@ -204,6 +204,7 @@ def answer_odds(llm, words):
 
 def image_part(image, tokens):
     """이미지를 토큰 수에 맞게 줄여 Gemma 메시지 항목으로 만드는 함수"""
+    # 비전 모듈은 48×48 칸 하나를 토큰 하나로 읽으므로 넓이를 토큰 수만큼의 칸으로 줄임
     height, width = image.shape[:2]
     scale = (tokens * TOKEN_PIXELS * TOKEN_PIXELS / (width * height)) ** 0.5
     if scale < 1:
@@ -251,6 +252,7 @@ def publish(found):
     # 예열과 평가에서는 판단 중인 묶음이 없고, 버려진 묶음은 화면에 나오지 않아 넘기지 않음
     if "clip" not in WATCHING or judging_old_clip():
         return
+    # active는 최근 HOLD_SECONDS 안에 본 상황이고, rules는 화면과 VLA 출력으로 나가는 목록임
     clip, law, laws, readings = WATCHING["clip"], WATCHING["law"], WATCHING["laws"], WATCHING["readings"]
     now = time.perf_counter()
     for situation in found:
@@ -276,6 +278,7 @@ def publish(found):
 
 def recognize(llm, frame, result, in_school_zone):
     """프레임과 크롭을 보고 지금 있는 상황 목록을 만드는 함수"""
+    # 객관식 한 번으로 장면 전체를 보고, 객관식이 약한 상황은 크롭 질문으로 따로 확인함
     signs = class_strip(frame, result, SIGN_CLASSES)
     # 신호등과 표지 박스가 없으면 프레임 전체를 대신 넣음
     if signs is None:
@@ -342,6 +345,7 @@ def read_provision(llm, situation, article):
     text = " ".join([part[:READ_CHARS] for part in parts])
     # create_completion이 BOS를 스스로 붙이므로 프롬프트에 쓰지 않음
     prompt = f"<|turn>user\n{READ_PROMPT}{READ_EXAMPLES}Situation: {situation}\nProvisions:\n[1] {text or 'none'}\nAnswer:<turn|>\n<|turn>model\n"
+    # 첫 호출은 행동 코드를 고르고, 두 번째 호출은 한국어 지시문을 씀
     # 행동이 정해진 6개 밖으로 나가지 않도록 첫 토큰을 6개로 제한함
     start_stage("action")
     first = llm.create_completion(prompt, max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, ACTIONS))["choices"][0]["text"].strip()

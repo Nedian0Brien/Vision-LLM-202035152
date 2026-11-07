@@ -17,7 +17,6 @@ FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
-# 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
 VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("금문교", "videos/golden-gate.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
           ("비", "videos/rain-seoul.mp4"), ("통학버스", "videos/school-bus-korea.mp4"), ("소화전", "videos/hydrant-sf.mp4"), ("카메라", CAMERA)]
 # 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 YOLO 호출 p95가 약 0.6초라 10프레임에서는 표시 프레임의 44~53%만 뒤 탐지 결과가 있었음(2026-11-07 측정)
@@ -125,7 +124,7 @@ def load_models():
     loading["laws"] = {short: load_law(short) for name, short in LAWS}
     loading["corpora"] = {short: load_corpus(short) for name, short in LAWS}
     next_step()
-    # 첫 인식이 약 24초 걸리고 다음부터 5초 안팎이라 영상 시작 전에 끝냄(2026-11-07 Jetson 측정)
+    # 첫 인식이 약 24초 걸리고 다음부터는 몇 초 안이라 영상 시작 전에 한 번 돌려 둠(2026-11-07 Jetson 측정)
     capture = cv2.VideoCapture(VIDEOS[0][1])
     frame = cv2.resize(capture.read()[1], FRAME_SIZE)
     capture.release()
@@ -183,6 +182,7 @@ def boxes_at(number):
 
 
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
+# 스레드는 이 사전으로 값을 넘김. frame은 영상 루프에서 YOLO로, input은 YOLO에서 Gemma로, clip은 Gemma에서 화면으로 감
 shared = {"recorder": None, "listen_start": 0.0, "transcribing": False, "stop_requested": False, "results": [], "question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
           "frame": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
 loading = {"step": 0, "since": time.perf_counter()}
@@ -260,6 +260,7 @@ while True:
     # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
     frame_number += 1
     shared["frame"] = (current_video, frame_number, frame.copy())
+    # 화면은 DISPLAY_DELAY 프레임 늦게 그려 그 사이 나온 탐지로 박스 위치를 보간함
     waiting.append((frame_number, frame))
     if len(waiting) <= DISPLAY_DELAY:
         continue

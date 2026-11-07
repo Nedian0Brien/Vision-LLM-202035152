@@ -62,6 +62,7 @@ def box_overlap(first, second):
 
 def interpolate_boxes(before, after, ratio):
     """앞뒤 탐지 결과 사이의 박스 위치를 계산하는 함수"""
+    # 같은 클래스에서 가장 많이 겹치는 뒤 박스를 같은 물체로 보고 ratio만큼 옮김
     boxes = []
     used = []
     for box, cls, conf in before:
