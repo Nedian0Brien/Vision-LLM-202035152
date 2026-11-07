@@ -55,7 +55,8 @@ class GemmaTest(unittest.TestCase):
         self.assertEqual(current[gemma.SCHOOL_CROSSWALK]["id"], "도로교통법 제27조 ⑦")
         # 2006년 법에는 보호구역 횡단보도 조문이 없음
         self.assertEqual(load_law("2006")[gemma.SCHOOL_CROSSWALK]["id"], "도로교통법 제12조 ③")
-        self.assertNotIn(gemma.SCHOOL_BUS, california)
+        # 캘리포니아 통학버스는 정차해 적색 점멸등을 켠 버스의 정지 의무를 기본 조문으로 둠(2026-11-07 사용자 지시)
+        self.assertEqual(california[gemma.SCHOOL_BUS]["id"], "CVC §22454(a)")
         self.assertEqual(set(load_law(gemma.NO_LAW)), set(SITUATIONS + CROP_SITUATIONS))
         self.assertEqual(len(current), len(SITUATIONS) + len(CROP_SITUATIONS))
 
