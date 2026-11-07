@@ -316,16 +316,14 @@ def draw_nodes(nodes, spinner):
     return np.array(image)
 
 
-def draw(frame, result, panel_image, nodes_image, fps):
+def draw(frame, boxes, panel_image, nodes_image, fps):
     """프레임에 박스와 클래스 이름을 그리고 조문을 아래에, 패널을 오른쪽에 붙이는 함수"""
     frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))
     # 배속 구간에는 탐지 결과가 없음
-    if result is None:
+    if boxes is None:
         label = LABELS[FAST_LABEL]
         frame[24:24 + label.shape[0], 24:24 + label.shape[1]] = label
         boxes = []
-    else:
-        boxes = zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist(), result.boxes.conf.tolist())
     for box, cls, conf in boxes:
         if conf >= SHOW_CONF:
             x1, y1, x2, y2 = [int(value * VIDEO_SCALE) for value in box]

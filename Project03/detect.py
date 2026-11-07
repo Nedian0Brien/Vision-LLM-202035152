@@ -14,6 +14,8 @@ HYDRANT_CLASSES = [10]
 # 개발용 세트의 신호등과 정지 표지 장면 13개에서 640 입력은 7개, 1280 입력은 12개를 찾음(2026-11-03)
 # 1280×720 프레임의 입력은 736×1280이고, 고정 크기 TensorRT 엔진에 정수 1280을 넘기면 1280×1280 입력이 되어 멈춤
 IMAGE_SIZE = [736, 1280]
+# 차가 다음 탐지까지 움직여도 같은 물체로 볼 만큼 겹치는 비율
+MATCH_OVERLAP = 0.2
 # 크롭에는 먼 신호등도 넣으려고 낮은 신뢰도까지 쓰고, 화면에는 기존 기준의 박스만 그림
 DETECT_CONF = 0.25
 SHOW_CONF = 0.4
@@ -46,3 +48,32 @@ def road_crop(frame):
     """노면 글자가 보이는 차로 앞쪽 영역을 자르는 함수"""
     height, width = frame.shape[:2]
     return frame[int(0.55 * height):int(0.92 * height), int(0.15 * width):int(0.85 * width)]
+
+
+def box_overlap(first, second):
+    """두 박스의 겹침 비율을 구하는 함수"""
+    width = min(first[2], second[2]) - max(first[0], second[0])
+    height = min(first[3], second[3]) - max(first[1], second[1])
+    if width <= 0 or height <= 0:
+        return 0.0
+    both = width * height
+    return both / ((first[2] - first[0]) * (first[3] - first[1]) + (second[2] - second[0]) * (second[3] - second[1]) - both)
+
+
+def interpolate_boxes(before, after, ratio):
+    """앞뒤 탐지 결과 사이의 박스 위치를 계산하는 함수"""
+    boxes = []
+    used = []
+    for box, cls, conf in before:
+        matches = [(box_overlap(box, other[0]), index) for index, other in enumerate(after) if other[1] == cls and index not in used]
+        overlap, index = max(matches) if matches else (0.0, -1)
+        if overlap >= MATCH_OVERLAP:
+            used.append(index)
+            boxes.append(([start + (end - start) * ratio for start, end in zip(box, after[index][0])], cls, conf))
+        # 짝이 없는 박스는 가까운 쪽 탐지 결과에 있을 때만 그림
+        elif ratio < 0.5:
+            boxes.append((box, cls, conf))
+    if ratio >= 0.5:
+        boxes += [item for index, item in enumerate(after) if index not in used]
+    return boxes
+

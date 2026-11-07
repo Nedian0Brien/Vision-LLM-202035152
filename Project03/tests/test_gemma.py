@@ -8,7 +8,7 @@ import numpy as np
 
 import gemma
 import voice
-from detect import LIGHT_CLASSES, class_strip, road_crop
+from detect import LIGHT_CLASSES, class_strip, interpolate_boxes, road_crop
 from gemma import CROP_SITUATIONS, SITUATIONS, load_law, parse_situations
 
 
@@ -189,6 +189,24 @@ class ActionTest(unittest.TestCase):
 
     def test_action_codes_are_distinct(self):
         self.assertEqual(len(set(gemma.ACTIONS.values())), len(gemma.ACTIONS))
+
+
+class InterpolateTest(unittest.TestCase):
+    def test_matched_box_moves_between_results(self):
+        before = [([0.0, 0.0, 100.0, 100.0], 2.0, 0.9)]
+        after = [([20.0, 0.0, 120.0, 100.0], 2.0, 0.8)]
+        self.assertEqual(interpolate_boxes(before, after, 0.5)[0][0], [10.0, 0.0, 110.0, 100.0])
+
+    def test_unmatched_box_follows_nearer_result(self):
+        before = [([0.0, 0.0, 10.0, 10.0], 2.0, 0.9)]
+        after = [([50.0, 50.0, 60.0, 60.0], 2.0, 0.8)]
+        self.assertEqual(interpolate_boxes(before, after, 0.25), before)
+        self.assertEqual(interpolate_boxes(before, after, 0.75), after)
+
+    def test_other_class_does_not_match(self):
+        before = [([0.0, 0.0, 100.0, 100.0], 2.0, 0.9)]
+        after = [([0.0, 0.0, 100.0, 100.0], 0.0, 0.8)]
+        self.assertEqual(interpolate_boxes(before, after, 0.25), before)
 
 
 class QuestionTest(unittest.TestCase):

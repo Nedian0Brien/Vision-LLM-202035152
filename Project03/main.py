@@ -8,7 +8,7 @@ import time
 import cv2
 from ultralytics import YOLO
 
-from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
+from detect import CLASSES, DETECT_CONF, IMAGE_SIZE, interpolate_boxes
 from gemma import NO_LAW, STATUS, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
 from hud import CALLS, MIC_BOX, SCREEN_HEIGHT, VIDEO_WIDTH, button_boxes, draw, draw_loading, draw_nodes, draw_panel
 from voice import listen, speak_loop
@@ -22,8 +22,8 @@ VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(0, 18)]), ("금문교", "video
           ("보호구역", "videos/school-zone-busan.mp4", [(0, 26)]), ("비", "videos/rain-seoul.mp4", [(0, 36)]), ("통학버스", "videos/school-bus-korea.mp4", [(0, 26)]),
           ("소화전", "videos/hydrant-sf.mp4", [(0, 35)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
-# YOLO 결과가 약 3프레임 늦게 나오므로 화면도 그만큼 늦춰 박스를 맞춤(2026-11-07 Mac 측정, 어긋남 평균 2.3프레임에서 0.7프레임)
-DISPLAY_DELAY = 3
+# 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 탐지 시간과 간격이 각각 약 4프레임, 어긋남 중앙값이 8프레임이었음(2026-11-07 측정)
+DISPLAY_DELAY = 10
 # 판단 기회를 늘리려고 영상을 느껴지지 않을 만큼만 늦춤(2026-11-07 사용자 지시)
 PLAY_SPEED = 0.9
 ANSWER_SECONDS = 15
@@ -143,18 +143,31 @@ def detect_boxes():
         if shared["frame"] is None:
             time.sleep(0.001)
             continue
-        video, image = shared["frame"]
+        video, number, image = shared["frame"]
         shared["frame"] = None
         found = model.predict(source=image, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
         # 탐지 중에 영상이 바뀌면 이전 영상의 박스를 새 영상에 그리지 않음
         if video == current_video:
-            shared["result"] = found
+            boxes = list(zip(found.boxes.xyxy.tolist(), found.boxes.cls.tolist(), found.boxes.conf.tolist()))
+            shared["results"] = shared["results"][-DISPLAY_DELAY:] + [(number, boxes)]
             shared["input"] = (image, found)
 
 
+def boxes_at(number):
+    """표시할 프레임 번호의 앞뒤 탐지 결과로 박스를 계산하는 함수"""
+    results = shared["results"]
+    before = [result for result in results if result[0] <= number]
+    after = [result for result in results if result[0] > number]
+    if not before:
+        return after[0][1] if after else []
+    if not after:
+        return before[-1][1]
+    return interpolate_boxes(before[-1][1], after[0][1], (number - before[-1][0]) / (after[0][0] - before[-1][0]))
+
+
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
-shared = {"question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
-          "frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
+shared = {"results": [], "question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
+          "frame": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
 loading = {"step": 0, "since": time.perf_counter()}
 loader = threading.Thread(target=load_models, daemon=True)
 loader.start()
@@ -175,6 +188,7 @@ cap = cv2.VideoCapture()
 current_video = None
 threading.Thread(target=detect_boxes, daemon=True).start()
 waiting = []
+frame_number = 0
 spoken_time = {}
 shown_time = time.perf_counter()
 next_time = shown_time
@@ -203,7 +217,7 @@ while True:
         # 묶음을 새로 만들면 돌고 있던 판단의 결과는 버려진 묶음에 쓰여 화면에 나오지 않음
         # 입력을 먼저 비워야 watch가 새 묶음과 이전 영상 프레임을 함께 읽지 않음
         shared["frame"] = None
-        shared["result"] = None
+        shared["results"] = []
         shared["input"] = None
         shared["clip"] = {"last_seen": {}, "rules": [], "nodes": []}
         waiting.clear()
@@ -227,7 +241,7 @@ while True:
         # 배속 구간에서는 프레임을 건너뛰고 입력을 비워 YOLO와 Gemma를 돌리지 않음
         for skipped in range(FAST_SPEED - 1):
             cap.grab()
-        result = None
+        shown_boxes = None
         shared["frame"] = None
         if shared["input"] is not None:
             shared["input"] = None
@@ -235,12 +249,13 @@ while True:
             STATUS["stage"] = "skip"
     else:
         # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
-        shared["frame"] = (current_video, frame.copy())
-        waiting.append(frame)
+        frame_number += 1
+        shared["frame"] = (current_video, frame_number, frame.copy())
+        waiting.append((frame_number, frame))
         if len(waiting) <= DISPLAY_DELAY:
             continue
-        frame = waiting.pop(0)
-        result = shared["result"]
+        shown_number, frame = waiting.pop(0)
+        shown_boxes = boxes_at(shown_number)
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
@@ -301,7 +316,7 @@ while True:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
-    output_frame = draw(frame, result, panel_image, nodes_image, displayed_fps)
+    output_frame = draw(frame, shown_boxes, panel_image, nodes_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 
