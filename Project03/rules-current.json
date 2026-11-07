@@ -1,0 +1,1388 @@
+[
+{
+"id": "도로교통법 제5조 ①",
+"title": "신호 또는 지시에 따를 의무",
+"text": "① 도로를 통행하는 보행자, 차마 또는 노면전차의 운전자는 교통안전시설이 표시하는 신호 또는 지시와 다음 각 호의 어느 하나에 해당하는 사람이 하는 신호 또는 지시를 따라야 한다. 1. 교통정리를 하는 경찰공무원(의무경찰을 포함한다. 이하 같다) 및 제주특별자치도의 자치경찰공무원(이하 \"자치경찰공무원\"이라 한다) 2. 경찰공무원(자치경찰공무원을 포함한다. 이하 같다)을 보조하는 사람으로서 대통령령으로 정하는 사람(이하 \"경찰보조자\"라 한다)",
+"instruction": "교통안전시설의 신호와 경찰공무원의 지시에 따르십시오.",
+"instruction_en": "Obey traffic signals and police officers' directions.",
+"action": "CAUTION",
+"scene": "a traffic light and a police officer directing traffic"
+},
+{
+"id": "도로교통법 제5조 ②",
+"title": "신호 또는 지시에 따를 의무",
+"text": "② 도로를 통행하는 보행자, 차마 또는 노면전차의 운전자는 제1항에 따른 교통안전시설이 표시하는 신호 또는 지시와 교통정리를 하는 경찰공무원 또는 경찰보조자(이하 \"경찰공무원등\"이라 한다)의 신호 또는 지시가 서로 다른 경우에는 경찰공무원등의 신호 또는 지시에 따라야 한다.",
+"instruction": "신호와 경찰공무원 지시가 다르면 경찰공무원 지시를 따르십시오.",
+"instruction_en": "If signal and officer differ, follow the officer.",
+"action": "CAUTION",
+"scene": "a police officer directing traffic at an intersection with a signal"
+},
+{
+"id": "도로교통법 제12조 ③",
+"title": "어린이 보호구역의 지정ㆍ해제 및 관리",
+"text": "③ 차마 또는 노면전차의 운전자는 어린이 보호구역에서 제1항에 따른 조치를 준수하고 어린이의 안전에 유의하면서 운행하여야 한다.",
+"instruction": "어린이 보호구역에서는 제한속도(시속 30킬로미터 이내)를 지키십시오.",
+"instruction_en": "Keep within the school zone limit of 30 km/h.",
+"action": "SLOW_DOWN",
+"scene": "a children protection zone sign with a 30 km/h speed limit"
+},
+{
+"id": "도로교통법 제12조 ③",
+"title": "어린이 보호구역의 지정ㆍ해제 및 관리",
+"text": "③ 차마 또는 노면전차의 운전자는 어린이 보호구역에서 제1항에 따른 조치를 준수하고 어린이의 안전에 유의하면서 운행하여야 한다.",
+"instruction": "어린이 보호구역에서는 어린이 안전에 유의하며 운행하십시오.",
+"instruction_en": "Drive carefully for children's safety in a school zone.",
+"action": "CAUTION",
+"scene": "a school zone with children near the road"
+},
+{
+"id": "도로교통법 제12조의2 ③",
+"title": "노인 및 장애인 보호구역의 지정ㆍ해제 및 관리",
+"text": "③ 차마 또는 노면전차의 운전자는 노인 보호구역 또는 장애인 보호구역에서 제1항에 따른 조치를 준수하고 노인 또는 장애인의 안전에 유의하면서 운행하여야 한다.",
+"instruction": "노인·장애인 보호구역에서는 통행 제한과 금지를 지키십시오.",
+"instruction_en": "Obey traffic restrictions in senior and disabled protection zones.",
+"action": "KEEP_OUT",
+"scene": "a senior or disabled protection zone sign beside the road"
+},
+{
+"id": "도로교통법 제12조의2 ③",
+"title": "노인 및 장애인 보호구역의 지정ㆍ해제 및 관리",
+"text": "③ 차마 또는 노면전차의 운전자는 노인 보호구역 또는 장애인 보호구역에서 제1항에 따른 조치를 준수하고 노인 또는 장애인의 안전에 유의하면서 운행하여야 한다.",
+"instruction": "노인·장애인 보호구역에서는 노인·장애인 안전에 유의하십시오.",
+"instruction_en": "Drive carefully for seniors and disabled people in protection zones.",
+"action": "CAUTION",
+"scene": "a protection zone with elderly pedestrians near the road"
+},
+{
+"id": "도로교통법 제13조 ①",
+"title": "차마의 통행",
+"text": "① 차마의 운전자는 보도와 차도가 구분된 도로에서는 차도로 통행하여야 한다. 다만, 도로 외의 곳으로 출입할 때에는 보도를 횡단하여 통행할 수 있다.",
+"instruction": "보도와 차도가 구분된 도로에서는 차도로 통행하십시오.",
+"instruction_en": "Drive on the roadway where sidewalk and roadway are separate.",
+"action": "CAUTION",
+"scene": "a road with a sidewalk separated from the roadway"
+},
+{
+"id": "도로교통법 제13조 ②",
+"title": "차마의 통행",
+"text": "② 제1항 단서의 경우 차마의 운전자는 보도를 횡단하기 직전에 일시정지하여 좌측과 우측 부분 등을 살핀 후 보행자의 통행을 방해하지 아니하도록 횡단하여야 한다.",
+"instruction": "보도를 횡단하기 직전에는 일시정지하여 좌우를 살피십시오.",
+"instruction_en": "Stop before crossing a sidewalk and check left and right.",
+"action": "STOP",
+"scene": "a driveway crossing a sidewalk with pedestrians"
+},
+{
+"id": "도로교통법 제13조 ③",
+"title": "차마의 통행",
+"text": "③ 차마의 운전자는 도로(보도와 차도가 구분된 도로에서는 차도를 말한다)의 중앙(중앙선이 설치되어 있는 경우에는 그 중앙선을 말한다. 이하 같다) 우측 부분을 통행하여야 한다.",
+"instruction": "중앙선이 있는 도로에서는 중앙선 우측으로 통행하십시오.",
+"instruction_en": "Drive on the right side of the center line.",
+"action": "CAUTION",
+"scene": "a road with a center line and own lane on the right"
+},
+{
+"id": "도로교통법 제13조 ⑤",
+"title": "차마의 통행",
+"text": "⑤ 차마의 운전자는 안전지대 등 안전표지에 의하여 진입이 금지된 장소에 들어가서는 아니 된다.",
+"instruction": "진입금지 표지가 있는 안전지대에는 들어가지 마십시오.",
+"instruction_en": "Do not enter a safety zone marked as no entry.",
+"action": "KEEP_OUT",
+"scene": "a safety zone marked with road markings and a no entry sign"
+},
+{
+"id": "도로교통법 제13조 ⑥",
+"title": "차마의 통행",
+"text": "⑥ 차마(자전거등은 제외한다)의 운전자는 안전표지로 통행이 허용된 장소를 제외하고는 자전거도로 또는 길가장자리구역으로 통행하여서는 아니 된다. 다만, 「자전거 이용 활성화에 관한 법률」 제3조제4호에 따른 자전거 우선도로의 경우에는 그러하지 아니하다.",
+"instruction": "허용 표지가 없으면 자전거도로로 통행하지 마십시오.",
+"instruction_en": "Do not drive in a bicycle lane unless a sign allows it.",
+"action": "KEEP_OUT",
+"scene": "a marked bicycle lane along the edge of the road"
+},
+{
+"id": "도로교통법 제14조 ②",
+"title": "차로의 설치 등",
+"text": "② 차마의 운전자는 차로가 설치되어 있는 도로에서는 이 법이나 이 법에 따른 명령에 특별한 규정이 있는 경우를 제외하고는 그 차로를 따라 통행하여야 한다. 다만, 시ㆍ도경찰청장이 통행방법을 따로 지정한 경우에는 그 방법으로 통행하여야 한다.",
+"instruction": "차로가 설치된 도로에서는 차로를 따라 통행하십시오.",
+"instruction_en": "Stay within your lane on roads with marked lanes.",
+"action": "CAUTION",
+"scene": "a multi-lane road with painted lane lines"
+},
+{
+"id": "도로교통법 제14조 ⑤",
+"title": "차로의 설치 등",
+"text": "⑤ 차마의 운전자는 안전표지가 설치되어 특별히 진로 변경이 금지된 곳에서는 차마의 진로를 변경하여서는 아니 된다. 다만, 도로의 파손이나 도로공사 등으로 인하여 장애물이 있는 경우에는 그러하지 아니하다.",
+"instruction": "진로변경 금지 표지가 있는 곳에서는 진로를 바꾸지 마십시오.",
+"instruction_en": "Do not change lanes where lane changes are prohibited.",
+"action": "CAUTION",
+"scene": "solid lane lines with a no lane change sign"
+},
+{
+"id": "도로교통법 제15조 ③",
+"title": "전용차로의 설치",
+"text": "③ 제2항에 따라 전용차로로 통행할 수 있는 차가 아니면 전용차로로 통행하여서는 아니 된다. 다만, 긴급자동차가 그 본래의 긴급한 용도로 운행되고 있는 경우 등 대통령령으로 정하는 경우에는 그러하지 아니하다.",
+"instruction": "통행 가능한 차가 아니면 전용차로로 통행하지 마십시오.",
+"instruction_en": "Do not use a dedicated lane unless your vehicle is allowed.",
+"action": "KEEP_OUT",
+"scene": "a dedicated bus lane with colored pavement and signs"
+},
+{
+"id": "도로교통법 제15조의2 ③",
+"title": "자전거횡단도의 설치 등",
+"text": "③ 차마의 운전자는 자전거등이 자전거횡단도를 통행하고 있을 때에는 자전거등의 횡단을 방해하거나 위험하게 하지 아니하도록 그 자전거횡단도 앞(정지선이 설치되어 있는 곳에서는 그 정지선을 말한다)에서 일시정지하여야 한다.",
+"instruction": "자전거가 자전거횡단도를 지나고 있으면 그 앞에서 일시정지하십시오.",
+"instruction_en": "Stop before a bicycle crossing while a cyclist is crossing.",
+"action": "STOP",
+"scene": "a bicycle crossing with a cyclist crossing the road"
+},
+{
+"id": "도로교통법 제16조 ②",
+"title": "노면전차 전용로의 설치 등",
+"text": "② 노면전차의 운전자는 제1항에 따른 노면전차 전용도로 또는 전용차로로 통행하여야 하며, 차마의 운전자는 노면전차 전용도로 또는 전용차로를 다음 각 호의 경우를 제외하고는 통행하여서는 아니 된다. 1. 좌회전, 우회전, 횡단 또는 회전하기 위하여 궤도부지를 가로지르는 경우 2. 도로, 교통안전시설, 도로의 부속물 등의 보수를 위하여 진입이 불가피한 경우 3. 노면전차 전용차로에서 긴급자동차가 그 본래의 긴급한 용도로 운행되고 있는 경우",
+"instruction": "노면전차 전용도로·전용차로로는 통행하지 마십시오.",
+"instruction_en": "Do not drive on a tram-only road or lane.",
+"action": "KEEP_OUT",
+"scene": "tram tracks in a dedicated lane in the road"
+},
+{
+"id": "도로교통법 제17조 ③",
+"title": "자동차등과 노면전차의 속도",
+"text": "③ 자동차등과 노면전차의 운전자는 제1항과 제2항에 따른 최고속도보다 빠르게 운전하거나 최저속도보다 느리게 운전하여서는 아니 된다. 다만, 교통이 밀리거나 그 밖의 부득이한 사유로 최저속도보다 느리게 운전할 수밖에 없는 경우에는 그러하지 아니하다.",
+"instruction": "최고속도보다 빠르게 운전하지 마십시오.",
+"instruction_en": "Do not exceed the maximum speed limit.",
+"action": "SLOW_DOWN",
+"scene": "a speed limit sign beside the road"
+},
+{
+"id": "도로교통법 제17조 ③",
+"title": "자동차등과 노면전차의 속도",
+"text": "③ 자동차등과 노면전차의 운전자는 제1항과 제2항에 따른 최고속도보다 빠르게 운전하거나 최저속도보다 느리게 운전하여서는 아니 된다. 다만, 교통이 밀리거나 그 밖의 부득이한 사유로 최저속도보다 느리게 운전할 수밖에 없는 경우에는 그러하지 아니하다.",
+"instruction": "교통이 밀리지 않으면 최저속도보다 느리게 운전하지 마십시오.",
+"instruction_en": "Do not drive below the minimum speed unless traffic is congested.",
+"action": "SLOW_DOWN",
+"scene": "a minimum speed sign above a highway lane"
+},
+{
+"id": "도로교통법 제18조 ①",
+"title": "횡단 등의 금지",
+"text": "① 차마의 운전자는 보행자나 다른 차마의 정상적인 통행을 방해할 우려가 있는 경우에는 차마를 운전하여 도로를 횡단하거나 유턴 또는 후진하여서는 아니 된다.",
+"instruction": "보행자나 다른 차의 통행을 방해할 우려가 있으면 유턴·후진하지 마십시오.",
+"instruction_en": "Do not U-turn or reverse if it may obstruct pedestrians or vehicles.",
+"action": "CAUTION",
+"scene": "a vehicle about to make a U-turn with pedestrians and traffic nearby"
+},
+{
+"id": "도로교통법 제18조 ③",
+"title": "횡단 등의 금지",
+"text": "③ 차마의 운전자는 길가의 건물이나 주차장 등에서 도로에 들어갈 때에는 일단 정지한 후에 안전한지 확인하면서 서행하여야 한다.",
+"instruction": "건물·주차장에서 도로에 들어갈 때는 일단 정지 후 서행하십시오.",
+"instruction_en": "Stop, then proceed slowly when entering a road from a building or lot.",
+"action": "STOP",
+"scene": "a parking lot exit onto a road"
+},
+{
+"id": "도로교통법 제19조 ①",
+"title": "안전거리 확보 등",
+"text": "① 모든 차의 운전자는 같은 방향으로 가고 있는 앞차의 뒤를 따르는 경우에는 앞차가 갑자기 정지하게 되는 경우 그 앞차와의 충돌을 피할 수 있는 필요한 거리를 확보하여야 한다.",
+"instruction": "앞차를 따를 때는 충돌을 피할 안전거리를 확보하십시오.",
+"instruction_en": "Keep a safe following distance behind the car ahead.",
+"action": "CAUTION",
+"scene": "a vehicle directly ahead in the same lane"
+},
+{
+"id": "도로교통법 제19조 ②",
+"title": "안전거리 확보 등",
+"text": "② 자동차등의 운전자는 같은 방향으로 가고 있는 자전거등의 운전자에 주의하여야 하며, 그 옆을 지날 때에는 자전거등과의 충돌을 피할 수 있는 필요한 거리를 확보하여야 한다.",
+"instruction": "자전거 옆을 지날 때는 충돌을 피할 거리를 확보하십시오.",
+"instruction_en": "Keep a safe distance when passing a cyclist.",
+"action": "CAUTION",
+"scene": "a cyclist riding in the same direction beside the road"
+},
+{
+"id": "도로교통법 제19조 ③",
+"title": "안전거리 확보 등",
+"text": "③ 모든 차의 운전자는 차의 진로를 변경하려는 경우에 그 변경하려는 방향으로 오고 있는 다른 차의 정상적인 통행에 장애를 줄 우려가 있을 때에는 진로를 변경하여서는 아니 된다.",
+"instruction": "진로를 바꿀 방향의 차 통행에 장애가 되면 진로를 바꾸지 마십시오.",
+"instruction_en": "Do not change lanes if it obstructs a car in the target lane.",
+"action": "CAUTION",
+"scene": "a car approaching in the adjacent lane"
+},
+{
+"id": "도로교통법 제19조 ④",
+"title": "안전거리 확보 등",
+"text": "④ 모든 차의 운전자는 위험방지를 위한 경우와 그 밖의 부득이한 경우가 아니면 운전하는 차를 갑자기 정지시키거나 속도를 줄이는 등의 급제동을 하여서는 아니 된다.",
+"instruction": "위험 방지나 부득이한 경우가 아니면 급제동하지 마십시오.",
+"instruction_en": "Do not brake suddenly unless needed to avoid danger.",
+"action": "CAUTION",
+"scene": "a vehicle ahead on a road with no hazard"
+},
+{
+"id": "도로교통법 제20조 ①",
+"title": "진로 양보의 의무",
+"text": "① 모든 차(긴급자동차는 제외한다)의 운전자는 뒤에서 따라오는 차보다 느린 속도로 가려는 경우에는 도로의 우측 가장자리로 피하여 진로를 양보하여야 한다. 다만, 통행 구분이 설치된 도로의 경우에는 그러하지 아니하다.",
+"instruction": "뒤차보다 느리게 갈 때는 우측 가장자리로 피해 양보하십시오.",
+"instruction_en": "Move to the right edge to let faster cars behind pass.",
+"action": "YIELD",
+"scene": "a faster vehicle approaching from behind"
+},
+{
+"id": "도로교통법 제20조 ②",
+"title": "진로 양보의 의무",
+"text": "② 좁은 도로에서 긴급자동차 외의 자동차가 서로 마주보고 진행할 때에는 다음 각 호의 구분에 따른 자동차가 도로의 우측 가장자리로 피하여 진로를 양보하여야 한다. 1. 비탈진 좁은 도로에서 자동차가 서로 마주보고 진행하는 경우에는 올라가는 자동차 2. 비탈진 좁은 도로 외의 좁은 도로에서 사람을 태웠거나 물건을 실은 자동차와 동승자(同乘者)가 없고 물건을 싣지 아니한 자동차가 서로 마주보고 진행하는 경우에는 동승자가 없고 물건을 싣지 아니한 자동차",
+"instruction": "비탈진 좁은 도로에서 마주 보면 올라가는 차가 우측으로 양보하십시오.",
+"instruction_en": "On a narrow slope, the uphill car yields to the right edge.",
+"action": "YIELD",
+"scene": "a narrow sloped road with an oncoming car"
+},
+{
+"id": "도로교통법 제20조 ②",
+"title": "진로 양보의 의무",
+"text": "② 좁은 도로에서 긴급자동차 외의 자동차가 서로 마주보고 진행할 때에는 다음 각 호의 구분에 따른 자동차가 도로의 우측 가장자리로 피하여 진로를 양보하여야 한다. 1. 비탈진 좁은 도로에서 자동차가 서로 마주보고 진행하는 경우에는 올라가는 자동차 2. 비탈진 좁은 도로 외의 좁은 도로에서 사람을 태웠거나 물건을 실은 자동차와 동승자(同乘者)가 없고 물건을 싣지 아니한 자동차가 서로 마주보고 진행하는 경우에는 동승자가 없고 물건을 싣지 아니한 자동차",
+"instruction": "비탈 아닌 좁은 도로에서 마주 보면 동승자·짐 없는 차가 양보하십시오.",
+"instruction_en": "On a narrow road, the car without passengers or cargo yields.",
+"action": "YIELD",
+"scene": "a narrow road with an oncoming car"
+},
+{
+"id": "도로교통법 제21조 ①",
+"title": "앞지르기 방법 등",
+"text": "① 모든 차의 운전자는 다른 차를 앞지르려면 앞차의 좌측으로 통행하여야 한다.",
+"instruction": "앞지를 때는 앞차의 좌측으로 통행하십시오.",
+"instruction_en": "Overtake on the left side of the vehicle ahead.",
+"action": "CAUTION",
+"scene": "a slower vehicle ahead with a clear left lane"
+},
+{
+"id": "도로교통법 제21조 ③",
+"title": "앞지르기 방법 등",
+"text": "③ 제1항과 제2항의 경우 앞지르려고 하는 모든 차의 운전자는 반대방향의 교통과 앞차 앞쪽의 교통에도 주의를 충분히 기울여야 하며, 앞차의 속도ㆍ진로와 그 밖의 도로상황에 따라 방향지시기ㆍ등화 또는 경음기(警音機)를 사용하는 등 안전한 속도와 방법으로 앞지르기를 하여야 한다.",
+"instruction": "앞지를 때는 반대방향과 앞쪽 교통을 살피고 안전한 속도로 하십시오.",
+"instruction_en": "When overtaking, watch oncoming and forward traffic and keep a safe speed.",
+"action": "CAUTION",
+"scene": "a vehicle overtaking with oncoming traffic ahead"
+},
+{
+"id": "도로교통법 제21조 ④",
+"title": "앞지르기 방법 등",
+"text": "④ 모든 차의 운전자는 제1항부터 제3항까지 또는 제60조제2항에 따른 방법으로 앞지르기를 하는 차가 있을 때에는 속도를 높여 경쟁하거나 그 차의 앞을 가로막는 등의 방법으로 앞지르기를 방해하여서는 아니 된다.",
+"instruction": "다른 차가 앞지르는 중이면 속도를 높이거나 앞을 막지 마십시오.",
+"instruction_en": "Do not speed up or block a car that is overtaking you.",
+"action": "CAUTION",
+"scene": "a vehicle overtaking from behind in the adjacent lane"
+},
+{
+"id": "도로교통법 제22조 ①",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "① 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 경우에는 앞차를 앞지르지 못한다. 1. 앞차의 좌측에 다른 차가 앞차와 나란히 가고 있는 경우 2. 앞차가 다른 차를 앞지르고 있거나 앞지르려고 하는 경우",
+"instruction": "앞차의 좌측에 다른 차가 나란히 가면 앞지르지 마십시오.",
+"instruction_en": "Do not overtake if another car is beside the car ahead.",
+"action": "NO_OVERTAKING",
+"scene": "two cars side by side ahead in adjacent lanes"
+},
+{
+"id": "도로교통법 제22조 ①",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "① 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 경우에는 앞차를 앞지르지 못한다. 1. 앞차의 좌측에 다른 차가 앞차와 나란히 가고 있는 경우 2. 앞차가 다른 차를 앞지르고 있거나 앞지르려고 하는 경우",
+"instruction": "앞차가 다른 차를 앞지르는 중이면 앞지르지 마십시오.",
+"instruction_en": "Do not overtake a car that is itself overtaking.",
+"action": "NO_OVERTAKING",
+"scene": "the car ahead overtaking another vehicle"
+},
+{
+"id": "도로교통법 제22조 ②",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "② 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 다른 차를 앞지르지 못한다. 1. 이 법이나 이 법에 따른 명령에 따라 정지하거나 서행하고 있는 차 2. 경찰공무원의 지시에 따라 정지하거나 서행하고 있는 차 3. 위험을 방지하기 위하여 정지하거나 서행하고 있는 차",
+"instruction": "법령에 따라 정지·서행 중인 차는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake a car stopped or slowing as required by law.",
+"action": "NO_OVERTAKING",
+"scene": "a car stopped at a signal or sign ahead"
+},
+{
+"id": "도로교통법 제22조 ②",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "② 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 다른 차를 앞지르지 못한다. 1. 이 법이나 이 법에 따른 명령에 따라 정지하거나 서행하고 있는 차 2. 경찰공무원의 지시에 따라 정지하거나 서행하고 있는 차 3. 위험을 방지하기 위하여 정지하거나 서행하고 있는 차",
+"instruction": "경찰공무원 지시로 정지·서행 중인 차는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake a car stopped by a police officer's order.",
+"action": "NO_OVERTAKING",
+"scene": "a car stopped at a police officer's direction"
+},
+{
+"id": "도로교통법 제22조 ②",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "② 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 다른 차를 앞지르지 못한다. 1. 이 법이나 이 법에 따른 명령에 따라 정지하거나 서행하고 있는 차 2. 경찰공무원의 지시에 따라 정지하거나 서행하고 있는 차 3. 위험을 방지하기 위하여 정지하거나 서행하고 있는 차",
+"instruction": "위험 방지로 정지·서행 중인 차는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake a car stopped or slow to avoid danger.",
+"action": "NO_OVERTAKING",
+"scene": "a car stopped or slowing for a hazard ahead"
+},
+{
+"id": "도로교통법 제22조 ③",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "③ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 다른 차를 앞지르지 못한다. 1. 교차로 2. 터널 안 3. 다리 위 4. 도로의 구부러진 곳, 비탈길의 고갯마루 부근 또는 가파른 비탈길의 내리막 등 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하는 곳으로서 안전표지로 지정한 곳",
+"instruction": "교차로에서는 다른 차를 앞지르지 마십시오.",
+"instruction_en": "Do not overtake at an intersection.",
+"action": "NO_OVERTAKING",
+"scene": "an intersection with crossing roads ahead"
+},
+{
+"id": "도로교통법 제22조 ③",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "③ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 다른 차를 앞지르지 못한다. 1. 교차로 2. 터널 안 3. 다리 위 4. 도로의 구부러진 곳, 비탈길의 고갯마루 부근 또는 가파른 비탈길의 내리막 등 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하는 곳으로서 안전표지로 지정한 곳",
+"instruction": "터널 안에서는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake inside a tunnel.",
+"action": "NO_OVERTAKING",
+"scene": "inside a road tunnel with lane lines"
+},
+{
+"id": "도로교통법 제22조 ③",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "③ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 다른 차를 앞지르지 못한다. 1. 교차로 2. 터널 안 3. 다리 위 4. 도로의 구부러진 곳, 비탈길의 고갯마루 부근 또는 가파른 비탈길의 내리막 등 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하는 곳으로서 안전표지로 지정한 곳",
+"instruction": "다리 위에서는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake on a bridge.",
+"action": "NO_OVERTAKING",
+"scene": "a road on a bridge with railings"
+},
+{
+"id": "도로교통법 제22조 ③",
+"title": "앞지르기 금지의 시기 및 장소",
+"text": "③ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 다른 차를 앞지르지 못한다. 1. 교차로 2. 터널 안 3. 다리 위 4. 도로의 구부러진 곳, 비탈길의 고갯마루 부근 또는 가파른 비탈길의 내리막 등 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하는 곳으로서 안전표지로 지정한 곳",
+"instruction": "표지가 지정한 커브·고갯마루·급내리막에서는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake on signed curves, hilltops, or steep descents.",
+"action": "NO_OVERTAKING",
+"scene": "a sharp curve or hilltop with a no overtaking sign"
+},
+{
+"id": "도로교통법 제23조",
+"title": "끼어들기의 금지",
+"text": "모든 차의 운전자는 제22조제2항 각 호의 어느 하나에 해당하는 다른 차 앞으로 끼어들지 못한다.",
+"instruction": "정지·서행 중인 차 앞으로 끼어들지 마십시오.",
+"instruction_en": "Do not cut in front of a stopped or slowing car.",
+"action": "CAUTION",
+"scene": "a stopped or slow car with a gap ahead of it"
+},
+{
+"id": "도로교통법 제24조 ①",
+"title": "철길 건널목의 통과",
+"text": "① 모든 차 또는 노면전차의 운전자는 철길 건널목(이하 \"건널목\"이라 한다)을 통과하려는 경우에는 건널목 앞에서 일시정지하여 안전한지 확인한 후에 통과하여야 한다. 다만, 신호기 등이 표시하는 신호에 따르는 경우에는 정지하지 아니하고 통과할 수 있다.",
+"instruction": "철길 건널목 앞에서는 일시정지하고 안전을 확인한 뒤 통과하십시오.",
+"instruction_en": "Stop before a railroad crossing, check safety, then cross.",
+"action": "STOP",
+"scene": "a railroad crossing with tracks across the road"
+},
+{
+"id": "도로교통법 제24조 ②",
+"title": "철길 건널목의 통과",
+"text": "② 모든 차 또는 노면전차의 운전자는 건널목의 차단기가 내려져 있거나 내려지려고 하는 경우 또는 건널목의 경보기가 울리고 있는 동안에는 그 건널목으로 들어가서는 아니 된다.",
+"instruction": "차단기가 내려가거나 경보기가 울리면 건널목에 들어가지 마십시오.",
+"instruction_en": "Do not enter a crossing when the barrier is down or alarm sounds.",
+"action": "KEEP_OUT",
+"scene": "a railroad crossing with a lowered barrier and flashing lights"
+},
+{
+"id": "도로교통법 제24조 ③",
+"title": "철길 건널목의 통과",
+"text": "③ 모든 차 또는 노면전차의 운전자는 건널목을 통과하다가 고장 등의 사유로 건널목 안에서 차 또는 노면전차를 운행할 수 없게 된 경우에는 즉시 승객을 대피시키고 비상신호기 등을 사용하거나 그 밖의 방법으로 철도공무원이나 경찰공무원에게 그 사실을 알려야 한다.",
+"instruction": "건널목 안에서 고장 나면 즉시 승객을 대피시키고 알리십시오.",
+"instruction_en": "If stalled on a crossing, evacuate passengers and notify authorities.",
+"action": "CAUTION",
+"scene": "a stalled vehicle on railroad tracks at a crossing"
+},
+{
+"id": "도로교통법 제25조 ①",
+"title": "교차로 통행방법",
+"text": "① 모든 차의 운전자는 교차로에서 우회전을 하려는 경우에는 미리 도로의 우측 가장자리를 서행하면서 우회전하여야 한다. 이 경우 우회전하는 차의 운전자는 신호에 따라 정지하거나 진행하는 보행자 또는 자전거등에 주의하여야 한다.",
+"instruction": "교차로에서 우회전할 때는 우측 가장자리로 서행하십시오.",
+"instruction_en": "Slow down and keep right when turning right at an intersection.",
+"action": "SLOW_DOWN",
+"scene": "an intersection where the vehicle turns right near the curb"
+},
+{
+"id": "도로교통법 제25조 ①",
+"title": "교차로 통행방법",
+"text": "① 모든 차의 운전자는 교차로에서 우회전을 하려는 경우에는 미리 도로의 우측 가장자리를 서행하면서 우회전하여야 한다. 이 경우 우회전하는 차의 운전자는 신호에 따라 정지하거나 진행하는 보행자 또는 자전거등에 주의하여야 한다.",
+"instruction": "우회전할 때는 신호에 따라 가는 보행자·자전거에 주의하십시오.",
+"instruction_en": "When turning right, watch pedestrians and cyclists crossing.",
+"action": "CAUTION",
+"scene": "pedestrians and cyclists at a crosswalk after a right turn"
+},
+{
+"id": "도로교통법 제25조 ②",
+"title": "교차로 통행방법",
+"text": "② 모든 차의 운전자는 교차로에서 좌회전을 하려는 경우에는 미리 도로의 중앙선을 따라 서행하면서 교차로의 중심 안쪽을 이용하여 좌회전하여야 한다. 다만, 시ㆍ도경찰청장이 교차로의 상황에 따라 특히 필요하다고 인정하여 지정한 곳에서는 교차로의 중심 바깥쪽을 통과할 수 있다.",
+"instruction": "교차로에서 좌회전할 때는 중앙선을 따라 서행하십시오.",
+"instruction_en": "Slow down along the center line when turning left at an intersection.",
+"action": "SLOW_DOWN",
+"scene": "an intersection where the vehicle turns left from the center"
+},
+{
+"id": "도로교통법 제25조 ④",
+"title": "교차로 통행방법",
+"text": "④ 제1항부터 제3항까지의 규정에 따라 우회전이나 좌회전을 하기 위하여 손이나 방향지시기 또는 등화로써 신호를 하는 차가 있는 경우에 그 뒤차의 운전자는 신호를 한 앞차의 진행을 방해하여서는 아니 된다.",
+"instruction": "좌·우회전 신호를 한 앞차의 진행을 방해하지 마십시오.",
+"instruction_en": "Do not obstruct a car ahead signaling a turn.",
+"action": "CAUTION",
+"scene": "a car ahead with a turn signal flashing at an intersection"
+},
+{
+"id": "도로교통법 제25조 ⑤",
+"title": "교차로 통행방법",
+"text": "⑤ 모든 차 또는 노면전차의 운전자는 신호기로 교통정리를 하고 있는 교차로에 들어가려는 경우에는 진행하려는 진로의 앞쪽에 있는 차 또는 노면전차의 상황에 따라 교차로(정지선이 설치되어 있는 경우에는 그 정지선을 넘은 부분을 말한다)에 정지하게 되어 다른 차 또는 노면전차의 통행에 방해가 될 우려가 있는 경우에는 그 교차로에 들어가서는 아니 된다.",
+"instruction": "앞이 막혀 교차로에 정지할 우려가 있으면 들어가지 마십시오.",
+"instruction_en": "Do not enter a signal intersection if you may get stuck in it.",
+"action": "KEEP_OUT",
+"scene": "a congested signal intersection with traffic blocking the exit"
+},
+{
+"id": "도로교통법 제25조 ⑥",
+"title": "교차로 통행방법",
+"text": "⑥ 모든 차의 운전자는 교통정리를 하고 있지 아니하고 일시정지나 양보를 표시하는 안전표지가 설치되어 있는 교차로에 들어가려고 할 때에는 다른 차의 진행을 방해하지 아니하도록 일시정지하거나 양보하여야 한다.",
+"instruction": "일시정지·양보 표지가 있는 교차로에서는 일시정지하거나 양보하십시오.",
+"instruction_en": "Stop or yield at an intersection with a stop or yield sign.",
+"action": "STOP",
+"scene": "an uncontrolled intersection with a stop or yield sign"
+},
+{
+"id": "도로교통법 제25조의2 ①",
+"title": "회전교차로 통행방법",
+"text": "① 모든 차의 운전자는 회전교차로에서는 반시계방향으로 통행하여야 한다.",
+"instruction": "회전교차로에서는 반시계방향으로 통행하십시오.",
+"instruction_en": "Drive counterclockwise in a roundabout.",
+"action": "CAUTION",
+"scene": "a roundabout with a central island"
+},
+{
+"id": "도로교통법 제25조의2 ②",
+"title": "회전교차로 통행방법",
+"text": "② 모든 차의 운전자는 회전교차로에 진입하려는 경우에는 서행하거나 일시정지하여야 하며, 이미 진행하고 있는 다른 차가 있는 때에는 그 차에 진로를 양보하여야 한다.",
+"instruction": "회전교차로에 진입할 때는 서행하거나 일시정지하십시오.",
+"instruction_en": "Slow down or stop when entering a roundabout.",
+"action": "SLOW_DOWN",
+"scene": "the entrance of a roundabout"
+},
+{
+"id": "도로교통법 제25조의2 ②",
+"title": "회전교차로 통행방법",
+"text": "② 모든 차의 운전자는 회전교차로에 진입하려는 경우에는 서행하거나 일시정지하여야 하며, 이미 진행하고 있는 다른 차가 있는 때에는 그 차에 진로를 양보하여야 한다.",
+"instruction": "회전교차로 안에 다른 차가 있으면 그 차에 양보하십시오.",
+"instruction_en": "Yield to cars already inside the roundabout.",
+"action": "YIELD",
+"scene": "a vehicle already circulating in a roundabout"
+},
+{
+"id": "도로교통법 제25조의2 ③",
+"title": "회전교차로 통행방법",
+"text": "③ 제1항 및 제2항에 따라 회전교차로 통행을 위하여 손이나 방향지시기 또는 등화로써 신호를 하는 차가 있는 경우 그 뒤차의 운전자는 신호를 한 앞차의 진행을 방해하여서는 아니 된다.",
+"instruction": "회전교차로에서 신호한 앞차의 진행을 방해하지 마십시오.",
+"instruction_en": "Do not obstruct a car ahead signaling in a roundabout.",
+"action": "CAUTION",
+"scene": "a car with turn signal flashing in a roundabout"
+},
+{
+"id": "도로교통법 제26조 ①",
+"title": "교통정리가 없는 교차로에서의 양보운전",
+"text": "① 교통정리를 하고 있지 아니하는 교차로에 들어가려고 하는 차의 운전자는 이미 교차로에 들어가 있는 다른 차가 있을 때에는 그 차에 진로를 양보하여야 한다.",
+"instruction": "신호 없는 교차로에서 이미 진입한 차가 있으면 양보하십시오.",
+"instruction_en": "Yield to cars already in an intersection without signals.",
+"action": "YIELD",
+"scene": "an intersection without signals with a car inside"
+},
+{
+"id": "도로교통법 제26조 ②",
+"title": "교통정리가 없는 교차로에서의 양보운전",
+"text": "② 교통정리를 하고 있지 아니하는 교차로에 들어가려고 하는 차의 운전자는 그 차가 통행하고 있는 도로의 폭보다 교차하는 도로의 폭이 넓은 경우에는 서행하여야 하며, 폭이 넓은 도로로부터 교차로에 들어가려고 하는 다른 차가 있을 때에는 그 차에 진로를 양보하여야 한다.",
+"instruction": "교차 도로가 더 넓은 신호 없는 교차로에서는 서행하십시오.",
+"instruction_en": "Slow down at an unsignaled intersection with a wider crossing road.",
+"action": "SLOW_DOWN",
+"scene": "an unsignaled intersection with a wider crossing road"
+},
+{
+"id": "도로교통법 제26조 ②",
+"title": "교통정리가 없는 교차로에서의 양보운전",
+"text": "② 교통정리를 하고 있지 아니하는 교차로에 들어가려고 하는 차의 운전자는 그 차가 통행하고 있는 도로의 폭보다 교차하는 도로의 폭이 넓은 경우에는 서행하여야 하며, 폭이 넓은 도로로부터 교차로에 들어가려고 하는 다른 차가 있을 때에는 그 차에 진로를 양보하여야 한다.",
+"instruction": "교차 도로가 더 넓으면 그 도로에서 진입하는 차에 양보하십시오.",
+"instruction_en": "Yield to cars entering from the wider crossing road.",
+"action": "YIELD",
+"scene": "a wider road with a car entering the intersection"
+},
+{
+"id": "도로교통법 제26조 ③",
+"title": "교통정리가 없는 교차로에서의 양보운전",
+"text": "③ 교통정리를 하고 있지 아니하는 교차로에 동시에 들어가려고 하는 차의 운전자는 우측도로의 차에 진로를 양보하여야 한다.",
+"instruction": "신호 없는 교차로에 동시에 진입하면 우측 도로의 차에 양보하십시오.",
+"instruction_en": "At an uncontrolled intersection, yield to the vehicle on your right.",
+"action": "YIELD",
+"scene": "an intersection without traffic signals and a vehicle approaching from the right"
+},
+{
+"id": "도로교통법 제26조 ④",
+"title": "교통정리가 없는 교차로에서의 양보운전",
+"text": "④ 교통정리를 하고 있지 아니하는 교차로에서 좌회전하려고 하는 차의 운전자는 그 교차로에서 직진하거나 우회전하려는 다른 차가 있을 때에는 그 차에 진로를 양보하여야 한다.",
+"instruction": "신호 없는 교차로에서 좌회전할 때 직진·우회전 차에 양보하십시오.",
+"instruction_en": "When turning left at an uncontrolled intersection, yield to straight or right-turning vehicles.",
+"action": "YIELD",
+"scene": "an intersection without signals with oncoming vehicles going straight or turning right"
+},
+{
+"id": "도로교통법 제27조 ①",
+"title": "보행자의 보호",
+"text": "① 모든 차 또는 노면전차의 운전자는 보행자(제13조의2제6항에 따라 자전거등에서 내려서 자전거등을 끌거나 들고 통행하는 자전거등의 운전자를 포함한다)가 횡단보도를 통행하고 있거나 통행하려고 하는 때에는 보행자의 횡단을 방해하거나 위험을 주지 아니하도록 그 횡단보도 앞(정지선이 설치되어 있는 곳에서는 그 정지선을 말한다)에서 일시정지하여야 한다.",
+"instruction": "보행자가 횡단보도를 건너려 하면 정지선 앞에서 일시정지하십시오.",
+"instruction_en": "Stop at the stop line when a pedestrian is crossing or about to cross.",
+"action": "STOP",
+"scene": "a pedestrian at a crosswalk with a stop line ahead"
+},
+{
+"id": "도로교통법 제27조 ②",
+"title": "보행자의 보호",
+"text": "② 모든 차 또는 노면전차의 운전자는 교통정리를 하고 있는 교차로에서 좌회전이나 우회전을 하려는 경우에는 신호기 또는 경찰공무원등의 신호나 지시에 따라 도로를 횡단하는 보행자의 통행을 방해하여서는 아니 된다.",
+"instruction": "신호 교차로에서 좌·우회전할 때 횡단 보행자의 통행을 방해하지 마십시오.",
+"instruction_en": "When turning at a signalized intersection, do not obstruct crossing pedestrians.",
+"action": "YIELD",
+"scene": "pedestrians crossing at a signalized intersection while turning"
+},
+{
+"id": "도로교통법 제27조 ③",
+"title": "보행자의 보호",
+"text": "③ 모든 차의 운전자는 교통정리를 하고 있지 아니하는 교차로 또는 그 부근의 도로를 횡단하는 보행자의 통행을 방해하여서는 아니 된다.",
+"instruction": "신호 없는 교차로 부근에서 횡단하는 보행자의 통행을 방해하지 마십시오.",
+"instruction_en": "Do not obstruct pedestrians crossing at or near an uncontrolled intersection.",
+"action": "YIELD",
+"scene": "a pedestrian crossing near an intersection without signals"
+},
+{
+"id": "도로교통법 제27조 ④",
+"title": "보행자의 보호",
+"text": "④ 모든 차의 운전자는 도로에 설치된 안전지대에 보행자가 있는 경우와 차로가 설치되지 아니한 좁은 도로에서 보행자의 옆을 지나는 경우에는 안전한 거리를 두고 서행하여야 한다.",
+"instruction": "안전지대에 보행자가 있으면 안전한 거리를 두고 서행하십시오.",
+"instruction_en": "Slow down and keep a safe distance from pedestrians on a safety zone.",
+"action": "SLOW_DOWN",
+"scene": "pedestrians standing on a traffic island safety zone"
+},
+{
+"id": "도로교통법 제27조 ④",
+"title": "보행자의 보호",
+"text": "④ 모든 차의 운전자는 도로에 설치된 안전지대에 보행자가 있는 경우와 차로가 설치되지 아니한 좁은 도로에서 보행자의 옆을 지나는 경우에는 안전한 거리를 두고 서행하여야 한다.",
+"instruction": "차로 없는 좁은 도로에서 보행자 옆은 안전한 거리로 서행하십시오.",
+"instruction_en": "Slow down and keep a safe distance passing pedestrians on a narrow laneless road.",
+"action": "SLOW_DOWN",
+"scene": "a narrow road without lane markings and a pedestrian beside the vehicle"
+},
+{
+"id": "도로교통법 제27조 ⑤",
+"title": "보행자의 보호",
+"text": "⑤ 모든 차 또는 노면전차의 운전자는 보행자가 제10조제3항에 따라 횡단보도가 설치되어 있지 아니한 도로를 횡단하고 있을 때에는 안전거리를 두고 일시정지하여 보행자가 안전하게 횡단할 수 있도록 하여야 한다.",
+"instruction": "횡단보도 없는 도로를 보행자가 건너면 안전거리를 두고 일시정지하십시오.",
+"instruction_en": "Stop at a safe distance when a pedestrian crosses where there is no crosswalk.",
+"action": "STOP",
+"scene": "a pedestrian crossing a road with no crosswalk"
+},
+{
+"id": "도로교통법 제27조 ⑥",
+"title": "보행자의 보호",
+"text": "⑥ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서 보행자의 옆을 지나는 경우에는 안전한 거리를 두고 서행하여야 하며, 보행자의 통행에 방해가 될 때에는 서행하거나 일시정지하여 보행자가 안전하게 통행할 수 있도록 하여야 한다. 1. 보도와 차도가 구분되지 아니한 도로 중 중앙선이 없는 도로 2. 보행자우선도로 3. 도로 외의 곳",
+"instruction": "보도·차도 구분 없고 중앙선 없는 도로에서 보행자 옆은 서행하십시오.",
+"instruction_en": "Slow down when passing pedestrians on roads without sidewalks or a center line.",
+"action": "SLOW_DOWN",
+"scene": "a road without sidewalk or center line, pedestrian walking beside"
+},
+{
+"id": "도로교통법 제27조 ⑥",
+"title": "보행자의 보호",
+"text": "⑥ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서 보행자의 옆을 지나는 경우에는 안전한 거리를 두고 서행하여야 하며, 보행자의 통행에 방해가 될 때에는 서행하거나 일시정지하여 보행자가 안전하게 통행할 수 있도록 하여야 한다. 1. 보도와 차도가 구분되지 아니한 도로 중 중앙선이 없는 도로 2. 보행자우선도로 3. 도로 외의 곳",
+"instruction": "보행자우선도로에서 보행자 옆을 지날 때 안전한 거리를 두고 서행하십시오.",
+"instruction_en": "Slow down and keep a safe distance from pedestrians on a pedestrian-priority road.",
+"action": "SLOW_DOWN",
+"scene": "a pedestrian-priority road with pedestrians walking in the roadway"
+},
+{
+"id": "도로교통법 제27조 ⑥",
+"title": "보행자의 보호",
+"text": "⑥ 모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서 보행자의 옆을 지나는 경우에는 안전한 거리를 두고 서행하여야 하며, 보행자의 통행에 방해가 될 때에는 서행하거나 일시정지하여 보행자가 안전하게 통행할 수 있도록 하여야 한다. 1. 보도와 차도가 구분되지 아니한 도로 중 중앙선이 없는 도로 2. 보행자우선도로 3. 도로 외의 곳",
+"instruction": "도로 외의 곳에서 보행자 옆을 지날 때 안전한 거리를 두고 서행하십시오.",
+"instruction_en": "Slow down and keep a safe distance from pedestrians when driving off the road.",
+"action": "SLOW_DOWN",
+"scene": "pedestrians beside a vehicle in a parking lot off the road"
+},
+{
+"id": "도로교통법 제27조 ⑦",
+"title": "보행자의 보호",
+"text": "⑦ 모든 차 또는 노면전차의 운전자는 제12조제1항에 따른 어린이 보호구역 내에 설치된 횡단보도 중 신호기가 설치되지 아니한 횡단보도 앞(정지선이 설치된 경우에는 그 정지선을 말한다)에서는 보행자의 횡단 여부와 관계없이 일시정지하여야 한다.",
+"instruction": "어린이 보호구역의 신호 없는 횡단보도 앞에서는 항상 일시정지하십시오.",
+"instruction_en": "Always stop before an unsignalized crosswalk in a school zone.",
+"action": "STOP",
+"scene": "a crosswalk without traffic lights in a children's protection zone"
+},
+{
+"id": "도로교통법 제28조 ②",
+"title": "보행자전용도로의 설치",
+"text": "② 차마 또는 노면전차의 운전자는 제1항에 따른 보행자전용도로를 통행하여서는 아니 된다. 다만, 시ㆍ도경찰청장이나 경찰서장은 특히 필요하다고 인정하는 경우에는 보행자전용도로에 차마의 통행을 허용할 수 있다.",
+"instruction": "보행자전용도로로는 통행하지 마십시오.",
+"instruction_en": "Do not drive on a pedestrian-only road.",
+"action": "KEEP_OUT",
+"scene": "a pedestrian-only road with a no-vehicle sign and walkers"
+},
+{
+"id": "도로교통법 제28조 ③",
+"title": "보행자전용도로의 설치",
+"text": "③ 제2항 단서에 따라 보행자전용도로의 통행이 허용된 차마의 운전자는 보행자를 위험하게 하거나 보행자의 통행을 방해하지 아니하도록 차마를 보행자의 걸음 속도로 운행하거나 일시정지하여야 한다.",
+"instruction": "허용된 보행자전용도로에서는 걸음 속도로 운행하거나 일시정지하십시오.",
+"instruction_en": "On a permitted pedestrian-only road, drive at walking speed or stop.",
+"action": "SLOW_DOWN",
+"scene": "pedestrians walking on a pedestrian road where vehicles are allowed"
+},
+{
+"id": "도로교통법 제28조의2",
+"title": "보행자우선도로",
+"text": "시ㆍ도경찰청장이나 경찰서장은 보행자우선도로에서 보행자를 보호하기 위하여 필요하다고 인정하는 경우에는 차마의 통행속도를 시속 20킬로미터 이내로 제한할 수 있다.",
+"instruction": "속도를 제한한 보행자우선도로에서는 시속 20킬로미터 이내로 운행하십시오.",
+"instruction_en": "On a speed-limited pedestrian-priority road, drive within 20 km/h.",
+"action": "SLOW_DOWN",
+"scene": "a pedestrian-priority road with a 20 km/h speed limit sign"
+},
+{
+"id": "도로교통법 제29조 ④",
+"title": "긴급자동차의 우선 통행",
+"text": "④ 교차로나 그 부근에서 긴급자동차가 접근하는 경우에는 차마와 노면전차의 운전자는 교차로를 피하여 일시정지하여야 한다.",
+"instruction": "교차로 부근에 긴급자동차가 접근하면 교차로를 피해 일시정지하십시오.",
+"instruction_en": "Clear the intersection and stop when an emergency vehicle approaches.",
+"action": "STOP",
+"scene": "an emergency vehicle with flashing lights approaching near an intersection"
+},
+{
+"id": "도로교통법 제29조 ⑤",
+"title": "긴급자동차의 우선 통행",
+"text": "⑤ 모든 차와 노면전차의 운전자는 제4항에 따른 곳 외의 곳에서 긴급자동차가 접근한 경우에는 긴급자동차가 우선통행할 수 있도록 진로를 양보하여야 한다.",
+"instruction": "교차로 밖에서 긴급자동차가 접근하면 진로를 양보하십시오.",
+"instruction_en": "Yield the way when an emergency vehicle approaches away from an intersection.",
+"action": "YIELD",
+"scene": "an emergency vehicle with sirens approaching from behind on a road"
+},
+{
+"id": "도로교통법 제31조 ①",
+"title": "서행 또는 일시정지할 장소",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 서행하여야 한다. 1. 교통정리를 하고 있지 아니하는 교차로 2. 도로가 구부러진 부근 3. 비탈길의 고갯마루 부근 4. 가파른 비탈길의 내리막 5. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "신호 없는 교차로에서는 서행하십시오.",
+"instruction_en": "Slow down at an intersection without traffic signals.",
+"action": "SLOW_DOWN",
+"scene": "an intersection without traffic signals"
+},
+{
+"id": "도로교통법 제31조 ①",
+"title": "서행 또는 일시정지할 장소",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 서행하여야 한다. 1. 교통정리를 하고 있지 아니하는 교차로 2. 도로가 구부러진 부근 3. 비탈길의 고갯마루 부근 4. 가파른 비탈길의 내리막 5. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "도로가 구부러진 부근에서는 서행하십시오.",
+"instruction_en": "Slow down near a curve in the road.",
+"action": "SLOW_DOWN",
+"scene": "a sharp curve in the road ahead"
+},
+{
+"id": "도로교통법 제31조 ①",
+"title": "서행 또는 일시정지할 장소",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 서행하여야 한다. 1. 교통정리를 하고 있지 아니하는 교차로 2. 도로가 구부러진 부근 3. 비탈길의 고갯마루 부근 4. 가파른 비탈길의 내리막 5. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "비탈길의 고갯마루 부근에서는 서행하십시오.",
+"instruction_en": "Slow down near the crest of a hill.",
+"action": "SLOW_DOWN",
+"scene": "the crest of a hill with the road disappearing ahead"
+},
+{
+"id": "도로교통법 제31조 ①",
+"title": "서행 또는 일시정지할 장소",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 서행하여야 한다. 1. 교통정리를 하고 있지 아니하는 교차로 2. 도로가 구부러진 부근 3. 비탈길의 고갯마루 부근 4. 가파른 비탈길의 내리막 5. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "가파른 비탈길의 내리막에서는 서행하십시오.",
+"instruction_en": "Slow down on a steep downhill slope.",
+"action": "SLOW_DOWN",
+"scene": "a steep downhill road ahead"
+},
+{
+"id": "도로교통법 제31조 ①",
+"title": "서행 또는 일시정지할 장소",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 서행하여야 한다. 1. 교통정리를 하고 있지 아니하는 교차로 2. 도로가 구부러진 부근 3. 비탈길의 고갯마루 부근 4. 가파른 비탈길의 내리막 5. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "서행 안전표지가 지정된 곳에서는 서행하십시오.",
+"instruction_en": "Slow down where a slow-driving traffic sign designates it.",
+"action": "SLOW_DOWN",
+"scene": "a roadside slow-down traffic sign"
+},
+{
+"id": "도로교통법 제31조 ②",
+"title": "서행 또는 일시정지할 장소",
+"text": "② 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 일시정지하여야 한다. 1. 교통정리를 하고 있지 아니하고 좌우를 확인할 수 없거나 교통이 빈번한 교차로 2. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "신호 없고 좌우가 안 보이거나 혼잡한 교차로에서는 일시정지하십시오.",
+"instruction_en": "Stop at an uncontrolled intersection with poor visibility or heavy traffic.",
+"action": "STOP",
+"scene": "an unsignaled intersection with blocked side views or busy cross traffic"
+},
+{
+"id": "도로교통법 제31조 ②",
+"title": "서행 또는 일시정지할 장소",
+"text": "② 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 일시정지하여야 한다. 1. 교통정리를 하고 있지 아니하고 좌우를 확인할 수 없거나 교통이 빈번한 교차로 2. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 안전표지로 지정한 곳",
+"instruction": "일시정지 안전표지가 지정된 곳에서는 일시정지하십시오.",
+"instruction_en": "Stop where a stop traffic sign designates it.",
+"action": "STOP",
+"scene": "a roadside stop sign at a junction"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "교차로·횡단보도·건널목에서는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park at an intersection, crosswalk, or railroad crossing.",
+"action": "KEEP_OUT",
+"scene": "an intersection, crosswalk, or railroad crossing in front of the vehicle"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "보도와 차도가 구분된 도로의 보도 위에는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park on a sidewalk separated from the roadway.",
+"action": "KEEP_OUT",
+"scene": "a sidewalk raised beside the roadway"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "교차로 가장자리나 도로 모퉁이 5미터 이내에는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park within 5 meters of an intersection corner.",
+"action": "KEEP_OUT",
+"scene": "a road corner at the edge of an intersection"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "안전지대 사방 10미터 이내에는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park within 10 meters of a safety zone.",
+"action": "KEEP_OUT",
+"scene": "a traffic island safety zone on the road"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "버스 정류지 표지 10미터 이내에는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park within 10 meters of a bus stop sign.",
+"action": "KEEP_OUT",
+"scene": "a bus stop sign or pole beside the road"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "건널목 가장자리·횡단보도 10미터 이내에는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park within 10 meters of a crossing or crosswalk.",
+"action": "KEEP_OUT",
+"scene": "a crosswalk or railroad crossing edge ahead of the curb"
+},
+{
+"id": "도로교통법 제32조",
+"title": "정차 및 주차의 금지",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에서는 차를 정차하거나 주차하여서는 아니 된다. 다만, 이 법이나 이 법에 따른 명령 또는 경찰공무원의 지시를 따르는 경우와 위험방지를 위하여 일시정지하는 경우에는 그러하지 아니하다. 1. 교차로ㆍ횡단보도ㆍ건널목이나 보도와 차도가 구분된 도로의 보도(「주차장법」에 따라 차도와 보도에 걸쳐서 설치된 노상주차장은 제외한다) 2. 교차로의 가장자리나 도로의 모퉁이로부터 5미터 이내인 곳 3. 안전지대가 설치된 도로에서는 그 안전지대의 사방으로부터 각각 10미터 이내인 곳 4. 버스여객자동차의 정류지(停留地)임을 표시하는 기둥이나 표지판 또는 선이 설치된 곳으로부터 10미터 이내인 곳. 다만, 버스여객자동차의 운전자가 그 버스여객자동차의 운행시간 중에 운행노선에 따르는 정류장에서 승객을 태우거나 내리기 위하여 차를 정차하거나 주차하는 경우에는 그러하지 아니하다. 5. 건널목의 가장자리 또는 횡단보도로부터 10미터 이내인 곳 6. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 「소방기본법」 제10조에 따른 소방용수시설 또는 비상소화장치가 설치된 곳 나. 「소방시설 설치 및 관리에 관한 법률」 제2조제1항제1호",
+"instruction": "소방용수시설·비상소화장치 5미터 이내에는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park within 5 meters of a fire hydrant.",
+"action": "KEEP_OUT",
+"scene": "a fire hydrant on the curb beside the road"
+},
+{
+"id": "도로교통법 제33조",
+"title": "주차금지의 장소",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에 차를 주차해서는 아니 된다. 1. 터널 안 및 다리 위 2. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 도로공사를 하고 있는 경우에는 그 공사 구역의 양쪽 가장자리 나. 「다중이용업소의 안전관리에 관한 특별법」에 따른 다중이용업소의 영업장이 속한 건축물로 소방본부장의 요청에 의하여 시ㆍ도경찰청장이 지정한 곳 3. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 지정한 곳",
+"instruction": "터널 안에서는 주차하지 마십시오.",
+"instruction_en": "Do not park inside a tunnel.",
+"action": "KEEP_OUT",
+"scene": "inside a road tunnel with lane lines"
+},
+{
+"id": "도로교통법 제33조",
+"title": "주차금지의 장소",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에 차를 주차해서는 아니 된다. 1. 터널 안 및 다리 위 2. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 도로공사를 하고 있는 경우에는 그 공사 구역의 양쪽 가장자리 나. 「다중이용업소의 안전관리에 관한 특별법」에 따른 다중이용업소의 영업장이 속한 건축물로 소방본부장의 요청에 의하여 시ㆍ도경찰청장이 지정한 곳 3. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 지정한 곳",
+"instruction": "다리 위에서는 주차하지 마십시오.",
+"instruction_en": "Do not park on a bridge.",
+"action": "KEEP_OUT",
+"scene": "a road on a bridge with railings"
+},
+{
+"id": "도로교통법 제33조",
+"title": "주차금지의 장소",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에 차를 주차해서는 아니 된다. 1. 터널 안 및 다리 위 2. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 도로공사를 하고 있는 경우에는 그 공사 구역의 양쪽 가장자리 나. 「다중이용업소의 안전관리에 관한 특별법」에 따른 다중이용업소의 영업장이 속한 건축물로 소방본부장의 요청에 의하여 시ㆍ도경찰청장이 지정한 곳 3. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 지정한 곳",
+"instruction": "도로공사 구역 양쪽 가장자리 5미터 이내에는 주차하지 마십시오.",
+"instruction_en": "Do not park within 5 meters of either edge of a road construction zone.",
+"action": "KEEP_OUT",
+"scene": "a road construction zone with cones and workers"
+},
+{
+"id": "도로교통법 제33조",
+"title": "주차금지의 장소",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에 차를 주차해서는 아니 된다. 1. 터널 안 및 다리 위 2. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 도로공사를 하고 있는 경우에는 그 공사 구역의 양쪽 가장자리 나. 「다중이용업소의 안전관리에 관한 특별법」에 따른 다중이용업소의 영업장이 속한 건축물로 소방본부장의 요청에 의하여 시ㆍ도경찰청장이 지정한 곳 3. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 지정한 곳",
+"instruction": "지정된 다중이용업소 건축물 5미터 이내에는 주차하지 마십시오.",
+"instruction_en": "Do not park within 5 meters of a designated high-occupancy business building.",
+"action": "KEEP_OUT",
+"scene": "a building entrance with a no-parking designation beside the road"
+},
+{
+"id": "도로교통법 제33조",
+"title": "주차금지의 장소",
+"text": "모든 차의 운전자는 다음 각 호의 어느 하나에 해당하는 곳에 차를 주차해서는 아니 된다. 1. 터널 안 및 다리 위 2. 다음 각 목의 곳으로부터 5미터 이내인 곳 가. 도로공사를 하고 있는 경우에는 그 공사 구역의 양쪽 가장자리 나. 「다중이용업소의 안전관리에 관한 특별법」에 따른 다중이용업소의 영업장이 속한 건축물로 소방본부장의 요청에 의하여 시ㆍ도경찰청장이 지정한 곳 3. 시ㆍ도경찰청장이 도로에서의 위험을 방지하고 교통의 안전과 원활한 소통을 확보하기 위하여 필요하다고 인정하여 지정한 곳",
+"instruction": "경찰청장이 지정한 주차금지 장소에는 주차하지 마십시오.",
+"instruction_en": "Do not park at places designated as no-parking.",
+"action": "KEEP_OUT",
+"scene": "a no-parking sign beside the road"
+},
+{
+"id": "도로교통법 제34조",
+"title": "정차 또는 주차의 방법 및 시간의 제한",
+"text": "도로 또는 노상주차장에 정차하거나 주차하려고 하는 차의 운전자는 차를 차도의 우측 가장자리에 정차하는 등 대통령령으로 정하는 정차 또는 주차의 방법ㆍ시간과 금지사항 등을 지켜야 한다.",
+"instruction": "정차하거나 주차할 때는 차도의 우측 가장자리에 세우십시오.",
+"instruction_en": "When stopping or parking, stay at the right edge of the roadway.",
+"action": "CAUTION",
+"scene": "the right edge of a roadway with a curb"
+},
+{
+"id": "도로교통법 제34조의3",
+"title": "경사진 곳에서의 정차 또는 주차의 방법",
+"text": "경사진 곳에 정차하거나 주차(도로 외의 경사진 곳에서 정차하거나 주차하는 경우를 포함한다)하려는 자동차의 운전자는 대통령령으로 정하는 바에 따라 고임목을 설치하거나 조향장치(操向裝置)를 도로의 가장자리 방향으로 돌려놓는 등 미끄럼 사고의 발생을 방지하기 위한 조치를 취하여야 한다.",
+"instruction": "경사진 곳 정차·주차 시 고임목을 놓거나 조향장치를 길가로 돌리십시오.",
+"instruction_en": "On a slope, set a wheel chock or turn the wheels toward the roadside.",
+"action": "CAUTION",
+"scene": "a vehicle parked on a sloped road"
+},
+{
+"id": "도로교통법 제37조 ①",
+"title": "차와 노면전차의 등화",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 경우에는 대통령령으로 정하는 바에 따라 전조등(前照燈), 차폭등(車幅燈), 미등(尾燈)과 그 밖의 등화를 켜야 한다. 1. 밤(해가 진 후부터 해가 뜨기 전까지를 말한다. 이하 같다)에 도로에서 차 또는 노면전차를 운행하거나 고장이나 그 밖의 부득이한 사유로 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우 2. 안개가 끼거나 비 또는 눈이 올 때에 도로에서 차 또는 노면전차를 운행하거나 고장이나 그 밖의 부득이한 사유로 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우 3. 터널 안을 운행하거나 고장 또는 그 밖의 부득이한 사유로 터널 안 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우",
+"instruction": "밤에는 전조등·차폭등·미등을 켜십시오.",
+"instruction_en": "Turn on headlights, position lights, and taillights at night.",
+"action": "CAUTION",
+"scene": "a dark road at night with headlights lighting the lane"
+},
+{
+"id": "도로교통법 제37조 ①",
+"title": "차와 노면전차의 등화",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 경우에는 대통령령으로 정하는 바에 따라 전조등(前照燈), 차폭등(車幅燈), 미등(尾燈)과 그 밖의 등화를 켜야 한다. 1. 밤(해가 진 후부터 해가 뜨기 전까지를 말한다. 이하 같다)에 도로에서 차 또는 노면전차를 운행하거나 고장이나 그 밖의 부득이한 사유로 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우 2. 안개가 끼거나 비 또는 눈이 올 때에 도로에서 차 또는 노면전차를 운행하거나 고장이나 그 밖의 부득이한 사유로 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우 3. 터널 안을 운행하거나 고장 또는 그 밖의 부득이한 사유로 터널 안 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우",
+"instruction": "안개가 끼거나 비·눈이 올 때는 전조등·차폭등·미등을 켜십시오.",
+"instruction_en": "Turn on headlights and taillights in fog, rain, or snow.",
+"action": "CAUTION",
+"scene": "a road in heavy fog, rain, or snow with low visibility"
+},
+{
+"id": "도로교통법 제37조 ①",
+"title": "차와 노면전차의 등화",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 어느 하나에 해당하는 경우에는 대통령령으로 정하는 바에 따라 전조등(前照燈), 차폭등(車幅燈), 미등(尾燈)과 그 밖의 등화를 켜야 한다. 1. 밤(해가 진 후부터 해가 뜨기 전까지를 말한다. 이하 같다)에 도로에서 차 또는 노면전차를 운행하거나 고장이나 그 밖의 부득이한 사유로 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우 2. 안개가 끼거나 비 또는 눈이 올 때에 도로에서 차 또는 노면전차를 운행하거나 고장이나 그 밖의 부득이한 사유로 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우 3. 터널 안을 운행하거나 고장 또는 그 밖의 부득이한 사유로 터널 안 도로에서 차 또는 노면전차를 정차 또는 주차하는 경우",
+"instruction": "터널 안에서는 전조등·차폭등·미등을 켜십시오.",
+"instruction_en": "Turn on headlights and taillights inside a tunnel.",
+"action": "CAUTION",
+"scene": "inside a road tunnel with lane lines"
+},
+{
+"id": "도로교통법 제37조 ②",
+"title": "차와 노면전차의 등화",
+"text": "② 모든 차 또는 노면전차의 운전자는 밤에 차 또는 노면전차가 서로 마주보고 진행하거나 앞차의 바로 뒤를 따라가는 경우에는 대통령령으로 정하는 바에 따라 등화의 밝기를 줄이거나 잠시 등화를 끄는 등의 필요한 조작을 하여야 한다.",
+"instruction": "밤에 마주 오는 차가 있으면 등화의 밝기를 줄이십시오.",
+"instruction_en": "At night, dim your lights for oncoming vehicles.",
+"action": "CAUTION",
+"scene": "an oncoming vehicle with bright headlights on a dark road"
+},
+{
+"id": "도로교통법 제37조 ②",
+"title": "차와 노면전차의 등화",
+"text": "② 모든 차 또는 노면전차의 운전자는 밤에 차 또는 노면전차가 서로 마주보고 진행하거나 앞차의 바로 뒤를 따라가는 경우에는 대통령령으로 정하는 바에 따라 등화의 밝기를 줄이거나 잠시 등화를 끄는 등의 필요한 조작을 하여야 한다.",
+"instruction": "밤에 앞차 바로 뒤를 따라갈 때는 등화의 밝기를 줄이십시오.",
+"instruction_en": "At night, dim your lights when following closely behind a vehicle.",
+"action": "CAUTION",
+"scene": "taillights of a vehicle directly ahead on a dark road"
+},
+{
+"id": "도로교통법 제38조 ①",
+"title": "차의 신호",
+"text": "① 모든 차의 운전자는 좌회전ㆍ우회전ㆍ횡단ㆍ유턴ㆍ서행ㆍ정지 또는 후진을 하거나 같은 방향으로 진행하면서 진로를 바꾸려고 하는 경우와 회전교차로에 진입하거나 회전교차로에서 진출하는 경우에는 손이나 방향지시기 또는 등화로써 그 행위가 끝날 때까지 신호를 하여야 한다.",
+"instruction": "좌·우회전, 유턴, 진로 변경 시 끝날 때까지 방향지시기로 신호하십시오.",
+"instruction_en": "Signal until finished when turning, U-turning, or changing lanes.",
+"action": "CAUTION",
+"scene": "a vehicle turning or changing lanes with turn signal blinking"
+},
+{
+"id": "도로교통법 제38조 ①",
+"title": "차의 신호",
+"text": "① 모든 차의 운전자는 좌회전ㆍ우회전ㆍ횡단ㆍ유턴ㆍ서행ㆍ정지 또는 후진을 하거나 같은 방향으로 진행하면서 진로를 바꾸려고 하는 경우와 회전교차로에 진입하거나 회전교차로에서 진출하는 경우에는 손이나 방향지시기 또는 등화로써 그 행위가 끝날 때까지 신호를 하여야 한다.",
+"instruction": "서행·정지·후진할 때는 끝날 때까지 손이나 등화로 신호하십시오.",
+"instruction_en": "Signal with hand or lights while slowing, stopping, or reversing.",
+"action": "CAUTION",
+"scene": "brake lights on as a vehicle slows to a stop"
+},
+{
+"id": "도로교통법 제38조 ①",
+"title": "차의 신호",
+"text": "① 모든 차의 운전자는 좌회전ㆍ우회전ㆍ횡단ㆍ유턴ㆍ서행ㆍ정지 또는 후진을 하거나 같은 방향으로 진행하면서 진로를 바꾸려고 하는 경우와 회전교차로에 진입하거나 회전교차로에서 진출하는 경우에는 손이나 방향지시기 또는 등화로써 그 행위가 끝날 때까지 신호를 하여야 한다.",
+"instruction": "회전교차로에 진입하거나 진출할 때는 신호하십시오.",
+"instruction_en": "Signal when entering or exiting a roundabout.",
+"action": "CAUTION",
+"scene": "a roundabout entrance with a circular central island"
+},
+{
+"id": "도로교통법 제39조 ③",
+"title": "승차 또는 적재의 방법과 제한",
+"text": "③ 모든 차 또는 노면전차의 운전자는 운전 중 타고 있는 사람 또는 타고 내리는 사람이 떨어지지 아니하도록 하기 위하여 문을 정확히 여닫는 등 필요한 조치를 하여야 한다.",
+"instruction": "운전 중 타고 내리는 사람이 떨어지지 않게 문을 정확히 닫으십시오.",
+"instruction_en": "While driving, close the doors properly so riders cannot fall out.",
+"action": "CAUTION",
+"scene": "a vehicle door being closed as a passenger boards or exits"
+},
+{
+"id": "도로교통법 제39조 ④",
+"title": "승차 또는 적재의 방법과 제한",
+"text": "④ 모든 차의 운전자는 운전 중 실은 화물이 떨어지지 아니하도록 덮개를 씌우거나 묶는 등 확실하게 고정될 수 있도록 필요한 조치를 하여야 한다.",
+"instruction": "운전 중 화물이 떨어지지 않도록 덮개를 씌우거나 묶어 고정하십시오.",
+"instruction_en": "Cover or tie down cargo so it does not fall during driving.",
+"action": "CAUTION",
+"scene": "a truck on the road carrying tied-down cargo"
+},
+{
+"id": "도로교통법 제39조 ⑤",
+"title": "승차 또는 적재의 방법과 제한",
+"text": "⑤ 모든 차의 운전자는 영유아나 동물을 안고 운전 장치를 조작하거나 운전석 주위에 물건을 싣는 등 안전에 지장을 줄 우려가 있는 상태로 운전하여서는 아니 된다.",
+"instruction": "영유아나 동물을 안고 운전 장치를 조작하지 마십시오.",
+"instruction_en": "Do not operate the controls while holding an infant or animal.",
+"action": "CAUTION",
+"scene": "a driver at the steering wheel holding a small child or pet"
+},
+{
+"id": "도로교통법 제46조 ①",
+"title": "공동 위험행위의 금지",
+"text": "① 자동차등(개인형 이동장치는 제외한다. 이하 이 조에서 같다)의 운전자는 도로에서 2명 이상이 공동으로 2대 이상의 자동차등을 정당한 사유 없이 앞뒤로 또는 좌우로 줄지어 통행하면서 다른 사람에게 위해(危害)를 끼치거나 교통상의 위험을 발생하게 하여서는 아니 된다.",
+"instruction": "도로에서 둘 이상이 줄지어 통행하며 다른 사람에게 위험을 주지 마십시오.",
+"instruction_en": "Do not drive in groups in formation and endanger others on the road.",
+"action": "CAUTION",
+"scene": "several vehicles driving side by side or in a line"
+},
+{
+"id": "도로교통법 제46조의3",
+"title": "난폭운전 금지",
+"text": "자동차등(개인형 이동장치는 제외한다)의 운전자는 다음 각 호 중 둘 이상의 행위를 연달아 하거나, 하나의 행위를 지속 또는 반복하여 다른 사람에게 위협 또는 위해를 가하거나 교통상의 위험을 발생하게 하여서는 아니 된다. 1. 제5조에 따른 신호 또는 지시 위반 2. 제13조제3항에 따른 중앙선 침범 3. 제17조제3항에 따른 속도의 위반 4. 제18조제1항에 따른 횡단ㆍ유턴ㆍ후진 금지 위반 5. 제19조에 따른 안전거리 미확보, 진로변경 금지 위반, 급제동 금지 위반 6. 제21조제1항ㆍ제3항 및 제4항에 따른 앞지르기 방법 또는 앞지르기의 방해금지 위반 7. 제49조제1항제8호에 따른 정당한 사유 없는 소음 발생 8. 제60조제2항에 따른 고속도로에서의 앞지르기 방법 위반 9. 제62조에 따른 고속도로등에서의 횡단ㆍ유턴ㆍ후진 금지 위반",
+"instruction": "신호위반·중앙선 침범·속도위반 등을 연달아 해 위협을 주지 마십시오.",
+"instruction_en": "Do not repeat violations like signal or speeding and threaten others.",
+"action": "CAUTION",
+"scene": "a vehicle weaving through traffic across the center line"
+},
+{
+"id": "도로교통법 제48조 ①",
+"title": "안전운전 및 친환경 경제운전의 의무",
+"text": "① 모든 차 또는 노면전차의 운전자는 차 또는 노면전차의 조향장치와 제동장치, 그 밖의 장치를 정확하게 조작하여야 하며, 도로의 교통상황과 차 또는 노면전차의 구조 및 성능에 따라 다른 사람에게 위험과 장해를 주는 속도나 방법으로 운전하여서는 아니 된다.",
+"instruction": "다른 사람에게 위험을 주는 속도나 방법으로 운전하지 마십시오.",
+"instruction_en": "Do not drive at a speed or manner that endangers others.",
+"action": "CAUTION",
+"scene": "a busy road with vehicles, pedestrians, and traffic around"
+},
+{
+"id": "도로교통법 제49조 ①",
+"title": "모든 운전자의 준수사항 등",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 사항을 지켜야 한다. 1. 물이 고인 곳을 운행할 때에는 고인 물을 튀게 하여 다른 사람에게 피해를 주는 일이 없도록 할 것 2. 다음 각 목의 어느 하나에 해당하는 경우에는 일시정지할 것 가. 어린이가 보호자 없이 도로를 횡단할 때, 어린이가 도로에서 앉아 있거나 서 있을 때 또는 어린이가 도로에서 놀이를 할 때 등 어린이에 대한 교통사고의 위험이 있는 것을 발견한 경우 나. 앞을 보지 못하는 사람이 흰색 지팡이를 가지거나 장애인보조견을 동반하는 등의 조치를 하고 도로를 횡단하고 있는 경우 다. 지하도나 육교 등 도로 횡단시설을 이용할 수 없는 지체장애인이나 노인 등이 도로를 횡단하고 있는 경우 3. 자동차의 앞면 창유리와 운전석 좌우 옆면 창유리의 가시광선(可視光線)의 투과율이 대통령령으로 정하는 기준보다 낮아 교통안전 등에 지장을 줄 수 있는 차를 운전하지 아니할 것. 다만, 요인(要人) 경호용, 구급용 및 장의용(葬儀用) 자동차는 제외한다. 4. 교통단속용 장비의 기능을 방해하는 장치를 한 차나 그 밖에 안전운전에 지장을 줄 수 있는 것으로서 행정안전부령으로 정하는 기준에 적합하지 아니한 장치를 한 ",
+"instruction": "물이 고인 곳에서는 물이 튀어 다른 사람에게 피해를 주지 않게 하십시오.",
+"instruction_en": "Do not splash water onto others when driving through puddles.",
+"action": "CAUTION",
+"scene": "a puddle on the road with pedestrians beside it"
+},
+{
+"id": "도로교통법 제49조 ①",
+"title": "모든 운전자의 준수사항 등",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 사항을 지켜야 한다. 1. 물이 고인 곳을 운행할 때에는 고인 물을 튀게 하여 다른 사람에게 피해를 주는 일이 없도록 할 것 2. 다음 각 목의 어느 하나에 해당하는 경우에는 일시정지할 것 가. 어린이가 보호자 없이 도로를 횡단할 때, 어린이가 도로에서 앉아 있거나 서 있을 때 또는 어린이가 도로에서 놀이를 할 때 등 어린이에 대한 교통사고의 위험이 있는 것을 발견한 경우 나. 앞을 보지 못하는 사람이 흰색 지팡이를 가지거나 장애인보조견을 동반하는 등의 조치를 하고 도로를 횡단하고 있는 경우 다. 지하도나 육교 등 도로 횡단시설을 이용할 수 없는 지체장애인이나 노인 등이 도로를 횡단하고 있는 경우 3. 자동차의 앞면 창유리와 운전석 좌우 옆면 창유리의 가시광선(可視光線)의 투과율이 대통령령으로 정하는 기준보다 낮아 교통안전 등에 지장을 줄 수 있는 차를 운전하지 아니할 것. 다만, 요인(要人) 경호용, 구급용 및 장의용(葬儀用) 자동차는 제외한다. 4. 교통단속용 장비의 기능을 방해하는 장치를 한 차나 그 밖에 안전운전에 지장을 줄 수 있는 것으로서 행정안전부령으로 정하는 기준에 적합하지 아니한 장치를 한 ",
+"instruction": "어린이에게 교통사고 위험이 보이면 일시정지하십시오.",
+"instruction_en": "Stop when you see a child at risk of a traffic accident.",
+"action": "STOP",
+"scene": "a child alone crossing, sitting, or playing in the road"
+},
+{
+"id": "도로교통법 제49조 ①",
+"title": "모든 운전자의 준수사항 등",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 사항을 지켜야 한다. 1. 물이 고인 곳을 운행할 때에는 고인 물을 튀게 하여 다른 사람에게 피해를 주는 일이 없도록 할 것 2. 다음 각 목의 어느 하나에 해당하는 경우에는 일시정지할 것 가. 어린이가 보호자 없이 도로를 횡단할 때, 어린이가 도로에서 앉아 있거나 서 있을 때 또는 어린이가 도로에서 놀이를 할 때 등 어린이에 대한 교통사고의 위험이 있는 것을 발견한 경우 나. 앞을 보지 못하는 사람이 흰색 지팡이를 가지거나 장애인보조견을 동반하는 등의 조치를 하고 도로를 횡단하고 있는 경우 다. 지하도나 육교 등 도로 횡단시설을 이용할 수 없는 지체장애인이나 노인 등이 도로를 횡단하고 있는 경우 3. 자동차의 앞면 창유리와 운전석 좌우 옆면 창유리의 가시광선(可視光線)의 투과율이 대통령령으로 정하는 기준보다 낮아 교통안전 등에 지장을 줄 수 있는 차를 운전하지 아니할 것. 다만, 요인(要人) 경호용, 구급용 및 장의용(葬儀用) 자동차는 제외한다. 4. 교통단속용 장비의 기능을 방해하는 장치를 한 차나 그 밖에 안전운전에 지장을 줄 수 있는 것으로서 행정안전부령으로 정하는 기준에 적합하지 아니한 장치를 한 ",
+"instruction": "흰색 지팡이를 든 시각장애인이 횡단 중이면 일시정지하십시오.",
+"instruction_en": "Stop when a blind person with a white cane is crossing.",
+"action": "STOP",
+"scene": "a person with a white cane or guide dog crossing the road"
+},
+{
+"id": "도로교통법 제49조 ①",
+"title": "모든 운전자의 준수사항 등",
+"text": "① 모든 차 또는 노면전차의 운전자는 다음 각 호의 사항을 지켜야 한다. 1. 물이 고인 곳을 운행할 때에는 고인 물을 튀게 하여 다른 사람에게 피해를 주는 일이 없도록 할 것 2. 다음 각 목의 어느 하나에 해당하는 경우에는 일시정지할 것 가. 어린이가 보호자 없이 도로를 횡단할 때, 어린이가 도로에서 앉아 있거나 서 있을 때 또는 어린이가 도로에서 놀이를 할 때 등 어린이에 대한 교통사고의 위험이 있는 것을 발견한 경우 나. 앞을 보지 못하는 사람이 흰색 지팡이를 가지거나 장애인보조견을 동반하는 등의 조치를 하고 도로를 횡단하고 있는 경우 다. 지하도나 육교 등 도로 횡단시설을 이용할 수 없는 지체장애인이나 노인 등이 도로를 횡단하고 있는 경우 3. 자동차의 앞면 창유리와 운전석 좌우 옆면 창유리의 가시광선(可視光線)의 투과율이 대통령령으로 정하는 기준보다 낮아 교통안전 등에 지장을 줄 수 있는 차를 운전하지 아니할 것. 다만, 요인(要人) 경호용, 구급용 및 장의용(葬儀用) 자동차는 제외한다. 4. 교통단속용 장비의 기능을 방해하는 장치를 한 차나 그 밖에 안전운전에 지장을 줄 수 있는 것으로서 행정안전부령으로 정하는 기준에 적합하지 아니한 장치를 한 ",
+"instruction": "횡단시설을 못 쓰는 지체장애인·노인이 횡단 중이면 일시정지하십시오.",
+"instruction_en": "Stop for a disabled or elderly person crossing without a crossing facility.",
+"action": "STOP",
+"scene": "an elderly or disabled pedestrian crossing the road slowly"
+},
+{
+"id": "도로교통법 제50조 ①",
+"title": "특정 운전자의 준수사항",
+"text": "① 자동차(이륜자동차는 제외한다)의 운전자는 자동차를 운전할 때에는 좌석안전띠를 매어야 하며, 모든 좌석의 동승자에게도 좌석안전띠(영유아인 경우에는 유아보호용 장구를 장착한 후의 좌석안전띠를 말한다. 이하 이 조 및 제160조제2항제2호에서 같다)를 매도록 하여야 한다. 다만, 질병 등으로 인하여 좌석안전띠를 매는 것이 곤란하거나 행정안전부령으로 정하는 사유가 있는 경우에는 그러하지 아니하다.",
+"instruction": "운전할 때는 좌석안전띠를 매고 동승자에게도 매게 하십시오.",
+"instruction_en": "Wear your seat belt and make all passengers wear theirs.",
+"action": "CAUTION",
+"scene": "a driver with a fastened seat belt inside a car cabin"
+},
+{
+"id": "도로교통법 제51조 ①",
+"title": "어린이통학버스의 특별보호",
+"text": "① 어린이통학버스가 도로에 정차하여 어린이나 영유아가 타고 내리는 중임을 표시하는 점멸등 등의 장치를 작동 중일 때에는 어린이통학버스가 정차한 차로와 그 차로의 바로 옆 차로로 통행하는 차의 운전자는 어린이통학버스에 이르기 전에 일시정지하여 안전을 확인한 후 서행하여야 한다.",
+"instruction": "점멸등 켠 통학버스의 차로와 옆 차로에서는 일시정지 후 서행하십시오.",
+"instruction_en": "Stop then slow down in the lanes beside a flashing school bus.",
+"action": "STOP",
+"scene": "a stopped children's school bus with flashing lights and children getting off"
+},
+{
+"id": "도로교통법 제51조 ②",
+"title": "어린이통학버스의 특별보호",
+"text": "② 제1항의 경우 중앙선이 설치되지 아니한 도로와 편도 1차로인 도로에서는 반대방향에서 진행하는 차의 운전자도 어린이통학버스에 이르기 전에 일시정지하여 안전을 확인한 후 서행하여야 한다.",
+"instruction": "편도 1차로에서 반대편 통학버스가 점멸 중이면 일시정지 후 서행하십시오.",
+"instruction_en": "On a one-lane road, stop then slow for an oncoming flashing school bus.",
+"action": "STOP",
+"scene": "an oncoming children's school bus with flashing lights on a one-lane road"
+},
+{
+"id": "도로교통법 제51조 ②",
+"title": "어린이통학버스의 특별보호",
+"text": "② 제1항의 경우 중앙선이 설치되지 아니한 도로와 편도 1차로인 도로에서는 반대방향에서 진행하는 차의 운전자도 어린이통학버스에 이르기 전에 일시정지하여 안전을 확인한 후 서행하여야 한다.",
+"instruction": "중앙선 없는 도로에서 맞은편 통학버스가 점멸 중이면 일시정지하십시오.",
+"instruction_en": "Without a center line, stop then slow for an oncoming flashing school bus.",
+"action": "STOP",
+"scene": "an oncoming school bus with flashing lights, no center line"
+},
+{
+"id": "도로교통법 제51조 ③",
+"title": "어린이통학버스의 특별보호",
+"text": "③ 모든 차의 운전자는 어린이나 영유아를 태우고 있다는 표시를 한 상태로 도로를 통행하는 어린이통학버스를 앞지르지 못한다.",
+"instruction": "어린이 표시를 한 통학버스는 앞지르지 마십시오.",
+"instruction_en": "Do not overtake a school bus displaying a child-carrying sign.",
+"action": "NO_OVERTAKING",
+"scene": "a children's school bus driving ahead with a child-carrying sign"
+},
+{
+"id": "도로교통법 제53조의5",
+"title": "보호자가 동승하지 아니한 어린이통학버스 운전자의 의무",
+"text": "제2조제23호가목의 유아교육진흥원ㆍ대안학교ㆍ외국인학교, 같은 호 다목의 교습소 및 같은 호 마목부터 차목까지의 시설에서 어린이의 승차 또는 하차를 도와주는 보호자를 태우지 아니한 어린이통학버스를 운전하는 사람은 어린이가 승차 또는 하차하는 때에 자동차에서 내려서 어린이나 영유아가 안전하게 승하차하는 것을 확인하여야 한다.",
+"instruction": "보호자 없는 통학버스는 어린이 승하차 때 내려서 확인하십시오.",
+"instruction_en": "If no guardian is aboard, step out and check children board or alight safely.",
+"action": "CAUTION",
+"scene": "a stopped yellow school bus with children getting on or off"
+},
+{
+"id": "도로교통법 제54조 ①",
+"title": "사고발생 시의 조치",
+"text": "① 차 또는 노면전차의 운전 등 교통으로 인하여 사람을 사상하거나 물건을 손괴(이하 \"교통사고\"라 한다)한 경우에는 그 차 또는 노면전차의 운전자나 그 밖의 승무원(이하 \"운전자등\"이라 한다)은 즉시 정차하여 다음 각 호의 조치를 하여야 한다. 1. 사상자를 구호하는 등 필요한 조치 2. 피해자에게 인적 사항(성명ㆍ전화번호ㆍ주소 등을 말한다. 이하 제148조 및 제156조제10호에서 같다) 제공",
+"instruction": "교통사고를 내면 즉시 정차해 사상자를 구호하십시오.",
+"instruction_en": "After a crash, stop immediately and help the injured.",
+"action": "STOP",
+"scene": "a collision between vehicles with an injured person on the road"
+},
+{
+"id": "도로교통법 제54조 ①",
+"title": "사고발생 시의 조치",
+"text": "① 차 또는 노면전차의 운전 등 교통으로 인하여 사람을 사상하거나 물건을 손괴(이하 \"교통사고\"라 한다)한 경우에는 그 차 또는 노면전차의 운전자나 그 밖의 승무원(이하 \"운전자등\"이라 한다)은 즉시 정차하여 다음 각 호의 조치를 하여야 한다. 1. 사상자를 구호하는 등 필요한 조치 2. 피해자에게 인적 사항(성명ㆍ전화번호ㆍ주소 등을 말한다. 이하 제148조 및 제156조제10호에서 같다) 제공",
+"instruction": "교통사고를 내면 피해자에게 성명·전화번호·주소를 알리십시오.",
+"instruction_en": "After a crash, give the victim your name, phone number and address.",
+"action": "CAUTION",
+"scene": "two damaged vehicles and a victim at an accident scene"
+},
+{
+"id": "도로교통법 제54조 ②",
+"title": "사고발생 시의 조치",
+"text": "② 제1항의 경우 그 차 또는 노면전차의 운전자등은 경찰공무원이 현장에 있을 때에는 그 경찰공무원에게, 경찰공무원이 현장에 없을 때에는 가장 가까운 국가경찰관서(지구대, 파출소 및 출장소를 포함한다. 이하 같다)에 다음 각 호의 사항을 지체 없이 신고하여야 한다. 다만, 차 또는 노면전차만 손괴된 것이 분명하고 도로에서의 위험방지와 원활한 소통을 위하여 필요한 조치를 한 경우에는 그러하지 아니하다. 1. 사고가 일어난 곳 2. 사상자 수 및 부상 정도 3. 손괴한 물건 및 손괴 정도 4. 그 밖의 조치사항 등",
+"instruction": "교통사고를 내면 사고 장소와 사상자 수를 경찰에 신고하십시오.",
+"instruction_en": "After a crash, report the location and casualties to the police.",
+"action": "CAUTION",
+"scene": "a traffic accident scene with a police officer or police station nearby"
+},
+{
+"id": "도로교통법 제56조의2 ①",
+"title": "자율주행자동차 운전자의 준수사항 등",
+"text": "① 행정안전부령으로 정하는 완전 자율주행시스템에 해당하지 아니하는 자율주행시스템을 갖춘 자동차의 운전자는 자율주행시스템의 직접 운전 요구에 지체 없이 대응하여 조향장치, 제동장치 및 그 밖의 장치를 직접 조작하여 운전하여야 한다.",
+"instruction": "자율주행시스템이 직접 운전을 요구하면 지체 없이 직접 조작하십시오.",
+"instruction_en": "Take manual control immediately when the self-driving system requests it.",
+"action": "CAUTION",
+"scene": "a dashboard takeover request warning in a self-driving car"
+},
+{
+"id": "도로교통법 제60조 ①",
+"title": "갓길 통행금지 등",
+"text": "① 자동차의 운전자는 고속도로등에서 자동차의 고장 등 부득이한 사정이 있는 경우를 제외하고는 행정안전부령으로 정하는 차로에 따라 통행하여야 하며, 갓길(「도로법」에 따른 길어깨를 말한다)로 통행하여서는 아니 된다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 그러하지 아니하다. 1. 긴급자동차와 고속도로등의 보수ㆍ유지 등의 작업을 하는 자동차를 운전하는 경우 2. 차량정체 시 신호기 또는 경찰공무원등의 신호나 지시에 따라 갓길에서 자동차를 운전하는 경우",
+"instruction": "고속도로에서는 갓길로 통행하지 마십시오.",
+"instruction_en": "Do not drive on the shoulder of an expressway.",
+"action": "KEEP_OUT",
+"scene": "an expressway with an emergency shoulder beside the lanes"
+},
+{
+"id": "도로교통법 제60조 ①",
+"title": "갓길 통행금지 등",
+"text": "① 자동차의 운전자는 고속도로등에서 자동차의 고장 등 부득이한 사정이 있는 경우를 제외하고는 행정안전부령으로 정하는 차로에 따라 통행하여야 하며, 갓길(「도로법」에 따른 길어깨를 말한다)로 통행하여서는 아니 된다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 그러하지 아니하다. 1. 긴급자동차와 고속도로등의 보수ㆍ유지 등의 작업을 하는 자동차를 운전하는 경우 2. 차량정체 시 신호기 또는 경찰공무원등의 신호나 지시에 따라 갓길에서 자동차를 운전하는 경우",
+"instruction": "고속도로에서는 지정된 차로로 통행하십시오.",
+"instruction_en": "Drive in the designated lane on an expressway.",
+"action": "CAUTION",
+"scene": "a multi-lane expressway with lane markings and signs"
+},
+{
+"id": "도로교통법 제60조 ②",
+"title": "갓길 통행금지 등",
+"text": "② 자동차의 운전자는 고속도로에서 다른 차를 앞지르려면 방향지시기, 등화 또는 경음기를 사용하여 행정안전부령으로 정하는 차로로 안전하게 통행하여야 한다.",
+"instruction": "고속도로에서 앞지를 때는 방향지시기·등화·경음기를 쓰십시오.",
+"instruction_en": "When overtaking on an expressway, use turn signal, lights or horn.",
+"action": "CAUTION",
+"scene": "a car overtaking a slower vehicle on an expressway"
+},
+{
+"id": "도로교통법 제62조",
+"title": "횡단 등의 금지",
+"text": "자동차의 운전자는 그 차를 운전하여 고속도로등을 횡단하거나 유턴 또는 후진하여서는 아니 된다. 다만, 긴급자동차 또는 도로의 보수ㆍ유지 등의 작업을 하는 자동차 가운데 고속도로등에서의 위험을 방지ㆍ제거하거나 교통사고에 대한 응급조치작업을 위한 자동차로서 그 목적을 위하여 반드시 필요한 경우에는 그러하지 아니하다.",
+"instruction": "고속도로에서는 횡단, 유턴, 후진을 하지 마십시오.",
+"instruction_en": "Do not cross, make a U-turn or reverse on an expressway.",
+"action": "KEEP_OUT",
+"scene": "an expressway median opening with fast traffic on both sides"
+},
+{
+"id": "도로교통법 제64조",
+"title": "고속도로등에서의 정차 및 주차의 금지",
+"text": "자동차의 운전자는 고속도로등에서 차를 정차하거나 주차시켜서는 아니 된다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 그러하지 아니하다. 1. 법령의 규정 또는 경찰공무원(자치경찰공무원은 제외한다)의 지시에 따르거나 위험을 방지하기 위하여 일시 정차 또는 주차시키는 경우 2. 정차 또는 주차할 수 있도록 안전표지를 설치한 곳이나 정류장에서 정차 또는 주차시키는 경우 3. 고장이나 그 밖의 부득이한 사유로 길가장자리구역(갓길을 포함한다)에 정차 또는 주차시키는 경우 4. 통행료를 내기 위하여 통행료를 받는 곳에서 정차하는 경우 5. 도로의 관리자가 고속도로등을 보수ㆍ유지 또는 순회하기 위하여 정차 또는 주차시키는 경우 6. 경찰용 긴급자동차가 고속도로등에서 범죄수사, 교통단속이나 그 밖의 경찰임무를 수행하기 위하여 정차 또는 주차시키는 경우 6의2. 소방차가 고속도로등에서 화재진압 및 인명 구조ㆍ구급 등 소방활동, 소방지원활동 및 생활안전활동을 수행하기 위하여 정차 또는 주차시키는 경우 6의3. 경찰용 긴급자동차 및 소방차를 제외한 긴급자동차가 사용 목적을 달성하기 위하여 정차 또는 주차시키는 경우 7. 교통이 밀리거나 그 밖의 부득이한 사유로 움직일 ",
+"instruction": "고속도로에서는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park on an expressway.",
+"action": "KEEP_OUT",
+"scene": "a vehicle stopped along an expressway lane or edge"
+},
+{
+"id": "도로교통법 제65조 ①",
+"title": "고속도로 진입 시의 우선순위",
+"text": "① 자동차(긴급자동차는 제외한다)의 운전자는 고속도로에 들어가려고 하는 경우에는 그 고속도로를 통행하고 있는 다른 자동차의 통행을 방해하여서는 아니 된다.",
+"instruction": "고속도로에 진입할 때 본선 차량의 통행을 방해하지 마십시오.",
+"instruction_en": "When entering an expressway, do not obstruct traffic already on it.",
+"action": "YIELD",
+"scene": "an on-ramp merging into expressway traffic"
+},
+{
+"id": "도로교통법 제65조 ②",
+"title": "고속도로 진입 시의 우선순위",
+"text": "② 긴급자동차 외의 자동차의 운전자는 긴급자동차가 고속도로에 들어가는 경우에는 그 진입을 방해하여서는 아니 된다.",
+"instruction": "긴급자동차가 고속도로에 진입할 때 방해하지 마십시오.",
+"instruction_en": "Do not obstruct an emergency vehicle entering an expressway.",
+"action": "YIELD",
+"scene": "an emergency vehicle with flashing lights at an expressway on-ramp"
+},
+{
+"id": "도로교통법 제66조",
+"title": "고장 등의 조치",
+"text": "자동차의 운전자는 고장이나 그 밖의 사유로 고속도로등에서 자동차를 운행할 수 없게 되었을 때에는 행정안전부령으로 정하는 표지(이하 \"고장자동차의 표지\"라 한다)를 설치하여야 하며, 그 자동차를 고속도로등이 아닌 다른 곳으로 옮겨 놓는 등의 필요한 조치를 하여야 한다.",
+"instruction": "고속도로에서 운행 불능이면 고장자동차 표지를 설치하십시오.",
+"instruction_en": "If disabled on an expressway, set up the breakdown warning sign.",
+"action": "CAUTION",
+"scene": "a broken-down car on an expressway with a warning triangle"
+},
+{
+"id": "도로교통법 제67조 ②",
+"title": "운전자의 고속도로등에서의 준수사항",
+"text": "② 고속도로등을 운행하는 자동차의 운전자는 교통의 안전과 원활한 소통을 확보하기 위하여 제66조에 따른 고장자동차의 표지를 항상 비치하며, 고장이나 그 밖의 부득이한 사유로 자동차를 운행할 수 없게 되었을 때에는 자동차를 도로의 우측 가장자리에 정지시키고 행정안전부령으로 정하는 바에 따라 그 표지를 설치하여야 한다.",
+"instruction": "고속도로에서 고장 나면 우측 가장자리에 정지하십시오.",
+"instruction_en": "If broken down on an expressway, stop at the right edge.",
+"action": "STOP",
+"scene": "a disabled car at the right edge of an expressway"
+},
+{
+"id": "도로교통법 제68조 ③",
+"title": "도로에서의 금지행위 등",
+"text": "③ 누구든지 다음 각 호의 어느 하나에 해당하는 행위를 하여서는 아니 된다. 1. 술에 취하여 도로에서 갈팡질팡하는 행위 2. 도로에서 교통에 방해되는 방법으로 눕거나 앉거나 서있는 행위 3. 교통이 빈번한 도로에서 공놀이 또는 썰매타기 등의 놀이를 하는 행위 4. 돌ㆍ유리병ㆍ쇳조각이나 그 밖에 도로에 있는 사람이나 차마를 손상시킬 우려가 있는 물건을 던지거나 발사하는 행위 5. 도로를 통행하고 있는 차마에서 밖으로 물건을 던지는 행위 6. 도로를 통행하고 있는 차마에 뛰어오르거나 매달리거나 차마에서 뛰어내리는 행위 7. 그 밖에 시ㆍ도경찰청장이 교통상의 위험을 방지하기 위하여 필요하다고 인정하여 지정ㆍ공고한 행위",
+"instruction": "주행 중 차 밖으로 물건을 던지지 마십시오.",
+"instruction_en": "Do not throw objects out of a moving vehicle.",
+"action": "CAUTION",
+"scene": "a hand throwing an object out of a moving car window"
+},
+{
+"id": "도로교통법 제92조 ②",
+"title": "운전면허증 휴대 및 제시 등의 의무",
+"text": "② 운전자는 운전 중에 교통안전이나 교통질서 유지를 위하여 경찰공무원이 제1항에 따른 운전면허증등 또는 이를 갈음하는 증명서를 제시할 것을 요구하거나 운전자의 신원 및 운전면허 확인을 위한 질문을 할 때에는 이에 응하여야 한다.",
+"instruction": "운전 중 경찰공무원이 면허증 제시를 요구하면 응하십시오.",
+"instruction_en": "Comply when a police officer asks to see your license while driving.",
+"action": "CAUTION",
+"scene": "a police officer on the road signaling a driver to stop"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색의등화",
+"text": "1. 차마는 정지선이 있거나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며, 이미 교차로에 차마의일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야한다. 2. 차마는 우회전할 수 있고 우회전하는 경우에는 보행자의 횡단을 방해하지 못한다.",
+"instruction": "황색 신호에는 정지선·횡단보도·교차로 직전에 정지하십시오.",
+"instruction_en": "Stop before the stop line, crosswalk or intersection on a yellow light.",
+"action": "STOP",
+"scene": "a yellow traffic light ahead at an intersection with a stop line"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색의등화",
+"text": "1. 차마는 정지선이 있거나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며, 이미 교차로에 차마의일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야한다. 2. 차마는 우회전할 수 있고 우회전하는 경우에는 보행자의 횡단을 방해하지 못한다.",
+"instruction": "이미 교차로에 진입했다면 황색 신호에 신속히 교차로 밖으로 나가십시오.",
+"instruction_en": "If already inside the intersection on yellow, clear it quickly.",
+"action": "CAUTION",
+"scene": "vehicle inside an intersection while the traffic light is yellow"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색의등화",
+"text": "1. 차마는 정지선이 있거나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며, 이미 교차로에 차마의일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야한다. 2. 차마는 우회전할 수 있고 우회전하는 경우에는 보행자의 횡단을 방해하지 못한다.",
+"instruction": "황색 신호에 우회전할 때는 보행자의 횡단을 방해하지 마십시오.",
+"instruction_en": "Do not obstruct pedestrians crossing when turning right on yellow.",
+"action": "YIELD",
+"scene": "a right turn at an intersection with pedestrians in the crosswalk"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색의등화",
+"text": "1. 차마는 정지선, 횡단보도 및 교차로의 직전에서 정지해야 한다. 2. 차마는 우회전하려는 경우 정지선, 횡단보도 및 교차로의 직전에서 정지한 후 신호에 따라 진행하는 다른 차마의 교통을방해하지 않고 우회전할 수 있다. 3. 제2호에도 불구하고 차마는 우회전 삼색등이 적색의 등화인경우 우회전할 수 없다.",
+"instruction": "적색 신호에는 정지선·횡단보도·교차로 직전에서 정지하십시오.",
+"instruction_en": "Stop before the stop line, crosswalk or intersection on a red light.",
+"action": "STOP",
+"scene": "a red traffic light ahead at an intersection with a stop line"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색의등화",
+"text": "1. 차마는 정지선, 횡단보도 및 교차로의 직전에서 정지해야 한다. 2. 차마는 우회전하려는 경우 정지선, 횡단보도 및 교차로의 직전에서 정지한 후 신호에 따라 진행하는 다른 차마의 교통을방해하지 않고 우회전할 수 있다. 3. 제2호에도 불구하고 차마는 우회전 삼색등이 적색의 등화인경우 우회전할 수 없다.",
+"instruction": "적색 신호에 우회전하려면 정지 후 다른 교통을 방해하지 마십시오.",
+"instruction_en": "To turn right on red, stop first and do not obstruct other traffic.",
+"action": "YIELD",
+"scene": "a right turn at a red light with cross traffic moving"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색의등화",
+"text": "1. 차마는 정지선, 횡단보도 및 교차로의 직전에서 정지해야 한다. 2. 차마는 우회전하려는 경우 정지선, 횡단보도 및 교차로의 직전에서 정지한 후 신호에 따라 진행하는 다른 차마의 교통을방해하지 않고 우회전할 수 있다. 3. 제2호에도 불구하고 차마는 우회전 삼색등이 적색의 등화인경우 우회전할 수 없다.",
+"instruction": "우회전 삼색등이 적색이면 우회전하지 마십시오.",
+"instruction_en": "Do not turn right when the right-turn signal is red.",
+"action": "STOP",
+"scene": "a red right-turn traffic light at an intersection"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색등화의점멸",
+"text": "차마는 다른 교통 또는 안전표지의 표시에 주의하면서 진행할수 있다. ",
+"instruction": "황색 점멸 신호에는 다른 교통과 안전표지에 주의하며 진행하십시오.",
+"instruction_en": "On a flashing yellow light, proceed watching other traffic and signs.",
+"action": "CAUTION",
+"scene": "a flashing yellow traffic light over an intersection"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색등화의점멸",
+"text": "차마는 정지선이나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 일시정지한 후 다른 교통에 주의하면서 진행할 수 있다.",
+"instruction": "적색 점멸 신호에는 정지선·횡단보도·교차로 직전에 일시정지하십시오.",
+"instruction_en": "On a flashing red light, stop before the line, then proceed with caution.",
+"action": "STOP",
+"scene": "a flashing red traffic light over an intersection with a stop line"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색화살표의 등화",
+"text": "화살표시 방향으로 진행하려는 차마는 정지선이 있거나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며, 이미 교차로에 차마의 일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야 한다.",
+"instruction": "황색 화살표 신호에 그 방향으로 가려면 정지선 직전에 정지하십시오.",
+"instruction_en": "Stop before the stop line when heading the direction of a yellow arrow.",
+"action": "STOP",
+"scene": "a yellow arrow traffic light at an intersection with a stop line"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색화살표의 등화",
+"text": "화살표시 방향으로 진행하려는 차마는 정지선이 있거나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며, 이미 교차로에 차마의 일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야 한다.",
+"instruction": "황색 화살표 신호에 이미 진입했다면 신속히 교차로를 벗어나십시오.",
+"instruction_en": "If already in the intersection on a yellow arrow, clear it quickly.",
+"action": "CAUTION",
+"scene": "vehicle inside an intersection while the arrow signal is yellow"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색화살표의 등화",
+"text": "화살표시 방향으로 진행하려는 차마는 정지선, 횡단보도 및 교차로의 직전에서 정지하여야 한다. ",
+"instruction": "적색 화살표 방향으로 가려면 정지선·횡단보도·교차로 직전에 정지하십시오.",
+"instruction_en": "Stop before the line when heading the direction of a red arrow.",
+"action": "STOP",
+"scene": "a red arrow traffic light at an intersection with a stop line"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 황색화살표등화의 점멸",
+"text": "차마는 다른 교통 또는 안전표지의 표시에 주의하면서 화살표시방향으로 진행할 수 있다. ",
+"instruction": "황색 화살표 점멸에는 다른 교통에 주의하며 그 방향으로 진행하십시오.",
+"instruction_en": "On a flashing yellow arrow, proceed in that direction watching other traffic.",
+"action": "CAUTION",
+"scene": "a flashing yellow arrow traffic light at an intersection"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색화살표등화의 점멸",
+"text": "차마는 정지선이나 횡단보도가 있을 때에는 그 직전이나 교차로의 직전에 일시정지한 후 다른 교통에 주의하면서 화살표시 방향으로 진행할 수 있다. ",
+"instruction": "적색 화살표 점멸에는 정지선 직전에 일시정지한 뒤 주의하며 진행하십시오.",
+"instruction_en": "On a flashing red arrow, stop before the line, then proceed with caution.",
+"action": "STOP",
+"scene": "a flashing red arrow traffic light at an intersection"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색×표표시의등화",
+"text": "차마는 ×표가 있는 차로로 진행할 수 없다. ",
+"instruction": "적색 × 표시가 있는 차로로는 진행하지 마십시오.",
+"instruction_en": "Do not drive in a lane marked with a red X.",
+"action": "KEEP_OUT",
+"scene": "an overhead lane signal showing a red X above a lane"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색×표표시 등화의 점멸",
+"text": "차마는 ×표가 있는 차로로 진입할 수 없고, 이미 차마의 일부라도 진입한 경우에는 신속히 그 차로 밖으로 진로를 변경하여야한다. ",
+"instruction": "적색 × 점멸 차로에는 진입하지 마십시오.",
+"instruction_en": "Do not enter a lane with a flashing red X.",
+"action": "KEEP_OUT",
+"scene": "an overhead lane signal showing a flashing red X above a lane"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "차량신호등 적색×표표시 등화의 점멸",
+"text": "차마는 ×표가 있는 차로로 진입할 수 없고, 이미 차마의 일부라도 진입한 경우에는 신속히 그 차로 밖으로 진로를 변경하여야한다. ",
+"instruction": "적색 × 점멸 차로에 이미 진입했다면 신속히 차로를 변경하십시오.",
+"instruction_en": "If already in a lane with a flashing red X, change lanes quickly.",
+"action": "CAUTION",
+"scene": "vehicle in a lane under a flashing red X lane signal"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "버스신호등 황색의등화",
+"text": "버스전용차로에 있는 차마는 정지선이 있거나 횡단보도가있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며,이미 교차로에 차마의 일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야 한다.",
+"instruction": "버스전용차로에서 황색 버스 신호에는 정지선 직전에 정지하십시오.",
+"instruction_en": "In a bus lane, stop before the stop line on a yellow bus signal.",
+"action": "STOP",
+"scene": "a yellow bus signal light over a dedicated bus lane"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "버스신호등 황색의등화",
+"text": "버스전용차로에 있는 차마는 정지선이 있거나 횡단보도가있을 때에는 그 직전이나 교차로의 직전에 정지하여야 하며,이미 교차로에 차마의 일부라도 진입한 경우에는 신속히 교차로 밖으로 진행하여야 한다.",
+"instruction": "버스전용차로에서 이미 교차로에 진입했다면 황색 신호에 신속히 나가십시오.",
+"instruction_en": "In a bus lane, if already in the intersection on yellow, clear it quickly.",
+"action": "CAUTION",
+"scene": "bus lane vehicle inside an intersection while the bus signal is yellow"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "버스신호등 적색의등화",
+"text": "버스전용차로에 있는 차마는 정지선, 횡단보도 및 교차로의직전에서 정지하여야 한다.",
+"instruction": "버스전용차로에서 적색 버스 신호에는 정지선 직전에서 정지하십시오.",
+"instruction_en": "In a bus lane, stop before the stop line on a red bus signal.",
+"action": "STOP",
+"scene": "a red bus signal light over a dedicated bus lane"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "버스신호등 황색등화의점멸",
+"text": "버스전용차로에 있는 차마는 다른 교통 또는 안전표지의 표시에 주의하면서 진행할 수 있다. ",
+"instruction": "버스전용차로에서 황색 점멸 신호에는 다른 교통에 주의하며 진행하십시오.",
+"instruction_en": "In a bus lane, on flashing yellow, proceed watching other traffic and signs.",
+"action": "CAUTION",
+"scene": "a flashing yellow bus signal light over a dedicated bus lane"
+},
+{
+"id": "시행규칙 별표 2",
+"title": "버스신호등 적색등화의점멸",
+"text": "버스전용차로에 있는 차마는 정지선이나 횡단보도가 있을때에는 그 직전이나 교차로의 직전에 일시정지한 후 다른교통에 주의하면서 진행할 수 있다.",
+"instruction": "버스전용차로에서 적색 점멸 신호에는 정지선 직전에 일시정지하십시오.",
+"instruction_en": "In a bus lane, on flashing red, stop before the line, then proceed carefully.",
+"action": "STOP",
+"scene": "a flashing red bus signal light over a dedicated bus lane"
+}
+]

@@ -1,0 +1,2243 @@
+[
+{
+"id": "CVC §21100.3",
+"title": "",
+"text": "It is unlawful for any person to disobey the traffic directions of a person appointed or authorized by a local authority to regulate traffic pursuant to subdivision (e) of Section 21100 when such appointee is wearing an official insignia issued by the local authority and is acting in the course of his appointed duties.",
+"instruction": "교통 정리 요원이 지시하면 그 지시를 따르십시오.",
+"instruction_en": "Obey directions from an authorized traffic regulator wearing official insignia.",
+"action": "CAUTION",
+"scene": "Person in official insignia directing traffic in the road"
+},
+{
+"id": "CVC §21209(a)",
+"title": "",
+"text": "(a) No person shall drive a motor vehicle in a bicycle lane established on a roadway pursuant to Section 21207 except as follows: (1) To park where parking is permitted. (2) To enter or leave the roadway. (3) To prepare for a turn within a distance of 200 feet from the intersection.",
+"instruction": "자전거 차로 주행 금지, 회전 준비는 교차로 200피트 이내만 가능.",
+"instruction_en": "Stay out of bicycle lanes except to park, enter, exit, or turn within 200 feet.",
+"action": "KEEP_OUT",
+"scene": "Marked bicycle lane beside the car lane on a roadway"
+},
+{
+"id": "CVC §21452(a)",
+"title": "",
+"text": "(a) A driver facing a steady circular yellow or yellow arrow signal is, by that signal, warned that the related green movement is ending or that a red indication will be shown immediately thereafter.",
+"instruction": "황색 신호에서는 녹색 종료와 적색 임박을 경고하니 주의하십시오.",
+"instruction_en": "A steady yellow signal warns that green is ending and red follows.",
+"action": "CAUTION",
+"scene": "Steady yellow traffic signal ahead at an intersection"
+},
+{
+"id": "CVC §21454(b)",
+"title": "",
+"text": "When lane use control signals are placed over individual lanes, those signals shall indicate and apply to drivers of vehicles as follows: (b) Steady yellow indication: A driver is thereby warned that a lane control change is being made.",
+"instruction": "차로 신호가 황색이면 차로 변경이 진행 중이니 주의하십시오.",
+"instruction_en": "A steady yellow lane signal warns that a lane control change is being made.",
+"action": "CAUTION",
+"scene": "Steady yellow lane-use control signal above a lane"
+},
+{
+"id": "CVC §21454(c)",
+"title": "",
+"text": "When lane use control signals are placed over individual lanes, those signals shall indicate and apply to drivers of vehicles as follows: (c) Steady red indication: A driver shall not enter or travel in any lane over which a red signal is shown.",
+"instruction": "적색 차로 신호가 켜진 차로에는 진입·주행하지 마십시오.",
+"instruction_en": "Do not enter or travel in a lane showing a steady red lane signal.",
+"action": "KEEP_OUT",
+"scene": "Red X lane-use control signal above a lane"
+},
+{
+"id": "CVC §21455",
+"title": "",
+"text": "If an official traffic control signal is erected and maintained at a place other than an intersection, including a freeway or highway on ramp, this article applies, except those provisions that by their nature can have no application. A stop required shall be made at a sign, crosswalk, or limit line indicating where the stop shall be made, but, in the absence of that sign or marking, the stop shall be made at the signal.",
+"instruction": "교차로 밖 신호등에서는 정지선이나 횡단보도 앞에서 정지하십시오.",
+"instruction_en": "At a signal outside an intersection, stop at the sign, crosswalk, or limit line.",
+"action": "STOP",
+"scene": "Traffic signal at a freeway on-ramp or midblock with limit line"
+},
+{
+"id": "CVC §21457(a)",
+"title": "",
+"text": "Whenever an illuminated flashing red or yellow light is used in a traffic signal or with a traffic sign, it shall require obedience by drivers as follows: (a) Flashing red (stop signal): When a red lens is illuminated with rapid intermittent flashes, a driver shall stop at a clearly marked limit line, but if none, before entering the crosswalk on the near side of the intersection, or if none, then at the point nearest the intersecting roadway where the driver has a view of approaching traffic on the intersecting roadway before entering it, and the driver may proceed subject to the rules applic",
+"instruction": "점멸 적색 신호에서는 정지선 앞에서 정지하십시오.",
+"instruction_en": "Stop at the limit line for a flashing red signal.",
+"action": "STOP",
+"scene": "Flashing red signal at an intersection with a limit line"
+},
+{
+"id": "CVC §21457(b)",
+"title": "",
+"text": "Whenever an illuminated flashing red or yellow light is used in a traffic signal or with a traffic sign, it shall require obedience by drivers as follows: (b) Flashing yellow (caution signal): When a yellow lens is illuminated with rapid intermittent flashes, a driver may proceed through the intersection or past the signal only with caution.",
+"instruction": "점멸 황색 신호에서는 주의하며 통과하십시오.",
+"instruction_en": "Proceed only with caution past a flashing yellow signal.",
+"action": "CAUTION",
+"scene": "Flashing yellow signal at an intersection"
+},
+{
+"id": "CVC §21458(a)",
+"title": "",
+"text": "(a) Whenever local authorities enact local parking regulations and indicate them by the use of paint upon curbs, the following colors only shall be used, and the colors indicate as follows: (1) Red indicates no stopping, standing, or parking, whether the vehicle is attended or unattended, except that a bus may stop in a red zone marked or signposted as a bus loading zone. (2) Yellow indicates stopping only for the purpose of loading or unloading passengers or freight for the time as may be specified by local ordinance. (3) White indicates stopping for either of the following purposes: (A) Load",
+"instruction": "적색 연석에서는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop, stand, or park at a red curb.",
+"action": "KEEP_OUT",
+"scene": "Curb painted red along the roadside"
+},
+{
+"id": "CVC §21458(a)",
+"title": "",
+"text": "(a) Whenever local authorities enact local parking regulations and indicate them by the use of paint upon curbs, the following colors only shall be used, and the colors indicate as follows: (1) Red indicates no stopping, standing, or parking, whether the vehicle is attended or unattended, except that a bus may stop in a red zone marked or signposted as a bus loading zone. (2) Yellow indicates stopping only for the purpose of loading or unloading passengers or freight for the time as may be specified by local ordinance. (3) White indicates stopping for either of the following purposes: (A) Load",
+"instruction": "황색 연석에서는 승객·화물 승하차 때만 정차하십시오.",
+"instruction_en": "Stop at a yellow curb only to load or unload passengers or freight.",
+"action": "KEEP_OUT",
+"scene": "Curb painted yellow along the roadside"
+},
+{
+"id": "CVC §21458(a)",
+"title": "",
+"text": "(a) Whenever local authorities enact local parking regulations and indicate them by the use of paint upon curbs, the following colors only shall be used, and the colors indicate as follows: (1) Red indicates no stopping, standing, or parking, whether the vehicle is attended or unattended, except that a bus may stop in a red zone marked or signposted as a bus loading zone. (2) Yellow indicates stopping only for the purpose of loading or unloading passengers or freight for the time as may be specified by local ordinance. (3) White indicates stopping for either of the following purposes: (A) Load",
+"instruction": "백색 연석에서는 지정된 목적으로만 정차하십시오.",
+"instruction_en": "Stop at a white curb only for its designated purposes.",
+"action": "KEEP_OUT",
+"scene": "Curb painted white along the roadside"
+},
+{
+"id": "CVC §21460(a)",
+"title": "",
+"text": "(a) If double parallel solid yellow lines are in place, a person driving a vehicle shall not drive to the left of the lines, except as permitted in this section.",
+"instruction": "이중 황색 실선 구간에서는 선의 왼쪽으로 주행하지 마십시오.",
+"instruction_en": "Do not drive to the left of double solid yellow lines.",
+"action": "KEEP_OUT",
+"scene": "Double solid yellow center lines on a two-way road"
+},
+{
+"id": "CVC §21460(b)",
+"title": "",
+"text": "(b) If double parallel solid white lines are in place, a person driving a vehicle shall not cross any part of those double solid white lines, except as permitted in this section or Section 21655.8.",
+"instruction": "이중 백색 실선 구간에서는 선을 넘지 마십시오.",
+"instruction_en": "Do not cross double solid white lines.",
+"action": "KEEP_OUT",
+"scene": "Double solid white lines separating lanes"
+},
+{
+"id": "CVC §21460(c)",
+"title": "",
+"text": "(c) If the double parallel lines, one of which is broken, are in place, a person driving a vehicle shall not drive to the left of the lines, except as follows: (1) If the driver is on the side of the roadway in which the broken line is in place, the driver may cross over the double lines or drive to the left of the double lines when overtaking or passing other vehicles. (2) As provided in Section 21460.5.",
+"instruction": "한쪽이 점선인 이중선은 점선 쪽에서 앞지를 때만 넘으십시오.",
+"instruction_en": "Cross double lines with one broken line only when overtaking from the broken side.",
+"action": "NO_OVERTAKING",
+"scene": "Double yellow lines, one solid and one broken, on a road"
+},
+{
+"id": "CVC §21460.5(c)",
+"title": "",
+"text": "(c) A vehicle shall not be driven in a designated two-way left-turn lane except when preparing for or making a left turn from or into a highway or when preparing for or making a U-turn when otherwise permitted by law, and shall not be driven in that lane for more than 200 feet while preparing for and making the turn or while preparing to merge into the adjacent lanes of travel. A left turn or U-turn shall not be made from any other lane where a two-way left-turn lane has been designated.",
+"instruction": "양방향 좌회전 차선에서는 좌회전·U턴 준비나 실행 때만 주행하십시오.",
+"instruction_en": "Use a two-way left-turn lane only to prepare for or make left turns or U-turns.",
+"action": "KEEP_OUT",
+"scene": "Center lane with dashed and solid double yellow lines"
+},
+{
+"id": "CVC §21460.5(c)",
+"title": "",
+"text": "(c) A vehicle shall not be driven in a designated two-way left-turn lane except when preparing for or making a left turn from or into a highway or when preparing for or making a U-turn when otherwise permitted by law, and shall not be driven in that lane for more than 200 feet while preparing for and making the turn or while preparing to merge into the adjacent lanes of travel. A left turn or U-turn shall not be made from any other lane where a two-way left-turn lane has been designated.",
+"instruction": "양방향 좌회전 차선에서는 200피트를 넘게 주행하지 마십시오.",
+"instruction_en": "Do not drive more than 200 feet in a two-way left-turn lane.",
+"action": "KEEP_OUT",
+"scene": "Center two-way left-turn lane with left-turn arrows"
+},
+{
+"id": "CVC §21460.5(c)",
+"title": "",
+"text": "(c) A vehicle shall not be driven in a designated two-way left-turn lane except when preparing for or making a left turn from or into a highway or when preparing for or making a U-turn when otherwise permitted by law, and shall not be driven in that lane for more than 200 feet while preparing for and making the turn or while preparing to merge into the adjacent lanes of travel. A left turn or U-turn shall not be made from any other lane where a two-way left-turn lane has been designated.",
+"instruction": "양방향 좌회전 차선이 있으면 다른 차로에서 좌회전·U턴하지 마십시오.",
+"instruction_en": "Do not turn left or U-turn from another lane where a two-way left-turn lane exists.",
+"action": "KEEP_OUT",
+"scene": "Road with center two-way left-turn lane, car in outer lane"
+},
+{
+"id": "CVC §21462(a)",
+"title": "",
+"text": "(a) The driver of a vehicle, the person in charge of an animal, a pedestrian, and the motorist of a streetcar shall obey the instructions of an official traffic signal applicable to them and placed as provided by law, unless otherwise directed by a police or traffic officer or when it is necessary for the purpose of avoiding a collision or in case of other emergency, subject to the exemptions granted by Section 21055.",
+"instruction": "신호는 경찰관 지시나 충돌 회피·비상 때를 제외하고 따르십시오.",
+"instruction_en": "Obey official traffic signals unless an officer directs otherwise or to avoid collision.",
+"action": "CAUTION",
+"scene": "Traffic signal at an intersection, possibly with an officer"
+},
+{
+"id": "CVC §21454(d)",
+"title": "",
+"text": "When lane use control signals are placed over individual lanes, those signals shall indicate and apply to drivers of vehicles as follows: (d) Flashing yellow indication: A driver may use the lane only for the purpose of making a left turn to or from the highway.",
+"instruction": "점멸 황색 차로 신호 아래 차로는 좌회전 목적으로만 쓰십시오.",
+"instruction_en": "Use a lane under a flashing yellow lane signal only for left turns.",
+"action": "CAUTION",
+"scene": "Overhead flashing yellow lane control signal above a lane"
+},
+{
+"id": "CVC §21367(b)",
+"title": "",
+"text": "(b) It is unlawful to disobey the instructions of a person controlling and directing traffic pursuant to subdivision (a).",
+"instruction": "공사 구간에서는 교통 통제 요원의 지시를 따르십시오.",
+"instruction_en": "Obey the person directing traffic in the road work zone.",
+"action": "CAUTION",
+"scene": "Worker directing traffic in a highway construction zone"
+},
+{
+"id": "CVC §21367(c)",
+"title": "",
+"text": "(c) It is unlawful to fail to comply with the directions of warning signs, lights, or other control devices provided for the regulation of traffic pursuant to subdivision (a).",
+"instruction": "공사 구간에서는 경고 표지와 신호 등 통제 장치를 따르십시오.",
+"instruction_en": "Comply with warning signs and lights in the road work zone.",
+"action": "CAUTION",
+"scene": "Warning signs and flashing lights at highway construction site"
+},
+{
+"id": "CVC §21211(a)",
+"title": "",
+"text": "(a) No person may stop, stand, sit, or loiter upon any class I bikeway, as defined in subdivision (a) of Section 890.4 of the Streets and Highways Code, or any other public or private bicycle path or trail, if the stopping, standing, sitting, or loitering impedes or blocks the normal and reasonable movement of any bicyclist.",
+"instruction": "자전거도로에서는 자전거 통행을 막는 정차를 하지 마십시오.",
+"instruction_en": "Do not stop on a bike path where you block bicyclists.",
+"action": "KEEP_OUT",
+"scene": "Vehicle stopped on a bike path with bicyclists approaching"
+},
+{
+"id": "CVC §21211(b)",
+"title": "",
+"text": "(b) No person may place or park any bicycle, vehicle, or any other object upon any bikeway or bicycle path or trail, as specified in subdivision (a), which impedes or blocks the normal and reasonable movement of any bicyclist unless the placement or parking is necessary for safe operation or is otherwise in compliance with the law.",
+"instruction": "자전거도로에는 자전거 통행을 막는 주차를 하지 마십시오.",
+"instruction_en": "Do not park on a bikeway where you block bicyclists.",
+"action": "KEEP_OUT",
+"scene": "Parked vehicle blocking a marked bikeway"
+},
+{
+"id": "CVC §21260(a)",
+"title": "",
+"text": "(a) Except as provided in paragraph (1) of subdivision (b), or in an area where a neighborhood electric vehicle transportation plan has been adopted pursuant to Chapter 8 (commencing with Section 1965) of Division 2.5 of the Streets and Highways Code, the operator of a low-speed vehicle shall not operate the vehicle on any roadway with a speed limit in excess of 35 miles per hour.",
+"instruction": "제한속도 35마일 초과 도로에서는 저속 차량을 운행하지 마십시오.",
+"instruction_en": "Do not operate a low-speed vehicle on roads above 35 mph.",
+"action": "KEEP_OUT",
+"scene": "Low-speed vehicle entering a road with speed limit above 35 mph"
+},
+{
+"id": "CVC §21655(b)",
+"title": "",
+"text": "(b) Any trailer bus, except as provided in Section 21655.5, and any vehicle subject to the provisions of Section 22406 shall be driven in the lane or lanes designated pursuant to subdivision (a) whenever signs have been erected giving notice of that designation. Except as otherwise provided in this subdivision, when a specific lane or lanes have not been so designated, any of those vehicles shall be driven in the right-hand lane for traffic or as close as practicable to the right edge or curb. If, however, a specific lane or lanes have not been designated on a divided highway having four or mo",
+"instruction": "지정 차로 표지가 있으면 §22406 적용 차량은 그 차로로 가십시오.",
+"instruction_en": "Vehicles under §22406 must use the lane designated by signs.",
+"action": "CAUTION",
+"scene": "Overhead sign designating a lane for slow vehicles on a highway"
+},
+{
+"id": "CVC §21655(b)",
+"title": "",
+"text": "(b) Any trailer bus, except as provided in Section 21655.5, and any vehicle subject to the provisions of Section 22406 shall be driven in the lane or lanes designated pursuant to subdivision (a) whenever signs have been erected giving notice of that designation. Except as otherwise provided in this subdivision, when a specific lane or lanes have not been so designated, any of those vehicles shall be driven in the right-hand lane for traffic or as close as practicable to the right edge or curb. If, however, a specific lane or lanes have not been designated on a divided highway having four or mo",
+"instruction": "지정 차로가 없으면 §22406 적용 차량은 맨 오른쪽 차로로 가십시오.",
+"instruction_en": "With no designated lane, §22406 vehicles drive in the right-hand lane.",
+"action": "CAUTION",
+"scene": "Multi-lane highway with no slow-vehicle lane signs, truck in right lane"
+},
+{
+"id": "CVC §21655.5(b)",
+"title": "",
+"text": "(b) The Department of Transportation and local authorities, with respect to highways under their respective jurisdictions, shall place and maintain, or cause to be placed and maintained, signs and other official traffic control devices to designate the exclusive or preferential lanes, to advise motorists of the applicable vehicle occupancy levels, and, except where ramp metering and bypass lanes are regulated with the activation of traffic signals, to advise motorists of the hours of high-occupancy vehicle usage. A person shall not drive a vehicle upon those lanes except in conformity with the",
+"instruction": "HOV 차로는 표지의 탑승 인원 조건을 충족할 때만 주행하십시오.",
+"instruction_en": "Drive in HOV lanes only when meeting the posted occupancy requirement.",
+"action": "KEEP_OUT",
+"scene": "HOV lane with diamond markings and occupancy sign"
+},
+{
+"id": "CVC §21655.9(b)",
+"title": "",
+"text": "(b) A person shall not drive a vehicle described in subdivision (a) of Section 5205.5 with a single occupant upon a high-occupancy vehicle lane pursuant to this section unless the decal, label, or other identifier issued pursuant to Section 5205.5 is properly displayed on the vehicle, and the vehicle registration described in Section 5205.5 is with the vehicle.",
+"instruction": "HOV 차로에 혼자 탄 채 진입하려면 식별 스티커를 부착하십시오.",
+"instruction_en": "Single occupant in HOV lane requires the decal displayed and registration carried.",
+"action": "KEEP_OUT",
+"scene": "HOV lane entrance with sign, vehicle with single occupant"
+},
+{
+"id": "CVC §21656",
+"title": "",
+"text": "On a two-lane highway where passing is unsafe because of traffic in the opposite direction or other conditions, any vehicle proceeding upon the highway at a speed less than the normal speed of traffic moving in the same direction at that time, behind which five or more vehicles are formed in line, shall turn off the roadway at the nearest place designated as a turnout by signs erected by the authority having jurisdiction over the highway, or wherever sufficient area for a safe turnout exists, in order to permit the vehicles following it to proceed.",
+"instruction": "뒤에 차량 5대 이상이 따르면 가장 가까운 대피 구간으로 비켜 주십시오.",
+"instruction_en": "With five or more vehicles queued behind, pull into the nearest turnout.",
+"action": "YIELD",
+"scene": "Slow vehicle on two-lane road, long queue behind, turnout sign ahead"
+},
+{
+"id": "CVC §21660",
+"title": "",
+"text": "Drivers of vehicles proceeding in opposite directions shall pass each other to the right, and, except when a roadway has been divided into traffic lanes, each driver shall give to the other at least one-half of the main traveled portion of the roadway whenever possible.",
+"instruction": "마주 오는 차와는 서로 오른쪽으로 지나가십시오.",
+"instruction_en": "Pass oncoming vehicles to the right.",
+"action": "CAUTION",
+"scene": "Oncoming vehicle approaching on a two-way road"
+},
+{
+"id": "CVC §21660",
+"title": "",
+"text": "Drivers of vehicles proceeding in opposite directions shall pass each other to the right, and, except when a roadway has been divided into traffic lanes, each driver shall give to the other at least one-half of the main traveled portion of the roadway whenever possible.",
+"instruction": "차로 구분이 없으면 마주 오는 차에 도로 절반 이상을 내주십시오.",
+"instruction_en": "On undivided roads, give oncoming drivers at least half the roadway.",
+"action": "YIELD",
+"scene": "Narrow road without lane markings, oncoming vehicle"
+},
+{
+"id": "CVC §21664",
+"title": "",
+"text": "It is unlawful for the driver of any vehicle to enter or exit any freeway which has full control of access and no crossings at grade, except upon a designated on ramp with respect to entering the freeway or a designated off ramp with respect to exiting the freeway.",
+"instruction": "고속도로는 지정된 진입 램프와 진출 램프로만 드나드십시오.",
+"instruction_en": "Enter or exit freeways only via designated on-ramps and off-ramps.",
+"action": "KEEP_OUT",
+"scene": "Freeway edge with no ramp, access-controlled barrier"
+},
+{
+"id": "CVC §21703",
+"title": "",
+"text": "The driver of a motor vehicle shall not follow another vehicle more closely than is reasonable and prudent, having due regard for the speed of such vehicle and the traffic upon, and the condition of, the roadway.",
+"instruction": "앞차와는 속도와 도로 상태에 맞게 합당한 안전거리를 유지하십시오.",
+"instruction_en": "Keep a reasonable, prudent following distance from the vehicle ahead.",
+"action": "CAUTION",
+"scene": "Vehicle directly ahead on the road at close range"
+},
+{
+"id": "CVC §21705",
+"title": "",
+"text": "Motor vehicles being driven outside of a business or residence district in a caravan or motorcade, whether or not towing other vehicles, shall be so operated as to allow sufficient space and in no event less than 100 feet between each vehicle or combination of vehicles so as to enable any other vehicle to overtake or pass.",
+"instruction": "시가지 밖 차량 행렬 주행 시 차 사이를 100피트 이상 띄우십시오.",
+"instruction_en": "In a caravan outside town, keep at least 100 feet between vehicles.",
+"action": "CAUTION",
+"scene": "Convoy of vehicles driving on a rural highway"
+},
+{
+"id": "CVC §21708",
+"title": "",
+"text": "No person shall drive or propel any vehicle or conveyance upon, over, or across, or in any manner damage any fire hose or chemical hose used by or under the supervision and control of any organized fire department. However, any vehicle may cross a hose provided suitable jumpers or other appliances are installed to protect the hose.",
+"instruction": "소방 호스 위나 옆을 지나 호스를 손상시키며 주행하지 마십시오.",
+"instruction_en": "Do not drive over or damage a fire hose.",
+"action": "KEEP_OUT",
+"scene": "Fire hose lying across the road"
+},
+{
+"id": "CVC §21711",
+"title": "",
+"text": "No person shall operate a train of vehicles when any vehicle being towed whips or swerves from side to side or fails to follow substantially in the path of the towing vehicle.",
+"instruction": "견인 중 뒤 차량이 좌우로 흔들리면 그 상태로 주행하지 마십시오.",
+"instruction_en": "Do not drive a towed train whose vehicle whips or swerves sideways.",
+"action": "CAUTION",
+"scene": "Towed trailer swerving side to side behind towing vehicle"
+},
+{
+"id": "CVC §21712(a)",
+"title": "",
+"text": "(a) A person driving a motor vehicle shall not knowingly permit a person to ride on a vehicle or upon a portion of a vehicle that is not designed or intended for the use of passengers.",
+"instruction": "차량의 승객용이 아닌 부분에 사람을 알고도 태우지 마십시오.",
+"instruction_en": "Do not knowingly let anyone ride on a non-passenger part of the vehicle.",
+"action": "CAUTION",
+"scene": "Person riding on the outside of a vehicle"
+},
+{
+"id": "CVC §21712(c)",
+"title": "",
+"text": "(c) A person driving a motor vehicle shall not knowingly permit a person to ride in the trunk of that motor vehicle.",
+"instruction": "차량 트렁크에 사람을 알고도 태우지 마십시오.",
+"instruction_en": "Do not knowingly let anyone ride in the trunk.",
+"action": "CAUTION",
+"scene": "Vehicle with a person inside the open trunk"
+},
+{
+"id": "CVC §21712(g)",
+"title": "",
+"text": "(g) A person shall not drive a motor vehicle that is towing a trailer coach, camp trailer, or trailer carrying a vessel, containing a passenger, except when a trailer carrying or designed to carry a vessel is engaged in the launching or recovery of the vessel.",
+"instruction": "트레일러를 견인할 때는 트레일러 안에 승객을 태우지 마십시오.",
+"instruction_en": "Do not tow a trailer coach or camp trailer containing a passenger.",
+"action": "CAUTION",
+"scene": "Pickup towing a camp trailer on a road"
+},
+{
+"id": "CVC §21712(h)",
+"title": "",
+"text": "(h) A person shall not knowingly drive a motor vehicle that is towing a person riding upon a motorcycle, motorized bicycle, bicycle, coaster, roller skates, sled, skis, or toy vehicle.",
+"instruction": "오토바이, 자전거, 스케이트 등에 탄 사람을 알고도 견인하지 마십시오.",
+"instruction_en": "Do not knowingly tow a person riding a bicycle, skates, or sled.",
+"action": "CAUTION",
+"scene": "Person on bicycle or skates holding onto a vehicle for towing"
+},
+{
+"id": "CVC §21716",
+"title": "",
+"text": "Except as provided in Section 21115.1 and Chapter 6 (commencing with Section 1950) of Division 2.5 of the Streets and Highways Code, no person shall operate a golf cart on any highway except in a speed zone of 25 miles per hour or less.",
+"instruction": "골프카트는 시속 25마일 이하 속도 구역 밖 도로에서 운행하지 마십시오.",
+"instruction_en": "Golf carts may use highways only in speed zones of 25 mph or less.",
+"action": "KEEP_OUT",
+"scene": "Golf cart on a road with higher speed limit sign"
+},
+{
+"id": "CVC §21718(a)",
+"title": "",
+"text": "(a) No person shall stop, park, or leave standing any vehicle upon a freeway which has full control of access and no crossings at grade except: (1) When necessary to avoid injury or damage to persons or property. (2) When required by law or in obedience to a peace officer or official traffic control device. (3) When any person is actually engaged in maintenance or construction on freeway property or any employee of a public agency is actually engaged in the performance of official duties. (4) When any vehicle is so disabled that it is impossible to avoid temporarily stopping and another vehicl",
+"instruction": "출입 통제 고속도로에서는 정차, 주차, 서 있기를 하지 마십시오.",
+"instruction_en": "Do not stop, park, or stand on a controlled-access freeway.",
+"action": "KEEP_OUT",
+"scene": "Freeway shoulder or lane with a stopped vehicle"
+},
+{
+"id": "CVC §21750(a)",
+"title": "",
+"text": "(a) The driver of a vehicle overtaking another vehicle proceeding in the same direction shall pass to the left at a safe distance without interfering with the safe operation of the overtaken vehicle, subject to the limitations and exceptions set forth in this article.",
+"instruction": "앞지를 때는 앞차에 지장 없는 안전거리를 두고 왼쪽으로 지나가십시오.",
+"instruction_en": "Pass overtaken vehicles on the left at a safe distance.",
+"action": "CAUTION",
+"scene": "Vehicle ahead moving slower in same direction, left lane open"
+},
+{
+"id": "CVC §21755(a)",
+"title": "",
+"text": "(a) The driver of a vehicle may overtake and pass another vehicle upon the right only under conditions permitting that movement in safety. In no event shall that movement be made by driving off the paved or main-traveled portion of the roadway.",
+"instruction": "오른쪽 앞지르기는 안전이 확보될 때만 하십시오.",
+"instruction_en": "Pass on the right only when it can be done safely.",
+"action": "NO_OVERTAKING",
+"scene": "Slower vehicle ahead with space on its right side"
+},
+{
+"id": "CVC §21755(a)",
+"title": "",
+"text": "(a) The driver of a vehicle may overtake and pass another vehicle upon the right only under conditions permitting that movement in safety. In no event shall that movement be made by driving off the paved or main-traveled portion of the roadway.",
+"instruction": "앞지르려고 포장된 주행 부분 밖으로 나가지 마십시오.",
+"instruction_en": "Never pass by driving off the paved or main-traveled roadway.",
+"action": "NO_OVERTAKING",
+"scene": "Vehicle ahead and unpaved shoulder beside the roadway"
+},
+{
+"id": "CVC §23109(a)",
+"title": "",
+"text": "(a) A person shall not engage in a motor vehicle speed contest on a highway or in an offstreet parking facility. As used in this section, a motor vehicle speed contest includes a motor vehicle race against another vehicle, a clock, or other timing device. For purposes of this section, an event in which the time to cover a prescribed route of more than 20 miles is measured, but in which the vehicle does not exceed the speed limit, is not a speed contest.",
+"instruction": "도로나 노외주차장에서 속도 경쟁을 하지 마십시오.",
+"instruction_en": "Do not engage in a speed contest on highways or parking facilities.",
+"action": "SLOW_DOWN",
+"scene": "Vehicles racing side by side on a road"
+},
+{
+"id": "CVC §23109(c)",
+"title": "",
+"text": "(c) A person shall not engage in a motor vehicle exhibition of speed on a highway or in an offstreet parking facility, and a person shall not aid or abet in a motor vehicle exhibition of speed on a highway or in an offstreet parking facility.",
+"instruction": "도로나 노외주차장에서 속도 과시 주행을 하지 마십시오.",
+"instruction_en": "Do not perform exhibitions of speed on highways or parking facilities.",
+"action": "SLOW_DOWN",
+"scene": "Vehicle accelerating aggressively or drifting on a road"
+},
+{
+"id": "CVC §23123.5(a)",
+"title": "",
+"text": "(a) A person shall not drive a motor vehicle while holding and operating a handheld wireless telephone or an electronic wireless communications device unless the wireless telephone or electronic wireless communications device is specifically designed and configured to allow voice-operated and hands-free operation, and it is used in that manner while driving.",
+"instruction": "운전 중에는 휴대전화를 손에 들고 조작하지 마십시오.",
+"instruction_en": "Do not hold and operate a phone while driving.",
+"action": "CAUTION",
+"scene": "Driver holding a phone while the car moves on a road"
+},
+{
+"id": "CVC §21760(b)",
+"title": "",
+"text": "(b) The driver of a motor vehicle overtaking and passing a bicycle that is proceeding in the same direction on a highway shall pass in compliance with the requirements of this article applicable to overtaking and passing a vehicle, and shall do so at a safe distance that does not interfere with the safe operation of the overtaken bicycle, having due regard for the size and speed of the motor vehicle and the bicycle, traffic conditions, weather, visibility, and the surface and width of the highway.",
+"instruction": "자전거를 추월할 때는 안전한 거리를 두십시오.",
+"instruction_en": "Pass a bicycle at a safe distance.",
+"action": "CAUTION",
+"scene": "Bicycle ahead traveling in the same direction on the road"
+},
+{
+"id": "CVC §21760(c)",
+"title": "",
+"text": "(c) A driver of a motor vehicle shall not overtake or pass a bicycle proceeding in the same direction on a highway at a distance of less than three feet between any part of the motor vehicle and any part of the bicycle or its operator. The driver of a motor vehicle overtaking or passing a bicycle that is proceeding in the same direction and in the same lane of travel shall, if another lane of traffic proceeding in the same direction is available, make a lane change into another available lane with due regard for safety and traffic conditions, if practicable and not prohibited by law, before ov",
+"instruction": "자전거를 추월할 때는 3피트 미만으로 접근하지 마십시오.",
+"instruction_en": "Do not pass a bicycle closer than three feet.",
+"action": "CAUTION",
+"scene": "Cyclist riding ahead in the same direction as the car"
+},
+{
+"id": "CVC §21760(c)",
+"title": "",
+"text": "(c) A driver of a motor vehicle shall not overtake or pass a bicycle proceeding in the same direction on a highway at a distance of less than three feet between any part of the motor vehicle and any part of the bicycle or its operator. The driver of a motor vehicle overtaking or passing a bicycle that is proceeding in the same direction and in the same lane of travel shall, if another lane of traffic proceeding in the same direction is available, make a lane change into another available lane with due regard for safety and traffic conditions, if practicable and not prohibited by law, before ov",
+"instruction": "같은 차로의 자전거는 가능하면 다른 차로로 옮겨 추월하십시오.",
+"instruction_en": "If practicable, change lanes to pass a bicycle in your lane.",
+"action": "CAUTION",
+"scene": "Cyclist in the same lane with another lane available"
+},
+{
+"id": "CVC §21760(d)",
+"title": "",
+"text": "(d) If the driver of a motor vehicle is unable to comply with subdivision (c), due to traffic or roadway conditions, the driver shall slow to a speed that is reasonable and prudent, and may pass only when doing so would not endanger the safety of the operator of the bicycle, taking into account the size and speed of the motor vehicle and bicycle, traffic conditions, weather, visibility, and surface and width of the highway.",
+"instruction": "3피트를 둘 수 없으면 합리적이고 신중한 속도로 감속하십시오.",
+"instruction_en": "If three feet is impossible, slow to a reasonable and prudent speed.",
+"action": "SLOW_DOWN",
+"scene": "Cyclist ahead on narrow road with traffic blocking lane change"
+},
+{
+"id": "CVC §21800(a)",
+"title": "",
+"text": "(a) The driver of a vehicle approaching an intersection shall yield the right-of-way to any vehicle which has entered the intersection from a different highway.",
+"instruction": "교차로 접근 시 다른 도로에서 먼저 진입한 차량에 양보하십시오.",
+"instruction_en": "Yield to vehicles already in the intersection from another road.",
+"action": "YIELD",
+"scene": "Vehicle already inside intersection crossing from a different road"
+},
+{
+"id": "CVC §21800(b)",
+"title": "",
+"text": "(b) (1) When two vehicles enter an intersection from different highways at the same time, the driver of the vehicle on the left shall yield the right-of-way to the vehicle on his or her immediate right, except that the driver of any vehicle on a terminating highway shall yield the right-of-way to any vehicle on the intersecting continuing highway. (2) For the purposes of this section, “terminating highway” means a highway which intersects, but does not continue beyond the intersection, with another highway which does continue beyond the intersection.",
+"instruction": "동시에 교차로에 진입하면 왼쪽 차량은 오른쪽 차량에 양보하십시오.",
+"instruction_en": "When entering together, the left vehicle yields to the right vehicle.",
+"action": "YIELD",
+"scene": "Two vehicles entering an intersection at the same time from different roads"
+},
+{
+"id": "CVC §21800(b)",
+"title": "",
+"text": "(b) (1) When two vehicles enter an intersection from different highways at the same time, the driver of the vehicle on the left shall yield the right-of-way to the vehicle on his or her immediate right, except that the driver of any vehicle on a terminating highway shall yield the right-of-way to any vehicle on the intersecting continuing highway. (2) For the purposes of this section, “terminating highway” means a highway which intersects, but does not continue beyond the intersection, with another highway which does continue beyond the intersection.",
+"instruction": "끝나는 도로에서 진입할 때는 계속되는 도로의 차량에 양보하십시오.",
+"instruction_en": "On a terminating highway, yield to vehicles on the continuing highway.",
+"action": "YIELD",
+"scene": "T-intersection where the car's road ends at a continuing road"
+},
+{
+"id": "CVC §21800(c)",
+"title": "",
+"text": "(c) When two vehicles enter an intersection from different highways at the same time and the intersection is controlled from all directions by stop signs, the driver of the vehicle on the left shall yield the right-of-way to the vehicle on his or her immediate right.",
+"instruction": "전방향 정지 표지 교차로에서 동시 진입 시 왼쪽 차량이 양보하십시오.",
+"instruction_en": "At an all-way stop, the left vehicle yields to the right vehicle.",
+"action": "YIELD",
+"scene": "Intersection with stop signs on all sides and vehicles arriving together"
+},
+{
+"id": "CVC §21800(d)",
+"title": "",
+"text": "(d) (1) The driver of any vehicle approaching an intersection which has official traffic control signals that are inoperative shall stop at the intersection, and may proceed with caution when it is safe to do so. (2) When two vehicles enter an intersection from different highways at the same time, and the official traffic control signals for the intersection are inoperative, the driver of the vehicle on the left shall yield the right-of-way to the vehicle on his or her immediate right, except that the driver of any vehicle on a terminating highway shall yield the right-of-way to any vehicle on",
+"instruction": "신호등이 꺼진 교차로에서는 정지한 뒤 안전할 때 주의해 진행하십시오.",
+"instruction_en": "Stop at an intersection with inoperative signals, then proceed with caution.",
+"action": "STOP",
+"scene": "Intersection with traffic signals dark or inoperative"
+},
+{
+"id": "CVC §21800(d)",
+"title": "",
+"text": "(d) (1) The driver of any vehicle approaching an intersection which has official traffic control signals that are inoperative shall stop at the intersection, and may proceed with caution when it is safe to do so. (2) When two vehicles enter an intersection from different highways at the same time, and the official traffic control signals for the intersection are inoperative, the driver of the vehicle on the left shall yield the right-of-way to the vehicle on his or her immediate right, except that the driver of any vehicle on a terminating highway shall yield the right-of-way to any vehicle on",
+"instruction": "신호등이 꺼진 교차로에 동시 진입하면 왼쪽 차량이 양보하십시오.",
+"instruction_en": "At dark signals, the left vehicle yields to the right vehicle.",
+"action": "YIELD",
+"scene": "Two vehicles entering an intersection with dark traffic signals"
+},
+{
+"id": "CVC §21758",
+"title": "",
+"text": "In the event any vehicle is being operated on any grade outside of a business or residence district at a speed of less than 20 miles per hour, no person operating any other motor vehicle shall attempt to overtake and pass such slow moving vehicle unless the overtaking vehicle is operated at a speed of at least 10 miles per hour in excess of the speed of the overtaken vehicle, nor unless the passing movement is completed within a total distance not greater than one-quarter of a mile.",
+"instruction": "시가지 밖 경사로 20마일 미만 차는 10마일 이상 빨라야 추월하십시오.",
+"instruction_en": "On grades, pass a vehicle under 20 mph only if 10 mph faster.",
+"action": "NO_OVERTAKING",
+"scene": "Slow vehicle climbing a grade outside town on an open road"
+},
+{
+"id": "CVC §21758",
+"title": "",
+"text": "In the event any vehicle is being operated on any grade outside of a business or residence district at a speed of less than 20 miles per hour, no person operating any other motor vehicle shall attempt to overtake and pass such slow moving vehicle unless the overtaking vehicle is operated at a speed of at least 10 miles per hour in excess of the speed of the overtaken vehicle, nor unless the passing movement is completed within a total distance not greater than one-quarter of a mile.",
+"instruction": "시가지 밖 경사로에서는 4분의 1마일 안에 추월을 끝내십시오.",
+"instruction_en": "On grades outside districts, complete passing within one-quarter mile.",
+"action": "NO_OVERTAKING",
+"scene": "Slow vehicle ahead on an uphill road outside residential area"
+},
+{
+"id": "CVC §21809(a)",
+"title": "",
+"text": "(a) A person driving a vehicle on a highway approaching a stationary authorized emergency vehicle that is displaying emergency lights, a stationary tow truck that is displaying flashing amber warning lights, a stationary marked highway maintenance vehicle that is displaying flashing amber warning lights, or any other stationary vehicle displaying flashing hazard lights or another warning device, including, but not limited to, cones, flares, or retroreflective devices, shall approach with due caution and, before passing in a lane immediately adjacent to the authorized emergency vehicle, tow tru",
+"instruction": "경고등을 켠 정차 차량에 접근할 때는 충분히 주의하십시오.",
+"instruction_en": "Approach stationary vehicles with warning lights with due caution.",
+"action": "CAUTION",
+"scene": "Stationary emergency vehicle with flashing lights at the roadside"
+},
+{
+"id": "CVC §21950(a)",
+"title": "",
+"text": "(a) The driver of a vehicle shall yield the right-of-way to a pedestrian crossing the roadway within any marked crosswalk or within any unmarked crosswalk at an intersection, except as otherwise provided in this chapter.",
+"instruction": "횡단보도(교차로의 비표시 포함)를 건너는 보행자에게 양보하십시오.",
+"instruction_en": "Yield to pedestrians crossing in a marked or unmarked crosswalk.",
+"action": "YIELD",
+"scene": "Pedestrian crossing the road within a crosswalk ahead"
+},
+{
+"id": "CVC §21950(c)",
+"title": "",
+"text": "(c) The driver of a vehicle approaching a pedestrian within any marked or unmarked crosswalk shall exercise all due care and shall reduce the speed of the vehicle or take any other action relating to the operation of the vehicle as necessary to safeguard the safety of the pedestrian.",
+"instruction": "횡단보도의 보행자에게 접근할 때는 감속하십시오.",
+"instruction_en": "Reduce speed when approaching a pedestrian in a crosswalk.",
+"action": "SLOW_DOWN",
+"scene": "Pedestrian standing or walking in a crosswalk ahead"
+},
+{
+"id": "CVC §21952",
+"title": "",
+"text": "The driver of any motor vehicle, prior to driving over or upon any sidewalk, shall yield the right-of-way to any pedestrian approaching thereon.",
+"instruction": "인도로 진입하기 전에 다가오는 보행자에게 양보하십시오.",
+"instruction_en": "Before driving over a sidewalk, yield to approaching pedestrians.",
+"action": "YIELD",
+"scene": "Driveway crossing a sidewalk with a pedestrian approaching"
+},
+{
+"id": "CVC §22100(a)",
+"title": "",
+"text": "Except as provided in Section 22100.5 or 22101, the driver of any vehicle intending to turn upon a highway shall do so as follows: (a) Right Turns. Both the approach for a right-hand turn and a right-hand turn shall be made as close as practicable to the right-hand curb or edge of the roadway except: (1) Upon a highway having three marked lanes for traffic moving in one direction that terminates at an intersecting highway accommodating traffic in both directions, the driver of a vehicle in the middle lane may turn right into any lane lawfully available to traffic moving in that direction upon ",
+"instruction": "우회전은 가능한 한 우측 연석이나 가장자리에 붙어서 하십시오.",
+"instruction_en": "Make right turns as close as practicable to the right curb.",
+"action": "CAUTION",
+"scene": "Intersection ahead where the car prepares to turn right"
+},
+{
+"id": "CVC §22100(b)",
+"title": "",
+"text": "Except as provided in Section 22100.5 or 22101, the driver of any vehicle intending to turn upon a highway shall do so as follows: (b) Left Turns. The approach for a left turn shall be made as close as practicable to the left-hand edge of the extreme left-hand lane or portion of the roadway lawfully available to traffic moving in the direction of travel of the vehicle and, when turning at an intersection, the left turn shall not be made before entering the intersection. After entering the intersection, the left turn shall be made so as to leave the intersection in a lane lawfully available to ",
+"instruction": "좌회전 접근은 가능한 한 가장 왼쪽 차로의 좌측에 붙어서 하십시오.",
+"instruction_en": "Approach left turns as close as practicable to the left edge.",
+"action": "CAUTION",
+"scene": "Intersection ahead where the car prepares to turn left"
+},
+{
+"id": "CVC §22100(b)",
+"title": "",
+"text": "Except as provided in Section 22100.5 or 22101, the driver of any vehicle intending to turn upon a highway shall do so as follows: (b) Left Turns. The approach for a left turn shall be made as close as practicable to the left-hand edge of the extreme left-hand lane or portion of the roadway lawfully available to traffic moving in the direction of travel of the vehicle and, when turning at an intersection, the left turn shall not be made before entering the intersection. After entering the intersection, the left turn shall be made so as to leave the intersection in a lane lawfully available to ",
+"instruction": "교차로에서는 교차로에 진입하기 전에 좌회전하지 마십시오.",
+"instruction_en": "At an intersection, do not turn left before entering it.",
+"action": "CAUTION",
+"scene": "Car at the edge of an intersection about to turn left"
+},
+{
+"id": "CVC §22102",
+"title": "",
+"text": "No person in a business district shall make a U-turn, except at an intersection, or on a divided highway where an opening has been provided in accordance with Section 21651. This turning movement shall be made as close as practicable to the extreme left-hand edge of the lanes moving in the driver’s direction of travel immediately prior to the initiation of the turning movement, when more than one lane in the direction of travel is present.",
+"instruction": "상업지구에서는 교차로나 중앙분리대 개구부 외에서 유턴하지 마십시오.",
+"instruction_en": "In business districts, U-turn only at intersections or divided-highway openings.",
+"action": "KEEP_OUT",
+"scene": "Busy commercial street with shops and mid-block, no intersection"
+},
+{
+"id": "CVC §22102",
+"title": "",
+"text": "No person in a business district shall make a U-turn, except at an intersection, or on a divided highway where an opening has been provided in accordance with Section 21651. This turning movement shall be made as close as practicable to the extreme left-hand edge of the lanes moving in the driver’s direction of travel immediately prior to the initiation of the turning movement, when more than one lane in the direction of travel is present.",
+"instruction": "상업지구 유턴 시 차로가 여럿이면 가장 왼쪽 가장자리에 붙으십시오.",
+"instruction_en": "Start a business district U-turn from the extreme left edge.",
+"action": "CAUTION",
+"scene": "Multi-lane commercial street where the car begins a U-turn"
+},
+{
+"id": "CVC §22105",
+"title": "",
+"text": "No person shall make a U-turn upon any highway where the driver of such vehicle does not have an unobstructed view for 200 feet in both directions along the highway and of any traffic thereon.",
+"instruction": "양방향 200피트 시야가 막히면 유턴하지 마십시오.",
+"instruction_en": "Do not U-turn without a 200 feet clear view both ways.",
+"action": "KEEP_OUT",
+"scene": "Road with a blind curve or crest limiting view ahead"
+},
+{
+"id": "CVC §22348(a)",
+"title": "",
+"text": "(a) Notwithstanding subdivision (b) of Section 22351, a person shall not drive a vehicle upon a highway with a speed limit established pursuant to Section 22349 or 22356 at a speed greater than that speed limit.",
+"instruction": "제한속도가 설정된 도로에서는 제한속도를 넘지 마십시오.",
+"instruction_en": "Do not exceed the posted speed limit.",
+"action": "SLOW_DOWN",
+"scene": "Highway with a posted speed limit sign ahead"
+},
+{
+"id": "CVC §23221(a)",
+"title": "",
+"text": "(a) A driver shall not drink any alcoholic beverage or smoke or ingest marijuana or any marijuana product while driving a motor vehicle upon a highway.",
+"instruction": "운전 중에는 술을 마시거나 대마를 흡입·섭취하지 마십시오.",
+"instruction_en": "Do not drink alcohol or use marijuana while driving.",
+"action": "CAUTION",
+"scene": "Driver consuming a drink or smoking while the car moves"
+},
+{
+"id": "CVC §23302(a)",
+"title": "",
+"text": "(a) (1) It is unlawful for a driver to fail to pay tolls or other charges on any vehicular crossing or toll highway. Except as otherwise provided in subdivision (b), (c), or (d), it is prima facie evidence of a violation of this section for a person to drive a vehicle onto any vehicular crossing or toll highway without either lawful money of the United States in the driver’s immediate possession in an amount sufficient to pay the prescribed tolls or other charges due from that driver or a transponder or other electronic toll payment device associated with a valid Automatic Vehicle Identificati",
+"instruction": "유료도로와 차량 통행 교량에서는 통행료를 납부하십시오.",
+"instruction_en": "Pay the toll on toll highways and vehicular crossings.",
+"action": "CAUTION",
+"scene": "Toll plaza or toll lane ahead on a highway or bridge"
+},
+{
+"id": "CVC §23330(c)",
+"title": "",
+"text": "Except where a special permit has been obtained from the Department of Transportation under the provisions of Article 6 (commencing with Section 35780) of Chapter 5 of Division 15, none of the following shall be permitted on any vehicular crossing: (c) Vehicles having a total width of vehicle or load exceeding 102 inches.",
+"instruction": "차량 통행 교량에는 폭 102인치 초과 차량으로 진입하지 마십시오.",
+"instruction_en": "Do not enter a vehicular crossing if vehicle width exceeds 102 inches.",
+"action": "KEEP_OUT",
+"scene": "Bridge or tunnel entrance with a very wide vehicle or load"
+},
+{
+"id": "CVC §22350",
+"title": "",
+"text": "No person shall drive a vehicle upon a highway at a speed greater than is reasonable or prudent having due regard for weather, visibility, the traffic on, and the surface and width of, the highway, and in no event at a speed which endangers the safety of persons or property.",
+"instruction": "날씨·시야·교통·노면에 맞는 안전한 속도로 주행하십시오.",
+"instruction_en": "Drive at a speed safe for weather, visibility, traffic and road surface.",
+"action": "SLOW_DOWN",
+"scene": "Road in rain, fog or heavy traffic with reduced visibility"
+},
+{
+"id": "CVC §22352(a)",
+"title": "",
+"text": "The prima facie limits are as follows and shall be applicable unless changed as authorized in this code and, if so changed, only when signs have been erected giving notice thereof: (a) Fifteen miles per hour: (1) When traversing a railway grade crossing, if, during the last 100 feet of the approach to the crossing, the driver does not have a clear and unobstructed view of the crossing and of any traffic on the railway for a distance of 400 feet in both directions along the railway. This paragraph does not apply in the case of any railway grade crossing where a human flagperson is on duty or a ",
+"instruction": "건널목에서 400피트 시야가 없으면 시속 15마일 이하로 통과하십시오.",
+"instruction_en": "Cross a railway crossing at 15 mph or less without 400 feet of clear view.",
+"action": "SLOW_DOWN",
+"scene": "Railway grade crossing ahead with obstructed view of the tracks"
+},
+{
+"id": "CVC §22352(b)",
+"title": "",
+"text": "The prima facie limits are as follows and shall be applicable unless changed as authorized in this code and, if so changed, only when signs have been erected giving notice thereof: (b) Twenty-five miles per hour: (1) On any highway in any business or residence district unless a different speed is determined by local authority or the Department of Transportation under procedures set forth in this code. (2) When approaching or passing a school building or the grounds thereof, contiguous to a highway and posted with a standard “SCHOOL” warning sign, while children are going to or leaving the scho",
+"instruction": "주거·상업 지역 도로에서는 시속 25마일 이하로 주행하십시오.",
+"instruction_en": "Drive 25 mph or less in business and residence districts.",
+"action": "SLOW_DOWN",
+"scene": "Residential street with houses, parked cars and shops"
+},
+{
+"id": "CVC §22352(b)",
+"title": "",
+"text": "The prima facie limits are as follows and shall be applicable unless changed as authorized in this code and, if so changed, only when signs have been erected giving notice thereof: (b) Twenty-five miles per hour: (1) On any highway in any business or residence district unless a different speed is determined by local authority or the Department of Transportation under procedures set forth in this code. (2) When approaching or passing a school building or the grounds thereof, contiguous to a highway and posted with a standard “SCHOOL” warning sign, while children are going to or leaving the scho",
+"instruction": "SCHOOL 표지 학교 옆 등하교 시간에는 25마일 이하로 가십시오.",
+"instruction_en": "Drive 25 mph or less past a SCHOOL-signed school when children arrive or leave.",
+"action": "SLOW_DOWN",
+"scene": "School building with SCHOOL warning sign and children walking"
+},
+{
+"id": "CVC §22357.1",
+"title": "",
+"text": "Notwithstanding Section 22357, a local authority may, by ordinance or resolution, set a prima facie speed limit of 25 miles per hour on any street, other than a state highway, adjacent to any children’s playground in a public park but only during particular hours or days when children are expected to use the facilities. The 25 mile per hour speed limit shall be effective when signs giving notice of the speed limit are posted.",
+"instruction": "공원 놀이터 옆 도로에서 표지된 시간에는 25마일 이하로 가십시오.",
+"instruction_en": "Drive 25 mph or less beside a park playground during posted hours.",
+"action": "SLOW_DOWN",
+"scene": "Street beside a public park playground with posted speed sign"
+},
+{
+"id": "CVC §22358.9(a)",
+"title": "",
+"text": "(a) (1) Notwithstanding any other law, the Department of Transportation may or a local authority may, by ordinance, determine and declare a 25- or 20-mile-per-hour prima facie speed limit on a highway that is not a freeway and that is contiguous to a business activity district when posted with a sign that indicates a speed limit of 25 or 20 miles per hour. (2) The prima facie limits established under paragraph (1) apply only to highways that meet all of the following conditions: (A) A maximum of four traffic lanes. (B) A maximum posted 30-mile-per-hour prima facie speed limit immediately prior",
+"instruction": "상업활동지구 인접 도로의 25 또는 20마일 표지 속도를 지키십시오.",
+"instruction_en": "Obey the posted 25 or 20 mph limit beside a business activity district.",
+"action": "SLOW_DOWN",
+"scene": "Downtown street with shops and outdoor dining, 25 mph sign"
+},
+{
+"id": "CVC §22358.4(b)",
+"title": "",
+"text": "(b) (1) Notwithstanding subdivision (a) or any other provision of law, a local authority may, by ordinance or resolution, determine and declare prima facie speed limits as follows: (A) A 15 miles per hour prima facie limit in a residence district, on a highway with a posted speed limit of 30 miles per hour or slower, in a school zone. (B) A 25 miles per hour prima facie limit on a highway when approaching, at a distance of 500 to 1,000 feet from, a school zone. (2) The prima facie limit established under subparagraph (A) of paragraph (1) applies only to highways that meet all of the following ",
+"instruction": "지정된 주거지역 학교구역에서는 시속 15마일 이하를 지키십시오.",
+"instruction_en": "Obey the designated 15 mph limit in a residential school zone.",
+"action": "SLOW_DOWN",
+"scene": "School zone on a residential street with 15 mph sign"
+},
+{
+"id": "CVC §22358.4(b)",
+"title": "",
+"text": "(b) (1) Notwithstanding subdivision (a) or any other provision of law, a local authority may, by ordinance or resolution, determine and declare prima facie speed limits as follows: (A) A 15 miles per hour prima facie limit in a residence district, on a highway with a posted speed limit of 30 miles per hour or slower, in a school zone. (B) A 25 miles per hour prima facie limit on a highway when approaching, at a distance of 500 to 1,000 feet from, a school zone. (2) The prima facie limit established under subparagraph (A) of paragraph (1) applies only to highways that meet all of the following ",
+"instruction": "지정 학교구역 500~1,000피트 전에서는 25마일 이하로 가십시오.",
+"instruction_en": "Obey 25 mph from 500 to 1,000 feet before a designated school zone.",
+"action": "SLOW_DOWN",
+"scene": "Road approaching a school zone with 25 mph sign"
+},
+{
+"id": "CVC §22409",
+"title": "",
+"text": "No person shall operate any vehicle equipped with any solid tire when such vehicle has a gross weight as set forth in the following table at any speed in excess of the speed set forth opposite such gross weight: When gross weight Maximum speed of vehicle and in miles load is: per hour: 10,000 lbs. or more but less than 16,000 lbs. 25 16,000 lbs. or more but less than 22,000 lbs. 15 22,000 lbs. or more 12",
+"instruction": "솔리드 타이어 1만~1.6만파운드 차량은 25마일을 넘지 마십시오.",
+"instruction_en": "Solid-tire vehicles of 10,000 to 16,000 lbs: do not exceed 25 mph.",
+"action": "SLOW_DOWN",
+"scene": "Medium truck with solid rubber tires on a road"
+},
+{
+"id": "CVC §22409",
+"title": "",
+"text": "No person shall operate any vehicle equipped with any solid tire when such vehicle has a gross weight as set forth in the following table at any speed in excess of the speed set forth opposite such gross weight: When gross weight Maximum speed of vehicle and in miles load is: per hour: 10,000 lbs. or more but less than 16,000 lbs. 25 16,000 lbs. or more but less than 22,000 lbs. 15 22,000 lbs. or more 12",
+"instruction": "솔리드 타이어 1.6만~2.2만파운드 차량은 15마일을 넘지 마십시오.",
+"instruction_en": "Solid-tire vehicles of 16,000 to 22,000 lbs: do not exceed 15 mph.",
+"action": "SLOW_DOWN",
+"scene": "Heavy truck with solid rubber tires on a road"
+},
+{
+"id": "CVC §22409",
+"title": "",
+"text": "No person shall operate any vehicle equipped with any solid tire when such vehicle has a gross weight as set forth in the following table at any speed in excess of the speed set forth opposite such gross weight: When gross weight Maximum speed of vehicle and in miles load is: per hour: 10,000 lbs. or more but less than 16,000 lbs. 25 16,000 lbs. or more but less than 22,000 lbs. 15 22,000 lbs. or more 12",
+"instruction": "솔리드 타이어 2.2만파운드 이상 차량은 12마일을 넘지 마십시오.",
+"instruction_en": "Solid-tire vehicles of 22,000 lbs or more: do not exceed 12 mph.",
+"action": "SLOW_DOWN",
+"scene": "Very heavy truck with solid rubber tires on a road"
+},
+{
+"id": "CVC §21056",
+"title": "",
+"text": "Section 21055 does not relieve the driver of a vehicle from the duty to drive with due regard for the safety of all persons using the highway, nor protect him from the consequences of an arbitrary exercise of the privileges granted in that section.",
+"instruction": "도로에서 운전할 때는 모든 도로 이용자의 안전을 고려해 운전하십시오.",
+"instruction_en": "Drive with due regard for the safety of all road users.",
+"action": "CAUTION",
+"scene": "Road with vehicles, cyclists and pedestrians sharing the roadway"
+},
+{
+"id": "CVC §21107.9(d)",
+"title": "",
+"text": "(d) For purposes of this section, the prima facie speed limit on any road within a mobilehome park or manufactured housing community shall be 15 miles per hour. This section does not preclude a mobilehome park or manufactured housing community from requesting a higher or lower speed limit if an engineering and traffic survey has been conducted within the community supporting that request.",
+"instruction": "이동식 주택단지 내 도로에서는 시속 15마일을 넘지 마십시오.",
+"instruction_en": "Do not exceed 15 mph on roads inside a mobilehome park.",
+"action": "SLOW_DOWN",
+"scene": "Narrow private road between parked mobile homes in a residential park"
+},
+{
+"id": "CVC §21113(a)",
+"title": "",
+"text": "(a) (1) Except as provided in paragraph (2), a person shall not drive a vehicle or animal, or stop, park, or leave standing a vehicle or animal, whether attended or unattended, upon the driveways, paths, parking facilities, or the grounds of any of the following: (A) A public school, state university, state college, or an educational institution exempted, in whole or in part, from taxation. (B) A unit of the state park system. (C) A county park. (D) A municipal airport. (E) A rapid transit district, transit development board, transit district, public transportation agency, county transportatio",
+"instruction": "공립학교·주립공원 구내 도로·주차장에는 원칙적으로 진입하지 마십시오.",
+"instruction_en": "Generally do not drive or park on public school or state park grounds.",
+"action": "KEEP_OUT",
+"scene": "Driveway entering school campus or state park grounds with signage"
+},
+{
+"id": "CVC §21116(a)",
+"title": "",
+"text": "(a) No person shall drive any motor vehicle upon a roadway located on a levee, canal bank, natural watercourse bank, or pipeline right-of-way if the responsibility for maintenance of the levee, canal bank, natural watercourse bank, or pipeline right-of-way is vested in the state or in a reclamation, levee, drainage, water or irrigation district, or other local agency, unless such person has received permission to drive upon such roadway from the agency responsible for such maintenance, or unless such roadway has been dedicated as a public right-of-way.",
+"instruction": "허가 필요 표지가 있는 제방·둑 도로에는 허가 없이 진입하지 마십시오.",
+"instruction_en": "Do not enter signed levee or canal bank roads without permission.",
+"action": "KEEP_OUT",
+"scene": "Gravel road atop a levee or canal bank with permit-required sign"
+},
+{
+"id": "CVC §22452(b)",
+"title": "",
+"text": "(b) Before traversing a railroad grade crossing, the driver of a vehicle described in subdivision (a) shall stop that vehicle not less than 15 nor more than 50 feet from the nearest rail of the track and while so stopped shall listen, and look in both directions along the track, for an approaching train or on-track equipment and for signals indicating the approach of a train or on-track equipment, and shall not proceed until he or she can do so safely. Upon proceeding, the gears shall not be shifted manually while crossing the tracks.",
+"instruction": "버스는 철도 건널목 레일 앞 15~50피트에서 정지하십시오.",
+"instruction_en": "Buses must stop 15 to 50 feet before the nearest rail.",
+"action": "STOP",
+"scene": "Bus approaching a railroad crossing with tracks ahead"
+},
+{
+"id": "CVC §22452(b)",
+"title": "",
+"text": "(b) Before traversing a railroad grade crossing, the driver of a vehicle described in subdivision (a) shall stop that vehicle not less than 15 nor more than 50 feet from the nearest rail of the track and while so stopped shall listen, and look in both directions along the track, for an approaching train or on-track equipment and for signals indicating the approach of a train or on-track equipment, and shall not proceed until he or she can do so safely. Upon proceeding, the gears shall not be shifted manually while crossing the tracks.",
+"instruction": "정지 후 양방향 열차를 확인하고 안전할 때만 건너십시오.",
+"instruction_en": "After stopping, look both ways and cross only when safe.",
+"action": "STOP",
+"scene": "Stopped bus at railroad crossing, tracks visible both directions"
+},
+{
+"id": "CVC §22452(b)",
+"title": "",
+"text": "(b) Before traversing a railroad grade crossing, the driver of a vehicle described in subdivision (a) shall stop that vehicle not less than 15 nor more than 50 feet from the nearest rail of the track and while so stopped shall listen, and look in both directions along the track, for an approaching train or on-track equipment and for signals indicating the approach of a train or on-track equipment, and shall not proceed until he or she can do so safely. Upon proceeding, the gears shall not be shifted manually while crossing the tracks.",
+"instruction": "건널목을 건너는 동안 수동으로 기어를 변속하지 마십시오.",
+"instruction_en": "Do not shift gears manually while crossing the tracks.",
+"action": "CAUTION",
+"scene": "Vehicle driving over railroad tracks at a crossing"
+},
+{
+"id": "CVC §22452(c)",
+"title": "",
+"text": "(c) The driver of a commercial motor vehicle, other than those listed in subdivision (a), upon approaching a railroad grade crossing, shall be driven at a rate of speed that allows the commercial vehicle to stop before reaching the nearest rail of that crossing, and shall not be driven upon, or over, the crossing until due caution is taken to ascertain that the course is clear.",
+"instruction": "상용차는 철도 건널목 레일 앞에서 정지할 수 있는 속도로 접근하십시오.",
+"instruction_en": "Commercial vehicles: approach crossings at a speed allowing a stop before the rail.",
+"action": "SLOW_DOWN",
+"scene": "Truck approaching a railroad grade crossing"
+},
+{
+"id": "CVC §22454(a)",
+"title": "",
+"text": "(a) The driver of any vehicle, upon meeting or overtaking, from either direction, any schoolbus equipped with signs as required in this code, that is stopped for the purpose of loading or unloading any schoolchildren and displays a flashing red light signal and stop signal arm, as defined in paragraph (4) of subdivision (b) of Section 25257, if equipped with a stop signal arm, visible from front or rear, shall bring the vehicle to a stop immediately before passing the schoolbus and shall not proceed past the schoolbus until the flashing red light signal and stop signal arm, if equipped with a ",
+"instruction": "점멸 적색등을 켠 정차 스쿨버스 앞에서는 즉시 정지하십시오.",
+"instruction_en": "Stop immediately before a school bus with flashing red lights.",
+"action": "STOP",
+"scene": "Stopped school bus with flashing red lights and stop arm extended"
+},
+{
+"id": "CVC §22454(a)",
+"title": "",
+"text": "(a) The driver of any vehicle, upon meeting or overtaking, from either direction, any schoolbus equipped with signs as required in this code, that is stopped for the purpose of loading or unloading any schoolchildren and displays a flashing red light signal and stop signal arm, as defined in paragraph (4) of subdivision (b) of Section 25257, if equipped with a stop signal arm, visible from front or rear, shall bring the vehicle to a stop immediately before passing the schoolbus and shall not proceed past the schoolbus until the flashing red light signal and stop signal arm, if equipped with a ",
+"instruction": "스쿨버스의 점멸 적색등과 정지 팔이 멈출 때까지 통과하지 마십시오.",
+"instruction_en": "Do not pass the school bus until its red lights and stop arm stop.",
+"action": "STOP",
+"scene": "School bus stopped ahead with red lights flashing and children nearby"
+},
+{
+"id": "CVC §22500(a)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (a) Within an intersection, except adjacent to curbs as may be permitted by local ordinance.",
+"instruction": "교차로 안에는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park within an intersection.",
+"action": "KEEP_OUT",
+"scene": "Vehicle about to stop in the middle of an intersection"
+},
+{
+"id": "CVC §22500(b)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (b) On a crosswalk, except that a bus engaged as a common carrier or a taxicab may stop in an unmarked crosswalk to load or unload passengers when authorized by the legislative body of a city pursuant to an ordinance.",
+"instruction": "횡단보도 위에는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park on a crosswalk.",
+"action": "KEEP_OUT",
+"scene": "Crosswalk markings on the road with a vehicle stopping on them"
+},
+{
+"id": "CVC §22500(c)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (c) Between a safety zone and the adjacent right-hand curb or within the area between the zone and the curb as may be indicated by a sign or red paint on the curb, which sign or paint was erected or placed by local authorities pursuant to an ordinance.",
+"instruction": "안전지대와 우측 연석 사이에는 정차하지 마십시오.",
+"instruction_en": "Do not stop between a safety zone and the right-hand curb.",
+"action": "KEEP_OUT",
+"scene": "Safety zone beside the curb marked by sign or red paint"
+},
+{
+"id": "CVC §22500(d)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (d) Within 15 feet of the driveway entrance to a fire station. This subdivision does not apply to any vehicle owned or operated by a fire department and clearly marked as a fire department vehicle.",
+"instruction": "소방서 진입로 15피트 이내에는 정차하지 마십시오.",
+"instruction_en": "Do not stop within 15 feet of a fire station driveway.",
+"action": "KEEP_OUT",
+"scene": "Fire station driveway entrance beside the curb"
+},
+{
+"id": "CVC §22500(e)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (e) (1) In front of a public or private driveway, except that a bus engaged as a common carrier, schoolbus, or a taxicab may stop to load or unload passengers when authorized by local authorities pursuant to an ordinance. (2) In unincorporated territory, where the entrance of a private road or driveway is not delineated by",
+"instruction": "진입로 앞에는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park in front of a driveway.",
+"action": "KEEP_OUT",
+"scene": "Driveway entrance cut into the curb"
+},
+{
+"id": "CVC §22500(f)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (f) On a portion of a sidewalk, or with the body of the vehicle extending over a portion of a sidewalk, except electric carts when authorized by local ordinance, as specified in Section 21114.5. Lights, mirrors, or devices that are required to be mounted upon a vehicle under this code may extend from the body of the vehicl",
+"instruction": "인도 위나 인도에 차체가 걸치도록 정차하지 마십시오.",
+"instruction_en": "Do not stop on or partly over a sidewalk.",
+"action": "KEEP_OUT",
+"scene": "Sidewalk beside the road with a vehicle pulling onto it"
+},
+{
+"id": "CVC §22500(g)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (g) Alongside or opposite a street or highway excavation or obstruction when stopping, standing, or parking would obstruct traffic.",
+"instruction": "통행을 막는 경우 굴착·장애물 옆과 맞은편에 정차하지 마십시오.",
+"instruction_en": "Do not stop beside or opposite a road excavation if it blocks traffic.",
+"action": "KEEP_OUT",
+"scene": "Road excavation or obstruction beside the traffic lane"
+},
+{
+"id": "CVC §22500(h)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (h) On the roadway side of a vehicle stopped, parked, or standing at the curb or edge of a highway, except for a schoolbus when stopped to load or unload pupils in a business or residence district where the speed limit is 25 miles per hour or less.",
+"instruction": "연석에 정차한 차량의 차도 쪽에는 정차하지 마십시오.",
+"instruction_en": "Do not stop on the roadway side of a parked vehicle.",
+"action": "KEEP_OUT",
+"scene": "Parked car at the curb with open lane alongside it"
+},
+{
+"id": "CVC §22500(i)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (i) Except as provided under Section 22500.5, alongside curb space authorized for the loading and unloading of passengers of a bus engaged as a common carrier in local transportation when indicated by a sign or red paint on the curb erected or painted by local authorities pursuant to an ordinance.",
+"instruction": "표지나 붉은 연석이 표시한 버스 승하차 구간에는 정차하지 마십시오.",
+"instruction_en": "Do not stop at curb bus loading zones marked by sign or red paint.",
+"action": "KEEP_OUT",
+"scene": "Bus stop curb painted red with a bus loading sign"
+},
+{
+"id": "CVC §22500(j)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (j) In a tube or tunnel, except vehicles of the authorities in charge, being used in the repair, maintenance, or inspection of the facility.",
+"instruction": "터널 안에서는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park inside a tunnel.",
+"action": "KEEP_OUT",
+"scene": "Vehicle inside a tunnel with lit walls"
+},
+{
+"id": "CVC §22500(k)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (k) Upon a bridge, except vehicles of the authorities in charge, being used in the repair, maintenance, or inspection of the facility, and except that buses engaged as a common carrier in local transportation may stop to load or unload passengers upon a bridge where sidewalks are provided, when authorized by local authorit",
+"instruction": "교량 위에서는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park on a bridge.",
+"action": "KEEP_OUT",
+"scene": "Vehicle crossing a bridge deck with railings"
+},
+{
+"id": "CVC §22500(m)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (m) In a portion of a highway that has been designated for the exclusive use of public transit buses.",
+"instruction": "버스 전용으로 지정된 도로 구간에는 정차하지 마십시오.",
+"instruction_en": "Do not stop in a lane designated for exclusive bus use.",
+"action": "KEEP_OUT",
+"scene": "Bus-only lane marked on the pavement"
+},
+{
+"id": "CVC §22500(n)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (n) (1) (A) Within 20 feet of the vehicle approach side of any marked or unmarked crosswalk or within 15 feet of any crosswalk where a curb extension is present. (B) Notwithstanding subparagraph (A), a local authority may establish a different distance if both of the following requirements are met:",
+"instruction": "횡단보도 접근 쪽 20피트 이내에는 정차하지 마십시오.",
+"instruction_en": "Do not stop within 20 feet of a crosswalk on the approach side.",
+"action": "KEEP_OUT",
+"scene": "Marked or unmarked crosswalk just ahead beside the curb"
+},
+{
+"id": "CVC §22500(n)",
+"title": "",
+"text": "A person shall not stop, park, or leave standing any vehicle whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, in any of the following places: (n) (1) (A) Within 20 feet of the vehicle approach side of any marked or unmarked crosswalk or within 15 feet of any crosswalk where a curb extension is present. (B) Notwithstanding subparagraph (A), a local authority may establish a different distance if both of the following requirements are met:",
+"instruction": "연석 확장부가 있는 횡단보도 15피트 이내에는 정차하지 마십시오.",
+"instruction_en": "Do not stop within 15 feet of a crosswalk with a curb extension.",
+"action": "KEEP_OUT",
+"scene": "Crosswalk with a curb extension bulb-out ahead"
+},
+{
+"id": "CVC §22504(a)",
+"title": "",
+"text": "(a) Upon any highway in unincorporated areas, a person shall not stop, park, or leave standing any vehicle, whether attended or unattended, upon the roadway when it is practicable to stop, park, or leave the vehicle off such portion of the highway, but in every event an unobstructed width of the highway opposite a standing vehicle shall be left for the free passage of other vehicles and a clear view of the stopped vehicle shall be available from a distance of 200 feet in each direction upon the highway. This section shall not apply upon a highway where the roadway is bounded by adjacent curbs.",
+"instruction": "미편입 지역 도로에서는 가능하면 차도 밖에 정차하십시오.",
+"instruction_en": "In unincorporated areas, stop off the roadway when practicable.",
+"action": "CAUTION",
+"scene": "Rural highway with a shoulder and no adjacent curbs"
+},
+{
+"id": "CVC §22504(a)",
+"title": "",
+"text": "(a) Upon any highway in unincorporated areas, a person shall not stop, park, or leave standing any vehicle, whether attended or unattended, upon the roadway when it is practicable to stop, park, or leave the vehicle off such portion of the highway, but in every event an unobstructed width of the highway opposite a standing vehicle shall be left for the free passage of other vehicles and a clear view of the stopped vehicle shall be available from a distance of 200 feet in each direction upon the highway. This section shall not apply upon a highway where the roadway is bounded by adjacent curbs.",
+"instruction": "미편입 지역 도로에서 정차할 때 맞은편에 통행 폭을 남기십시오.",
+"instruction_en": "In unincorporated areas, leave unobstructed width opposite a standing vehicle.",
+"action": "CAUTION",
+"scene": "Rural two-lane road with a vehicle standing on the roadway"
+},
+{
+"id": "CVC §22504(a)",
+"title": "",
+"text": "(a) Upon any highway in unincorporated areas, a person shall not stop, park, or leave standing any vehicle, whether attended or unattended, upon the roadway when it is practicable to stop, park, or leave the vehicle off such portion of the highway, but in every event an unobstructed width of the highway opposite a standing vehicle shall be left for the free passage of other vehicles and a clear view of the stopped vehicle shall be available from a distance of 200 feet in each direction upon the highway. This section shall not apply upon a highway where the roadway is bounded by adjacent curbs.",
+"instruction": "미편입 지역 도로에서는 양방향 200피트에서 보이게 정차하십시오.",
+"instruction_en": "In unincorporated areas, stay visible from 200 feet in each direction.",
+"action": "CAUTION",
+"scene": "Rural highway with a standing vehicle near a bend or crest"
+},
+{
+"id": "CVC §22510(c)",
+"title": "",
+"text": "(c) The Department of Transportation, with respect to state highways, may restrict the parking or standing of vehicles for purposes of snow removal. The restrictions shall not be effective until the highway, or portion thereof, has been posted with signs in accordance with the uniform standards and specifications of the department. No person shall stop, park, or leave standing any vehicle, whether attended or unattended, within the area marked by parking restriction signs, except when necessary to avoid conflict with other traffic or in compliance with the directions of a traffic or peace offi",
+"instruction": "제설 주차 제한 표지 구역 안에는 정차하지 마십시오.",
+"instruction_en": "Do not stop within an area marked by snow removal parking signs.",
+"action": "KEEP_OUT",
+"scene": "Snow-covered state highway with snow removal parking restriction signs"
+},
+{
+"id": "CVC §22511.1(a)",
+"title": "",
+"text": "(a) A person shall not park or leave standing a vehicle in a stall or space designated pursuant to Section 22511 unless the vehicle is connected for electric charging purposes.",
+"instruction": "충전 전용 주차면에는 충전을 연결하지 않고 주차하지 마십시오.",
+"instruction_en": "Do not park in an EV charging stall unless connected to charge.",
+"action": "KEEP_OUT",
+"scene": "Parking stall marked for electric vehicle charging with a charger"
+},
+{
+"id": "CVC §22511.1(b)",
+"title": "",
+"text": "(b) A person shall not obstruct, block, or otherwise bar access to parking stalls or spaces described in subdivision (a) except as provided in subdivision (a).",
+"instruction": "전기차 충전 전용 주차면의 접근을 막지 마십시오.",
+"instruction_en": "Do not block access to electric vehicle charging stalls.",
+"action": "KEEP_OUT",
+"scene": "Row of EV charging stalls with a vehicle blocking the entrance"
+},
+{
+"id": "CVC §21451(a)",
+"title": "",
+"text": "(a) A driver facing a circular green signal shall proceed straight through or turn right or left or make a U-turn unless a sign prohibits a U-turn. Any driver, including one turning, shall yield the right-of-way to other traffic and to pedestrians lawfully within the intersection or an adjacent crosswalk.",
+"instruction": "녹색 신호에서도 교차로·횡단보도 안의 보행자와 차량에 양보하십시오.",
+"instruction_en": "Even on green, yield to pedestrians and vehicles in the intersection.",
+"action": "YIELD",
+"scene": "Green circular signal with pedestrians in crosswalk ahead"
+},
+{
+"id": "CVC §21451(a)",
+"title": "",
+"text": "(a) A driver facing a circular green signal shall proceed straight through or turn right or left or make a U-turn unless a sign prohibits a U-turn. Any driver, including one turning, shall yield the right-of-way to other traffic and to pedestrians lawfully within the intersection or an adjacent crosswalk.",
+"instruction": "U턴 금지 표지가 있으면 녹색 신호에서도 U턴하지 마십시오.",
+"instruction_en": "Do not U-turn on green where a sign prohibits U-turns.",
+"action": "KEEP_OUT",
+"scene": "Green light with no U-turn sign at intersection"
+},
+{
+"id": "CVC §21451(b)",
+"title": "",
+"text": "(b) A driver facing a green arrow signal, shown alone or in combination with another indication, shall enter the intersection only to make the movement indicated by that green arrow or any other movement that is permitted by other indications shown at the same time. A driver facing a left green arrow may also make a U-turn unless prohibited by a sign. A driver shall yield the right-of-way to other traffic and to a pedestrian lawfully within the intersection or an adjacent crosswalk.",
+"instruction": "녹색 화살표 신호에서는 화살표가 가리키는 방향으로만 진입하십시오.",
+"instruction_en": "On a green arrow, enter only to make the indicated movement.",
+"action": "CAUTION",
+"scene": "Green arrow signal at an intersection"
+},
+{
+"id": "CVC §21451(b)",
+"title": "",
+"text": "(b) A driver facing a green arrow signal, shown alone or in combination with another indication, shall enter the intersection only to make the movement indicated by that green arrow or any other movement that is permitted by other indications shown at the same time. A driver facing a left green arrow may also make a U-turn unless prohibited by a sign. A driver shall yield the right-of-way to other traffic and to a pedestrian lawfully within the intersection or an adjacent crosswalk.",
+"instruction": "녹색 화살표에서도 교차로·횡단보도 안의 보행자와 차량에 양보하십시오.",
+"instruction_en": "On a green arrow, yield to pedestrians and traffic in the intersection.",
+"action": "YIELD",
+"scene": "Green arrow with pedestrians crossing in adjacent crosswalk"
+},
+{
+"id": "CVC §21453(a)",
+"title": "",
+"text": "(a) A driver facing a steady circular red signal alone shall stop at a marked limit line, but if none, before entering the crosswalk on the near side of the intersection or, if none, then before entering the intersection, and shall remain stopped until an indication to proceed is shown, except as provided in subdivision (b).",
+"instruction": "적색 신호에는 정지선, 없으면 횡단보도, 교차로 앞에 정지하십시오.",
+"instruction_en": "On red, stop at the limit line, crosswalk, or intersection edge.",
+"action": "STOP",
+"scene": "Steady red circular signal ahead with stop line"
+},
+{
+"id": "CVC §21453(a)",
+"title": "",
+"text": "(a) A driver facing a steady circular red signal alone shall stop at a marked limit line, but if none, before entering the crosswalk on the near side of the intersection or, if none, then before entering the intersection, and shall remain stopped until an indication to proceed is shown, except as provided in subdivision (b).",
+"instruction": "적색 신호에서는 진행 신호가 나올 때까지 정지 상태를 유지하십시오.",
+"instruction_en": "Remain stopped on red until a proceed indication appears.",
+"action": "STOP",
+"scene": "Stopped at red light waiting at intersection"
+},
+{
+"id": "CVC §21453(b)",
+"title": "",
+"text": "(b) Except when a sign is in place prohibiting a turn, a driver, after stopping as required by subdivision (a), facing a steady circular red signal, may turn right, or turn left from a one-way street onto a one-way street. A driver making that turn shall yield the right-of-way to pedestrians lawfully within an adjacent crosswalk and to any vehicle that has approached or is approaching so closely as to constitute an immediate hazard to the driver, and shall continue to yield the right-of-way to that vehicle until the driver can proceed with reasonable safety.",
+"instruction": "적색 신호에서 우회전하려면 정지 후 보행자와 접근 차량에 양보하십시오.",
+"instruction_en": "After stopping on red, turn right only while yielding to pedestrians and vehicles.",
+"action": "YIELD",
+"scene": "Stopped at red light preparing right turn with crosswalk"
+},
+{
+"id": "CVC §21453(b)",
+"title": "",
+"text": "(b) Except when a sign is in place prohibiting a turn, a driver, after stopping as required by subdivision (a), facing a steady circular red signal, may turn right, or turn left from a one-way street onto a one-way street. A driver making that turn shall yield the right-of-way to pedestrians lawfully within an adjacent crosswalk and to any vehicle that has approached or is approaching so closely as to constitute an immediate hazard to the driver, and shall continue to yield the right-of-way to that vehicle until the driver can proceed with reasonable safety.",
+"instruction": "회전 금지 표지가 있으면 적색 신호 중 회전하지 마십시오.",
+"instruction_en": "Do not turn on red where a sign prohibits turns.",
+"action": "KEEP_OUT",
+"scene": "Red light with no-turn-on-red sign"
+},
+{
+"id": "CVC §21453(c)",
+"title": "",
+"text": "(c) A driver facing a steady red arrow signal shall not enter the intersection to make the movement indicated by the arrow and, unless entering the intersection to make a movement permitted by another signal, shall stop at a clearly marked limit line, but if none, before entering the crosswalk on the near side of the intersection, or if none, then before entering the intersection, and shall remain stopped until an indication permitting movement is shown.",
+"instruction": "적색 화살표 신호에서는 화살표 방향으로 교차로에 진입하지 마십시오.",
+"instruction_en": "On a red arrow, do not enter the intersection for that movement.",
+"action": "KEEP_OUT",
+"scene": "Steady red arrow signal at an intersection"
+},
+{
+"id": "CVC §21453(c)",
+"title": "",
+"text": "(c) A driver facing a steady red arrow signal shall not enter the intersection to make the movement indicated by the arrow and, unless entering the intersection to make a movement permitted by another signal, shall stop at a clearly marked limit line, but if none, before entering the crosswalk on the near side of the intersection, or if none, then before entering the intersection, and shall remain stopped until an indication permitting movement is shown.",
+"instruction": "적색 화살표 신호에는 정지선, 없으면 횡단보도 앞에서 정지하십시오.",
+"instruction_en": "On a red arrow, stop at the limit line or crosswalk.",
+"action": "STOP",
+"scene": "Red arrow signal with limit line ahead"
+},
+{
+"id": "CVC §22514",
+"title": "",
+"text": "No person shall stop, park, or leave standing any vehicle within 15 feet of a fire hydrant except as follows:",
+"instruction": "소화전 15피트 이내에는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park within 15 feet of a fire hydrant.",
+"action": "KEEP_OUT",
+"scene": "Fire hydrant beside the curb ahead"
+},
+{
+"id": "CVC §22521",
+"title": "",
+"text": "No person shall park a vehicle upon any railroad track or within 7 1 2 feet of the nearest rail.",
+"instruction": "철도 선로 위나 레일 7 1/2피트 이내에는 주차하지 마십시오.",
+"instruction_en": "Do not park on railroad tracks or within 7.5 feet of a rail.",
+"action": "KEEP_OUT",
+"scene": "Railroad tracks crossing or alongside the road"
+},
+{
+"id": "CVC §22523(a)",
+"title": "",
+"text": "(a) No person shall abandon a vehicle upon any highway.",
+"instruction": "도로에 차량을 방치하지 마십시오.",
+"instruction_en": "Do not abandon a vehicle on a highway.",
+"action": "KEEP_OUT",
+"scene": "Roadway shoulder or lane where vehicle would be left"
+},
+{
+"id": "CVC §22523(b)",
+"title": "",
+"text": "(b) No person shall abandon a vehicle upon public or private property without the express or implied consent of the owner or person in lawful possession or control of the property.",
+"instruction": "소유자 동의 없이 공유지·사유지에 차량을 방치하지 마십시오.",
+"instruction_en": "Do not abandon a vehicle on property without the owner's consent.",
+"action": "KEEP_OUT",
+"scene": "Parking lot or private property without permission signs"
+},
+{
+"id": "CVC §22526(a)",
+"title": "",
+"text": "(a) Notwithstanding any official traffic control signal indication to proceed, a driver of a vehicle shall not enter an intersection or marked crosswalk unless there is sufficient space on the other side of the intersection or marked crosswalk to accommodate the vehicle driven without obstructing the through passage of vehicles from either side.",
+"instruction": "건너편 공간이 부족하면 진행 신호에도 교차로에 진입하지 마십시오.",
+"instruction_en": "Do not enter an intersection if no space beyond for your vehicle.",
+"action": "KEEP_OUT",
+"scene": "Green light with traffic backed up beyond intersection"
+},
+{
+"id": "CVC §22526(b)",
+"title": "",
+"text": "(b) A driver of a vehicle which is making a turn at an intersection who is facing a steady circular yellow or yellow arrow signal shall not enter the intersection or marked crosswalk unless there is sufficient space on the other side of the intersection or marked crosswalk to accommodate the vehicle driven without obstructing the through passage of vehicles from either side.",
+"instruction": "황색 신호에 회전할 때 건너편 공간이 부족하면 진입하지 마십시오.",
+"instruction_en": "Turning on yellow, do not enter without space on the far side.",
+"action": "KEEP_OUT",
+"scene": "Yellow signal with congested cross street ahead of turn"
+},
+{
+"id": "CVC §22526(c)",
+"title": "",
+"text": "(c) A driver of a vehicle shall not enter a railroad or rail transit crossing, notwithstanding any official traffic control device or signal indication to proceed, unless there is sufficient undercarriage clearance to cross the intersection without obstructing the through passage of a railway vehicle, including, but not limited to, a train, trolley, or city transit vehicle.",
+"instruction": "철도 건널목은 차량 하부 여유 공간이 부족하면 진입하지 마십시오.",
+"instruction_en": "Do not enter a rail crossing without sufficient undercarriage clearance.",
+"action": "KEEP_OUT",
+"scene": "Rail crossing with raised track bed ahead"
+},
+{
+"id": "CVC §22526(d)",
+"title": "",
+"text": "(d) A driver of a vehicle shall not enter a railroad or rail transit crossing, notwithstanding any official traffic control device or signal indication to proceed, unless there is sufficient space on the other side of the railroad or rail transit crossing to accommodate the vehicle driven and any railway vehicle, including, but not limited to, a train, trolley, or city transit vehicle.",
+"instruction": "철도 건널목 건너편에 차량이 들어갈 공간이 없으면 진입하지 마십시오.",
+"instruction_en": "Do not enter a rail crossing without space to clear it.",
+"action": "KEEP_OUT",
+"scene": "Rail crossing with stopped traffic beyond the tracks"
+},
+{
+"id": "CVC §21461(a)",
+"title": "",
+"text": "(a) It is unlawful for a driver of a vehicle to fail to obey a sign or signal defined as regulatory in the federal Manual on Uniform Traffic Control Devices, or a Department of Transportation approved supplement to that manual of a regulatory nature erected or maintained to enhance traffic safety and operations or to indicate and carry out the provisions of this code or a local traffic ordinance or resolution adopted pursuant to a local traffic ordinance, or to fail to obey a device erected or maintained by lawful authority of a public body or official.",
+"instruction": "규제 표지판과 신호는 반드시 따르십시오.",
+"instruction_en": "Obey all regulatory signs and signals.",
+"action": "CAUTION",
+"scene": "Regulatory traffic sign or signal beside the road"
+},
+{
+"id": "CVC §21709",
+"title": "",
+"text": "No vehicle shall at any time be driven through or within a safety zone.",
+"instruction": "안전지대 안으로는 진입하거나 통과하지 마십시오.",
+"instruction_en": "Do not drive through or within a safety zone.",
+"action": "KEEP_OUT",
+"scene": "Raised safety zone island marked in the roadway"
+},
+{
+"id": "CVC §21710",
+"title": "",
+"text": "The driver of a motor vehicle when traveling on down grade upon any highway shall not coast with the gears of such vehicle in neutral.",
+"instruction": "내리막길에서는 기어를 중립에 놓고 타력 주행하지 마십시오.",
+"instruction_en": "On a downgrade, do not coast with the gears in neutral.",
+"action": "CAUTION",
+"scene": "Long steep downhill road ahead"
+},
+{
+"id": "CVC §21717",
+"title": "",
+"text": "Whenever it is necessary for the driver of a motor vehicle to cross a bicycle lane that is adjacent to his lane of travel to make a turn, the driver shall drive the motor vehicle into the bicycle lane prior to making the turn and shall make the turn pursuant to Section 22100.",
+"instruction": "자전거 도로를 가로질러 회전하려면 먼저 자전거 도로로 진입하십시오.",
+"instruction_en": "To turn across an adjacent bicycle lane, enter it first.",
+"action": "CAUTION",
+"scene": "Bicycle lane beside the travel lane at an approaching turn"
+},
+{
+"id": "CVC §22356(b)",
+"title": "",
+"text": "(b) No person shall drive a vehicle upon that highway at a speed greater than 70 miles per hour, as posted.",
+"instruction": "70마일 속도 표지 구간에서는 시속 70마일을 넘기지 마십시오.",
+"instruction_en": "Do not exceed 70 miles per hour where posted.",
+"action": "SLOW_DOWN",
+"scene": "Highway with posted 70 mph speed limit sign"
+},
+{
+"id": "CVC §22500.2(a)",
+"title": "",
+"text": "(a) A local authority may, by ordinance, prohibit a person from stopping, parking, or leaving standing a vehicle, whether attended or unattended, except if necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device, within 15 feet of a driveway that is used by an emergency vehicle owned or operated by a police department, ambulance service care provider, or general acute care hospital, to enter or exit a police station, ambulance service provider facility, or general acute care hospital. This section does not apply ",
+"instruction": "조례가 있는 곳에서는 응급차 진입로 15피트 이내에 정차하지 마십시오.",
+"instruction_en": "Where ordinance applies, do not stop within 15 feet of an emergency vehicle driveway.",
+"action": "KEEP_OUT",
+"scene": "Curb with KEEP CLEAR marking at hospital or police station driveway"
+},
+{
+"id": "CVC §22502(a)",
+"title": "",
+"text": "(a) Except as otherwise provided in this chapter, a vehicle stopped or parked upon a roadway with adjacent curbs or class IV bikeways, as defined in Section 890.4 of the Streets and Highways Code, shall be stopped or parked with the right-hand wheels of the vehicle parallel to, and within 18 inches of, the right-hand curb or the right-hand edge of the class IV bikeway, except that a motorcycle shall be parked with at least one wheel or fender touching the right-hand curb or edge. If no curbs, barriers, or class IV bikeways bound a two-way roadway, right-hand parallel parking is required unless",
+"instruction": "도로에 정차·주차할 때는 오른쪽 연석 18인치 이내에 붙이십시오.",
+"instruction_en": "When stopping or parking, stay within 18 inches of the right-hand curb.",
+"action": "CAUTION",
+"scene": "Curbside parking lane along the right edge of the road"
+},
+{
+"id": "CVC §22505(b)",
+"title": "",
+"text": "(b) No person shall stop, park, or leave standing any vehicle in violation of the restrictions stated on the signs or markings.",
+"instruction": "주정차 제한 표지·표시가 있는 곳에서는 정차·주차하지 마십시오.",
+"instruction_en": "Do not stop or park where signs or markings prohibit it.",
+"action": "KEEP_OUT",
+"scene": "No stopping or no parking sign beside the highway shoulder"
+},
+{
+"id": "CVC §22515(a)",
+"title": "",
+"text": "(a) No person driving, or in control of, or in charge of, a motor vehicle shall permit it to stand on any highway unattended without first effectively setting the brakes thereon and stopping the motor thereof.",
+"instruction": "차를 무인으로 세울 때는 브레이크를 걸고 엔진을 끄십시오.",
+"instruction_en": "Before leaving a vehicle unattended, set the brakes and stop the engine.",
+"action": "CAUTION",
+"scene": "Vehicle parked at roadside with no driver inside"
+},
+{
+"id": "CVC §22516",
+"title": "",
+"text": "No person shall leave standing a locked vehicle in which there is any person who cannot readily escape therefrom.",
+"instruction": "탈출할 수 없는 사람이 있으면 차를 잠근 채 세워 두지 마십시오.",
+"instruction_en": "Do not leave a locked vehicle standing if someone inside cannot escape.",
+"action": "CAUTION",
+"scene": "Locked parked car with a child inside"
+},
+{
+"id": "CVC §22517",
+"title": "",
+"text": "No person shall open the door of a vehicle on the side available to moving traffic unless it is reasonably safe to do so and can be done without interfering with the movement of such traffic, nor shall any person leave a door open on the side of a vehicle available to moving traffic for a period of time longer than necessary to load or unload passengers.",
+"instruction": "통행 차량 쪽 문은 안전할 때만 열고 오래 열어 두지 마십시오.",
+"instruction_en": "Open doors on the traffic side only when safe, and not longer than necessary.",
+"action": "CAUTION",
+"scene": "Parked car door opening toward passing traffic lane"
+},
+{
+"id": "CVC §21650",
+"title": "",
+"text": "Upon all highways, a vehicle shall be driven upon the right half of the roadway, except as follows:",
+"instruction": "도로의 오른쪽 절반으로 주행하십시오.",
+"instruction_en": "Drive on the right half of the roadway.",
+"action": "CAUTION",
+"scene": "Two-way road with centerline and own lane on the right"
+},
+{
+"id": "CVC §21651(a)",
+"title": "",
+"text": "(a) Whenever a highway has been divided into two or more roadways by means of intermittent barriers or by means of a dividing section of not less than two feet in width, either unpaved or delineated by curbs, double-parallel lines, or other markings on the roadway, it is unlawful to do either of the following: (1) To drive any vehicle over, upon, or across the dividing section. (2) To make any left, semicircular, or U-turn with the vehicle on the divided highway, except through an opening in the barrier designated and intended by public authorities for the use of vehicles or through a plainly ",
+"instruction": "분리대가 있는 도로에서는 분리 구간을 넘어 주행하지 마십시오.",
+"instruction_en": "On a divided highway, do not drive over or across the dividing section.",
+"action": "KEEP_OUT",
+"scene": "Divided highway with median strip or curbed dividing section"
+},
+{
+"id": "CVC §21651(a)",
+"title": "",
+"text": "(a) Whenever a highway has been divided into two or more roadways by means of intermittent barriers or by means of a dividing section of not less than two feet in width, either unpaved or delineated by curbs, double-parallel lines, or other markings on the roadway, it is unlawful to do either of the following: (1) To drive any vehicle over, upon, or across the dividing section. (2) To make any left, semicircular, or U-turn with the vehicle on the divided highway, except through an opening in the barrier designated and intended by public authorities for the use of vehicles or through a plainly ",
+"instruction": "분리된 도로에서는 지정된 개구부 외에서 좌회전·U턴하지 마십시오.",
+"instruction_en": "On a divided highway, turn left or U-turn only at designated openings.",
+"action": "KEEP_OUT",
+"scene": "Divided highway with median barrier and a marked opening"
+},
+{
+"id": "CVC §21651(b)",
+"title": "",
+"text": "(b) It is unlawful to drive any vehicle upon a highway, except to the right of an intermittent barrier or a dividing section which separates two or more opposing lanes of traffic. Except as otherwise provided in subdivision (c), a violation of this subdivision is a misdemeanor.",
+"instruction": "대향 차로를 나눈 분리대의 오른쪽으로만 주행하십시오.",
+"instruction_en": "Drive only to the right of a barrier separating opposing lanes.",
+"action": "KEEP_OUT",
+"scene": "Median barrier separating opposing lanes of traffic"
+},
+{
+"id": "CVC §21751",
+"title": "",
+"text": "On a two-lane highway, no vehicle shall be driven to the left side of the center of the roadway in overtaking and passing another vehicle proceeding in the same direction unless the left side is clearly visible and free of oncoming traffic for a sufficient distance ahead to permit such overtaking and passing to be completely made without interfering with the safe operation of any vehicle approaching from the opposite direction.",
+"instruction": "2차로에서는 마주 오는 차 없이 앞이 충분히 보일 때만 앞지르십시오.",
+"instruction_en": "On a two-lane highway, pass only when the way ahead is clear of oncoming traffic.",
+"action": "NO_OVERTAKING",
+"scene": "Two-lane road with slower vehicle ahead and oncoming lane view"
+},
+{
+"id": "CVC §21963",
+"title": "",
+"text": "A totally or partially blind pedestrian who is carrying a predominantly white cane (with or without a red tip), or using a guide dog, shall have the right-of-way, and the driver of any vehicle approaching this pedestrian, who fails to yield the right-of-way, or to take all reasonably necessary precautions to avoid injury to this blind pedestrian, is guilty of a misdemeanor, punishable by imprisonment in the county jail not exceeding six months, or by a fine of not less than five hundred dollars ($500) nor more than one thousand dollars ($1,000), or both. This section shall not preclude prosecu",
+"instruction": "흰 지팡이나 안내견을 쓰는 시각장애 보행자에게 양보하십시오.",
+"instruction_en": "Yield to blind pedestrians with a white cane or guide dog.",
+"action": "YIELD",
+"scene": "Pedestrian with white cane or guide dog at the roadway"
+},
+{
+"id": "CVC §23111",
+"title": "",
+"text": "No person in any vehicle and no pedestrian shall throw or discharge from or upon any road or highway or adjoining area, public or private, any lighted or nonlighted cigarette, cigar, match, or any flaming or glowing substance. This section shall be known as the Paul Buzzo Act.",
+"instruction": "차량에서 도로로 불붙은 담배나 성냥을 던지지 마십시오.",
+"instruction_en": "Do not throw lit cigarettes or matches from the vehicle onto the road.",
+"action": "CAUTION",
+"scene": "Dry roadside grass beside the road ahead of the vehicle"
+},
+{
+"id": "CVC §23112(a)",
+"title": "",
+"text": "(a) No person shall throw or deposit, nor shall the registered owner or the driver, if such owner is not then present in the vehicle, aid or abet in the throwing or depositing upon any highway any bottle, can, garbage, glass, nail, offal, paper, wire, any substance likely to injure or damage traffic using the highway, or any noisome, nauseous, or offensive matter of any kind.",
+"instruction": "도로에 병, 캔, 쓰레기, 못을 버리지 마십시오.",
+"instruction_en": "Do not throw bottles, cans, trash, or nails onto the highway.",
+"action": "CAUTION",
+"scene": "Litter and debris scattered on the road surface ahead"
+},
+{
+"id": "CVC §23112(b)",
+"title": "",
+"text": "(b) No person shall place, deposit, or dump, or cause to be placed, deposited, or dumped, any rocks, refuse, garbage, or dirt in or upon any highway, including any portion of the right-of-way thereof, without the consent of the state or local agency having jurisdiction over the highway.",
+"instruction": "관할 기관 동의 없이 도로에 돌, 쓰레기, 흙을 버리지 마십시오.",
+"instruction_en": "Do not dump rocks, refuse, or dirt on a highway without agency consent.",
+"action": "CAUTION",
+"scene": "Truck dumping dirt and rubble beside the highway"
+},
+{
+"id": "CVC §21652",
+"title": "",
+"text": "When any service road has been constructed on or along any public highway and the main thoroughfare of the highway has been separated from the service road, it is unlawful for any person to drive any vehicle into the main thoroughfare from the service road or from the main thoroughfare into the service road except through an opening in the dividing curb, section, separation, or line.",
+"instruction": "분리된 서비스 도로와 본선은 연석 개구부로만 드나드십시오.",
+"instruction_en": "Cross between service road and main road only through dividing-curb openings.",
+"action": "KEEP_OUT",
+"scene": "Service road separated from the main highway by a curb divider"
+},
+{
+"id": "CVC §21654(a)",
+"title": "",
+"text": "(a) Notwithstanding the prima facie speed limits, any vehicle proceeding upon a highway at a speed less than the normal speed of traffic moving in the same direction at such time shall be driven in the right-hand lane for traffic or as close as practicable to the right-hand edge or curb, except when overtaking and passing another vehicle proceeding in the same direction or when preparing for a left turn at an intersection or into a private road or driveway.",
+"instruction": "교통 흐름보다 느리면 우측 차로나 우측 가장자리로 주행하십시오.",
+"instruction_en": "When slower than traffic, drive in the right lane or near the right edge.",
+"action": "CAUTION",
+"scene": "Slow vehicle on a multi-lane highway with faster traffic behind"
+},
+{
+"id": "CVC §21752(a)",
+"title": "",
+"text": "No vehicle shall be driven to the left side of the roadway under the following conditions: (a) When approaching or upon the crest of a grade or a curve in the highway where the driver’s view is obstructed within such distance as to create a hazard in the event another vehicle might approach from the opposite direction.",
+"instruction": "시야가 막힌 언덕 정상이나 커브에서는 도로 왼쪽으로 주행하지 마십시오.",
+"instruction_en": "Do not drive on the left side at a crest or curve with obstructed view.",
+"action": "NO_OVERTAKING",
+"scene": "Road crest or sharp curve with blocked view of oncoming lane"
+},
+{
+"id": "CVC §21752(b)",
+"title": "",
+"text": "No vehicle shall be driven to the left side of the roadway under the following conditions: (b) When the view is obstructed upon approaching within 100 feet of any bridge, viaduct, or tunnel.",
+"instruction": "교량·터널 100피트 이내에서 시야가 막히면 왼쪽으로 주행하지 마십시오.",
+"instruction_en": "Do not drive on the left near a bridge or tunnel with obstructed view.",
+"action": "NO_OVERTAKING",
+"scene": "Approach to a bridge or tunnel entrance with limited visibility"
+},
+{
+"id": "CVC §21752(c)",
+"title": "",
+"text": "No vehicle shall be driven to the left side of the roadway under the following conditions: (c) When approaching within 100 feet of or when traversing any railroad grade crossing.",
+"instruction": "철도 건널목 100피트 이내와 통과 중에는 왼쪽으로 주행하지 마십시오.",
+"instruction_en": "Do not drive on the left within 100 feet of or crossing a railroad crossing.",
+"action": "NO_OVERTAKING",
+"scene": "Railroad grade crossing with crossbuck sign ahead"
+},
+{
+"id": "CVC §21752(d)",
+"title": "",
+"text": "No vehicle shall be driven to the left side of the roadway under the following conditions: (d) When approaching within 100 feet of or when traversing any intersection. This section shall not apply upon a one-way roadway.",
+"instruction": "교차로 100피트 이내와 통과 중에는 왼쪽으로 주행하지 마십시오.",
+"instruction_en": "Do not drive on the left within 100 feet of or crossing an intersection.",
+"action": "NO_OVERTAKING",
+"scene": "Two-way road approaching an intersection"
+},
+{
+"id": "CVC §21753",
+"title": "",
+"text": "Except when passing on the right is permitted, the driver of an overtaken vehicle shall safely move to the right-hand side of the highway in favor of the overtaking vehicle after an audible signal or a momentary flash of headlights by the overtaking vehicle, and shall not increase the speed of his or her vehicle until completely passed by the overtaking vehicle. This section does not require the driver of an overtaken vehicle to drive on the shoulder of the highway in order to allow the overtaking vehicle to pass.",
+"instruction": "추월 신호를 받으면 우측으로 비키고 가속하지 마십시오.",
+"instruction_en": "When signaled to be passed, move right and do not speed up.",
+"action": "YIELD",
+"scene": "Vehicle behind flashing headlights to pass on a two-lane road"
+},
+{
+"id": "CVC §21754",
+"title": "",
+"text": "The driver of a vehicle may overtake and pass to the right of another vehicle only under the following conditions:",
+"instruction": "앞차 좌회전·다차로·일방통행 외에는 우측으로 추월하지 마십시오.",
+"instruction_en": "Pass on the right only if vehicle turns left, or on multilane or one-way roads.",
+"action": "NO_OVERTAKING",
+"scene": "Vehicle ahead on a road with open lane to its right"
+},
+{
+"id": "CVC §21970(a)",
+"title": "",
+"text": "(a) No person may stop a vehicle unnecessarily in a manner that causes the vehicle to block a marked or unmarked crosswalk or sidewalk.",
+"instruction": "불필요하게 정차해 횡단보도나 인도를 막지 마십시오.",
+"instruction_en": "Do not stop unnecessarily and block a crosswalk or sidewalk.",
+"action": "KEEP_OUT",
+"scene": "Stopped queue of cars covering a crosswalk at an intersection"
+},
+{
+"id": "CVC §22362",
+"title": "",
+"text": "It is prima facie a violation of the basic speed law for any person to operate a vehicle in excess of the posted speed limit upon any portion of a highway where officers or employees of the agency having jurisdiction of the same, or any contractor of the agency or his employees, are at work on the roadway or within the right-of-way so close thereto as to be endangered by passing traffic. This section applies only when appropriate signs, indicating the limits of the restricted zone, and the speed limit applicable therein, are placed by such agency within 400 feet of each end of such zone. The s",
+"instruction": "도로 작업 구역 표지 안에서는 제한속도를 초과하지 마십시오.",
+"instruction_en": "Do not exceed the posted limit inside a marked roadway work zone.",
+"action": "SLOW_DOWN",
+"scene": "Road work zone with workers, cones, and a reduced speed sign"
+},
+{
+"id": "CVC §22518(a)",
+"title": "",
+"text": "(a) Fringe and transportation corridor parking facilities constructed, maintained, or operated by the Department of Transportation pursuant to Section 146.5 of the Streets and Highways Code shall be used only by persons using a bicycle or public transit, or engaged in ridesharing, including, but not limited to, carpools or vanpools. A person shall not park a vehicle 30 feet or more in length, engage in loitering or camping, or engage in vending or any other commercial activity on any fringe or transportation corridor parking facility.",
+"instruction": "교통 환승 주차장에는 30피트 이상 길이의 차량을 주차하지 마십시오.",
+"instruction_en": "Do not park a vehicle 30 feet or longer in a park-and-ride lot.",
+"action": "KEEP_OUT",
+"scene": "Park-and-ride parking lot with a long vehicle entering"
+},
+{
+"id": "CVC §22518(a)",
+"title": "",
+"text": "(a) Fringe and transportation corridor parking facilities constructed, maintained, or operated by the Department of Transportation pursuant to Section 146.5 of the Streets and Highways Code shall be used only by persons using a bicycle or public transit, or engaged in ridesharing, including, but not limited to, carpools or vanpools. A person shall not park a vehicle 30 feet or more in length, engage in loitering or camping, or engage in vending or any other commercial activity on any fringe or transportation corridor parking facility.",
+"instruction": "환승 주차장은 자전거, 대중교통, 카풀 이용자만 사용하십시오.",
+"instruction_en": "Use park-and-ride lots only for bicycle, transit, or ridesharing trips.",
+"action": "CAUTION",
+"scene": "Park-and-ride lot entrance with commuter parking signs"
+},
+{
+"id": "CVC §23113(a)",
+"title": "",
+"text": "(a) Any person who drops, dumps, deposits, places, or throws, or causes or permits to be dropped, dumped, deposited, placed, or thrown, upon any highway or street any material described in Section 23112 or in subdivision (d) of Section 23114 shall immediately remove the material or cause the material to be removed.",
+"instruction": "도로에 물질을 떨어뜨렸다면 즉시 치우십시오.",
+"instruction_en": "Immediately remove any material you drop or deposit on the highway.",
+"action": "CAUTION",
+"scene": "Spilled cargo and debris lying on the travel lane ahead"
+},
+{
+"id": "CVC §21655.1(a)",
+"title": "",
+"text": "(a) A person shall not operate a motor vehicle on a portion of a highway that has been designated as a transit-only traffic lane except in compliance with the directions of a peace officer or official traffic control device.",
+"instruction": "버스 전용차로는 경찰관이나 교통신호 지시가 없으면 진입하지 마십시오.",
+"instruction_en": "Do not enter a transit-only lane unless directed by an officer or device.",
+"action": "KEEP_OUT",
+"scene": "Red-painted bus-only lane marked BUS ONLY beside the travel lane"
+},
+{
+"id": "CVC §21756(a)",
+"title": "",
+"text": "(a) The driver of a vehicle overtaking any interurban electric or streetcar stopped or about to stop for the purpose of receiving or discharging any passenger shall stop the vehicle to the rear of the nearest running board or door of such car and thereupon remain standing until all passengers have boarded the car or upon alighting have reached a place of safety, except as provided in subdivision (b) hereof.",
+"instruction": "승객이 타고 내리는 전차 뒤에서는 승객이 안전해질 때까지 정지하십시오.",
+"instruction_en": "Stop behind a streetcar loading passengers until all have reached safety.",
+"action": "STOP",
+"scene": "Streetcar stopped with doors open and passengers boarding"
+},
+{
+"id": "CVC §21756(b)",
+"title": "",
+"text": "(b) Where a safety zone has been established or at an intersection where traffic is controlled by an officer or a traffic control signal device, a vehicle need not be brought to a stop before passing any interurban electric or streetcar but may proceed past such car at a speed not greater than 10 miles per hour and with due caution for the safety of pedestrians.",
+"instruction": "안전지대·신호 교차로에서는 전차 옆을 시속 10마일 이하로 지나가십시오.",
+"instruction_en": "At a safety zone or signal intersection, pass a streetcar at 10 mph or less.",
+"action": "SLOW_DOWN",
+"scene": "Streetcar beside a safety zone at a signal-controlled intersection"
+},
+{
+"id": "CVC §21756(c)",
+"title": "",
+"text": "(c) Whenever any trolley coach or bus has stopped at a safety zone to receive or discharge passengers, a vehicle may proceed past such trolley coach or bus at a speed not greater than 10 miles per hour.",
+"instruction": "안전지대에 정차한 버스 옆은 시속 10마일 이하로 지나가십시오.",
+"instruction_en": "Pass a bus stopped at a safety zone at no more than 10 mph.",
+"action": "SLOW_DOWN",
+"scene": "Bus stopped at a safety zone with passengers getting on or off"
+},
+{
+"id": "CVC §21757",
+"title": "",
+"text": "The driver of a vehicle shall not overtake and pass upon the left, nor shall any driver of a vehicle drive upon the left side of, any interurban electric or street car proceeding in the same direction whether the street car is actually in motion or temporarily at rest, except:",
+"instruction": "같은 방향 노면전차의 왼쪽으로 추월하거나 주행하지 마십시오.",
+"instruction_en": "Do not pass or drive on the left of a streetcar going the same direction.",
+"action": "NO_OVERTAKING",
+"scene": "Streetcar on tracks ahead moving in the same direction"
+},
+{
+"id": "CVC §21759",
+"title": "",
+"text": "The driver of any vehicle approaching any horse drawn vehicle, any ridden animal, or any livestock shall exercise proper control of his vehicle and shall reduce speed or stop as may appear necessary or as may be signalled or otherwise requested by any person driving, riding or in charge of the animal or livestock in order to avoid frightening and to safeguard the animal or livestock and to insure the safety of any person driving or riding the animal or in charge of the livestock.",
+"instruction": "말이나 가축에 접근하면 필요에 따라 감속하거나 정지하십시오.",
+"instruction_en": "Approaching horses or livestock, slow down or stop as necessary.",
+"action": "SLOW_DOWN",
+"scene": "Rider on horseback or livestock on or beside the road ahead"
+},
+{
+"id": "CVC §22100.5",
+"title": "",
+"text": "No driver shall make a U-turn at an intersection controlled by official traffic signals except as provided in Section 21451, and then only from the far lefthand lane that is lawfully available to traffic moving in the direction of travel from which the turn is commenced. No driver shall make a U-turn at an intersection controlled by official traffic control devices except from the far lefthand lane that is lawfully available to traffic moving in the direction of travel from which the turn is commenced.",
+"instruction": "신호 교차로에서는 맨 왼쪽 차로에서만 유턴하십시오.",
+"instruction_en": "At a signal-controlled intersection, U-turn only from the far left lane.",
+"action": "CAUTION",
+"scene": "Signal-controlled intersection with U-turn from the leftmost lane"
+},
+{
+"id": "CVC §22101(d)",
+"title": "",
+"text": "(d) When an official traffic control device is placed as required in subdivisions (b) or (c), it is unlawful for a driver of a vehicle to disobey the directions of the official traffic control device.",
+"instruction": "회전 금지·지정 표지가 있는 교차로에서는 표지에 따르십시오.",
+"instruction_en": "Obey turn prohibition or turn requirement signs at intersections.",
+"action": "CAUTION",
+"scene": "No Left Turn or No Right Turn sign at an intersection"
+},
+{
+"id": "CVC §22103",
+"title": "",
+"text": "No person in a residence district shall make a U-turn when any other vehicle is approaching from either direction within 200 feet, except at an intersection when the approaching vehicle is controlled by an official traffic control device.",
+"instruction": "주거 지역에서는 200피트 이내에 접근 차량이 있으면 유턴하지 마십시오.",
+"instruction_en": "In residence districts, do not U-turn with traffic approaching within 200 feet.",
+"action": "KEEP_OUT",
+"scene": "Residential street with approaching vehicle while preparing a U-turn"
+},
+{
+"id": "CVC §22104",
+"title": "",
+"text": "No person shall make a U-turn in front of the driveway entrance or approaches to a fire station. No person shall use the driveway entrance or approaches to a fire station for the purpose of turning a vehicle so as to proceed in the opposite direction.",
+"instruction": "소방서 진입로 앞에서는 유턴하거나 진입로로 방향을 바꾸지 마십시오.",
+"instruction_en": "Do not U-turn in front of or use a fire station driveway to turn around.",
+"action": "KEEP_OUT",
+"scene": "Fire station driveway entrance with apparatus bay doors beside road"
+},
+{
+"id": "CVC §22400(a)",
+"title": "",
+"text": "(a) No person shall drive upon a highway at such a slow speed as to impede or block the normal and reasonable movement of traffic unless the reduced speed is necessary for safe operation, because of a grade, or in compliance with law. No person shall bring a vehicle to a complete stop upon a highway so as to impede or block the normal and reasonable movement of traffic unless the stop is necessary for safe operation or in compliance with law.",
+"instruction": "교통 흐름을 막을 만큼 느리게 주행하지 마십시오.",
+"instruction_en": "Do not drive so slowly that you impede normal traffic movement.",
+"action": "CAUTION",
+"scene": "Vehicle driving very slowly with line of traffic behind"
+},
+{
+"id": "CVC §22400(a)",
+"title": "",
+"text": "(a) No person shall drive upon a highway at such a slow speed as to impede or block the normal and reasonable movement of traffic unless the reduced speed is necessary for safe operation, because of a grade, or in compliance with law. No person shall bring a vehicle to a complete stop upon a highway so as to impede or block the normal and reasonable movement of traffic unless the stop is necessary for safe operation or in compliance with law.",
+"instruction": "교통을 막으며 도로에서 완전히 정지하지 마십시오.",
+"instruction_en": "Do not stop completely on the highway and block traffic.",
+"action": "CAUTION",
+"scene": "Vehicle stopped in a travel lane blocking following traffic"
+},
+{
+"id": "CVC §22400(b)",
+"title": "",
+"text": "(b) Whenever the Department of Transportation determines on the basis of an engineering and traffic survey that slow speeds on any part of a state highway consistently impede the normal and reasonable movement of traffic, the department may determine and declare a minimum speed limit below which no person shall drive a vehicle, except when necessary for safe operation or in compliance with law, when appropriate signs giving notice thereof are erected along the part of the highway for which a minimum speed limit is established. Subdivision (b) of this section shall apply only to vehicles subjec",
+"instruction": "최저 속도 표지가 있는 구간에서는 그 속도 미만으로 주행하지 마십시오.",
+"instruction_en": "Do not drive below the posted minimum speed limit.",
+"action": "SLOW_DOWN",
+"scene": "Minimum Speed Limit sign beside a state highway"
+},
+{
+"id": "CVC §22522",
+"title": "",
+"text": "No person shall park a vehicle within three feet of any sidewalk access ramp constructed at, or adjacent to, a crosswalk or at any other location on a sidewalk so as to be accessible to and usable by the physically disabled, if the area adjoining the ramp is designated by either a sign or red paint.",
+"instruction": "표지나 붉은 칠이 된 연석 경사로 3피트 이내에는 주차하지 마십시오.",
+"instruction_en": "Do not park within 3 feet of a marked or red-painted curb access ramp.",
+"action": "KEEP_OUT",
+"scene": "Sidewalk access ramp with red painted curb beside parking space"
+},
+{
+"id": "CVC §23253",
+"title": "",
+"text": "All persons in, or upon, any toll highway or vehicular crossing shall at all times comply with any lawful order, signal, or direction by voice or hand of any member of the California Highway Patrol or an employee of the Department of Transportation who is a peace officer.",
+"instruction": "유료도로에서는 고속도로순찰대원의 지시에 따르십시오.",
+"instruction_en": "On toll highways, obey lawful directions of highway patrol officers.",
+"action": "CAUTION",
+"scene": "Highway patrol officer directing traffic on a toll road"
+},
+{
+"id": "CVC §21655.8(a)",
+"title": "",
+"text": "(a) Except as required under subdivision (b), when exclusive or preferential use lanes for high-occupancy vehicles are established pursuant to Section 21655.5 and double parallel solid lines are in place to the right thereof, no person driving a vehicle may cross over these double lines to enter into or exit from the exclusive or preferential use lanes, and entrance or exit may be made only in areas designated for these purposes or where a single broken line is in place to the right of the exclusive or preferential use lanes.",
+"instruction": "HOV 차로 오른쪽에 이중 실선이 있으면 넘어서 드나들지 마십시오.",
+"instruction_en": "Do not cross double solid lines to enter or exit an HOV lane.",
+"action": "KEEP_OUT",
+"scene": "HOV lane separated by double solid lines on a freeway"
+},
+{
+"id": "CVC §21655.8(b)",
+"title": "",
+"text": "(b) Upon the approach of an authorized emergency vehicle displaying a red light or siren, as specified in Section 21806, a person driving a vehicle in an exclusive or preferential use lane shall exit that lane immediately upon determining that the exit can be accomplished with reasonable safety.",
+"instruction": "긴급차량이 접근하면 HOV 차로에서 안전할 때 즉시 빠져나오십시오.",
+"instruction_en": "In an HOV lane, exit immediately when safe if an emergency vehicle approaches.",
+"action": "YIELD",
+"scene": "Emergency vehicle with lights approaching from behind in HOV lane"
+},
+{
+"id": "CVC §21761(a)",
+"title": "",
+"text": "(a) The driver of a vehicle on a public street or highway approaching and overtaking a stopped waste service vehicle shall make a lane change into an available lane adjacent to the waste service vehicle and shall pass at a safe distance without interfering with the safe operation of the waste service vehicle, with due regard for safety and traffic conditions, if practicable and not prohibited by law.",
+"instruction": "황색등이 켜진 청소차를 추월할 때는 인접 차로로 옮겨 지나가십시오.",
+"instruction_en": "Passing a stopped waste truck with amber lights, move to the adjacent lane.",
+"action": "CAUTION",
+"scene": "Stopped garbage truck with flashing amber lights in lane ahead"
+},
+{
+"id": "CVC §21761(b)",
+"title": "",
+"text": "(b) If the maneuver described in subdivision (a) would be unsafe or impractical, a driver approaching and overtaking a stopped waste service vehicle shall slow to a reasonable and prudent speed that is safe for existing weather, road, and vehicular or pedestrian traffic conditions.",
+"instruction": "차로를 옮길 수 없으면 정차한 청소차 옆에서 안전한 속도로 감속하십시오.",
+"instruction_en": "If you cannot change lanes, slow to a safe speed near the waste truck.",
+"action": "SLOW_DOWN",
+"scene": "Stopped garbage truck with amber lights and no free adjacent lane"
+},
+{
+"id": "CVC §21801(a)",
+"title": "",
+"text": "(a) The driver of a vehicle intending to turn to the left or to complete a U-turn upon a highway, or to turn left into public or private property, or an alley, shall yield the right-of-way to all vehicles approaching from the opposite direction which are close enough to constitute a hazard at any time during the turning movement, and shall continue to yield the right-of-way to the approaching vehicles until the left turn or U-turn can be made with reasonable safety.",
+"instruction": "좌회전이나 유턴할 때 위험한 거리의 맞은편 차량에게 양보하십시오.",
+"instruction_en": "When turning left or making a U-turn, yield to close oncoming vehicles.",
+"action": "YIELD",
+"scene": "Oncoming vehicles approaching while waiting to turn left"
+},
+{
+"id": "CVC §21801(b)",
+"title": "",
+"text": "(b) A driver having yielded as prescribed in subdivision (a), and having given a signal when and as required by this code, may turn left or complete a U-turn, and the drivers of vehicles approaching the intersection or the entrance to the property or alley from the opposite direction shall yield the right-of-way to the turning vehicle.",
+"instruction": "양보하고 신호를 낸 좌회전 차량에게 맞은편 차량은 양보하십시오.",
+"instruction_en": "Oncoming drivers must yield to a vehicle that yielded, signaled, and turns left.",
+"action": "YIELD",
+"scene": "Oncoming vehicle with left turn signal turning across your lane"
+},
+{
+"id": "CVC §22106",
+"title": "",
+"text": "No person shall start a vehicle stopped, standing, or parked on a highway, nor shall any person back a vehicle on a highway until such movement can be made with reasonable safety.",
+"instruction": "출발하거나 후진할 때는 안전이 확보된 뒤에 하십시오.",
+"instruction_en": "Start from a stop or back up only when it can be done safely.",
+"action": "CAUTION",
+"scene": "Parked vehicle at the curb pulling out into traffic"
+},
+{
+"id": "CVC §22107",
+"title": "",
+"text": "No person shall turn a vehicle from a direct course or move right or left upon a roadway until such movement can be made with reasonable safety and then only after the giving of an appropriate signal in the manner provided in this chapter in the event any other vehicle may be affected by the movement.",
+"instruction": "방향을 바꾸거나 차로를 옮길 때는 안전을 확인하고 신호를 내십시오.",
+"instruction_en": "Turn or change lanes only when safe, and signal if others are affected.",
+"action": "CAUTION",
+"scene": "Multi-lane road with vehicles in adjacent lane during a lane change"
+},
+{
+"id": "CVC §22108",
+"title": "",
+"text": "Any signal of intention to turn right or left shall be given continuously during the last 100 feet traveled by the vehicle before turning.",
+"instruction": "회전하기 전 마지막 100피트 동안 방향지시등을 계속 켜십시오.",
+"instruction_en": "Signal continuously during the last 100 feet before turning.",
+"action": "CAUTION",
+"scene": "Approach to an intersection or driveway before a turn"
+},
+{
+"id": "CVC §22109",
+"title": "",
+"text": "No person shall stop or suddenly decrease the speed of a vehicle on a highway without first giving an appropriate signal in the manner provided in this chapter to the driver of any vehicle immediately to the rear when there is opportunity to give the signal.",
+"instruction": "정지하거나 급감속하기 전에 뒤차에 신호를 내십시오.",
+"instruction_en": "Signal to the vehicle behind before stopping or suddenly slowing.",
+"action": "CAUTION",
+"scene": "Following vehicle close behind as traffic ahead slows"
+},
+{
+"id": "CVC §22110(a)",
+"title": "",
+"text": "(a) The signals required by this chapter shall be given by signal lamp, unless a vehicle is not required to be and is not equipped with turn signals. Drivers of vehicles not required to be and not equipped with turn signals shall give a hand and arm signal when required by this chapter.",
+"instruction": "방향 신호는 방향지시등으로 내십시오.",
+"instruction_en": "Give required turn signals with the vehicle's signal lamps.",
+"action": "CAUTION",
+"scene": "Vehicle approaching a turn with turn signal lamp flashing"
+},
+{
+"id": "CVC §22405(a)",
+"title": "",
+"text": "(a) No person shall drive a vehicle on any bridge, elevated structure, tube, or tunnel constituting a part of a highway, at a speed which is greater than the maximum speed which can be maintained with safety to such structure.",
+"instruction": "교량·고가구조물·터널에서는 안전 최고속도를 넘지 마십시오.",
+"instruction_en": "Do not exceed the safe maximum speed on bridges or tunnels.",
+"action": "SLOW_DOWN",
+"scene": "Approaching a bridge or tunnel entrance with a speed sign"
+},
+{
+"id": "CVC §22507.8(a)",
+"title": "",
+"text": "(a) It is unlawful for any person to park or leave standing any vehicle in a stall or space designated for disabled persons and disabled veterans pursuant to Section 22511.7 or 22511.8 of this code or Section 14679 of the Government Code, unless the vehicle displays either a special identification license plate issued pursuant to Section 5007 or a distinguishing placard issued pursuant to Section 22511.55 or 22511.59.",
+"instruction": "장애인 전용 주차 구역에는 표지나 번호판 없이 주차하지 마십시오.",
+"instruction_en": "Do not park in a disabled space without a plate or placard.",
+"action": "KEEP_OUT",
+"scene": "Parking stall marked with the disabled symbol"
+},
+{
+"id": "CVC §22507.8(b)",
+"title": "",
+"text": "(b) It is unlawful for any person to obstruct, block, or otherwise bar access to those parking stalls or spaces except as provided in subdivision (a).",
+"instruction": "장애인 전용 주차 구역으로의 접근을 막지 마십시오.",
+"instruction_en": "Do not block access to disabled parking spaces.",
+"action": "KEEP_OUT",
+"scene": "Disabled parking stall with an access aisle in a lot"
+},
+{
+"id": "CVC §22507.8(c)",
+"title": "",
+"text": "(c) It is unlawful for any person to park or leave standing any vehicle, including a vehicle displaying a special identification license plate issued pursuant to Section 5007 or a distinguishing placard issued pursuant to Section 22511.55 or 22511.59, in either of the following places: (1) On the lines marking the boundaries of a parking stall or space designated for disabled persons or disabled veterans. (2) In any area of the pavement adjacent to a parking stall or space designated for disabled persons or disabled veterans that is marked by crosshatched lines and is thereby designated, pursu",
+"instruction": "장애인 주차 구역 경계선 위에는 표지가 있어도 주차하지 마십시오.",
+"instruction_en": "Never park on the lines of a disabled space, even with a placard.",
+"action": "KEEP_OUT",
+"scene": "Painted boundary lines of a disabled parking stall"
+},
+{
+"id": "CVC §22507.8(c)",
+"title": "",
+"text": "(c) It is unlawful for any person to park or leave standing any vehicle, including a vehicle displaying a special identification license plate issued pursuant to Section 5007 or a distinguishing placard issued pursuant to Section 22511.55 or 22511.59, in either of the following places: (1) On the lines marking the boundaries of a parking stall or space designated for disabled persons or disabled veterans. (2) In any area of the pavement adjacent to a parking stall or space designated for disabled persons or disabled veterans that is marked by crosshatched lines and is thereby designated, pursu",
+"instruction": "장애인 주차 구역 옆 빗금 표시 구역에는 주차하지 마십시오.",
+"instruction_en": "Do not park in crosshatched areas beside disabled parking spaces.",
+"action": "KEEP_OUT",
+"scene": "Crosshatched pavement markings beside a disabled parking stall"
+},
+{
+"id": "CVC §23123(a)",
+"title": "",
+"text": "(a) A person shall not drive a motor vehicle while using a wireless telephone unless that telephone is specifically designed and configured to allow hands-free listening and talking, and is used in that manner while driving.",
+"instruction": "운전 중에는 핸즈프리가 아닌 무선 전화를 사용하지 마십시오.",
+"instruction_en": "Do not use a wireless phone while driving unless hands-free.",
+"action": "CAUTION",
+"scene": "Driver holding a phone while driving on a road"
+},
+{
+"id": "CVC §21657",
+"title": "",
+"text": "The authorities in charge of any highway may designate any highway, roadway, part of a roadway, or specific lanes upon which vehicular traffic shall proceed in one direction at all or such times as shall be indicated by official traffic control devices. When a roadway has been so designated, a vehicle shall be driven only in the direction designated at all or such times as shall be indicated by traffic control devices.",
+"instruction": "일방통행으로 지정된 도로·차로에서는 지정된 방향으로만 주행하십시오.",
+"instruction_en": "On one-way roads or lanes, drive only in the designated direction.",
+"action": "KEEP_OUT",
+"scene": "One-way sign with an arrow along a roadway"
+},
+{
+"id": "CVC §21658(a)",
+"title": "",
+"text": "Whenever any roadway has been divided into two or more clearly marked lanes for traffic in one direction, the following rules apply: (a) A vehicle shall be driven as nearly as practical entirely within a single lane and shall not be moved from the lane until such movement can be made with reasonable safety.",
+"instruction": "다차로 도로에서는 한 차로로 주행하고 안전할 때만 변경하십시오.",
+"instruction_en": "Stay within one lane and change lanes only when reasonably safe.",
+"action": "CAUTION",
+"scene": "One-way road with several clearly marked lanes"
+},
+{
+"id": "CVC §21658(b)",
+"title": "",
+"text": "Whenever any roadway has been divided into two or more clearly marked lanes for traffic in one direction, the following rules apply: (b) Official signs may be erected directing slow-moving traffic to use a designated lane or allocating specified lanes to traffic moving in the same direction, and drivers of vehicles shall obey the directions of the traffic device.",
+"instruction": "차로를 지정하는 표지가 있으면 그 지시에 따르십시오.",
+"instruction_en": "Obey signs that assign slow traffic or specified lanes.",
+"action": "CAUTION",
+"scene": "Overhead sign assigning slow vehicles to a designated lane"
+},
+{
+"id": "CVC §21659",
+"title": "",
+"text": "Upon a roadway which is divided into three lanes a vehicle shall not be driven in the extreme left lane at any time, nor in the center lane except when overtaking and passing another vehicle where the roadway ahead is clearly visible and the center lane is clear of traffic within a safe distance, or in preparation for a left turn, or where the center lane is at the time allocated exclusively to traffic moving in the direction the vehicle is proceeding and is signposted to give notice of such allocation. This section does not apply upon a one-way roadway.",
+"instruction": "일방통행이 아닌 3차로 도로에서는 맨 왼쪽 차로로 주행하지 마십시오.",
+"instruction_en": "On a three-lane roadway, never drive in the extreme left lane.",
+"action": "KEEP_OUT",
+"scene": "Two-way roadway with three lanes and the leftmost lane ahead"
+},
+{
+"id": "CVC §21659",
+"title": "",
+"text": "Upon a roadway which is divided into three lanes a vehicle shall not be driven in the extreme left lane at any time, nor in the center lane except when overtaking and passing another vehicle where the roadway ahead is clearly visible and the center lane is clear of traffic within a safe distance, or in preparation for a left turn, or where the center lane is at the time allocated exclusively to traffic moving in the direction the vehicle is proceeding and is signposted to give notice of such allocation. This section does not apply upon a one-way roadway.",
+"instruction": "양방향 3차로 도로의 가운데 차로는 앞지르기·좌회전 때만 쓰십시오.",
+"instruction_en": "On a three-lane roadway, use the center lane only to pass or turn left.",
+"action": "KEEP_OUT",
+"scene": "Two-way three-lane roadway with the center lane ahead"
+},
+{
+"id": "CVC §21802(a)",
+"title": "",
+"text": "(a) The driver of any vehicle approaching a stop sign at the entrance to, or within, an intersection shall stop as required by Section 22450. The driver shall then yield the right-of-way to any vehicles which have approached from another highway, or which are approaching so closely as to constitute an immediate hazard, and shall continue to yield the right-of-way to those vehicles until he or she can proceed with reasonable safety.",
+"instruction": "정지 표지 앞에서는 완전히 정지하십시오.",
+"instruction_en": "Stop completely at a stop sign.",
+"action": "STOP",
+"scene": "Red octagonal stop sign at an intersection entrance"
+},
+{
+"id": "CVC §21802(a)",
+"title": "",
+"text": "(a) The driver of any vehicle approaching a stop sign at the entrance to, or within, an intersection shall stop as required by Section 22450. The driver shall then yield the right-of-way to any vehicles which have approached from another highway, or which are approaching so closely as to constitute an immediate hazard, and shall continue to yield the right-of-way to those vehicles until he or she can proceed with reasonable safety.",
+"instruction": "정지 후에는 교차 도로 차량과 임박한 위험 차량에 양보하십시오.",
+"instruction_en": "After stopping, yield to cross traffic and any immediate hazard.",
+"action": "YIELD",
+"scene": "Stopped at a stop sign with cross traffic approaching"
+},
+{
+"id": "CVC §21802(b)",
+"title": "",
+"text": "(b) A driver having yielded as prescribed in subdivision (a) may proceed to enter the intersection, and the drivers of all other approaching vehicles shall yield the right-of-way to the vehicle entering or crossing the intersection.",
+"instruction": "정지 표지에서 양보를 마치고 진입하는 차량에는 양보하십시오.",
+"instruction_en": "Yield to a vehicle that has yielded and is entering the intersection.",
+"action": "YIELD",
+"scene": "Vehicle from a stop sign entering the intersection ahead"
+},
+{
+"id": "CVC §21803(a)",
+"title": "",
+"text": "(a) The driver of any vehicle approaching any intersection which is controlled by a yield right-of-way sign shall, upon arriving at the sign, yield the right-of-way to any vehicles which have entered the intersection, or which are approaching on the intersecting highway close enough to constitute an immediate hazard, and shall continue to yield the right-of-way to those vehicles until he or she can proceed with reasonable safety.",
+"instruction": "양보 표지에서는 교차로에 진입한 차량과 임박한 위험 차량에 양보하십시오.",
+"instruction_en": "At a yield sign, yield to vehicles in or approaching the intersection.",
+"action": "YIELD",
+"scene": "Yield sign with vehicles on the intersecting road"
+},
+{
+"id": "CVC §21803(b)",
+"title": "",
+"text": "(b) A driver having yielded as prescribed in subdivision (a) may proceed to enter the intersection, and the drivers of all other approaching vehicles shall yield the right-of-way to the vehicle entering or crossing the intersection.",
+"instruction": "양보 표지에서 양보를 마치고 진입하는 차량에는 양보하십시오.",
+"instruction_en": "Yield to a vehicle that has yielded and is entering the intersection.",
+"action": "YIELD",
+"scene": "Vehicle from a yield sign entering the intersection ahead"
+},
+{
+"id": "CVC §21804(a)",
+"title": "",
+"text": "(a) The driver of any vehicle about to enter or cross a highway from any public or private property, or from an alley, shall yield the right-of-way to all traffic, as defined in Section 620, approaching on the highway close enough to constitute an immediate hazard, and shall continue to yield the right-of-way to that traffic until he or she can proceed with reasonable safety.",
+"instruction": "사유지·골목에서 도로로 진입할 때는 접근하는 차량에 양보하십시오.",
+"instruction_en": "When entering a road from property or an alley, yield to traffic.",
+"action": "YIELD",
+"scene": "Driveway or alley exit onto a road with approaching traffic"
+},
+{
+"id": "CVC §21804(b)",
+"title": "",
+"text": "(b) A driver having yielded as prescribed in subdivision (a) may proceed to enter or cross the highway, and the drivers of all other vehicles approaching on the highway shall yield the right-of-way to the vehicle entering or crossing the intersection.",
+"instruction": "사유지·골목에서 양보를 마치고 도로로 진입하는 차량에는 양보하십시오.",
+"instruction_en": "Yield to a vehicle that has yielded and is entering the road.",
+"action": "YIELD",
+"scene": "Vehicle pulling out of a driveway onto the road ahead"
+},
+{
+"id": "CVC §22349(a)",
+"title": "",
+"text": "(a) Except as provided in Section 22356, no person may drive a vehicle upon a highway at a speed greater than 65 miles per hour.",
+"instruction": "도로에서는 시속 65마일을 넘지 마십시오.",
+"instruction_en": "Do not drive faster than 65 miles per hour.",
+"action": "SLOW_DOWN",
+"scene": "Open highway with a 65 mph speed limit sign"
+},
+{
+"id": "CVC §22349(b)",
+"title": "",
+"text": "(b) Notwithstanding any other provision of law, no person may drive a vehicle upon a two-lane, undivided highway at a speed greater than 55 miles per hour unless that highway, or portion thereof, has been posted for a higher speed by the Department of Transportation or appropriate local agency upon the basis of an engineering and traffic survey. For purposes of this subdivision, the following apply: (1) A two-lane, undivided highway is a highway with not more than one through lane of travel in each direction. (2) Passing lanes may not be considered when determining the number of through lanes.",
+"instruction": "상향 표지 없는 2차로 비분리 도로에서는 55마일을 넘지 마십시오.",
+"instruction_en": "On two-lane undivided highways, do not exceed 55 mph unless posted higher.",
+"action": "SLOW_DOWN",
+"scene": "Two-lane undivided highway with no posted higher limit"
+},
+{
+"id": "CVC §22410",
+"title": "",
+"text": "No person shall operate any vehicle equipped with any metal tire in contact with the surface of the highway at a speed in excess of six miles per hour.",
+"instruction": "금속 타이어 차량은 노면에서 시속 6마일을 넘지 마십시오.",
+"instruction_en": "Do not exceed six miles per hour with metal tires on the road.",
+"action": "SLOW_DOWN",
+"scene": "Vehicle with metal tires on a road surface"
+},
+{
+"id": "CVC §22406(a)",
+"title": "",
+"text": "No person may drive any of the following vehicles on a highway at a speed in excess of 55 miles per hour: (a) A motortruck or truck tractor having three or more axles or any motortruck or truck tractor drawing any other vehicle.",
+"instruction": "3축 이상이거나 다른 차를 끄는 화물차는 55마일을 넘지 마십시오.",
+"instruction_en": "Trucks with three or more axles or towing must not exceed 55 mph.",
+"action": "SLOW_DOWN",
+"scene": "Heavy multi-axle truck or truck towing another vehicle on a highway"
+},
+{
+"id": "CVC §22406(b)",
+"title": "",
+"text": "No person may drive any of the following vehicles on a highway at a speed in excess of 55 miles per hour: (b) A passenger vehicle or bus drawing any other vehicle.",
+"instruction": "다른 차량을 끄는 승용차·버스는 시속 55마일을 넘지 마십시오.",
+"instruction_en": "Passenger vehicles or buses towing another vehicle must not exceed 55 mph.",
+"action": "SLOW_DOWN",
+"scene": "Passenger vehicle or bus towing a trailer on a highway"
+},
+{
+"id": "CVC §22406(c)",
+"title": "",
+"text": "No person may drive any of the following vehicles on a highway at a speed in excess of 55 miles per hour: (c) A schoolbus transporting any school pupil.",
+"instruction": "학생을 태운 스쿨버스는 시속 55마일을 넘지 마십시오.",
+"instruction_en": "A schoolbus carrying pupils must not exceed 55 mph.",
+"action": "SLOW_DOWN",
+"scene": "Yellow schoolbus carrying students on a highway"
+},
+{
+"id": "CVC §22406(d)",
+"title": "",
+"text": "No person may drive any of the following vehicles on a highway at a speed in excess of 55 miles per hour: (d) A farm labor vehicle when transporting passengers.",
+"instruction": "승객을 태운 농장 노동자 차량은 시속 55마일을 넘지 마십시오.",
+"instruction_en": "A farm labor vehicle carrying passengers must not exceed 55 mph.",
+"action": "SLOW_DOWN",
+"scene": "Farm labor vehicle carrying passengers on a rural road"
+},
+{
+"id": "CVC §22406(e)",
+"title": "",
+"text": "No person may drive any of the following vehicles on a highway at a speed in excess of 55 miles per hour: (e) A vehicle transporting explosives.",
+"instruction": "폭발물을 운반하는 차량은 시속 55마일을 넘지 마십시오.",
+"instruction_en": "A vehicle transporting explosives must not exceed 55 mph.",
+"action": "SLOW_DOWN",
+"scene": "Truck with explosives placards on a highway"
+},
+{
+"id": "CVC §22406(f)",
+"title": "",
+"text": "No person may drive any of the following vehicles on a highway at a speed in excess of 55 miles per hour: (f) A trailer bus, as defined in Section 636.",
+"instruction": "트레일러 버스는 시속 55마일을 넘지 마십시오.",
+"instruction_en": "A trailer bus must not exceed 55 mph.",
+"action": "SLOW_DOWN",
+"scene": "Bus pulling a trailer on a highway"
+},
+{
+"id": "CVC §23127",
+"title": "",
+"text": "No person shall operate an unauthorized motor vehicle on any state, county, city, private, or district hiking or horseback riding trail or bicycle path that is clearly marked by an authorized agent or owner with signs at all entrances and exits and at intervals of not more than one mile indicating no unauthorized motor vehicles are permitted on the hiking or horseback riding trail or bicycle path, except bicycle paths which are contiguous or adjacent to a roadway dedicated solely to motor vehicle use. For the purpose of this section “unauthorized motor vehicle” means any motor vehicle that is ",
+"instruction": "자동차 금지 표지가 있는 하이킹·승마·자전거 도로에는 진입하지 마십시오.",
+"instruction_en": "Do not enter marked hiking, horse, or bicycle trails closed to motor vehicles.",
+"action": "KEEP_OUT",
+"scene": "Trail entrance with a sign prohibiting motor vehicles"
+},
+{
+"id": "CVC §21662",
+"title": "",
+"text": "The driver of a motor vehicle traveling through defiles or canyons or upon mountain highways shall hold the motor vehicle under control at all times and shall do the following when applicable:",
+"instruction": "산악도로·협곡을 지날 때는 항상 차량을 통제하십시오.",
+"instruction_en": "Keep the vehicle under control in canyons and on mountain highways.",
+"action": "CAUTION",
+"scene": "Winding mountain highway through a canyon"
+},
+{
+"id": "CVC §21662(a)",
+"title": "",
+"text": "The driver of a motor vehicle traveling through defiles or canyons or upon mountain highways shall hold the motor vehicle under control at all times and shall do the following when applicable: (a) If the roadway has no marked centerline, the driver shall drive as near the right-hand edge of the roadway as is reasonably possible.",
+"instruction": "중앙선 없는 산악도로·협곡에서는 도로 오른쪽 끝에 붙어 주행하십시오.",
+"instruction_en": "On mountain roads without a centerline, drive near the right edge.",
+"action": "CAUTION",
+"scene": "Narrow mountain road with no centerline"
+},
+{
+"id": "CVC §21662(b)",
+"title": "",
+"text": "The driver of a motor vehicle traveling through defiles or canyons or upon mountain highways shall hold the motor vehicle under control at all times and shall do the following when applicable: (b) If the roadway has insufficient width to permit a motor vehicle to be driven entirely to the right of the center of the roadway, the driver shall give audible warning with the horn of the motor vehicle upon approaching any curve where the view is obstructed within a distance of 200 feet along the highway.",
+"instruction": "폭이 좁고 200피트 안이 가려진 산악 커브에서는 경적을 울리십시오.",
+"instruction_en": "On narrow mountain roads, honk before curves with view blocked within 200 feet.",
+"action": "CAUTION",
+"scene": "Blind curve on a narrow mountain road"
+},
+{
+"id": "CVC §21663",
+"title": "",
+"text": "Except as expressly permitted pursuant to this code, including Sections 21100.4 and 21114.5, no person shall operate or move a motor vehicle upon a sidewalk except as may be necessary to enter or leave adjacent property.",
+"instruction": "인접 부지 출입 외에는 보도 위로 주행하지 마십시오.",
+"instruction_en": "Do not drive on a sidewalk except to enter or leave adjacent property.",
+"action": "KEEP_OUT",
+"scene": "Sidewalk beside a road with a curb"
+},
+{
+"id": "CVC §21700",
+"title": "",
+"text": "No person shall drive a vehicle when it is so loaded, or when there are in the front seat such number of persons as to obstruct the view of the driver to the front or sides of the vehicle or as to interfere with the driver’s control over the driving mechanism of the vehicle.",
+"instruction": "시야나 조작을 방해하도록 싣거나 앞좌석에 태우고 주행하지 마십시오.",
+"instruction_en": "Do not drive with a load or passengers blocking view or control.",
+"action": "CAUTION",
+"scene": "Vehicle cargo or crowded front seat obstructing the driver's view"
+},
+{
+"id": "CVC §21661",
+"title": "",
+"text": "Whenever upon any grade the width of the roadway is insufficient to permit the passing of vehicles approaching from opposite directions at the point of meeting, the driver of the vehicle descending the grade shall yield the right-of-way to the vehicle ascending the grade and shall, if necessary, back his vehicle to a place in the highway where it is possible for the vehicles to pass.",
+"instruction": "폭이 좁은 비탈길에서는 내려가는 차가 올라오는 차에 양보하십시오.",
+"instruction_en": "On narrow grades, the descending vehicle yields to the ascending vehicle.",
+"action": "YIELD",
+"scene": "Narrow sloped road with an oncoming vehicle climbing"
+},
+{
+"id": "CVC §21805(b)",
+"title": "",
+"text": "(b) The driver of any vehicle shall yield the right-of-way to any horseback rider who is crossing the highway at any designated equestrian crossing which is marked by signs as prescribed in subdivision (a).",
+"instruction": "표지된 승마 횡단로에서는 건너는 기수에게 양보하십시오.",
+"instruction_en": "Yield to horseback riders at marked equestrian crossings.",
+"action": "YIELD",
+"scene": "Equestrian crossing sign with a horse rider crossing"
+},
+{
+"id": "CVC §21806(a)",
+"title": "",
+"text": "Upon the immediate approach of an authorized emergency vehicle which is sounding a siren and which has at least one lighted lamp exhibiting red light that is visible, under normal atmospheric conditions, from a distance of 1,000 feet to the front of the vehicle, the surrounding traffic shall, except as otherwise directed by a traffic officer, do the following: (a) (1) Except as required under paragraph (2), the driver of every other vehicle shall yield the right-of-way and shall immediately drive to the right-hand edge or curb of the highway, clear of any intersection, and thereupon shall stop",
+"instruction": "사이렌 울리는 긴급차량이 접근하면 양보하고 우측 가장자리로 이동하십시오.",
+"instruction_en": "Yield to approaching sirened emergency vehicles and move to the right edge.",
+"action": "YIELD",
+"scene": "Emergency vehicle with siren and red lights approaching from behind"
+},
+{
+"id": "CVC §21806(a)",
+"title": "",
+"text": "Upon the immediate approach of an authorized emergency vehicle which is sounding a siren and which has at least one lighted lamp exhibiting red light that is visible, under normal atmospheric conditions, from a distance of 1,000 feet to the front of the vehicle, the surrounding traffic shall, except as otherwise directed by a traffic officer, do the following: (a) (1) Except as required under paragraph (2), the driver of every other vehicle shall yield the right-of-way and shall immediately drive to the right-hand edge or curb of the highway, clear of any intersection, and thereupon shall stop",
+"instruction": "긴급차량이 접근하면 교차로 밖 우측에 정지해 지나갈 때까지 기다리십시오.",
+"instruction_en": "Stop clear of intersections at the right until the emergency vehicle passes.",
+"action": "STOP",
+"scene": "Vehicle stopped at the right edge as an emergency vehicle passes"
+},
+{
+"id": "CVC §21951",
+"title": "",
+"text": "Whenever any vehicle has stopped at a marked crosswalk or at any unmarked crosswalk at an intersection to permit a pedestrian to cross the roadway the driver of any other vehicle approaching from the rear shall not overtake and pass the stopped vehicle.",
+"instruction": "횡단보도에 정차한 차량은 뒤에서 추월하지 마십시오.",
+"instruction_en": "Do not pass a vehicle stopped at a crosswalk.",
+"action": "NO_OVERTAKING",
+"scene": "Car stopped before crosswalk with pedestrian crossing, vehicle approaching from behind"
+},
+{
+"id": "CVC §22450(a)",
+"title": "",
+"text": "(a) The driver of any vehicle approaching a stop sign at the entrance to, or within, an intersection shall stop at a limit line, if marked, otherwise before entering the crosswalk on the near side of the intersection. If there is no limit line or crosswalk, the driver shall stop at the entrance to the intersecting roadway.",
+"instruction": "정지 표지판 앞에서는 정지선 또는 횡단보도 앞에 정지하십시오.",
+"instruction_en": "Stop at the limit line or before the crosswalk at a stop sign.",
+"action": "STOP",
+"scene": "Red stop sign at intersection with white limit line and crosswalk"
+},
+{
+"id": "CVC §22450(a)",
+"title": "",
+"text": "(a) The driver of any vehicle approaching a stop sign at the entrance to, or within, an intersection shall stop at a limit line, if marked, otherwise before entering the crosswalk on the near side of the intersection. If there is no limit line or crosswalk, the driver shall stop at the entrance to the intersecting roadway.",
+"instruction": "정지선과 횡단보도가 없으면 교차 도로 입구에 정지하십시오.",
+"instruction_en": "With no limit line or crosswalk, stop at the intersecting roadway entrance.",
+"action": "STOP",
+"scene": "Stop sign at intersection with no limit line or crosswalk"
+},
+{
+"id": "CVC §22450(b)",
+"title": "",
+"text": "(b) The driver of a vehicle approaching a stop sign at a railroad grade crossing shall stop at a limit line, if marked, otherwise before crossing the first track or entrance to the railroad grade crossing.",
+"instruction": "건널목 정지 표지판 앞에서는 정지선 또는 첫 선로 앞에 정지하십시오.",
+"instruction_en": "Stop at the limit line or before the first track at a crossing stop sign.",
+"action": "STOP",
+"scene": "Stop sign at railroad grade crossing with tracks ahead"
+},
+{
+"id": "CVC §23302.5(a)",
+"title": "",
+"text": "(a) No person shall evade or attempt to evade the payment of tolls or other charges on any vehicular crossing or toll highway.",
+"instruction": "유료도로와 통행료 시설에서는 통행료 납부를 회피하지 마십시오.",
+"instruction_en": "Do not evade payment of tolls on a toll road or crossing.",
+"action": "CAUTION",
+"scene": "Toll plaza with toll booths and electronic toll gantry ahead"
+},
+{
+"id": "CVC §21704(a)",
+"title": "",
+"text": "(a) The driver of any motor vehicle subject to the speed restriction of Section 22406 that is operated outside of a business or residence district, shall keep the vehicle he is driving at a distance of not less than 300 feet to the rear of any other motor vehicle subject to such speed restriction which is preceding it.",
+"instruction": "시가지 밖 편도 1차로에서는 제한속도 차량과 300피트 띄우십시오.",
+"instruction_en": "Outside towns on two-lane roads, stay 300 feet behind restricted-speed vehicles.",
+"action": "CAUTION",
+"scene": "Truck towing trailer ahead on rural two-lane highway outside town"
+},
+{
+"id": "CVC §21706",
+"title": "",
+"text": "No motor vehicle, except an authorized emergency vehicle, shall follow within 300 feet of any authorized emergency vehicle being operated under the provisions of Section 21055. This section shall not apply to a police or traffic officer when serving as an escort within the purview of Section 21057.",
+"instruction": "사이렌을 울리는 긴급차량의 300피트 이내로 따라가지 마십시오.",
+"instruction_en": "Do not follow within 300 feet of an emergency vehicle with siren.",
+"action": "KEEP_OUT",
+"scene": "Ambulance with flashing lights and siren driving ahead on road"
+},
+{
+"id": "CVC §21706.5(b)",
+"title": "",
+"text": "(b) A person shall not operate a vehicle in an unsafe manner within an emergency incident zone.",
+"instruction": "고속도로 정차 긴급차량 500피트 이내에서는 위반 없이 운전하십시오.",
+"instruction_en": "Near a stopped emergency vehicle on a freeway, drive without violations within 500 feet.",
+"action": "CAUTION",
+"scene": "Freeway with stationary police car, flashing lights on, ahead in travel direction"
+},
+{
+"id": "CVC §21707",
+"title": "",
+"text": "No motor vehicle, except an authorized emergency vehicle or a vehicle of a duly authorized member of a fire or police department, shall be operated within the block wherein an emergency situation responded to by any fire department vehicle exists, except that in the event the nearest intersection to the emergency is more than 300 feet therefrom, this section shall prohibit operation of vehicles only within 300 feet of the emergency, unless directed to do so by a member of the fire department or police department, sheriff, deputy sheriff, or member of the California Highway Patrol. The emergenc",
+"instruction": "소방차가 출동한 사고 블록에는 진입하지 마십시오.",
+"instruction_en": "Do not enter the block where fire department vehicles respond to an emergency.",
+"action": "KEEP_OUT",
+"scene": "Fire trucks with lights blocking street at emergency scene ahead"
+},
+{
+"id": "CVC §21707",
+"title": "",
+"text": "No motor vehicle, except an authorized emergency vehicle or a vehicle of a duly authorized member of a fire or police department, shall be operated within the block wherein an emergency situation responded to by any fire department vehicle exists, except that in the event the nearest intersection to the emergency is more than 300 feet therefrom, this section shall prohibit operation of vehicles only within 300 feet of the emergency, unless directed to do so by a member of the fire department or police department, sheriff, deputy sheriff, or member of the California Highway Patrol. The emergenc",
+"instruction": "교차로가 300피트 넘게 멀면 사고 300피트 이내로 진입하지 마십시오.",
+"instruction_en": "If the nearest intersection is over 300 feet away, stay out of 300 feet.",
+"action": "KEEP_OUT",
+"scene": "Fire engine emergency scene mid-block, nearest intersection far away"
+},
+{
+"id": "CVC §21954(b)",
+"title": "",
+"text": "(b) The provisions of this section shall not relieve the driver of a vehicle from the duty to exercise due care for the safety of any pedestrian upon a roadway.",
+"instruction": "차도에 있는 보행자의 안전을 위해 항상 주의를 기울이십시오.",
+"instruction_en": "Always exercise due care for pedestrians on the roadway.",
+"action": "CAUTION",
+"scene": "Pedestrian walking on roadway outside any crosswalk"
+},
+{
+"id": "CVC §22451(a)",
+"title": "",
+"text": "(a) The driver of any vehicle or pedestrian approaching a railroad or rail transit grade crossing shall stop not less than 15 feet from the nearest rail and shall not proceed until he or she can do so safely, whenever the following conditions exist: (1) A clearly visible electric or mechanical signal device or a flagman gives warning of the approach or passage of a train, car, or on-track equipment. (2) An approaching train, car, or on-track equipment is plainly visible or is emitting an audible signal and, by reason of its speed or nearness, is an immediate hazard.",
+"instruction": "열차 접근 신호가 있으면 선로 15피트 전에 정지하십시오.",
+"instruction_en": "Stop 15 feet from the rail when a signal or flagman warns of a train.",
+"action": "STOP",
+"scene": "Railroad crossing with flashing red signals and crossbuck warning of train"
+},
+{
+"id": "CVC §22451(a)",
+"title": "",
+"text": "(a) The driver of any vehicle or pedestrian approaching a railroad or rail transit grade crossing shall stop not less than 15 feet from the nearest rail and shall not proceed until he or she can do so safely, whenever the following conditions exist: (1) A clearly visible electric or mechanical signal device or a flagman gives warning of the approach or passage of a train, car, or on-track equipment. (2) An approaching train, car, or on-track equipment is plainly visible or is emitting an audible signal and, by reason of its speed or nearness, is an immediate hazard.",
+"instruction": "열차가 보이거나 들리고 위험하면 선로 15피트 전에 정지하십시오.",
+"instruction_en": "Stop 15 feet from the rail if a visible or audible train is hazardous.",
+"action": "STOP",
+"scene": "Train approaching railroad crossing close to the road"
+},
+{
+"id": "CVC §22451(b)",
+"title": "",
+"text": "(b) No driver or pedestrian shall proceed through, around, or under any railroad or rail transit crossing gate while the gate is closed.",
+"instruction": "철도 건널목 차단기가 내려와 있으면 통과하거나 우회하지 마십시오.",
+"instruction_en": "Do not go through or around a closed railroad crossing gate.",
+"action": "KEEP_OUT",
+"scene": "Lowered railroad crossing gate arm blocking the lane"
+},
+{
+"id": "CVC §23103(a)",
+"title": "",
+"text": "(a) A person who drives a vehicle upon a highway in willful or wanton disregard for the safety of persons or property is guilty of reckless driving.",
+"instruction": "도로에서 안전을 고의로 무시하는 운전을 하지 마십시오.",
+"instruction_en": "Do not drive with willful or wanton disregard for safety on a highway.",
+"action": "CAUTION",
+"scene": "Busy road with vehicles and pedestrians nearby"
+},
+{
+"id": "CVC §23103(b)",
+"title": "",
+"text": "(b) A person who drives a vehicle in an offstreet parking facility, as defined in subdivision (c) of Section 12500, in willful or wanton disregard for the safety of persons or property is guilty of reckless driving.",
+"instruction": "주차장 안에서도 안전을 고의로 무시하는 운전을 하지 마십시오.",
+"instruction_en": "Do not drive with willful or wanton disregard for safety in a parking facility.",
+"action": "CAUTION",
+"scene": "Parking lot with parked cars and pedestrians walking between them"
+},
+{
+"id": "CVC §23332",
+"title": "",
+"text": "It is unlawful for any person to be upon any portion of a vehicular crossing which is not intended for public use without the permission of the Department of Transportation. This section does not apply to a person engaged in the operation, maintenance, or repair of a vehicular crossing or any facility thereon nor to any person attempting to effect a rescue.",
+"instruction": "허가 없이 공공 이용이 아닌 차량 통행 구조물에 들어가지 마십시오.",
+"instruction_en": "Do not enter a vehicular crossing not intended for public use.",
+"action": "KEEP_OUT",
+"scene": "Bridge approach with closed private access sign and barrier"
+},
+{
+"id": "CVC §22455(a)",
+"title": "",
+"text": "(a) The driver of any commercial vehicle engaged in vending upon a street may vend products on a street in a residence district only after bringing the vehicle to a complete stop and lawfully parking adjacent to the curb, consistent with the requirements of Chapter 9 (commencing with Section 22500) and local ordinances adopted pursuant thereto.",
+"instruction": "주거 지역에서 판매하려면 완전히 정지해 연석 옆에 주차하십시오.",
+"instruction_en": "In a residence district, vend only after fully stopping and parking at the curb.",
+"action": "STOP",
+"scene": "Vending truck stopping at residential curb with customers nearby"
+},
+{
+"id": "CVC §22500.1",
+"title": "",
+"text": "In addition to Section 22500, no person shall stop, park, or leave standing any vehicle, whether attended or unattended, except when necessary to avoid conflict with other traffic or in compliance with the directions of a peace officer or official traffic control device along the edge of any highway, at any curb, or in any location in a publicly or privately owned or operated off-street parking facility, designated as a fire lane by the fire department or fire district with jurisdiction over the area in which the place is located. The designation shall be indicated (1) by a sign posted immedia",
+"instruction": "소방차선으로 지정된 연석에는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop or park in a designated fire lane.",
+"action": "KEEP_OUT",
+"scene": "Curb painted red with fire lane sign posted"
+},
+{
+"id": "CVC §23333",
+"title": "",
+"text": "No vehicle shall stop, stand, or be parked in or upon any vehicular crossing except:",
+"instruction": "교량 등 차량 통행 구조물 위에서는 정차하거나 주차하지 마십시오.",
+"instruction_en": "Do not stop, stand, or park on a vehicular crossing.",
+"action": "KEEP_OUT",
+"scene": "Bridge roadway with no shoulder and traffic lanes ahead"
+}
+]

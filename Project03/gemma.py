@@ -118,6 +118,13 @@ ANSWER_PROMPT = (
 CLOSED_ANSWER_PROMPT = "A driver asks: {question}\nAnswer in Korean in at most two short sentences."
 # 질문 18개로 쟀을 때 상위 3개에 정답 조문이 든 비율이 키워드 검색보다 높았음(2026-11-07 개발용, 현행 14/17, 2006년 14/16, 캘리포니아 8/11)
 SEARCH_TOP = 3
+# 상황 문장으로 요약 지시문을 검색해 기본 규칙 밖의 관련 규칙 후보를 이만큼 가져옴(2026-11-07 상황 19개 확인)
+RULE_TOP = 4
+# 요약 지시문은 빌드 단계에서 Sonnet이 조문을 읽고 만든 것이고, Gemma는 영어 문장으로 고르고 화면에는 한국어 문장을 냄(2026-11-07 사용자 지시)
+CHOOSE_PROMPT = (
+    "A self-driving car sees: {situation}.\nTraffic rules found for this scene:\n{options}0. none of these rules applies now\n"
+    "Which rules must the car follow right now? Reply with only the numbers of all rules that apply, separated by commas, or 0."
+)
 NO_LAW = "none"
 NO_ARTICLE = {"id": "조문 없음", "title": "", "text": "", "references": []}
 # 인식이 완벽하다고 가정한 개발용 수치는 120자 44/53, 240자 46/53, 400자 39/53이었음(2026-11-05)
@@ -158,11 +165,14 @@ def load_embedder():
 
 
 def load_corpus(short):
-    """법령의 전체 항목과 미리 만든 벡터를 불러오는 함수"""
+    """법령의 전체 항목, 요약 지시문과 미리 만든 벡터를 불러오는 함수"""
     if short == NO_LAW:
-        return {"articles": [], "vectors": None}
+        return {"articles": [], "vectors": None, "rules": [], "rule_vectors": None}
     with open(f"corpus-{short}.json", encoding="utf-8") as file:
-        return {"articles": json.load(file)["articles"], "vectors": np.load(f"vectors-{short}.npy")}
+        articles = json.load(file)["articles"]
+    with open(f"rules-{short}.json", encoding="utf-8") as file:
+        rules = json.load(file)
+    return {"articles": articles, "vectors": np.load(f"vectors-{short}.npy"), "rules": rules, "rule_vectors": np.load(f"rule-vectors-{short}.npy")}
 
 
 def search_law(embedder, question, corpus):
@@ -247,6 +257,28 @@ def ask_word(llm, stage, image, question, words):
     return answer
 
 
+def find_rules(llm, embedder, situation, article, corpus):
+    """빌드 때 고른 조문의 요약을 기본 규칙으로 두고, 검색한 관련 규칙 가운데 Gemma가 고른 것을 덧붙이는 함수"""
+    start_stage("search")
+    query = np.array(embedder.embed("task: search result | query: " + situation, normalize=True), dtype=np.float32)
+    scores = corpus["rule_vectors"] @ query
+    # 한 조문에서 조건별 요약이 여러 개 나오므로 상황 문장과 가장 가까운 요약을 기본 규칙으로 씀
+    own = [position for position, rule in enumerate(corpus["rules"]) if rule["id"] == article["id"]]
+    found = [corpus["rules"][max(own, key=lambda position: scores[position])]] if own else []
+    others = [corpus["rules"][int(position)] for position in np.argsort(-scores)[:RULE_TOP] if corpus["rules"][int(position)] not in found]
+    end_stage("search", f"후보 {len(others)}개", [], 0)
+    if others:
+        start_stage("choose")
+        options = "".join([f"{number}. {rule['instruction_en']} (applies to: {rule['scene']})\n" for number, rule in enumerate(others, 1)])
+        prompt = f"<|turn>user\n{CHOOSE_PROMPT.format(situation=situation, options=options)}<turn|>\n<|turn>model\n"
+        answer = llm.create_completion(prompt, max_tokens=12, temperature=0, stop=["<turn|>", "\n"])["choices"][0]["text"]
+        for part in answer.replace(" ", "").split(","):
+            if part.isdigit() and 0 < int(part) <= len(others) and others[int(part) - 1] not in found:
+                found.append(others[int(part) - 1])
+        end_stage("choose", answer.strip(), [], llm.n_tokens)
+    return [{"law": rule["id"], "title": rule["title"], "action": rule["action"], "instruction": rule["instruction"], "text": rule["text"][:READ_CHARS]} for rule in found]
+
+
 def publish(found):
     """판단 중에 찾은 상황을 유지 목록에 넣고 조문을 읽어 규칙 목록을 바로 화면에 넘기는 함수"""
     # 예열과 평가에서는 판단 중인 묶음이 없고, 버려진 묶음은 화면에 나오지 않아 넘기지 않음
@@ -258,22 +290,37 @@ def publish(found):
     for situation in found:
         clip["last_seen"][situation] = now
     active = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS and situation in laws[law]]
-    # 조문을 읽기 전에 올려 처음 찾은 조문이 읽기 시간만큼 늦게 보이지 않게 함
-    nodes = [{"situation": situation, "article": laws[law][situation], "fresh": situation in found,
-              "instruction": readings[(law, situation)]["instruction"] if (law, situation) in readings else None}
-             for situation in active if laws[law][situation]["text"]]
-    clip["nodes"] = nodes
-    # 이미 읽은 조문은 바로 올리고, 새 조문은 하나 읽을 때마다 뒤에 붙여 가장 새 규칙으로 보이게 함
-    rules = [readings[(law, situation)] for situation in active if (law, situation) in readings]
-    clip["rules"] = rules
-    for situation in active:
-        if (law, situation) not in readings:
-            readings[(law, situation)] = read_provision(WATCHING["llm"], situation, laws[law][situation])
-            for node in nodes:
-                if node["situation"] == situation:
-                    node["instruction"] = readings[(law, situation)]["instruction"]
-            rules = rules + [readings[(law, situation)]]
-            clip["rules"] = rules
+    # 찾기 전인 상황은 빌드 때 고른 조문으로 먼저 올려 지시문을 찾는 동안에도 조문이 보이게 함
+    pending = [situation for situation in active if (law, situation) not in readings]
+    nodes = [{"situation": situation, "article": laws[law][situation], "fresh": situation in found, "instruction": None} for situation in pending if laws[law][situation]["text"]]
+    # 이미 찾은 규칙은 바로 올리고, 새 상황의 규칙은 찾을 때마다 뒤에 붙여 가장 새 규칙으로 보이게 함
+    pairs = [(situation, rule) for situation in active if situation not in pending for rule in readings[(law, situation)]]
+    clip["nodes"] = rule_nodes(pairs, found) + nodes
+    clip["rules"] = unique_rules(pairs)
+    for situation in pending:
+        if laws[law][situation]["text"]:
+            readings[(law, situation)] = find_rules(WATCHING["llm"], WATCHING["embedder"], situation, laws[law][situation], WATCHING["corpora"][law])
+        else:
+            readings[(law, situation)] = [read_provision(WATCHING["llm"], situation, laws[law][situation])]
+        nodes = [node for node in nodes if node["situation"] != situation]
+        pairs = pairs + [(situation, rule) for rule in readings[(law, situation)]]
+        clip["nodes"] = rule_nodes(pairs, found) + nodes
+        clip["rules"] = unique_rules(pairs)
+
+
+def unique_rules(pairs):
+    """여러 상황이 같은 규칙을 찾아도 한 번만 남긴 규칙 목록을 만드는 함수"""
+    rules = []
+    for situation, rule in pairs:
+        if rule not in rules:
+            rules.append(rule)
+    return rules
+
+
+def rule_nodes(pairs, found):
+    """규칙마다 근거 조문과 지시문을 담고 이번 판단에서 찾았는지 표시한 노드를 만드는 함수"""
+    return [{"situation": situation, "article": {"id": rule["law"], "title": rule["title"], "text": rule["text"]}, "fresh": situation in found, "instruction": rule["instruction"]}
+            for situation, rule in pairs if rule["text"]]
 
 
 def recognize(llm, frame, result, in_school_zone):
@@ -387,7 +434,7 @@ def watch(llm, laws, shared, embedder, corpora):
         frame, result = current
         law = shared["law"]
         in_school_zone = time.perf_counter() - clip["last_seen"].get(SCHOOL_ZONE, -HOLD_SECONDS) <= HOLD_SECONDS
-        WATCHING.update({"shared": shared, "clip": clip, "law": law, "laws": laws, "llm": llm, "readings": readings})
+        WATCHING.update({"shared": shared, "clip": clip, "law": law, "laws": laws, "llm": llm, "readings": readings, "embedder": embedder, "corpora": corpora})
         found = recognize(llm, frame, result, in_school_zone)
         # 아무것도 찾지 못한 주기에도 만료된 규칙을 지우려고 마지막에 한 번 더 넘김
         publish(found)

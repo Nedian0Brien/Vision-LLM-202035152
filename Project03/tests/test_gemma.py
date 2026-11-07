@@ -290,16 +290,43 @@ class VoiceTest(unittest.TestCase):
         self.assertEqual((shared["question"], shared["voice_error"]), ("비 올 때 전조등을 켜야 하나요", None))
 
 
+def rule(name):
+    """가짜 요약 규칙을 만드는 함수"""
+    return {"law": name, "title": "", "instruction": name, "text": "조문 " + name}
+
+
+class FindRulesTest(unittest.TestCase):
+    def test_build_pick_comes_first_and_gemma_picks_are_added(self):
+        def summary(name, vector):
+            return {"id": name, "title": "", "text": "조문 " + name, "action": "CAUTION", "instruction": name, "instruction_en": name, "scene": name}, vector
+
+        items = [summary("x", [1.0, 0.0]), summary("y", [0.9, 0.1]), summary("z", [0.0, 1.0])]
+        corpus = {"rules": [item[0] for item in items], "rule_vectors": np.array([item[1] for item in items], np.float32)}
+
+        class Embedder:
+            def embed(self, text, normalize):
+                return [1.0, 0.0]
+
+        class Llm:
+            n_tokens = 0
+
+            def create_completion(self, prompt, **kwargs):
+                return {"choices": [{"text": "1"}]}
+
+        found = gemma.find_rules(Llm(), Embedder(), "situation", {"id": "z"}, corpus)
+        self.assertEqual([rule["law"] for rule in found], ["z", "x"])
+
+
 class PublishTest(unittest.TestCase):
     def setUp(self):
-        original = gemma.read_provision
-        gemma.read_provision = lambda llm, situation, article: {"law": situation, "instruction": situation}
-        self.addCleanup(lambda: setattr(gemma, "read_provision", original))
+        original = gemma.find_rules
+        gemma.find_rules = lambda llm, embedder, situation, article, corpus: [rule(situation)]
+        self.addCleanup(lambda: setattr(gemma, "find_rules", original))
         self.addCleanup(gemma.WATCHING.clear)
         self.clip = {"last_seen": {}, "rules": []}
         laws = {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}
-        gemma.WATCHING.update({"shared": {"clip": self.clip}, "clip": self.clip, "law": "current", "laws": laws, "llm": None,
-                               "readings": {("current", "a"): {"law": "a", "instruction": "a"}}})
+        gemma.WATCHING.update({"shared": {"clip": self.clip}, "clip": self.clip, "law": "current", "laws": laws, "llm": None, "embedder": None, "corpora": {"current": None},
+                               "readings": {("current", "a"): [rule("a")]}})
 
     def test_new_rule_is_read_and_put_last(self):
         gemma.publish(["b", "a"])
@@ -326,12 +353,12 @@ class WatchTest(unittest.TestCase):
                 raise SystemExit
             return remaining.pop(0)
 
-        original = gemma.recognize, gemma.read_provision
+        original = gemma.recognize, gemma.find_rules
         gemma.recognize = recognize
-        gemma.read_provision = lambda llm, situation, article: {"law": situation, "instruction": situation}
-        self.addCleanup(lambda: (setattr(gemma, "recognize", original[0]), setattr(gemma, "read_provision", original[1])))
+        gemma.find_rules = lambda llm, embedder, situation, article, corpus: [rule(situation)]
+        self.addCleanup(lambda: (setattr(gemma, "recognize", original[0]), setattr(gemma, "find_rules", original[1])))
         self.shared = {"question": None, "input": ("frame", "result"), "law": "current", "clip": {"last_seen": {}, "rules": []}}
-        self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared, None, {}), daemon=True)
+        self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared, None, {"current": None}), daemon=True)
         self.thread.start()
         self.addCleanup(self.finish)
 
@@ -355,21 +382,21 @@ class WatchTest(unittest.TestCase):
         clip = self.shared["clip"]
         self.started.acquire()
         self.go.release()
-        self.wait_rules(clip, [{"law": "a", "instruction": "a"}])
+        self.wait_rules(clip, [rule("a")])
         self.started.acquire()
         self.go.release()
-        self.wait_rules(clip, [{"law": "a", "instruction": "a"}, {"law": "b", "instruction": "b"}])
+        self.wait_rules(clip, [rule("a"), rule("b")])
 
     def test_node_appears_before_instruction(self):
         self.run_watch([["a"]])
         clip = self.shared["clip"]
         reading = threading.Event()
 
-        def read(llm, situation, article):
+        def find(llm, embedder, situation, article, corpus):
             reading.wait(2)
-            return {"law": situation, "instruction": situation}
+            return [rule(situation)]
 
-        gemma.read_provision = read
+        gemma.find_rules = find
         self.started.acquire()
         self.go.release()
         for _ in range(200):
@@ -381,7 +408,7 @@ class WatchTest(unittest.TestCase):
         self.assertIsNone(clip["nodes"][0]["instruction"])
         self.assertEqual(clip["rules"], [])
         reading.set()
-        self.wait_rules(clip, [{"law": "a", "instruction": "a"}])
+        self.wait_rules(clip, [rule("a")])
         self.assertEqual(clip["nodes"][0]["instruction"], "a")
 
     def test_rule_disappears_after_hold(self):
@@ -392,7 +419,7 @@ class WatchTest(unittest.TestCase):
         clip = self.shared["clip"]
         self.started.acquire()
         self.go.release()
-        self.wait_rules(clip, [{"law": "a", "instruction": "a"}])
+        self.wait_rules(clip, [rule("a")])
         time.sleep(0.05)
         self.started.acquire()
         self.go.release()
@@ -417,7 +444,7 @@ class WatchTest(unittest.TestCase):
         self.shared["input"] = ("frame", "result")
         self.started.acquire()
         self.go.release()
-        self.wait_rules(new_clip, [{"law": "b", "instruction": "b"}])
+        self.wait_rules(new_clip, [rule("b")])
 
 
 if __name__ == "__main__":

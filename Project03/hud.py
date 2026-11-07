@@ -161,7 +161,7 @@ def draw_law_card(pen, status, rule, phase):
         pen.text((28, CARD_TOP), "법령에서 조문을 찾았습니다" if rule["text"] else "조문을 찾지 않습니다", font=SMALL_FONT, fill=INK)
         pen.text((28, CARD_TOP + 30), rule["law"], font=RESULT_FONT, fill=ACCENT)
     elif phase == 1:
-        pen.text((28, CARD_TOP), "Gemma가 조문을 읽고 행동을 골랐습니다" if rule["text"] else "Gemma가 조문 없이 행동을 골랐습니다", font=SMALL_FONT, fill=INK)
+        pen.text((28, CARD_TOP), "조문 요약에서 행동을 가져왔습니다" if rule["text"] else "Gemma가 조문 없이 행동을 골랐습니다", font=SMALL_FONT, fill=INK)
         odds = status["odds"].get(rule["instruction"], [])
         best = f"  {max(probability for word, probability in odds) * 100:.0f}%" if odds else ""
         pen.text((28, CARD_TOP + 30), rule["action"] + best, font=RESULT_FONT, fill=ACCENT)
@@ -300,7 +300,7 @@ def draw_nodes(nodes, spinner):
     shown = []
     # 여러 상황이 같은 조문을 찾으면 한 번만 그림
     for node in [node for node in nodes if node["fresh"]] + [node for node in nodes if not node["fresh"]]:
-        if node["article"]["id"] not in [other["article"]["id"] for other in shown]:
+        if (node["article"]["id"], node["instruction"]) not in [(other["article"]["id"], other["instruction"]) for other in shown]:
             shown.append(node)
     # 조문이 적으면 칸 높이를 나눠 조문 원문을 길게 보여 줌
     height = (NODE_HEIGHT - 52) // max(1, -(-len(shown) // len(NODE_COLUMNS)))
