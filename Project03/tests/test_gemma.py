@@ -290,6 +290,27 @@ class VoiceTest(unittest.TestCase):
         self.assertEqual((shared["question"], shared["voice_error"]), ("비 올 때 전조등을 켜야 하나요", None))
 
 
+class PublishTest(unittest.TestCase):
+    def setUp(self):
+        original = gemma.read_provision
+        gemma.read_provision = lambda llm, situation, article: {"law": situation, "instruction": situation}
+        self.addCleanup(lambda: setattr(gemma, "read_provision", original))
+        self.addCleanup(gemma.WATCHING.clear)
+        self.clip = {"last_seen": {}, "rules": []}
+        laws = {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}
+        gemma.WATCHING.update({"shared": {"clip": self.clip}, "clip": self.clip, "law": "current", "laws": laws, "llm": None,
+                               "readings": {("current", "a"): {"law": "a", "instruction": "a"}}})
+
+    def test_new_rule_is_read_and_put_last(self):
+        gemma.publish(["b", "a"])
+        self.assertEqual([rule["law"] for rule in self.clip["rules"]], ["a", "b"])
+
+    def test_old_clip_is_not_changed(self):
+        gemma.WATCHING["shared"] = {"clip": {"last_seen": {}, "rules": []}}
+        gemma.publish(["b"])
+        self.assertEqual(self.clip["rules"], [])
+
+
 class WatchTest(unittest.TestCase):
     def run_watch(self, answers):
         """가짜 인식 결과를 한 사이클씩 내주며 watch를 돌리는 메서드"""

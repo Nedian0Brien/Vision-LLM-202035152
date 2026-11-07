@@ -245,6 +245,34 @@ def ask_word(llm, stage, image, question, words):
     return answer
 
 
+def publish(found):
+    """판단 중에 찾은 상황을 유지 목록에 넣고 조문을 읽어 규칙 목록을 바로 화면에 넘기는 함수"""
+    # 예열과 평가에서는 판단 중인 묶음이 없고, 버려진 묶음은 화면에 나오지 않아 넘기지 않음
+    if "clip" not in WATCHING or judging_old_clip():
+        return
+    clip, law, laws, readings = WATCHING["clip"], WATCHING["law"], WATCHING["laws"], WATCHING["readings"]
+    now = time.perf_counter()
+    for situation in found:
+        clip["last_seen"][situation] = now
+    active = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS and situation in laws[law]]
+    # 조문을 읽기 전에 올려 처음 찾은 조문이 읽기 시간만큼 늦게 보이지 않게 함
+    nodes = [{"situation": situation, "article": laws[law][situation], "fresh": situation in found,
+              "instruction": readings[(law, situation)]["instruction"] if (law, situation) in readings else None}
+             for situation in active if laws[law][situation]["text"]]
+    clip["nodes"] = nodes
+    # 이미 읽은 조문은 바로 올리고, 새 조문은 하나 읽을 때마다 뒤에 붙여 가장 새 규칙으로 보이게 함
+    rules = [readings[(law, situation)] for situation in active if (law, situation) in readings]
+    clip["rules"] = rules
+    for situation in active:
+        if (law, situation) not in readings:
+            readings[(law, situation)] = read_provision(WATCHING["llm"], situation, laws[law][situation])
+            for node in nodes:
+                if node["situation"] == situation:
+                    node["instruction"] = readings[(law, situation)]["instruction"]
+            rules = rules + [readings[(law, situation)]]
+            clip["rules"] = rules
+
+
 def recognize(llm, frame, result, in_school_zone):
     """프레임과 크롭을 보고 지금 있는 상황 목록을 만드는 함수"""
     signs = class_strip(frame, result, SIGN_CLASSES)
@@ -275,26 +303,34 @@ def recognize(llm, frame, result, in_school_zone):
             found.append(RED)
         if color == "yellow":
             found.append(YELLOW)
+        publish(found)
     for situation in chosen:
         if situation not in (RED, YELLOW, PEDESTRIAN):
             found.append(situation)
+    # 객관식에서 찾은 상황을 크롭 질문을 기다리지 않고 바로 화면에 넘김(2026-11-07 사용자 지시, Jetson 객관식 3.4초와 크롭 질문 한 번 0.5~0.8초)
+    publish(found)
     # 사람 크롭에는 횡단보도가 보이지 않는 경우가 많아 걷는 사람이면 yes로 답하므로 도로 크롭에서 횡단보도를 확인함(2026-11-06 측정)
     if people is not None and ask_word(llm, "pedestrian", people, PEDESTRIAN_PROMPT, YES_NO) == "yes":
         if ask_word(llm, "crosswalk", road, CROSSWALK_PROMPT, YES_NO) == "yes":
             found.append(PEDESTRIAN)
+            publish(found)
     # 표본에서 비 프레임 27/80이 yes이고 맑음 0/100, 안개 0/24라 앞단 호출 없이 바로 물음(2026-11-07 71784 표본)
     if ask_word(llm, "rain", frame, RAIN_PROMPT, YES_NO) == "yes":
         found.append(RAIN)
+        publish(found)
     if buses is not None and ask_word(llm, "bus", buses, BUS_PROMPT, YES_NO) == "yes":
         found.append(SCHOOL_BUS)
+        publish(found)
     # YOLO가 한국의 라바콘과 볼라드도 소화전으로 잡아 물체 종류를 다시 물음(2026-11-07 71784 표본에서 66박스 중 13박스만 hydrant)
     # 답을 한 토큰만 받아 hydrant는 hyd로 돌아옴
     if hydrants is not None and ask_word(llm, "hydrant", hydrants, OBJECT_PROMPT, OBJECT_WORDS).startswith("hyd"):
         found.append(HYDRANT)
+        publish(found)
     # 제27조 ⑦은 보호구역 안의 신호 없는 횡단보도에만 적용되고, 노면 글자에서 벗어나도 보호구역은 이어지므로 유지 시간 안의 인식을 씀
     if (in_school_zone or SCHOOL_ZONE in found) and lights is None:
         if ask_word(llm, "zebra", road, ZEBRA_PROMPT, YES_NO) == "yes":
             found.append(SCHOOL_CROSSWALK)
+            publish(found)
     return found
 
 
@@ -346,30 +382,9 @@ def watch(llm, laws, shared, embedder, corpora):
         frame, result = current
         law = shared["law"]
         in_school_zone = time.perf_counter() - clip["last_seen"].get(SCHOOL_ZONE, -HOLD_SECONDS) <= HOLD_SECONDS
-        WATCHING["shared"] = shared
-        WATCHING["clip"] = clip
+        WATCHING.update({"shared": shared, "clip": clip, "law": law, "laws": laws, "llm": llm, "readings": readings})
         found = recognize(llm, frame, result, in_school_zone)
-        # 버려진 묶음은 조문을 읽어도 화면에 나오지 않음
-        if judging_old_clip():
-            WATCHING.pop("clip")
-            continue
+        # 아무것도 찾지 못한 주기에도 만료된 규칙을 지우려고 마지막에 한 번 더 넘김
+        publish(found)
         WATCHING.pop("clip")
-        now = time.perf_counter()
-        for situation in found:
-            clip["last_seen"][situation] = now
-        active = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS and situation in laws[law]]
-        # 조문을 읽기 전에 올려 처음 찾은 조문이 읽기 시간만큼 늦게 보이지 않게 함
-        nodes = [{"situation": situation, "article": laws[law][situation], "fresh": situation in found,
-                  "instruction": readings[(law, situation)]["instruction"] if (law, situation) in readings else None}
-                 for situation in active if laws[law][situation]["text"]]
-        clip["nodes"] = nodes
-        rules = []
-        for situation in active:
-            if (law, situation) not in readings:
-                readings[(law, situation)] = read_provision(llm, situation, laws[law][situation])
-                for node in nodes:
-                    if node["situation"] == situation:
-                        node["instruction"] = readings[(law, situation)]["instruction"]
-            rules.append(readings[(law, situation)])
-        clip["rules"] = rules
         STATUS["stage"] = "wait"
