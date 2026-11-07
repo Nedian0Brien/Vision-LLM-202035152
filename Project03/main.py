@@ -34,6 +34,14 @@ pipeline = (
     "queue leaky=downstream max-size-buffers=1 ! "
     "appsink drop=true max-buffers=1 sync=false"
 )
+# pipeline부터 차례로 열어 보며 장비마다 다른 카메라에 대응함, 모두 실패하면 현장 카메라에 맞게 pipeline을 고침
+SINK = "videoconvert ! video/x-raw,format=BGR ! queue leaky=downstream max-size-buffers=1 ! appsink drop=true max-buffers=1 sync=false"
+USB_DEVICES = [0, 1, 2, 3]
+CAMERA_PIPELINES = ([pipeline]
+                    + [f"v4l2src device=/dev/video{device} ! video/x-raw,format=YUY2,width=640,height=480,framerate=30/1 ! {SINK}" for device in USB_DEVICES[1:]]
+                    + [f"nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1280,height=720,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! {SINK}"]
+                    + [f"v4l2src device=/dev/video{device} ! decodebin ! {SINK}" for device in USB_DEVICES])
+CAMERA_LOG = "jetson-camera.txt"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
@@ -56,6 +64,21 @@ model = YOLO(args.model)
 # 마우스 콜백은 이름 붙은 창에만 달 수 있어 첫 imshow 전에 창을 만듦
 cv2.namedWindow(WINDOW)
 cv2.setMouseCallback(WINDOW, on_click)
+
+def open_camera():
+    """프레임이 읽히는 첫 카메라 pipeline으로 장치를 여는 함수"""
+    for candidate in CAMERA_PIPELINES:
+        camera = cv2.VideoCapture(candidate, cv2.CAP_GSTREAMER)
+        if camera.isOpened() and camera.read()[0]:
+            # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
+            with open(CAMERA_LOG, "w", encoding="utf-8") as file:
+                file.write(candidate + "\n")
+            return camera
+        camera.release()
+    with open(CAMERA_LOG, "w", encoding="utf-8") as file:
+        file.write("열린 카메라 없음\n")
+    return camera
+
 
 def detect_boxes():
     """가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘기는 함수"""
@@ -99,7 +122,7 @@ while True:
         # 카메라는 앞서 연 장치를 닫아야 다시 열 수 있음
         cap.release()
         if is_camera:
-            cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+            cap = open_camera()
             frame_ms = 1
         else:
             cap = cv2.VideoCapture(VIDEOS[current_video][1])
@@ -120,9 +143,10 @@ while True:
         current_video = None
         continue
 
-    # 640×480 카메라를 영상과 같은 16:9로 잘라 탐지와 크롭 위치가 찌그러지지 않게 함
+    # 카메라를 영상과 같은 16:9로 잘라 탐지와 크롭 위치가 찌그러지지 않게 함
     if is_camera:
-        frame = frame[60:420]
+        top = max((frame.shape[0] - frame.shape[1] * 9 // 16) // 2, 0)
+        frame = frame[top:frame.shape[0] - top]
     frame = cv2.resize(frame, FRAME_SIZE)
     position = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000
     fast = not is_camera and not [start for start, end in VIDEOS[current_video][2] if start <= position < end]

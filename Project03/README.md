@@ -19,7 +19,7 @@ flowchart TD
     C1 --> IDX(["index-법령.json<br/>상황별 조문"]):::data
   end
   subgraph S1["영상 루프: 매 프레임, YOLO 스레드: 초당 약 17회"]
-    IN(["입력: 영상 파일 또는 USB 카메라"]):::data --> RS["main.py: cv2.resize"]:::code
+    IN(["입력: 영상 파일 또는 카메라"]):::data --> RS["main.py: cv2.resize"]:::code
     RS --> FR(["프레임 1280×720"]):::data
     FR --> Y["YOLO11n<br/>신뢰도 0.25, 입력 736×1280"]:::model
     Y --> BX(["박스: 좌표, 클래스, 신뢰도"]):::data
@@ -280,7 +280,9 @@ Jetson에 연결한 USB 카메라로 시작하려면 영상 자리에 `camera`�
 python main.py camera --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
 ```
 
-카메라는 실습과 같은 `/dev/video0`, YUY2, 640×480, 30 FPS로 열고, 가운데 640×360을 잘라 1280×720으로 키웁니다. 카메라가 없거나 끊기면 첫 영상으로 돌아갑니다.
+카메라는 `main.py`의 `CAMERA_PIPELINES`를 차례로 열어 프레임이 읽히는 첫 후보를 씁니다. 순서는 `pipeline`(실습과 같은 `/dev/video0`, YUY2, 640×480, 30 FPS), USB `/dev/video1`~`3`, CSI `nvarguscamerasrc`, `decodebin` 자동 형식입니다. 고른 후보는 `jetson-camera.txt`에 남습니다. 가운데 16:9를 잘라 1280×720으로 키우고, 모든 후보가 실패하거나 끊기면 첫 영상으로 돌아갑니다.
+
+자동 탐지가 실패하면 `main.py`에서 `pipeline = (`를 찾아 현장 카메라에 맞게 고칩니다. `pipeline`을 가장 먼저 시도하므로 그 변수만 고치면 됩니다. 카메라 탭을 다시 눌러 확인합니다. 카메라가 지원하는 형식은 `v4l2-ctl --list-formats-ext -d /dev/video0`로 봅니다.
 
 영상이 끝나면 다음 영상으로 넘어갑니다(카메라 탭은 건너뜁니다). 오른쪽 패널의 버튼으로 영상과 법령(현행, 2006년, 캘리포니아, 조문 없음)을 바꿉니다. 패널 위쪽에는 지시문과 근거 조문이, 아래쪽에는 보기, 인식, 조문, 읽기, 출력 단계가 한 줄로 나옵니다. 평소에는 인식 단계에서 지금 호출의 입력 이미지, 답, 확률, 입력 토큰 수, 걸린 시간을 보여 줍니다. 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 줍니다. 이 1초는 보는 사람을 위한 표시 시간이고 실제 처리 시간이 아닙니다. 시연 영상은 지정한 구간만 원래 속도로 재생하고 나머지는 8배속으로 건너뜁니다. 배속 중에는 규칙을 비우고 YOLO와 Gemma를 돌리지 않습니다. 법령을 바꾸면 다음 판단부터 그 법령의 조문으로 지시문이 나옵니다. `q`를 누르면 종료합니다.
 
@@ -315,7 +317,7 @@ bash Project03/setup.sh <사용자>@<Jetson 주소>
 | `실패:` 영상 이름 | 그 영상을 다시 보냅니다 |
 | `실패: yolo11n_736x1280_fp16.engine` | 3단계 끝의 640 엔진으로 바꿉니다 |
 | `실패: OpenCV GStreamer` | 카메라를 열 수 없습니다. 가상환경이 pip의 `opencv-python`이 아니라 JetPack의 OpenCV를 쓰는지 봅니다 |
-| `경고: /dev/video0이 없습니다` | USB 카메라를 연결합니다. 영상 재생에는 영향이 없습니다 |
+| `경고: /dev/video0이 없습니다` | USB 카메라를 연결합니다. CSI 카메라면 이 경고는 무시해도 됩니다. 영상 재생에는 영향이 없습니다 |
 | `실패: 시험 실행` | `setup-report.txt`의 오류를 봅니다. `cudaMalloc failed`면 4단계를 봅니다 |
 
 이후 명령은 모두 Jetson의 `vision-llm/Project03/`에서 실행합니다. 먼저 `Python:` 줄의 가상환경을 활성화합니다.
