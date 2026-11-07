@@ -17,7 +17,7 @@ FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
-VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("금문교", "videos/golden-gate.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
+VIDEOS = [("터널", "videos/tunnel-seoul.mp4"), ("한강 다리", "videos/bridge-olympic.mp4"), ("금문교", "videos/golden-gate.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
           ("비", "videos/rain-seoul.mp4"), ("통학버스", "videos/school-bus-korea.mp4"), ("소화전", "videos/hydrant-sf.mp4"), ("카메라", CAMERA)]
 # 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 YOLO 호출 p95가 약 0.6초라 10프레임에서는 표시 프레임의 44~53%만 뒤 탐지 결과가 있었음(2026-11-07 측정)
 DISPLAY_DELAY = 20

@@ -15,7 +15,7 @@ VISION_FILE=mmproj-google_gemma-4-E2B-it-f16.gguf
 GEMMA_URL=https://huggingface.co/bartowski/google_gemma-4-E2B-it-GGUF/resolve/main
 YOLO_URL=https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt
 ENGINE_FILE=yolo11n_736x1280_fp16.engine
-VIDEOS=(tunnel-korea.mp4 golden-gate.mp4 school-zone-busan.mp4 rain-seoul.mp4 school-bus-korea.mp4 hydrant-sf.mp4)
+VIDEOS=(tunnel-seoul.mp4 bridge-olympic.mp4 golden-gate.mp4 school-zone-busan.mp4 rain-seoul.mp4 school-bus-korea.mp4 hydrant-sf.mp4)
 EXIT_NO_DOWNLOAD=3
 # Jetson 수업 환경과 같은 버전을 받는 torch 저장소(03 노트북)
 JETSON_INDEX=https://pypi.jetson-ai-lab.io/jp6/cu126
@@ -287,7 +287,7 @@ from ultralytics import YOLO
 import gemma
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
 
-frame = cv2.resize(cv2.VideoCapture("videos/tunnel-korea.mp4").read()[1], (1280, 720))
+frame = cv2.resize(cv2.VideoCapture("videos/tunnel-seoul.mp4").read()[1], (1280, 720))
 start = time.perf_counter()
 result = YOLO(sys.argv[1]).predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
 print("YOLO 탐지", len(result.boxes), "개,", round(time.perf_counter() - start, 2), "초")
@@ -330,7 +330,7 @@ setup_device() {
         exit 1
     fi
     echo "모든 점검 통과"
-    echo "실행 명령: cd $(pwd) && $PY main.py videos/tunnel-korea.mp4$([ "$DEVICE" = jetson ] && echo " --model $YOLO_DIR/$ENGINE_FILE")"
+    echo "실행 명령: cd $(pwd) && $PY main.py videos/tunnel-seoul.mp4$([ "$DEVICE" = jetson ] && echo " --model $YOLO_DIR/$ENGINE_FILE")"
 }
 
 if [ $# -eq 1 ]; then
