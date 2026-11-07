@@ -44,6 +44,9 @@ HERO_TOP = 104
 STEPS = ["보기", "인식", "조문", "읽기", "출력"]
 STEP_X = [60, 190, 320, 450, 580]
 RAIL_Y = 356
+# 지시문 목록 한 줄의 높이와 단계 표시 위 여백
+ROW_HEIGHT = 27
+RAIL_GAP = 18
 CARD_TOP = 424
 IMAGE_SIZE = (292, 164)
 # 호출마다 보여 줄 입력 이미지와 지금 하는 일
@@ -178,11 +181,20 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
             y += 44
         pen.text((28, y + 8), rule["law"], font=MEDIUM_FONT, fill=ACCENT)
         y += 34
-        for line in wrap(rule["text"], SMALL_FONT, 584)[:2]:
-            pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
-            y += 22
-        if len(rules) > 1:
-            pen.text((28, y + 4), f"함께 적용: {rules[-2]['instruction']}" + (f" 외 {len(rules) - 2}개" if len(rules) > 2 else ""), font=SMALL_FONT, fill=SOFT)
+        others = rules[-2::-1]
+        if not others:
+            for line in wrap(rule["text"], SMALL_FONT, 584)[:2]:
+                pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
+                y += 22
+        # 지시문 줄 수에 따라 단계 표시 위에 남는 만큼만 최신 순으로 그림
+        rows = (RAIL_Y - RAIL_GAP - y) // ROW_HEIGHT
+        hidden = len(others) - rows + 1 if len(others) > rows else 0
+        for other in others[:rows - 1] if hidden else others:
+            pen.text((28, y), wrap(other["instruction"], MEDIUM_FONT, 408)[0], font=MEDIUM_FONT, fill=INK)
+            pen.text((448, y + 2), other["law"], font=SMALL_FONT, fill=ACCENT)
+            y += ROW_HEIGHT
+        if hidden:
+            pen.text((28, y), f"외 {hidden}개", font=SMALL_FONT, fill=SOFT)
     else:
         pen.text((28, y), "적용할 규칙 없음", font=LARGE_FONT, fill=FAINT)
     if scene == "skip":
