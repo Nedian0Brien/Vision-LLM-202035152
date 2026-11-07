@@ -215,7 +215,7 @@ bash setup.sh
 
 두 명령 모두 여러 번 실행해도 됩니다. 있는 패키지와 파일은 그대로 두고 빠진 것만 맞춥니다.
 
-- **전송:** 코드, 조문 JSON, 시연 영상 8개, `yolo11n.pt`를 `vision-llm/`로 보냅니다(약 280MB). 비밀번호를 여러 번 묻지 않게 하려면 `ssh-copy-id <사용자>@<주소>`를 먼저 실행합니다.
+- **전송:** 코드, 조문 JSON, 시연 영상 6개, `yolo11n.pt`를 `~/Documents/git/Vision-LLM-202035152/`로 보냅니다(약 280MB). 비밀번호를 여러 번 묻지 않게 하려면 `ssh-copy-id <사용자>@<주소>`를 먼저 실행합니다.
 - **Python:** 활성화된 가상환경, `../.venv-project03` 순서로 씁니다. Jetson에서는 `$HOME` 아래의 수업 `.venv`를 찾아 쓰고, 없으면 `../.venv`를 만듭니다.
 - **패키지:** import가 안 되는 패키지만 아래 표의 버전으로 설치합니다. Jetson은 03, 04, 05 노트북과 같은 명령입니다.
 - **모델:** 없으면 `$HOME` 아래에서 이름과 크기가 같은 파일을 찾아 연결하고, 그래도 없으면 Hugging Face에서 받습니다. 장비가 접속하지 못하면 Mac이 Gemma 파일(4.45GB)을 보냅니다.
@@ -322,7 +322,7 @@ bash Project03/setup.sh <사용자>@<Jetson 주소>
 | `경고: /dev/video0이 없습니다` | USB 카메라를 연결합니다. CSI 카메라면 이 경고는 무시해도 됩니다. 영상 재생에는 영향이 없습니다 |
 | `실패: 시험 실행` | `setup-report.txt`의 오류를 봅니다. `cudaMalloc failed`면 4단계를 봅니다 |
 
-이후 명령은 모두 Jetson의 `vision-llm/Project03/`에서 실행합니다. 먼저 `Python:` 줄의 가상환경을 활성화합니다.
+이후 명령은 모두 Jetson의 `~/Documents/git/Vision-LLM-202035152/Project03/`에서 실행합니다. 먼저 `Python:` 줄의 가상환경을 활성화합니다.
 
 ```bash
 source <가상환경>/bin/activate
@@ -347,7 +347,7 @@ ls -l ../src/models/Gemma4 && df -h . && free -m
 YOLO 단독 속도를 잽니다.
 
 ```bash
-/usr/src/tensorrt/bin/trtexec --loadEngine=$HOME/vision-llm/src/models/YOLO/yolo11n_736x1280_fp16.engine --warmUp=500 --duration=10
+/usr/src/tensorrt/bin/trtexec --loadEngine=$HOME/Documents/git/Vision-LLM-202035152/src/models/YOLO/yolo11n_736x1280_fp16.engine --warmUp=500 --duration=10
 ```
 
 엔진이 `main.py`와 같은 인자로 도는지 첫 프레임으로 봅니다. 두 줄의 박스 수가 비슷해야 합니다.

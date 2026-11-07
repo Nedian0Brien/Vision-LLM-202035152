@@ -6,7 +6,7 @@
 set -u
 cd "$(dirname "$0")" || exit 1
 
-REMOTE_DIR=vision-llm
+REMOTE_DIR=Documents/git/Vision-LLM-202035152
 MODELS=../src/models
 GEMMA_DIR=$MODELS/Gemma4
 YOLO_DIR=$MODELS/YOLO
