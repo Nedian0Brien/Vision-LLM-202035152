@@ -8,7 +8,8 @@ import time
 # 강의실에서 소리가 나지 않도록 기본으로 끔(2026-11-07 사용자 지시)
 PLAY_SOUND = False
 MAC = sys.platform == "darwin"
-MIC_DEVICE = "plughw:3,0"
+# 카드 번호는 꽂는 순서와 재부팅에 따라 바뀌어 장치 이름으로 지정함(2026-11-07 Jetson에서 USB Microphone이 카드 2번)
+MIC_DEVICE = "plughw:CARD=Microphone,DEV=0"
 RECORD_SECONDS = 5
 AUDIO_DIR = "speech"
 INPUT_FILE = AUDIO_DIR + "/input.wav"

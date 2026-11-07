@@ -332,7 +332,7 @@ python -m unittest discover -s tests -t .
 ../.venv/bin/python main.py videos/tunnel-korea.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
 ```
 
-USB 마이크를 쓰면 `arecord -l`로 `MIC_DEVICE`를 확인합니다. 카메라는 시연 장비에 아직 연결하지 않았습니다.
+USB 마이크는 `MIC_DEVICE = "plughw:CARD=Microphone,DEV=0"`처럼 장치 이름으로 지정해 카드 번호가 바뀌어도 동작합니다. 다른 마이크를 쓰면 `arecord -l`의 대괄호 앞 이름(`card 2: Microphone`의 `Microphone`)으로 바꿉니다. 카메라는 oCam-5CRO-U가 첫 후보 `/dev/video0`, YUY2, 640×480으로 열리는 것을 확인했습니다(2026-11-07).
 
 ### 측정값
 
