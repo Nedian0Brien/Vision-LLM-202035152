@@ -282,32 +282,61 @@ def find_rules(llm, embedder, frame, situation, article, corpus):
 
 
 def publish(found):
-    """판단 중에 찾은 상황을 유지 목록에 넣고 조문을 읽어 규칙 목록을 바로 화면에 넘기는 함수"""
+    """판단 중에 찾은 상황을 유지 목록에 넣고 규칙을 찾아 선택한 법령의 규칙 목록과 법령 비교 열을 바로 화면에 넘기는 함수"""
     # 예열과 평가에서는 판단 중인 묶음이 없고, 버려진 묶음은 화면에 나오지 않아 넘기지 않음
     if "clip" not in WATCHING or judging_old_clip():
         return
-    # active는 최근 HOLD_SECONDS 안에 본 상황이고, rules는 화면과 VLA 출력으로 나가는 목록임
+    # recent는 최근 HOLD_SECONDS 안에 본 상황이고, rules는 화면과 VLA 출력으로 나가는 목록임
     clip, law, laws, readings = WATCHING["clip"], WATCHING["law"], WATCHING["laws"], WATCHING["readings"]
     now = time.perf_counter()
     for situation in found:
         clip["last_seen"][situation] = now
-    active = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS and situation in laws[law]]
-    # 찾기 전인 상황은 빌드 때 고른 조문으로 먼저 올려 지시문을 찾는 동안에도 조문이 보이게 함
-    pending = [situation for situation in active if (law, situation) not in readings]
-    nodes = [{"situation": situation, "article": laws[law][situation], "fresh": situation in found, "instruction": None} for situation in pending if laws[law][situation]["text"]]
+    recent = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS]
+    active = recent
     # 이미 찾은 규칙은 바로 올리고, 새 상황의 규칙은 찾을 때마다 뒤에 붙여 가장 새 규칙으로 보이게 함
+    pending = [situation for situation in active if (law, situation) not in readings]
     pairs = [(situation, rule) for situation in active if situation not in pending for rule in readings[(law, situation)]]
-    clip["nodes"] = rule_nodes(pairs, found) + nodes
     clip["rules"] = unique_rules(pairs)
+    clip["compare"] = compare_rules(recent)
     for situation in pending:
-        if laws[law][situation]["text"]:
-            readings[(law, situation)] = find_rules(WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, laws[law][situation], WATCHING["corpora"][law])
-        else:
-            readings[(law, situation)] = [read_provision(WATCHING["llm"], situation, laws[law][situation])]
-        nodes = [node for node in nodes if node["situation"] != situation]
+        readings[(law, situation)] = find_law_rules(law, situation)
         pairs = pairs + [(situation, rule) for rule in readings[(law, situation)]]
-        clip["nodes"] = rule_nodes(pairs, found) + nodes
         clip["rules"] = unique_rules(pairs)
+        clip["compare"] = compare_rules(recent)
+
+
+def find_law_rules(law, situation):
+    """한 법령과 상황의 규칙을 찾는 함수"""
+    if law == NO_LAW:
+        return [read_provision(WATCHING["llm"], situation, NO_ARTICLE)]
+    # 빌드 때 기본 조문을 정하지 못한 상황도 관련 규칙은 검색해 Gemma가 고르게 함(2026-11-07 사용자 지시, 캘리포니아 통학버스 §22454)
+    article = WATCHING["laws"][law].get(situation, {"id": None})
+    return find_rules(WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, article, WATCHING["corpora"][law])
+
+
+def compare_rules(recent):
+    """법령마다 최근 상황의 규칙과 아직 찾지 못한 상황이 있는지를 담은 비교 열을 만드는 함수"""
+    laws, readings = WATCHING["laws"], WATCHING["readings"]
+    return {short: {"rules": unique_rules([(situation, rule) for situation in recent for rule in readings.get((short, situation), [])]),
+                    "pending": any((short, situation) not in readings for situation in recent)}
+            for short in laws}
+
+
+def fill_compare():
+    """선택하지 않은 법령의 규칙도 찾아 법령 비교 열을 채우는 함수"""
+    # 선택한 법령의 규칙을 늦추지 않도록 판단 주기 끝에 다른 법령을 찾음
+    if "clip" not in WATCHING or judging_old_clip():
+        return
+    clip, laws, readings = WATCHING["clip"], WATCHING["laws"], WATCHING["readings"]
+    now = time.perf_counter()
+    recent = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS]
+    for short in laws:
+        for situation in recent:
+            if (short, situation) not in readings:
+                if judging_old_clip():
+                    return
+                readings[(short, situation)] = find_law_rules(short, situation)
+                clip["compare"] = compare_rules(recent)
 
 
 def unique_rules(pairs):
@@ -317,12 +346,6 @@ def unique_rules(pairs):
         if rule not in rules:
             rules.append(rule)
     return rules
-
-
-def rule_nodes(pairs, found):
-    """규칙마다 근거 조문과 지시문을 담고 이번 판단에서 찾았는지 표시한 노드를 만드는 함수"""
-    return [{"situation": situation, "article": {"id": rule["law"], "title": rule["title"], "text": rule["text"]}, "fresh": situation in found, "instruction": rule["instruction"]}
-            for situation, rule in pairs if rule["text"]]
 
 
 def recognize(llm, frame, result, in_school_zone):
@@ -438,6 +461,7 @@ def watch(llm, laws, shared, embedder, corpora):
         in_school_zone = time.perf_counter() - clip["last_seen"].get(SCHOOL_ZONE, -HOLD_SECONDS) <= HOLD_SECONDS
         WATCHING.update({"shared": shared, "clip": clip, "law": law, "laws": laws, "llm": llm, "readings": readings, "embedder": embedder, "corpora": corpora, "frame": frame})
         found = recognize(llm, frame, result, in_school_zone)
+        fill_compare()
         # 아무것도 찾지 못한 주기에도 만료된 규칙을 지우려고 마지막에 한 번 더 넘김
         publish(found)
         WATCHING.pop("clip")

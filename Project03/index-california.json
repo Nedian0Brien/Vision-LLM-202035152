@@ -131,10 +131,16 @@
    "text": "No person shall stop, park, or leave standing any vehicle within 15 feet of a fire hydrant except as follows:",
    "reason": "CVC 22514가 소화전 15피트 이내 정차·주차·대기를 금지한다.",
    "references": []
+  },
+  "a children's school bus driving ahead of the car": {
+   "id": "CVC §22454(a)",
+   "title": "",
+   "text": "(a) The driver of any vehicle, upon meeting or overtaking, from either direction, any schoolbus equipped with signs as required in this code, that is stopped for the purpose of loading or unloading any schoolchildren and displays a flashing red light signal and stop signal arm, as defined in paragraph (4) of subdivision (b) of Section 25257, if equipped with a stop signal arm, visible from front or rear, shall bring the vehicle to a stop immediately before passing the schoolbus and shall not proceed past the schoolbus until the flashing red light signal and stop signal arm, if equipped with a stop signal arm, cease operation.",
+   "references": [],
+   "reason": "통학버스가 정차해 적색 점멸등을 켜면 앞뒤 차가 모두 정지해야 하는 조항이다. 앞서 주행하는 버스에는 바로 적용되지 않지만, 캘리포니아에서 통학버스에 대한 운전자 의무는 이 조항이 대표하므로 사용자 지시로 기본 조문으로 넣었다(2026-11-07)."
   }
  },
  "no_provision": {
-  "the car is inside a tunnel, where headlights must be on": "후보 조에 터널 전조등 점등 의무를 정한 항이 없다.",
-  "a children's school bus driving ahead of the car": "통학버스에 대한 추월·정지 의무(22454)는 버스가 정차해 적색 점멸등을 켠 경우에만 적용되며 앞서 주행하는 상황에 대한 운전자 의무 조문은 없다."
+  "the car is inside a tunnel, where headlights must be on": "후보 조에 터널 전조등 점등 의무를 정한 항이 없다."
  }
 }

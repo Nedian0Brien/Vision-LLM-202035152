@@ -339,6 +339,41 @@ def draw_nodes(nodes, spinner):
     return np.array(image)
 
 
+def draw_compare(columns, selected):
+    """같은 장면에서 법령마다 찾은 규칙을 영상 아래 네 칸에 나란히 그린 이미지를 만드는 함수"""
+    image = Image.new("RGB", (VIDEO_WIDTH, NODE_HEIGHT), PANEL)
+    pen = ImageDraw.Draw(image)
+    pen.line((0, 0, VIDEO_WIDTH, 0), fill=LINE, width=1)
+    width = VIDEO_WIDTH // len(columns)
+    for index, (name, column) in enumerate(columns):
+        x = index * width + 16
+        if index:
+            pen.line((index * width, 12, index * width, NODE_HEIGHT - 12), fill=LINE, width=1)
+        pen.text((x, 14), name, font=MEDIUM_FONT, fill=ACCENT if index == selected else SOFT)
+        # 다른 법령에도 같은 지시문이 있으면 흐리게 그려 법령마다 달라지는 지시만 눈에 띄게 함
+        others = [rule["instruction"] for other, (_, rest) in enumerate(columns) if other != index for rule in rest["rules"]]
+        y = 48
+        # 규칙은 찾은 순서로 쌓이므로 가장 최근 상황의 규칙이 위에 오도록 거꾸로 그림
+        for count, rule in enumerate(column["rules"][::-1]):
+            lines = wrap(rule["instruction"], SMALL_FONT, width - 30)[:3]
+            if y + 22 + 21 * len(lines) > NODE_HEIGHT - 12:
+                pen.text((x, y), f"외 {len(column['rules']) - count}개", font=TINY_FONT, fill=SOFT)
+                break
+            # 조문 없음 모드의 규칙은 근거 조항이 없어 지시문만 그림
+            if rule["text"]:
+                pen.text((x, y), rule["law"], font=TINY_FONT, fill=ACCENT if index == selected else SOFT)
+                y += 20
+            for line in lines:
+                pen.text((x, y), line, font=SMALL_FONT, fill=FAINT if rule["instruction"] in others else INK)
+                y += 21
+            y += 10
+        if column["pending"]:
+            pen.text((x, y), "찾는 중...", font=SMALL_FONT, fill=ACCENT)
+        elif not column["rules"]:
+            pen.text((x, y), "지시 없음", font=SMALL_FONT, fill=FAINT)
+    return np.array(image)
+
+
 def draw(frame, boxes, panel_image, nodes_image, fps, recording):
     """프레임에 박스와 클래스 이름을 그리고 조문을 아래에, 패널을 오른쪽에 붙이는 함수"""
     frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))

@@ -387,7 +387,7 @@ class WatchTest(unittest.TestCase):
         self.go.release()
         self.wait_rules(clip, [rule("a"), rule("b")])
 
-    def test_node_appears_before_instruction(self):
+    def test_compare_shows_pending_before_rule(self):
         self.run_watch([["a"]])
         clip = self.shared["clip"]
         reading = threading.Event()
@@ -400,16 +400,17 @@ class WatchTest(unittest.TestCase):
         self.started.acquire()
         self.go.release()
         for _ in range(200):
-            if clip.get("nodes"):
+            if clip.get("compare"):
                 break
             time.sleep(0.01)
-        self.assertEqual(clip["nodes"][0]["article"], {"text": "조문 a"})
-        self.assertTrue(clip["nodes"][0]["fresh"])
-        self.assertIsNone(clip["nodes"][0]["instruction"])
-        self.assertEqual(clip["rules"], [])
+        self.assertEqual(clip["compare"]["current"], {"rules": [], "pending": True})
         reading.set()
         self.wait_rules(clip, [rule("a")])
-        self.assertEqual(clip["nodes"][0]["instruction"], "a")
+        for _ in range(200):
+            if not clip["compare"]["current"]["pending"]:
+                break
+            time.sleep(0.01)
+        self.assertEqual(clip["compare"]["current"], {"rules": [rule("a")], "pending": False})
 
     def test_rule_disappears_after_hold(self):
         original = gemma.HOLD_SECONDS

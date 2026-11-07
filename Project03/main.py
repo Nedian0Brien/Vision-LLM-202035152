@@ -10,7 +10,7 @@ from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE, interpolate_boxes
 from gemma import NO_LAW, STATUS, judging_old_clip, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
-from hud import CALLS, MIC_BOX, SCREEN_HEIGHT, VIDEO_WIDTH, button_boxes, draw, draw_loading, draw_nodes, draw_panel
+from hud import CALLS, MIC_BOX, SCREEN_HEIGHT, VIDEO_WIDTH, button_boxes, draw, draw_compare, draw_loading, draw_nodes, draw_panel
 from voice import RECORD_SECONDS, listen, speak_loop, stop_listening
 
 FRAME_SIZE = (1280, 720)
@@ -28,6 +28,8 @@ SPEECH_REPEAT_SECONDS = 10
 READING_SECONDS = 3
 SCENE_SECONDS = 1
 LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california"), ("조문 없음", NO_LAW)]
+# 법령 비교 열은 조문 없는 답을 맨 앞에 두어 조문을 찾았을 때 달라지는 지시가 차례로 보이게 함(2026-11-07 사용자 지시)
+COMPARE_LAWS = [("조문 없음", NO_LAW), ("현행", "current"), ("2006년", "2006"), ("캘리포니아", "california")]
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
     "v4l2src device=/dev/video0 ! "
@@ -148,7 +150,7 @@ def render_panels():
         if panel:
             shared["panel_image"] = draw_panel(*panel)
         if nodes:
-            shared["nodes_image"] = draw_nodes(*nodes)
+            shared["nodes_image"] = nodes[0](*nodes[1])
         if not panel and not nodes:
             time.sleep(0.01)
 
@@ -184,7 +186,7 @@ def boxes_at(number):
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
 # 스레드는 이 사전으로 값을 넘김. frame은 영상 루프에서 YOLO로, input은 YOLO에서 Gemma로, clip은 Gemma에서 화면으로 감
 shared = {"recorder": None, "listen_start": 0.0, "transcribing": False, "stop_requested": False, "results": [], "question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
-          "frame": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
+          "frame": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "compare": {}}}
 loading = {"step": 0, "since": time.perf_counter()}
 loader = threading.Thread(target=load_models, daemon=True)
 loader.start()
@@ -207,7 +209,7 @@ threading.Thread(target=detect_boxes, daemon=True).start()
 shared["panel_request"] = None
 shared["nodes_request"] = None
 shared["panel_image"] = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, [], STATUS, "choice", None, 0, {"listening": False, "thinking": None, "answer": None, "error": None, "recording": False, "transcribing": False, "elapsed": 0.0, "limit": RECORD_SECONDS})
-shared["nodes_image"] = draw_nodes([], 0)
+shared["nodes_image"] = draw_compare([(name, {"rules": [], "pending": False}) for name, short in COMPARE_LAWS], 1)
 threading.Thread(target=render_panels, daemon=True).start()
 waiting = []
 frame_number = 0
@@ -241,7 +243,7 @@ while True:
         shared["frame"] = None
         shared["results"] = []
         shared["input"] = None
-        shared["clip"] = {"last_seen": {}, "rules": [], "nodes": []}
+        shared["clip"] = {"last_seen": {}, "rules": [], "compare": {}}
         waiting.clear()
 
     ret, frame = cap.read()
@@ -300,15 +302,19 @@ while True:
     recording_tick = int(voice["elapsed"] * 2) if voice["recording"] else 0
     state = (scene, reading is None, phase, STATUS["answers"].get(scene), voice["listening"], voice["thinking"], id(answer), voice["error"],
              voice["recording"], voice["transcribing"], recording_tick, STATUS["stale"])
-    nodes = shared["clip"]["nodes"]
+    # 질문에 답할 때는 근거 조문을, 평소에는 같은 장면의 법령별 규칙을 나란히 그림
     if answer:
         nodes = [{"situation": article["id"], "article": article, "fresh": True, "instruction": "질문의 근거 후보"} for article in answer["articles"]]
-    # 생성 중인 노드가 있을 때만 스피너 번호가 바뀌어 열을 다시 그리고, 초당 4번이면 도는 것이 보임
-    spinner = int(now * 4) % 8 if [node for node in nodes if node["instruction"] is None] else 0
-    node_state = ([(node["situation"], node["fresh"], node["instruction"]) for node in nodes], spinner)
+        node_state = (id(answer),)
+        request = (draw_nodes, (nodes, 0))
+    else:
+        compare = shared["clip"].get("compare", {})
+        columns = [(name, compare.get(short, {"rules": [], "pending": False})) for name, short in COMPARE_LAWS]
+        node_state = ([(column["pending"], [(rule["law"], rule["instruction"]) for rule in column["rules"]]) for name, column in columns], selected["law"])
+        request = (draw_compare, (columns, [short for name, short in COMPARE_LAWS].index(LAWS[selected["law"]][1])))
     if node_state != drawn_nodes:
         drawn_nodes = node_state
-        shared["nodes_request"] = (nodes, spinner)
+        shared["nodes_request"] = request
     if view != drawn_view or state != drawn_state:
         drawn_state = state
         shared["panel_request"] = (SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
