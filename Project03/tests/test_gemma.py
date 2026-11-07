@@ -310,22 +310,22 @@ class FindRulesTest(unittest.TestCase):
         class Llm:
             n_tokens = 0
 
-            def create_completion(self, prompt, **kwargs):
-                return {"choices": [{"text": "1"}]}
+            def create_chat_completion(self, messages, **kwargs):
+                return {"choices": [{"message": {"content": "1"}}]}
 
-        found = gemma.find_rules(Llm(), Embedder(), "situation", {"id": "z"}, corpus)
+        found = gemma.find_rules(Llm(), Embedder(), np.zeros((720, 1280, 3), np.uint8), "situation", {"id": "z"}, corpus)
         self.assertEqual([rule["law"] for rule in found], ["z", "x"])
 
 
 class PublishTest(unittest.TestCase):
     def setUp(self):
         original = gemma.find_rules
-        gemma.find_rules = lambda llm, embedder, situation, article, corpus: [rule(situation)]
+        gemma.find_rules = lambda llm, embedder, frame, situation, article, corpus: [rule(situation)]
         self.addCleanup(lambda: setattr(gemma, "find_rules", original))
         self.addCleanup(gemma.WATCHING.clear)
         self.clip = {"last_seen": {}, "rules": []}
         laws = {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}
-        gemma.WATCHING.update({"shared": {"clip": self.clip}, "clip": self.clip, "law": "current", "laws": laws, "llm": None, "embedder": None, "corpora": {"current": None},
+        gemma.WATCHING.update({"shared": {"clip": self.clip}, "clip": self.clip, "law": "current", "laws": laws, "llm": None, "embedder": None, "corpora": {"current": None}, "frame": None,
                                "readings": {("current", "a"): [rule("a")]}})
 
     def test_new_rule_is_read_and_put_last(self):
@@ -355,7 +355,7 @@ class WatchTest(unittest.TestCase):
 
         original = gemma.recognize, gemma.find_rules
         gemma.recognize = recognize
-        gemma.find_rules = lambda llm, embedder, situation, article, corpus: [rule(situation)]
+        gemma.find_rules = lambda llm, embedder, frame, situation, article, corpus: [rule(situation)]
         self.addCleanup(lambda: (setattr(gemma, "recognize", original[0]), setattr(gemma, "find_rules", original[1])))
         self.shared = {"question": None, "input": ("frame", "result"), "law": "current", "clip": {"last_seen": {}, "rules": []}}
         self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared, None, {"current": None}), daemon=True)
@@ -392,7 +392,7 @@ class WatchTest(unittest.TestCase):
         clip = self.shared["clip"]
         reading = threading.Event()
 
-        def find(llm, embedder, situation, article, corpus):
+        def find(llm, embedder, frame, situation, article, corpus):
             reading.wait(2)
             return [rule(situation)]
 

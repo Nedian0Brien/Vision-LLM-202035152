@@ -120,9 +120,11 @@ CLOSED_ANSWER_PROMPT = "A driver asks: {question}\nAnswer in Korean in at most t
 SEARCH_TOP = 3
 # 상황 문장으로 요약 지시문을 검색해 기본 규칙 밖의 관련 규칙 후보를 이만큼 가져옴(2026-11-07 상황 19개 확인)
 RULE_TOP = 4
+# 상황 문장만 보면 장면에 없는 조건의 규칙(보행자우선도로, 밤)도 골라 작은 이미지를 함께 보여 줌(2026-11-07 사용자 지시, Jetson 70토큰 이미지 호출 0.52초)
+CHOOSE_TOKENS = 70
 # 요약 지시문은 빌드 단계에서 Sonnet이 조문을 읽고 만든 것이고, Gemma는 영어 문장으로 고르고 화면에는 한국어 문장을 냄(2026-11-07 사용자 지시)
 CHOOSE_PROMPT = (
-    "A self-driving car sees: {situation}.\nTraffic rules found for this scene:\n{options}0. none of these rules applies now\n"
+    "A self-driving car sees this image: {situation}.\nTraffic rules found for this scene:\n{options}0. none of these rules applies now\n"
     "Which rules must the car follow right now? Reply with only the numbers of all rules that apply, separated by commas, or 0."
 )
 NO_LAW = "none"
@@ -257,7 +259,7 @@ def ask_word(llm, stage, image, question, words):
     return answer
 
 
-def find_rules(llm, embedder, situation, article, corpus):
+def find_rules(llm, embedder, frame, situation, article, corpus):
     """빌드 때 고른 조문의 요약을 기본 규칙으로 두고, 검색한 관련 규칙 가운데 Gemma가 고른 것을 덧붙이는 함수"""
     start_stage("search")
     query = np.array(embedder.embed("task: search result | query: " + situation, normalize=True), dtype=np.float32)
@@ -270,8 +272,8 @@ def find_rules(llm, embedder, situation, article, corpus):
     if others:
         start_stage("choose")
         options = "".join([f"{number}. {rule['instruction_en']} (applies to: {rule['scene']})\n" for number, rule in enumerate(others, 1)])
-        prompt = f"<|turn>user\n{CHOOSE_PROMPT.format(situation=situation, options=options)}<turn|>\n<|turn>model\n"
-        answer = llm.create_completion(prompt, max_tokens=12, temperature=0, stop=["<turn|>", "\n"])["choices"][0]["text"]
+        content = [image_part(frame, CHOOSE_TOKENS), {"type": "text", "text": CHOOSE_PROMPT.format(situation=situation, options=options)}]
+        answer = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=12, temperature=0)["choices"][0]["message"]["content"]
         for part in answer.replace(" ", "").split(","):
             if part.isdigit() and 0 < int(part) <= len(others) and others[int(part) - 1] not in found:
                 found.append(others[int(part) - 1])
@@ -299,7 +301,7 @@ def publish(found):
     clip["rules"] = unique_rules(pairs)
     for situation in pending:
         if laws[law][situation]["text"]:
-            readings[(law, situation)] = find_rules(WATCHING["llm"], WATCHING["embedder"], situation, laws[law][situation], WATCHING["corpora"][law])
+            readings[(law, situation)] = find_rules(WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, laws[law][situation], WATCHING["corpora"][law])
         else:
             readings[(law, situation)] = [read_provision(WATCHING["llm"], situation, laws[law][situation])]
         nodes = [node for node in nodes if node["situation"] != situation]
@@ -434,7 +436,7 @@ def watch(llm, laws, shared, embedder, corpora):
         frame, result = current
         law = shared["law"]
         in_school_zone = time.perf_counter() - clip["last_seen"].get(SCHOOL_ZONE, -HOLD_SECONDS) <= HOLD_SECONDS
-        WATCHING.update({"shared": shared, "clip": clip, "law": law, "laws": laws, "llm": llm, "readings": readings, "embedder": embedder, "corpora": corpora})
+        WATCHING.update({"shared": shared, "clip": clip, "law": law, "laws": laws, "llm": llm, "readings": readings, "embedder": embedder, "corpora": corpora, "frame": frame})
         found = recognize(llm, frame, result, in_school_zone)
         # 아무것도 찾지 못한 주기에도 만료된 규칙을 지우려고 마지막에 한 번 더 넘김
         publish(found)
