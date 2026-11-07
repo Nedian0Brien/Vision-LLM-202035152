@@ -137,6 +137,23 @@ def load_models():
     next_step()
 
 
+def render_panels():
+    """영상 루프가 남긴 최신 요청으로 패널과 조문 열을 그리는 함수"""
+    # Jetson에서 Gemma와 함께 돌 때 그리기 한 번이 약 250ms라 영상 루프를 막지 않게 함(2026-11-07 측정, 245초 중 91초)
+    # 그리는 동안 들어온 요청은 최신 것만 남아 밀린 그리기가 쌓이지 않음
+    while True:
+        panel = shared["panel_request"]
+        nodes = shared["nodes_request"]
+        shared["panel_request"] = None
+        shared["nodes_request"] = None
+        if panel:
+            shared["panel_image"] = draw_panel(*panel)
+        if nodes:
+            shared["nodes_image"] = draw_nodes(*nodes)
+        if not panel and not nodes:
+            time.sleep(0.01)
+
+
 def detect_boxes():
     """가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘기는 함수"""
     while True:
@@ -187,6 +204,11 @@ print("터미널에 질문을 입력하거나 창에서 m 키로 음성 질문�
 cap = cv2.VideoCapture()
 current_video = None
 threading.Thread(target=detect_boxes, daemon=True).start()
+shared["panel_request"] = None
+shared["nodes_request"] = None
+shared["panel_image"] = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, [], STATUS, "choice", None, 0, {"listening": False, "thinking": None, "answer": None, "error": None})
+shared["nodes_image"] = draw_nodes([], 0)
+threading.Thread(target=render_panels, daemon=True).start()
 waiting = []
 frame_number = 0
 spoken_time = {}
@@ -258,7 +280,7 @@ while True:
         shown_boxes = boxes_at(shown_number)
     shared["law"] = LAWS[selected["law"]][1]
 
-    # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
+    # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그리게 함
     rules = shared["clip"]["rules"]
     view = (selected["video"], selected["law"], rules)
     now = time.perf_counter()
@@ -290,15 +312,15 @@ while True:
     nodes = shared["clip"]["nodes"]
     if answer:
         nodes = [{"situation": article["id"], "article": article, "fresh": True, "instruction": "질문의 근거 후보"} for article in answer["articles"]]
-    # 생성 중인 노드가 있을 때만 스피너 번호가 바뀌어 열을 다시 그림
-    spinner = int(now * 8) % 8 if [node for node in nodes if node["instruction"] is None] else 0
+    # 생성 중인 노드가 있을 때만 스피너 번호가 바뀌어 열을 다시 그리고, 초당 4번이면 도는 것이 보임
+    spinner = int(now * 4) % 8 if [node for node in nodes if node["instruction"] is None] else 0
     node_state = ([(node["situation"], node["fresh"], node["instruction"]) for node in nodes], spinner)
     if node_state != drawn_nodes:
         drawn_nodes = node_state
-        nodes_image = draw_nodes(nodes, spinner)
+        shared["nodes_request"] = (nodes, spinner)
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        panel_image = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
+        shared["panel_request"] = (SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
     if view != drawn_view:
         drawn_view = view
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
@@ -316,7 +338,7 @@ while True:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
-    output_frame = draw(frame, shown_boxes, panel_image, nodes_image, displayed_fps)
+    output_frame = draw(frame, shown_boxes, shared["panel_image"], shared["nodes_image"], displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 

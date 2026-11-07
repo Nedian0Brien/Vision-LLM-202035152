@@ -29,6 +29,7 @@ VIDEO_WIDTH = 960
 VIDEO_HEIGHT = 540
 VIDEO_SCALE = 0.75
 LOAD_BAR_WIDTH = 720
+WRAPPED = {}
 SPINNER_POINTS = [(0, -7), (5, -5), (7, 0), (5, 5), (0, 7), (-5, 5), (-7, 0), (-5, -5)]
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
@@ -79,6 +80,10 @@ def button_boxes(frame_width, groups):
 
 def wrap(text, font, width):
     """글자 폭을 재어 패널 폭에 맞게 줄을 나누는 함수"""
+    # 같은 문장을 다시 그릴 때 글자마다 폭을 재지 않게 함(Mac 프로파일에서 그리기 시간의 약 40%)
+    key = (text, font.size, width)
+    if key in WRAPPED:
+        return WRAPPED[key]
     lines = []
     line = ""
     for char in text:
@@ -92,7 +97,8 @@ def wrap(text, font, width):
                 lines.append(line)
                 line = ""
         line += char
-    return lines + [line]
+    WRAPPED[key] = lines + [line]
+    return WRAPPED[key]
 
 
 def draw_rail(pen, current):
