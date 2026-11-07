@@ -9,3 +9,6 @@ Project03/data
 Project03/vla-output.jsonl
 Project03/jetson-*
 Project03/setup-report.txt
+src/models/*
+src/datasets/*
+.env
