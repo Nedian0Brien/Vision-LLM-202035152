@@ -38,11 +38,10 @@ SITUATIONS = [
 RED, YELLOW, PEDESTRIAN, SCHOOL_ZONE = SITUATIONS[0], SITUATIONS[1], SITUATIONS[7], SITUATIONS[14]
 # 객관식 목록에 상황을 더하면 다른 상황의 답이 흔들려 크롭 질문으로 따로 물음(2026-11-06 개발용 측정, 현행 35/53에서 33/53)
 RAIN = "it is raining on the road"
-PUDDLE = "a puddle of standing water on the road"
 SCHOOL_BUS = "a children's school bus driving ahead of the car"
 SCHOOL_CROSSWALK = "a crosswalk with no traffic light inside a child protection school zone"
 HYDRANT = "a fire hydrant beside the road"
-CROP_SITUATIONS = [RAIN, PUDDLE, SCHOOL_BUS, SCHOOL_CROSSWALK, HYDRANT]
+CROP_SITUATIONS = [RAIN, SCHOOL_BUS, SCHOOL_CROSSWALK, HYDRANT]
 SITUATION_NAMES = ["적색 신호", "황색 신호", "정지 표지", "양보 표지", "회전 금지", "속도 제한", "앞지르기 금지", "횡단 보행자", "버스 전용차로", "노면전차", "공사 구간", "터널 앞지르기", "터널 전조등", "다리 위", "어린이 보호구역"]
 # 상황마다 예시를 하나씩 둠. 적색과 보행자를 한 예시에 묶었을 때는 횡단보도 선택 21번이 모두 적색과 함께 나왔음(2026-11-05 개발용 측정)
 RECOGNIZE_PROMPT = (
@@ -72,9 +71,7 @@ LIGHT_PROMPT = "Which lamp color is lit on the traffic lights that face the came
 LIGHT_WORDS = ["red", "yellow", "green", "none"]
 PEDESTRIAN_PROMPT = "Is a person walking on a striped crosswalk in this image? Answer with one word: yes or no."
 CROSSWALK_PROMPT = "Is a striped crosswalk painted on the road in this image? Answer with one word: yes or no."
-WET_PROMPT = "Is the road surface in this image wet with water? Answer with one word: yes or no."
 RAIN_PROMPT = "Is it raining in this image? Answer with one word: yes or no."
-PUDDLE_PROMPT = "Is there a puddle of standing water on the road in this image? Answer with one word: yes or no."
 BUS_PROMPT = "Is this a yellow school bus? Answer with one word: yes or no."
 ZEBRA_PROMPT = "Are zebra stripes painted across the road ahead in this image? Answer with one word: yes or no."
 OBJECT_PROMPT = "What is the short object standing beside the road in this image? Answer with one word: hydrant, cone, bollard, sign or other."
@@ -232,12 +229,9 @@ def recognize(llm, frame, result, in_school_zone):
     if people is not None and ask_word(llm, "pedestrian", people, PEDESTRIAN_PROMPT, YES_NO) == "yes":
         if ask_word(llm, "crosswalk", road, CROSSWALK_PROMPT, YES_NO) == "yes":
             found.append(PEDESTRIAN)
-    # 고인 물 yes 80장 중 78장, 비 yes 27장 중 23장이 노면 젖음 yes여서 맑은 날에는 호출을 하나로 줄임(2026-11-07 71784 표본)
-    if ask_word(llm, "wet", road, WET_PROMPT, YES_NO) == "yes":
-        if ask_word(llm, "rain", frame, RAIN_PROMPT, YES_NO) == "yes":
-            found.append(RAIN)
-        if ask_word(llm, "puddle", road, PUDDLE_PROMPT, YES_NO) == "yes":
-            found.append(PUDDLE)
+    # 표본에서 비 프레임 27/80이 yes이고 맑음 0/100, 안개 0/24라 앞단 호출 없이 바로 물음(2026-11-07 71784 표본)
+    if ask_word(llm, "rain", frame, RAIN_PROMPT, YES_NO) == "yes":
+        found.append(RAIN)
     if buses is not None and ask_word(llm, "bus", buses, BUS_PROMPT, YES_NO) == "yes":
         found.append(SCHOOL_BUS)
     # YOLO가 한국의 라바콘과 볼라드도 소화전으로 잡아 물체 종류를 다시 물음(2026-11-07 71784 표본에서 66박스 중 13박스만 hydrant)

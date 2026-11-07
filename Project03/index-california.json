@@ -111,13 +111,6 @@
    "reason": "CVC §22352(b)(2) sets the prima facie 25 mph limit when approaching or passing a posted school and its grounds while children are going to or leaving, the most direct speed duty in a school zone (this version stays in effect until 2031).",
    "references": []
   },
-  "a puddle of standing water on the road": {
-   "id": "CVC §22350",
-   "title": "",
-   "text": "No person shall drive a vehicle upon a highway at a speed greater than is reasonable or prudent having due regard for weather, visibility, the traffic on, and the surface and width of, the highway, and in no event at a speed which endangers the safety of persons or property.",
-   "reason": "기본속도법은 도로 표면 상태에 맞게 합리적이고 신중한 속도를 요구하며 물웅덩이는 노면 상태에 해당한다.",
-   "references": []
-  },
   "a crosswalk with no traffic light inside a child protection school zone": {
    "id": "CVC §21950(a)",
    "title": "",

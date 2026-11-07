@@ -107,9 +107,9 @@ class RecognizeTest(unittest.TestCase):
         self.assertEqual(self.run_recognize(PersonBoxes, ["yes", "no", "no"], "0"), [])
         self.assertEqual(self.run_recognize(PersonBoxes, ["no", "no"], "8"), [])
 
-    def test_wet_road_opens_rain_and_puddle(self):
-        self.assertEqual(self.run_recognize(EmptyBoxes, ["yes", "yes", "yes"], "0"), [gemma.RAIN, gemma.PUDDLE])
-        self.assertEqual(self.run_recognize(EmptyBoxes, ["yes", "no", "no"], "0"), [])
+    def test_rain_answer(self):
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["yes"], "0"), [gemma.RAIN])
+        self.assertEqual(self.run_recognize(EmptyBoxes, ["no"], "0"), [])
 
     def test_bus_and_hydrant_need_boxes(self):
         class VehicleBoxes:
