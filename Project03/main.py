@@ -9,8 +9,8 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
-from gemma import NO_LAW, STATUS, load_corpus, load_embedder, load_gemma, load_law, watch
-from hud import CALLS, MIC_BOX, VIDEO_WIDTH, button_boxes, draw, draw_nodes, draw_panel
+from gemma import NO_LAW, STATUS, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
+from hud import CALLS, MIC_BOX, VIDEO_WIDTH, button_boxes, draw, draw_loading, draw_nodes, draw_panel
 from voice import listen, speak_loop
 
 FRAME_SIZE = (1280, 720)
@@ -45,6 +45,8 @@ CAMERA_PIPELINES = ([pipeline]
                     + [f"nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1280,height=720,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! {SINK}"]
                     + [f"v4l2src device=/dev/video{device} ! decodebin ! {SINK}" for device in USB_DEVICES])
 CAMERA_LOG = "jetson-camera.txt"
+# 단계 이름과 걸리는 시간(초)이고 시간은 단계 안에서 막대를 움직이는 데만 씀(2026-11-07 Jetson 측정)
+LOAD_STEPS = [("탐지 모델 불러오기", 6), ("Gemma 불러오기", 40), ("임베딩 모델 불러오기", 3), ("조문 불러오기", 1), ("Gemma 예열", 24)]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
@@ -84,7 +86,6 @@ def on_click(event, x, y, flags, param):
                 selected[group] = index
 
 
-model = YOLO(args.model)
 # 마우스 콜백은 이름 붙은 창에만 달 수 있어 첫 imshow 전에 창을 만듦
 cv2.namedWindow(WINDOW)
 cv2.setMouseCallback(WINDOW, on_click)
@@ -102,6 +103,35 @@ def open_camera():
     with open(CAMERA_LOG, "w", encoding="utf-8") as file:
         file.write("열린 카메라 없음\n")
     return camera
+
+
+def next_step():
+    """로딩 화면의 단계를 하나 올리는 함수"""
+    loading["step"] += 1
+    loading["since"] = time.perf_counter()
+
+
+def load_models():
+    """모델과 조문을 차례로 불러오고 처음 한 번 오래 걸리는 Gemma 호출을 미리 돌리는 함수"""
+    loading["model"] = YOLO(args.model)
+    next_step()
+    loading["llm"] = load_gemma()
+    next_step()
+    loading["embedder"] = load_embedder()
+    next_step()
+    loading["laws"] = {short: load_law(short) for name, short in LAWS}
+    loading["corpora"] = {short: load_corpus(short) for name, short in LAWS}
+    next_step()
+    # 첫 인식이 약 24초 걸리고 다음부터 5초 안팎이라 영상 시작 전에 끝냄(2026-11-07 Jetson 측정)
+    capture = cv2.VideoCapture(VIDEOS[0][1])
+    frame = cv2.resize(capture.read()[1], FRAME_SIZE)
+    capture.release()
+    result = loading["model"].predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
+    recognize(loading["llm"], frame, result, False)
+    STATUS["answers"] = {}
+    STATUS["images"] = {}
+    STATUS["stage"] = "wait"
+    next_step()
 
 
 def detect_boxes():
@@ -122,9 +152,18 @@ def detect_boxes():
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
 shared = {"question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
           "frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
-laws = {short: load_law(short) for name, short in LAWS}
-corpora = {short: load_corpus(short) for name, short in LAWS}
-threading.Thread(target=watch, args=(load_gemma(), laws, shared, load_embedder(), corpora), daemon=True).start()
+loading = {"step": 0, "since": time.perf_counter()}
+loader = threading.Thread(target=load_models, daemon=True)
+loader.start()
+while loader.is_alive():
+    cv2.imshow(WINDOW, draw_loading(FRAME_SIZE[1], LOAD_STEPS, loading["step"], time.perf_counter() - loading["since"]))
+    if cv2.waitKey(100) & 0xFF == ord("q"):
+        raise SystemExit
+# 불러오기가 실패하면 스레드가 끝나도 마지막 단계에 닿지 못함
+if loading["step"] < len(LOAD_STEPS):
+    raise SystemExit("모델을 불러오지 못했습니다")
+model = loading["model"]
+threading.Thread(target=watch, args=(loading["llm"], loading["laws"], shared, loading["embedder"], loading["corpora"]), daemon=True).start()
 threading.Thread(target=speak_loop, args=(shared,), daemon=True).start()
 threading.Thread(target=terminal_questions, daemon=True).start()
 print("터미널에 질문을 입력하거나 창에서 m 키로 음성 질문을 시작합니다")

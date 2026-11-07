@@ -27,6 +27,7 @@ NODE_WIDTH = 320
 VIDEO_WIDTH = 960
 VIDEO_HEIGHT = 540
 VIDEO_SCALE = 0.75
+LOAD_BAR_WIDTH = 720
 SPINNER_POINTS = [(0, -7), (5, -5), (7, 0), (5, 5), (0, 7), (-5, 5), (-7, 0), (-5, -5)]
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
@@ -239,6 +240,25 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
     pen.text((28, 618), "VLA 출력", font=TINY_FONT, fill=FAINT)
     pen.text((100, 616), wrap("  ".join([rule["action"] for rule in rules]) if rules else "없음", SMALL_FONT, 500)[0], font=SMALL_FONT, fill=INK if rules else FAINT)
     pen.text((28, 696), voice["error"] or f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=ACCENT if voice["error"] else FAINT)
+    return np.array(image)
+
+
+def draw_loading(height, steps, step, elapsed):
+    """불러오는 단계와 진행 막대를 그린 시작 화면을 만드는 함수"""
+    width = VIDEO_WIDTH + PANEL_WIDTH + NODE_WIDTH
+    image = Image.new("RGB", (width, height), PANEL)
+    pen = ImageDraw.Draw(image)
+    left = (width - LOAD_BAR_WIDTH) // 2
+    top = height // 2 - 60
+    total = sum([seconds for name, seconds in steps])
+    # 단계가 예상보다 길어도 막대가 다음 단계까지 넘어가지 않게 95%에서 멈춤
+    current = steps[min(step, len(steps) - 1)]
+    done = sum([seconds for name, seconds in steps[:step]]) + (min(elapsed, current[1] * 0.95) if step < len(steps) else 0)
+    pen.text((left, top), "자율주행 도로교통법 지시문 모듈", font=LARGE_FONT, fill=INK)
+    pen.rectangle((left, top + 70, left + LOAD_BAR_WIDTH, top + 76), fill=LINE)
+    pen.rectangle((left, top + 70, left + int(LOAD_BAR_WIDTH * done / total), top + 76), fill=ACCENT)
+    pen.text((left, top + 92), current[0], font=MEDIUM_FONT, fill=SOFT)
+    pen.text((left + LOAD_BAR_WIDTH - 40, top + 92), f"{min(step + 1, len(steps))} / {len(steps)}", font=SMALL_FONT, fill=FAINT)
     return np.array(image)
 
 
