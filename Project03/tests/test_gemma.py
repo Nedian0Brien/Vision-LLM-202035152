@@ -80,14 +80,16 @@ class RecognizeTest(unittest.TestCase):
             """객관식과 낱말 답을 정해 둔 시험용 클래스"""
 
             n_tokens = 0
+            input_ids = np.array([5, 6, 7])
 
-            def tokenize(self, text, add_bos):
+            def tokenize(self, text, add_bos, special=False):
                 return [text[0]]
 
             def create_chat_completion(self, messages, max_tokens, temperature, logit_bias=None):
-                if messages[0]["content"][-1]["text"] == gemma.FREE_PROMPT:
-                    return {"choices": [{"message": {"content": free}}]}
                 return {"choices": [{"message": {"content": answers.pop(0) if logit_bias else choice}}]}
+
+            def create_completion(self, tokens, **kwargs):
+                return {"choices": [{"text": free}]}
 
         return gemma.recognize(Llm(), np.zeros((720, 1280, 3), np.uint8), Result(boxes), in_school_zone)
 
@@ -101,6 +103,24 @@ class RecognizeTest(unittest.TestCase):
         self.assertEqual(found, ["inside a road tunnel; speed limit sign 40"])
         self.assertTrue(gemma.is_free(found[0]))
         self.assertFalse(gemma.is_free(SITUATIONS[0]) or gemma.is_free(CROP_SITUATIONS[0]))
+
+    def test_free_question_reuses_kv_of_choice_call(self):
+        class Llm:
+            """KV에 토큰 3개 가운데 2개가 들어 있는 시험용 클래스"""
+
+            n_tokens = 2
+            input_ids = np.array([5, 6, 7])
+            asked = []
+
+            def tokenize(self, text, add_bos, special=False):
+                return [9] if special and not add_bos else []
+
+            def create_completion(self, tokens, **kwargs):
+                Llm.asked.append(tokens)
+                return {"choices": [{"text": " Roundabout ahead; none"}]}
+
+        self.assertEqual(gemma.describe_scene(Llm()), ["roundabout ahead"])
+        self.assertEqual(Llm.asked, [[5, 6, 9]])
 
     def test_no_boxes_skip_crop_calls(self):
         self.assertEqual(self.run_recognize(EmptyBoxes, ["no"], "14"), [SITUATIONS[13]])

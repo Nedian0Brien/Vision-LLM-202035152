@@ -127,7 +127,8 @@ CHOOSE_PROMPT = (
     "A self-driving car sees this image: {situation}.\nTraffic rules found for this scene:\n{options}0. none of these rules applies now\n"
     "Which rules must the car follow right now? Reply with only the numbers of all rules that apply, separated by commas, or 0."
 )
-# 정해 둔 상황 목록 밖의 장면도 찾도록 Gemma가 장면을 짧은 영어 구절로 적음(2026-11-07 사용자 지시, PC 실험 fD)
+# 정해 둔 상황 목록 밖의 장면도 찾도록 객관식 답 뒤에 이어 물어 Gemma가 장면을 짧은 영어 구절로 적음(2026-11-07 사용자 지시, PC 실험 fD와 cont)
+# 문구는 이미지 3장 호출 때와 같음. 목록 밖의 구체 대상만 묻는 문구 두 가지는 범주 이름이나 설명 문장을 내어 잘못된 지시가 늘었음(2026-11-07 PC 측정)
 FREE_PROMPT = (
     "You are the eyes of a self-driving car. Name what traffic law cares about in this road scene: places such as tunnels, bridges, "
     "school zones, crossings or work zones, and signs, road markings, lights and road users ahead. "
@@ -141,6 +142,8 @@ FREE_PROMPT = (
     "A green light ahead and cars in front. Answer: none\n"
     "Answer:"
 )
+# 앞 호출의 답 뒤에 모델 차례를 닫고 사용자 차례와 새 모델 차례를 여는 Gemma 4 대화 형식(llama-cpp-python 0.3.26 이상의 GGUF 템플릿)
+NEXT_TURN = "<turn|>\n<|turn>user\n{prompt}<turn|>\n<|turn>model\n"
 FREE_PHRASES = 3
 # 한 프레임의 구절 묶음을 상황 하나로 다루고, 검색할 때 다시 구절로 나눔
 PHRASE_JOIN = "; "
@@ -412,6 +415,8 @@ def recognize(llm, frame, result, in_school_zone):
     # 적색, 황색, 보행자는 크롭 질문의 답을 쓰므로 객관식의 답을 화면에도 내지 않음
     names = [SITUATION_NAMES[SITUATIONS.index(situation)] for situation in chosen if situation not in (RED, YELLOW, PEDESTRIAN)]
     end_stage("choice", ", ".join(names) if names else "해당 상황 없음", [], llm.n_tokens)
+    # 다른 호출이 KV를 지우기 전에, 객관식 호출의 이미지 연산 결과를 다시 쓰도록 바로 이어 물음(2026-11-07 PC 실험, 구절 호출 0.28초에서 0.09초)
+    phrases = describe_scene(llm)
     found = []
     # 신호 색과 횡단보도는 객관식에서 오인식이 많아 대상만 자른 크롭으로 따로 물음(2026-11-05 개발용 측정, 현행 28/53에서 31/53)
     if lights is not None:
@@ -448,19 +453,21 @@ def recognize(llm, frame, result, in_school_zone):
         if ask_word(llm, "zebra", road, ZEBRA_PROMPT, YES_NO) == "yes":
             found.append(SCHOOL_CROSSWALK)
             publish(found)
-    # 목록 상황 판단을 먼저 화면에 내고, 마지막에 목록 밖 장면을 자유 구절로 찾음
-    phrases = describe_scene(llm, frame, signs, road)
+    # 목록 상황의 규칙을 먼저 화면에 내고, 마지막에 자유 구절의 규칙을 찾음
     if phrases:
         found.append(PHRASE_JOIN.join(phrases))
         publish(found)
     return found
 
 
-def describe_scene(llm, frame, signs, road):
-    """장면에서 교통법규와 관련된 것을 짧은 영어 구절 목록으로 적게 하는 함수"""
+def describe_scene(llm):
+    """직전 객관식 호출에 이어 장면에서 교통법규와 관련된 것을 짧은 영어 구절 목록으로 적게 하는 함수"""
     start_stage("free")
-    content = [image_part(frame, 280), image_part(signs, 140), image_part(road, 140), {"type": "text", "text": FREE_PROMPT}]
-    answer = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=24, temperature=0)["choices"][0]["message"]["content"]
+    # 채팅 호출은 매번 KV를 지우므로 KV에 남은 토큰 뒤에 질문을 붙인 토큰 목록을 넘겨 앞부분을 다시 쓰게 함
+    # 이미지 자리의 토큰 번호는 0이지만 KV에는 이미지 임베딩이 남아 있음(2026-11-07 PC 확인, 처음부터 다시 넣은 토큰열과 8/8 일치)
+    head = llm.input_ids[:llm.n_tokens].tolist()
+    tokens = head + llm.tokenize(NEXT_TURN.format(prompt=FREE_PROMPT).encode("utf-8"), add_bos=False, special=True)
+    answer = llm.create_completion(tokens, max_tokens=24, temperature=0, stop=["<turn|>"])["choices"][0]["text"]
     phrases = []
     for part in answer.split(";"):
         phrase = part.strip(" .\n").lower()
