@@ -97,7 +97,7 @@
 | `draw_law_card(pen, status, rule, phase)` | 새 규칙이 나올 때 조문, 읽기, 출력을 한 단계씩 그린다. | `draw_panel` |
 | `draw_panel(height, frame_width, buttons, selected, rules, status, scene, reading, phase)` | 탭, 지시문, 근거 조항, 처리 단계를 그린 패널 이미지를 만든다. | `main.py` 영상 루프 |
 | `wrap(text, font, width)` | 글자 폭을 재어 패널 폭에 맞게 줄을 나눈다. | `draw_panel` |
-| `draw(frame, result, panel_image, fps)` | 프레임에 박스와 클래스 이름을 그리고 패널을 붙인 화면을 만든다. | `main.py` 영상 루프 |
+| `draw(frame, result, panel_image, nodes_image, fps)` | 프레임에 박스와 클래스 이름을 그리고 패널과 조문 열을 붙인 화면을 만든다. | `main.py` 영상 루프 |
 
 ### main.py
 

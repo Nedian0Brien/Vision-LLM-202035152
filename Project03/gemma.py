@@ -287,11 +287,19 @@ def watch(llm, laws, shared):
         now = time.perf_counter()
         for situation in found:
             clip["last_seen"][situation] = now
+        active = [situation for situation, seen in clip["last_seen"].items() if now - seen <= HOLD_SECONDS and situation in laws[law]]
+        # 조문을 읽기 전에 올려 처음 찾은 조문이 읽기 시간만큼 늦게 보이지 않게 함
+        nodes = [{"situation": situation, "article": laws[law][situation], "fresh": situation in found,
+                  "instruction": readings[(law, situation)]["instruction"] if (law, situation) in readings else None}
+                 for situation in active if laws[law][situation]["text"]]
+        clip["nodes"] = nodes
         rules = []
-        for situation, seen in clip["last_seen"].items():
-            if now - seen <= HOLD_SECONDS and situation in laws[law]:
-                if (law, situation) not in readings:
-                    readings[(law, situation)] = read_provision(llm, situation, laws[law][situation])
-                rules.append(readings[(law, situation)])
+        for situation in active:
+            if (law, situation) not in readings:
+                readings[(law, situation)] = read_provision(llm, situation, laws[law][situation])
+                for node in nodes:
+                    if node["situation"] == situation:
+                        node["instruction"] = readings[(law, situation)]["instruction"]
+            rules.append(readings[(law, situation)])
         clip["rules"] = rules
         STATUS["stage"] = "wait"

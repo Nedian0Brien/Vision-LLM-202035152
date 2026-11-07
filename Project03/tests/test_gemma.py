@@ -207,10 +207,10 @@ class WatchTest(unittest.TestCase):
 
         original = gemma.recognize, gemma.read_provision
         gemma.recognize = recognize
-        gemma.read_provision = lambda llm, situation, article: {"law": situation}
+        gemma.read_provision = lambda llm, situation, article: {"law": situation, "instruction": situation}
         self.addCleanup(lambda: (setattr(gemma, "recognize", original[0]), setattr(gemma, "read_provision", original[1])))
         self.shared = {"input": ("frame", "result"), "law": "current", "clip": {"last_seen": {}, "rules": []}}
-        self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {}, "b": {}}}, self.shared), daemon=True)
+        self.thread = threading.Thread(target=gemma.watch, args=(None, {"current": {"a": {"text": "조문 a"}, "b": {"text": "조문 b"}}}, self.shared), daemon=True)
         self.thread.start()
         self.addCleanup(self.finish)
 
@@ -234,10 +234,34 @@ class WatchTest(unittest.TestCase):
         clip = self.shared["clip"]
         self.started.acquire()
         self.go.release()
-        self.wait_rules(clip, [{"law": "a"}])
+        self.wait_rules(clip, [{"law": "a", "instruction": "a"}])
         self.started.acquire()
         self.go.release()
-        self.wait_rules(clip, [{"law": "a"}, {"law": "b"}])
+        self.wait_rules(clip, [{"law": "a", "instruction": "a"}, {"law": "b", "instruction": "b"}])
+
+    def test_node_appears_before_instruction(self):
+        self.run_watch([["a"]])
+        clip = self.shared["clip"]
+        reading = threading.Event()
+
+        def read(llm, situation, article):
+            reading.wait(2)
+            return {"law": situation, "instruction": situation}
+
+        gemma.read_provision = read
+        self.started.acquire()
+        self.go.release()
+        for _ in range(200):
+            if clip.get("nodes"):
+                break
+            time.sleep(0.01)
+        self.assertEqual(clip["nodes"][0]["article"], {"text": "조문 a"})
+        self.assertTrue(clip["nodes"][0]["fresh"])
+        self.assertIsNone(clip["nodes"][0]["instruction"])
+        self.assertEqual(clip["rules"], [])
+        reading.set()
+        self.wait_rules(clip, [{"law": "a", "instruction": "a"}])
+        self.assertEqual(clip["nodes"][0]["instruction"], "a")
 
     def test_rule_disappears_after_hold(self):
         original = gemma.HOLD_SECONDS
@@ -247,7 +271,7 @@ class WatchTest(unittest.TestCase):
         clip = self.shared["clip"]
         self.started.acquire()
         self.go.release()
-        self.wait_rules(clip, [{"law": "a"}])
+        self.wait_rules(clip, [{"law": "a", "instruction": "a"}])
         time.sleep(0.05)
         self.started.acquire()
         self.go.release()
@@ -262,12 +286,12 @@ class WatchTest(unittest.TestCase):
         new_clip = {"last_seen": {}, "rules": []}
         self.shared["clip"] = new_clip
         self.go.release()
-        self.wait_rules(old_clip, [{"law": "a"}])
+        self.wait_rules(old_clip, [{"law": "a", "instruction": "a"}])
         self.assertEqual(new_clip, {"last_seen": {}, "rules": []})
         self.shared["input"] = ("frame", "result")
         self.started.acquire()
         self.go.release()
-        self.wait_rules(new_clip, [{"law": "b"}])
+        self.wait_rules(new_clip, [{"law": "b", "instruction": "b"}])
 
 
 if __name__ == "__main__":

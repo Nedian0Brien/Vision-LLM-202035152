@@ -22,6 +22,12 @@ LARGE_FONT = ImageFont.truetype(FONT_PATH, 36)
 
 # 1280 픽셀 영상 옆에 붙여 전체 폭이 1920 픽셀 화면에 맞게 함
 PANEL_WIDTH = 640
+NODE_WIDTH = 320
+# 세 열을 합쳐 1920 폭 화면에 들어가도록 영상을 줄여 그림
+VIDEO_WIDTH = 960
+VIDEO_HEIGHT = 540
+VIDEO_SCALE = 0.75
+SPINNER_POINTS = [(0, -7), (5, -5), (7, 0), (5, 5), (0, 7), (-5, 5), (-7, 0), (-5, -5)]
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
 PANEL = (39, 35, 32)
@@ -213,8 +219,56 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
     return np.array(image)
 
 
-def draw(frame, result, panel_image, fps):
-    """프레임에 박스와 클래스 이름을 그리고 미리 그린 패널을 오른쪽에 붙이는 함수"""
+def draw_spinner(pen, x, y, spinner):
+    """점 여덟 개 중 하나를 밝혀 도는 스피너를 그리는 함수"""
+    for index in range(8):
+        dot_x = x + SPINNER_POINTS[index][0]
+        dot_y = y + SPINNER_POINTS[index][1]
+        pen.ellipse((dot_x - 1, dot_y - 1, dot_x + 1, dot_y + 1), fill=ACCENT if index == spinner else LINE)
+
+
+def draw_nodes(height, nodes, spinner):
+    """검색된 조문 노드를 이번 판단에서 찾은 것부터 그린 열 이미지를 만드는 함수"""
+    image = Image.new("RGB", (NODE_WIDTH, height), PANEL)
+    pen = ImageDraw.Draw(image)
+    pen.line((0, 0, 0, height), fill=LINE, width=1)
+    pen.text((20, 20), "검색된 조문", font=SMALL_FONT, fill=SOFT)
+    y = 56
+    drawn = []
+    for node in [node for node in nodes if node["fresh"]] + [node for node in nodes if not node["fresh"]]:
+        article = node["article"]
+        # 여러 상황이 같은 조문을 찾으면 한 번만 그림
+        if article["id"] in drawn:
+            continue
+        results = wrap(node["instruction"], SMALL_FONT, 284)[:2] if node["instruction"] else ["지시문 생성 중..."]
+        lines = wrap(article["text"], TINY_FONT, 284)[:2]
+        if y + 48 + 21 * len(results) + 19 * len(lines) > height - 40:
+            pen.text((20, y), "더 찾은 조문 있음", font=TINY_FONT, fill=SOFT)
+            break
+        drawn.append(article["id"])
+        pen.text((20, y), article["id"], font=MEDIUM_FONT, fill=ACCENT if node["fresh"] else SOFT)
+        pen.text((20, y + 24), article["title"], font=SMALL_FONT, fill=SOFT if node["fresh"] else FAINT)
+        y += 48
+        if node["instruction"]:
+            for line in results:
+                pen.text((20, y), line, font=SMALL_FONT, fill=INK)
+                y += 21
+        else:
+            draw_spinner(pen, 28, y + 10, spinner)
+            pen.text((44, y), results[0], font=SMALL_FONT, fill=ACCENT)
+            y += 21
+        for line in lines:
+            pen.text((20, y), line, font=TINY_FONT, fill=FAINT)
+            y += 19
+        y += 16
+    if not drawn:
+        pen.text((20, y), "검색된 조문 없음", font=MEDIUM_FONT, fill=FAINT)
+    return np.array(image)
+
+
+def draw(frame, result, panel_image, nodes_image, fps):
+    """프레임에 박스와 클래스 이름을 그리고 패널과 조문 열을 오른쪽에 붙이는 함수"""
+    frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))
     # 배속 구간에는 탐지 결과가 없음
     if result is None:
         label = LABELS[FAST_LABEL]
@@ -224,14 +278,15 @@ def draw(frame, result, panel_image, fps):
         boxes = zip(result.boxes.xyxy.tolist(), result.boxes.cls.tolist(), result.boxes.conf.tolist())
     for box, cls, conf in boxes:
         if conf >= SHOW_CONF:
-            x1, y1, x2, y2 = map(int, box)
+            x1, y1, x2, y2 = [int(value * VIDEO_SCALE) for value in box]
             cv2.rectangle(frame, (x1, y1), (x2, y2), ACCENT, 1)
             label = LABELS[CLASS_NAMES[int(cls)]]
             height, width = label.shape[:2]
             top = max(y1 - height, 0)
             width = min(width, frame.shape[1] - x1)
             frame[top:top + height, x1:x1 + width] = label[:, :width]
-    canvas = cv2.copyMakeBorder(frame, 0, 0, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
-    canvas[:, frame.shape[1]:] = panel_image
+    canvas = cv2.copyMakeBorder(frame, 0, panel_image.shape[0] - VIDEO_HEIGHT, 0, PANEL_WIDTH + NODE_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
+    canvas[:, VIDEO_WIDTH:VIDEO_WIDTH + PANEL_WIDTH] = panel_image
+    canvas[:, VIDEO_WIDTH + PANEL_WIDTH:] = nodes_image
     cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, FAINT, 1)
     return canvas

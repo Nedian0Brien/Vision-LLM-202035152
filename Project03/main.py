@@ -10,7 +10,7 @@ from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
 from gemma import NO_LAW, STATUS, load_gemma, load_law, watch
-from hud import CALLS, button_boxes, draw, draw_panel
+from hud import CALLS, VIDEO_WIDTH, button_boxes, draw, draw_nodes, draw_panel
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
@@ -49,7 +49,7 @@ parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
 selected = {"video": [path for name, path, focus in VIDEOS].index(args.video), "law": 0}
-buttons = button_boxes(FRAME_SIZE[0], {"video": [name for name, path, focus in VIDEOS], "law": [name for name, short in LAWS]})
+buttons = button_boxes(VIDEO_WIDTH, {"video": [name for name, path, focus in VIDEOS], "law": [name for name, short in LAWS]})
 
 
 def on_click(event, x, y, flags, param):
@@ -96,7 +96,7 @@ def detect_boxes():
 
 
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
-shared = {"frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": []}}
+shared = {"frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
 laws = {short: load_law(short) for name, short in LAWS}
 threading.Thread(target=watch, args=(load_gemma(), laws, shared), daemon=True).start()
 
@@ -108,6 +108,7 @@ shown_time = time.perf_counter()
 next_time = shown_time
 drawn_view = None
 drawn_state = None
+drawn_nodes = None
 shown_rules = []
 reading = None
 reading_since = 0.0
@@ -132,7 +133,7 @@ while True:
         shared["frame"] = None
         shared["result"] = None
         shared["input"] = None
-        shared["clip"] = {"last_seen": {}, "rules": []}
+        shared["clip"] = {"last_seen": {}, "rules": [], "nodes": []}
         waiting.clear()
 
     ret, frame = cap.read()
@@ -158,7 +159,7 @@ while True:
         shared["frame"] = None
         if shared["input"] is not None:
             shared["input"] = None
-            shared["clip"] = {"last_seen": {}, "rules": []}
+            shared["clip"] = {"last_seen": {}, "rules": [], "nodes": []}
             STATUS["stage"] = "skip"
     else:
         # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
@@ -191,9 +192,16 @@ while True:
         scene = STATUS["stage"]
         scene_since = now
     state = (scene, reading is None, phase, STATUS["answers"].get(scene))
+    nodes = shared["clip"]["nodes"]
+    # 생성 중인 노드가 있을 때만 스피너 번호가 바뀌어 열을 다시 그림
+    spinner = int(now * 8) % 8 if [node for node in nodes if node["instruction"] is None] else 0
+    node_state = ([(node["situation"], node["fresh"], node["instruction"]) for node in nodes], spinner)
+    if node_state != drawn_nodes:
+        drawn_nodes = node_state
+        nodes_image = draw_nodes(FRAME_SIZE[1], nodes, spinner)
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        panel_image = draw_panel(FRAME_SIZE[1], FRAME_SIZE[0], buttons, selected, rules, STATUS, scene, reading, phase)
+        panel_image = draw_panel(FRAME_SIZE[1], VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase)
     if view != drawn_view:
         drawn_view = view
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
@@ -211,7 +219,7 @@ while True:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
-    output_frame = draw(frame, result, panel_image, displayed_fps)
+    output_frame = draw(frame, result, panel_image, nodes_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 
