@@ -6,6 +6,16 @@ CODRIVE(Code-Of-Driving Retrieval for Instructing VLAs on Edge devices)는 주�
 
 > 발표 자료는 [docs/codrive-presentation.pdf](docs/codrive-presentation.pdf)에 있습니다.
 
+**금문교 시연: 교량 위 정차·주차 금지와 안전 최고속도(캘리포니아 차량법)**
+
+https://github.com/user-attachments/assets/2d41d242-ee11-48e6-8553-3fd7fc2ef549
+
+**소화전 시연: 소화전 15피트 이내 정차·주차 금지와 질문 답변(캘리포니아 차량법)**
+
+https://github.com/user-attachments/assets/23237f0f-e280-4ad6-b025-3b23d0e084bd
+
+*Mac에서 main.py를 실행한 화면을 녹화했습니다. 주행 영상은 ZERO ONE의 [San Francisco Downtown Driving Tour, 2023 California, USA](https://commons.wikimedia.org/wiki/File:San_Francisco_Downtown_Driving_Tour,_2023_California,_USA._Travel_Guide,_(4K_HDR).webm)([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))에서 일부 구간을 잘라 썼습니다.*
+
 ## 파일 구조
 
 - main.py: 메인 실행 파일입니다. 영상 재생, YOLO 탐지 스레드, 화면 버튼, 질문 입력, VLA 출력 기록을 담당합니다.
