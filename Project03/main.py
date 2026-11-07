@@ -18,10 +18,8 @@ WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
 # 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
-VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(0, 18)]), ("금문교", "videos/golden-gate.mp4", [(0, 30)]),
-          ("보호구역", "videos/school-zone-busan.mp4", [(0, 26)]), ("비", "videos/rain-seoul.mp4", [(0, 36)]), ("통학버스", "videos/school-bus-korea.mp4", [(0, 26)]),
-          ("소화전", "videos/hydrant-sf.mp4", [(0, 35)]), ("카메라", CAMERA, [])]
-FAST_SPEED = 8
+VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("금문교", "videos/golden-gate.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
+          ("비", "videos/rain-seoul.mp4"), ("통학버스", "videos/school-bus-korea.mp4"), ("소화전", "videos/hydrant-sf.mp4"), ("카메라", CAMERA)]
 # 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 탐지 시간과 간격이 각각 약 4프레임, 어긋남 중앙값이 8프레임이었음(2026-11-07 측정)
 DISPLAY_DELAY = 10
 # 판단 기회를 늘리려고 영상을 느껴지지 않을 만큼만 늦춤(2026-11-07 사용자 지시)
@@ -257,27 +255,14 @@ while True:
         top = max((frame.shape[0] - frame.shape[1] * 9 // 16) // 2, 0)
         frame = frame[top:frame.shape[0] - top]
     frame = cv2.resize(frame, FRAME_SIZE)
-    position = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000
-    fast = not is_camera and not [start for start, end in VIDEOS[current_video][2] if start <= position < end]
-    if fast:
-        # 배속 구간에서는 프레임을 건너뛰고 입력을 비워 YOLO와 Gemma를 돌리지 않음
-        for skipped in range(FAST_SPEED - 1):
-            cap.grab()
-        shown_boxes = None
-        shared["frame"] = None
-        if shared["input"] is not None:
-            shared["input"] = None
-            shared["clip"] = {"last_seen": {}, "rules": [], "nodes": []}
-            STATUS["stage"] = "skip"
-    else:
-        # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
-        frame_number += 1
-        shared["frame"] = (current_video, frame_number, frame.copy())
-        waiting.append((frame_number, frame))
-        if len(waiting) <= DISPLAY_DELAY:
-            continue
-        shown_number, frame = waiting.pop(0)
-        shown_boxes = boxes_at(shown_number)
+    # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
+    frame_number += 1
+    shared["frame"] = (current_video, frame_number, frame.copy())
+    waiting.append((frame_number, frame))
+    if len(waiting) <= DISPLAY_DELAY:
+        continue
+    shown_number, frame = waiting.pop(0)
+    shown_boxes = boxes_at(shown_number)
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그리게 함
@@ -300,10 +285,7 @@ while True:
         reading = None
     phase = int(now - reading_since) if reading else 0
     # 0.2초짜리 호출에 화면이 깜빡이지 않도록 장면을 최소 시간만큼 유지함
-    if fast:
-        scene = "skip"
-        reading = None
-    elif STATUS["stage"] in CALLS and STATUS["stage"] != scene and now - scene_since >= SCENE_SECONDS:
+    if STATUS["stage"] in CALLS and STATUS["stage"] != scene and now - scene_since >= SCENE_SECONDS:
         scene = STATUS["stage"]
         scene_since = now
     answer = shared["answer"]
@@ -331,10 +313,9 @@ while True:
     elapsed_time = time.perf_counter() - shown_time
     shown_time = time.perf_counter()
 
-    # 배속 구간은 모델을 돌리지 않아 처리 속도를 나타내지 않음
     if displayed_fps == 0:
         displayed_fps = 1.0 / elapsed_time
-    elif not fast:
+    else:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 

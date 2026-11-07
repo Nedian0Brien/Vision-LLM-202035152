@@ -16,14 +16,14 @@
 | 6 | `parse_situations`, `recognize` | 판단 한 번의 전체 순서 | 맑은 날 호출은 몇 번인가. 제27조 ⑦은 어떤 조건에서 묻는가 |
 | 7 | `read_provision` | 행동 고르기와 지시문 쓰기 | 호출이 왜 두 번인가. 조문 없음 모드에서는 어디가 달라지는가 |
 | 8 | `watch` | 8초 유지와 지시문 재사용 | 같은 상황을 다시 봐도 왜 Gemma를 다시 부르지 않는가 |
-| 9 | `main.py` 위에서 아래로 | 영상 열기, 배속, YOLO, 입력 칸, 패널 갱신, 출력 기록 | 영상 루프가 Gemma를 기다리지 않는 이유는 무엇인가. 배속 중 무엇이 멈추는가 |
+| 9 | `main.py` 위에서 아래로 | 영상 열기, YOLO, 입력 칸, 패널 갱신, 출력 기록 | 영상 루프가 Gemma를 기다리지 않는 이유는 무엇인가 |
 | 10 | `hud.py`의 `draw_panel`, `draw` | 패널 그리기 | 패널을 왜 매 프레임 다시 그리지 않는가 |
 | 11 | `build_corpus.py`, `tests/test_gemma.py` | 법령 수집과 동작 시험 | 인덱스는 코퍼스에서 어떻게 만들어지는가 |
 
 ## 실행 순서를 코드로 말하기
 
 1. `main.py`가 영상을 한 프레임 읽어 1280×720으로 바꿉니다.
-2. 배속 구간이 아니면 프레임 복사본을 `shared["frame"]`에 넣습니다. 별도 스레드의 `detect_boxes`가 YOLO11n으로 박스를 찾아 프레임과 박스를 `shared["input"]`에 넣습니다. 화면은 10프레임 늦추고, `boxes_at`이 앞뒤 탐지 결과로 표시할 프레임의 박스 위치를 계산합니다.
+2. 프레임 복사본을 `shared["frame"]`에 넣습니다. 별도 스레드의 `detect_boxes`가 YOLO11n으로 박스를 찾아 프레임과 박스를 `shared["input"]`에 넣습니다. 화면은 10프레임 늦추고, `boxes_at`이 앞뒤 탐지 결과로 표시할 프레임의 박스 위치를 계산합니다.
 3. 별도 스레드의 `watch`가 가장 새로운 입력을 꺼내 `recognize`를 부릅니다. 영상 루프는 이 호출을 기다리지 않습니다.
 4. `recognize`가 객관식과 크롭 질문의 답을 합쳐 상황 목록을 돌려줍니다.
 5. `watch`가 상황마다 본 시각을 적고, 8초 안에 본 상황 중 고른 법령에 조문이 있는 것만 남깁니다.
@@ -186,7 +186,6 @@
 | `cv2.destroyAllWindows` | 창을 모두 닫는다 | `main.py` |
 | `cv2.rectangle` | 사각형을 그린다 | `hud.draw` |
 | `cv2.line` | 선을 그린다 | `hud.draw` |
-| `cv2.VideoCapture.grab` | 다음 프레임으로 넘어간다 | `main.py` |
 | `cv2.copyMakeBorder` | 이미지 둘레를 늘린다 | `hud.draw` |
 | `cv2.putText` | 영문 글자를 그린다 | `hud.draw` |
 | `cv2.imencode` | 이미지를 메모리에서 압축한다 | `gemma.image_part` |

@@ -41,9 +41,8 @@ ACCENT = (132, 184, 214)
 LINE = (71, 66, 62)
 
 # 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
-FAST_LABEL = "8배속"
 LABELS = {}
-for name in list(CLASS_NAMES.values()) + [FAST_LABEL]:
+for name in CLASS_NAMES.values():
     image = Image.new("RGB", (int(SMALL_FONT.getlength(name)) + 12, 24), PANEL)
     ImageDraw.Draw(image).text((6, 2), name, font=SMALL_FONT, fill=INK)
     LABELS[name] = np.array(image)
@@ -104,8 +103,7 @@ def wrap(text, font, width):
 def draw_rail(pen, current):
     """처리 단계를 가로 한 줄로 그리고 지금 단계를 표시하는 함수"""
     pen.line((STEP_X[0], RAIL_Y, STEP_X[-1], RAIL_Y), fill=LINE, width=2)
-    if current > 0:
-        pen.line((STEP_X[0], RAIL_Y, STEP_X[current], RAIL_Y), fill=ACCENT, width=2)
+    pen.line((STEP_X[0], RAIL_Y, STEP_X[current], RAIL_Y), fill=ACCENT, width=2)
     for index, (x, name) in enumerate(zip(STEP_X, STEPS)):
         if index == current:
             pen.ellipse((x - 9, RAIL_Y - 9, x + 9, RAIL_Y + 9), fill=PANEL, outline=ACCENT, width=3)
@@ -234,9 +232,6 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
     if voice["listening"] or voice["thinking"] or voice["answer"]:
         draw_rail(pen, 1 if voice["listening"] else 3 if voice["thinking"] else 4)
         draw_answer_card(pen, voice)
-    elif scene == "skip":
-        draw_rail(pen, -1)
-        pen.text((28, CARD_TOP), "모델을 멈추고 다음 장면으로 건너뜁니다", font=SMALL_FONT, fill=SOFT)
     elif reading is not None:
         draw_rail(pen, 2 + phase)
         draw_law_card(pen, status, reading, phase)
@@ -332,11 +327,6 @@ def draw_nodes(nodes, spinner):
 def draw(frame, boxes, panel_image, nodes_image, fps):
     """프레임에 박스와 클래스 이름을 그리고 조문을 아래에, 패널을 오른쪽에 붙이는 함수"""
     frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))
-    # 배속 구간에는 탐지 결과가 없음
-    if boxes is None:
-        label = LABELS[FAST_LABEL]
-        frame[24:24 + label.shape[0], 24:24 + label.shape[1]] = label
-        boxes = []
     for box, cls, conf in boxes:
         if conf >= SHOW_CONF:
             x1, y1, x2, y2 = [int(value * VIDEO_SCALE) for value in box]
