@@ -5,3 +5,4 @@ CLAUDE.md
 docs/wiki
 src/models/*
 src/datasets/*
+.env
