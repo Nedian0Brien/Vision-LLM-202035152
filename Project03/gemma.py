@@ -179,7 +179,7 @@ def load_law(short):
     """법령의 상황별 조문 사전을 불러오는 함수"""
     if short == NO_LAW:
         return {situation: NO_ARTICLE for situation in SITUATIONS + CROP_SITUATIONS}
-    with open(f"index-{short}.json", encoding="utf-8") as file:
+    with open(f"laws/index-{short}.json", encoding="utf-8") as file:
         return json.load(file)["picks"]
 
 
@@ -193,11 +193,11 @@ def load_corpus(short):
     """법령의 전체 항목, 요약 지시문과 미리 만든 벡터를 불러오는 함수"""
     if short == NO_LAW:
         return {"articles": [], "vectors": None, "rules": [], "rule_vectors": None}
-    with open(f"corpus-{short}.json", encoding="utf-8") as file:
+    with open(f"laws/corpus-{short}.json", encoding="utf-8") as file:
         articles = json.load(file)["articles"]
-    with open(f"rules-{short}.json", encoding="utf-8") as file:
+    with open(f"laws/rules-{short}.json", encoding="utf-8") as file:
         rules = json.load(file)
-    return {"articles": articles, "vectors": np.load(f"vectors-{short}.npy"), "rules": rules, "rule_vectors": np.load(f"rule-vectors-{short}.npy")}
+    return {"articles": articles, "vectors": np.load(f"laws/vectors-{short}.npy"), "rules": rules, "rule_vectors": np.load(f"laws/rule-vectors-{short}.npy")}
 
 
 def search_law(embedder, question, corpus):

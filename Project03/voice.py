@@ -5,14 +5,14 @@ import subprocess
 import sys
 import time
 
-# 강의실에서 소리가 나지 않도록 기본으로 끔(2026-11-07 사용자 지시)
-PLAY_SOUND = False
+# 새 지시문과 답을 Piper로 읽음(2026-11-08 사용자 지시로 다시 켬)
+PLAY_SOUND = True
 MAC = sys.platform == "darwin"
 # 카드 번호는 꽂는 순서와 재부팅에 따라 바뀌어 장치 이름으로 지정함(2026-11-07 Jetson에서 USB Microphone이 카드 2번)
 MIC_DEVICE = "plughw:CARD=Microphone,DEV=0"
 # 다시 눌러 멈출 수 있어 넉넉히 두고, 누르는 것을 잊어도 이 시간에 끝남
 RECORD_SECONDS = 10
-AUDIO_DIR = "speech"
+AUDIO_DIR = "output/speech"
 INPUT_FILE = AUDIO_DIR + "/input.wav"
 WHISPER_PATH = "whisper-cli" if MAC else "../whisper.cpp/build-cpu/bin/whisper-cli"
 WHISPER_MODEL = "../src/models/Whisper/ggml-base.bin" if MAC else "../whisper.cpp/models/ggml-base.bin"

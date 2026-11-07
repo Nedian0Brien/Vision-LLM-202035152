@@ -16,7 +16,7 @@ import gemma
 import hud
 
 # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
-RESULT_PATH = "jetson-timing.txt"
+RESULT_PATH = "output/jetson-timing.txt"
 times = {"판단 전체": [], "객관식": [], "조문 읽기": [], "YOLO": [], "프레임에서 패널까지": []}
 state = {"frame_time": None, "judged_frame": None, "asked": 0.0, "shown": 0, "first_shown": None, "video": False}
 

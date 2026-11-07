@@ -123,5 +123,5 @@ def save(file_name, name, articles):
 
 
 oc, zip_path = sys.argv[1], sys.argv[2]
-save("corpus-current.json", "대한민국 도로교통법 (2026-10-13 공포본)", law_articles(fetch(oc, LAW_MST)) + signal_rows(fetch(oc, RULE_MST)))
-save("corpus-california.json", "California Vehicle Code Division 11", california_sections(zip_path))
+save("laws/corpus-current.json", "대한민국 도로교통법 (2026-10-13 공포본)", law_articles(fetch(oc, LAW_MST)) + signal_rows(fetch(oc, RULE_MST)))
+save("laws/corpus-california.json", "California Vehicle Code Division 11", california_sections(zip_path))

@@ -30,7 +30,7 @@ send_and_setup() {
     done
     rsync -avRP "${includes[@]}" --include 'Project03/videos/*-meta.txt' --exclude 'Project03/videos/*' \
         --exclude 'Project03/data' --exclude '__pycache__' --exclude '.ruff_cache' \
-        --exclude 'Project03/setup-report.txt' --exclude 'Project03/jetson-*' --exclude 'Project03/vla-output.jsonl' \
+        --exclude 'Project03/output' \
         Project03 src/models/YOLO/yolo11n.pt src/models/EmbeddingGemma/embeddinggemma-300M-Q8_0.gguf "$target:$REMOTE_DIR/" || exit 1
     ssh -t "$target" "cd $REMOTE_DIR/Project03 && bash setup.sh"
     status=$?
@@ -302,7 +302,8 @@ PYTHON
 }
 
 setup_device() {
-    exec > >(tee setup-report.txt) 2>&1
+    mkdir -p output
+    exec > >(tee output/setup-report.txt) 2>&1
     if [ -f /etc/nv_tegra_release ]; then
         DEVICE=jetson
     elif [ "$(uname)" = Darwin ]; then
@@ -322,11 +323,11 @@ setup_device() {
     fi
     check_all
     if [ "$FAILURES" -gt 0 ]; then
-        echo "실패 $FAILURES개: 위 항목을 고친 뒤 다시 실행합니다. 결과는 setup-report.txt에 있습니다."
+        echo "실패 $FAILURES개: 위 항목을 고친 뒤 다시 실행합니다. 결과는 output/setup-report.txt에 있습니다."
         exit 1
     fi
     if ! try_frame; then
-        echo "실패: 시험 실행. 결과는 setup-report.txt에 있습니다."
+        echo "실패: 시험 실행. 결과는 output/setup-report.txt에 있습니다."
         exit 1
     fi
     echo "모든 점검 통과"

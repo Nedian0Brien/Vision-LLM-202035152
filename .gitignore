@@ -6,12 +6,9 @@ docs/wiki
 .venv-project03
 Project03/videos
 Project03/data
-Project03/vla-output.jsonl
-Project03/jetson-*
-Project03/setup-report.txt
+Project03/output
 src/models/*
 src/datasets/*
 .env
 __pycache__/
 .venv-piper
-Project03/speech

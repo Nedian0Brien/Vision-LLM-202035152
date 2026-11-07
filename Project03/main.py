@@ -15,7 +15,7 @@ from voice import RECORD_SECONDS, listen, speak_loop, stop_listening
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
-OUTPUT_PATH = "vla-output.jsonl"
+OUTPUT_PATH = "output/vla-output.jsonl"
 CAMERA = "camera"
 VIDEOS = [("터널", "videos/tunnel-seoul.mp4"), ("한강 다리", "videos/bridge-olympic.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
           ("비", "videos/rain-seoul.mp4"), ("통학버스", "videos/school-bus-korea.mp4"), ("소화전", "videos/hydrant-sf.mp4"), ("카메라", CAMERA)]
