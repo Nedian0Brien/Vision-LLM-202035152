@@ -9,27 +9,69 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE, interpolate_boxes
-from gemma import NO_LAW, STATUS, judging_old_clip, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
-from hud import CALLS, MIC_BOX, SCREEN_HEIGHT, VIDEO_WIDTH, button_boxes, draw, draw_compare, draw_loading, draw_nodes, draw_panel
+from gemma import (
+    NO_LAW,
+    STATUS,
+    judging_old_clip,
+    load_corpus,
+    load_embedder,
+    load_gemma,
+    load_law,
+    recognize,
+    watch,
+)
+from hud import (
+    CALLS,
+    MIC_BOX,
+    SCREEN_HEIGHT,
+    VIDEO_WIDTH,
+    button_boxes,
+    draw,
+    draw_compare,
+    draw_loading,
+    draw_nodes,
+    draw_panel,
+)
 from voice import RECORD_SECONDS, listen, speak_loop, stop_listening
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
 OUTPUT_PATH = "output/vla-output.jsonl"
 CAMERA = "camera"
-VIDEOS = [("터널", "videos/tunnel-seoul.mp4"), ("금문교", "videos/golden-gate.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
-          ("비", "videos/rain-seoul.mp4"), ("통학버스", "videos/school-bus-korea.mp4"), ("소화전", "videos/hydrant-sf.mp4"), ("카메라", CAMERA)]
+VIDEOS = [
+    ("터널", "videos/tunnel-seoul.mp4"),
+    ("금문교", "videos/golden-gate.mp4"),
+    ("보호구역", "videos/school-zone-busan.mp4"),
+    ("비", "videos/rain-seoul.mp4"),
+    ("통학버스", "videos/school-bus-korea.mp4"),
+    ("소화전", "videos/hydrant-sf.mp4"),
+    ("카메라", CAMERA),
+]
+
 # 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 YOLO 호출 p95가 약 0.6초라 10프레임에서는 표시 프레임의 44~53%만 뒤 탐지 결과가 있었음(2026-11-07 측정)
 DISPLAY_DELAY = 20
-# 판단 기회를 늘리려고 영상을 느껴지지 않을 만큼만 늦춤(2026-11-07 사용자 지시)
+
+# 판단 기회를 늘리려고 영상을 느껴지지 않을 만큼만 늦춤
 PLAY_SPEED = 0.9
 ANSWER_SECONDS = 15
 SPEECH_REPEAT_SECONDS = 10
 READING_SECONDS = 3
 SCENE_SECONDS = 1
-LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california"), ("조문 없음", NO_LAW)]
-# 법령 비교 열은 조문 없는 답을 맨 앞에 두어 조문을 찾았을 때 달라지는 지시가 차례로 보이게 함(2026-11-07 사용자 지시)
-COMPARE_LAWS = [("조문 없음", NO_LAW), ("현행", "current"), ("2006년", "2006"), ("캘리포니아", "california")]
+LAWS = [
+    ("현행 도로교통법", "current"),
+    ("2006년 도로교통법", "2006"),
+    ("캘리포니아 차량법", "california"),
+    ("조문 없음", NO_LAW),
+]
+
+# 법령 비교 열은 조문 없는 답을 맨 앞에 두어 조문을 찾았을 때 달라지는 지시가 차례로 보이게 함
+COMPARE_LAWS = [
+    ("조문 없음", NO_LAW),
+    ("현행", "current"),
+    ("2006년", "2006"),
+    ("캘리포니아", "california"),
+]
+
 # 처리가 늦으면 오래된 프레임을 버려 지연이 쌓이지 않음
 pipeline = (
     "v4l2src device=/dev/video0 ! "
@@ -38,16 +80,37 @@ pipeline = (
     "queue leaky=downstream max-size-buffers=1 ! "
     "appsink drop=true max-buffers=1 sync=false"
 )
+
 # pipeline부터 차례로 열어 보며 장비마다 다른 카메라에 대응함, 모두 실패하면 현장 카메라에 맞게 pipeline을 고침
-SINK = "videoconvert ! video/x-raw,format=BGR ! queue leaky=downstream max-size-buffers=1 ! appsink drop=true max-buffers=1 sync=false"
+SINK = (
+    "videoconvert ! video/x-raw,format=BGR ! queue leaky=downstream max-size-buffers=1 ! appsink "
+    "drop=true max-buffers=1 sync=false"
+)
 USB_DEVICES = [0, 1, 2, 3]
-CAMERA_PIPELINES = ([pipeline]
-                    + [f"v4l2src device=/dev/video{device} ! video/x-raw,format=YUY2,width=640,height=480,framerate=30/1 ! {SINK}" for device in USB_DEVICES[1:]]
-                    + [f"nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),width=1280,height=720,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! {SINK}"]
-                    + [f"v4l2src device=/dev/video{device} ! decodebin ! {SINK}" for device in USB_DEVICES])
+CAMERA_PIPELINES = (
+    [pipeline]
+    + [
+        f"v4l2src device=/dev/video{device} ! "
+        f"video/x-raw,format=YUY2,width=640,height=480,framerate=30/1 ! {SINK}"
+        for device in USB_DEVICES[1:]
+    ]
+    + [
+        f"nvarguscamerasrc sensor-id=0 ! "
+        f"video/x-raw(memory:NVMM),width=1280,height=720,framerate=30/1 ! nvvidconv ! "
+        f"video/x-raw,format=BGRx ! {SINK}"
+    ]
+    + [f"v4l2src device=/dev/video{device} ! decodebin ! {SINK}" for device in USB_DEVICES]
+)
 CAMERA_LOG = "jetson-camera.txt"
+
 # 단계 이름과 걸리는 시간(초)이고 시간은 단계 안에서 막대를 움직이는 데만 씀(2026-11-07 Jetson 측정)
-LOAD_STEPS = [("탐지 모델 불러오기", 6), ("Gemma 불러오기", 40), ("임베딩 모델 불러오기", 3), ("조문 불러오기", 1), ("Gemma 예열", 24)]
+LOAD_STEPS = [
+    ("탐지 모델 불러오기", 6),
+    ("Gemma 불러오기", 40),
+    ("임베딩 모델 불러오기", 3),
+    ("조문 불러오기", 1),
+    ("Gemma 예열", 24),
+]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
@@ -55,7 +118,9 @@ parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
 selected = {"video": [path for name, path in VIDEOS].index(args.video), "law": 0}
-buttons = button_boxes(VIDEO_WIDTH, {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]})
+buttons = button_boxes(
+    VIDEO_WIDTH, {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]}
+)
 
 
 def toggle_listening():
@@ -84,6 +149,7 @@ def on_click(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         if MIC_BOX[0] <= x <= MIC_BOX[2] and MIC_BOX[1] <= y <= MIC_BOX[3]:
             toggle_listening()
+
         for group, index, name, (x1, y1, x2, y2) in buttons:
             if x1 <= x <= x2 and y1 <= y <= y2:
                 selected[group] = index
@@ -94,6 +160,7 @@ def on_click(event, x, y, flags, param):
 cv2.namedWindow(WINDOW, cv2.WINDOW_NORMAL)
 cv2.setMouseCallback(WINDOW, on_click)
 
+
 def open_camera():
     """프레임이 읽히는 첫 카메라 pipeline으로 장치를 여는 함수"""
     for candidate in CAMERA_PIPELINES:
@@ -102,10 +169,14 @@ def open_camera():
             # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
             with open(CAMERA_LOG, "w", encoding="utf-8") as file:
                 file.write(candidate + "\n")
+
             return camera
+
         camera.release()
+
     with open(CAMERA_LOG, "w", encoding="utf-8") as file:
         file.write("열린 카메라 없음\n")
+
     return camera
 
 
@@ -126,11 +197,14 @@ def load_models():
     loading["laws"] = {short: load_law(short) for name, short in LAWS}
     loading["corpora"] = {short: load_corpus(short) for name, short in LAWS}
     next_step()
+
     # 첫 인식이 약 24초 걸리고 다음부터는 몇 초 안이라 영상 시작 전에 한 번 돌려 둠(2026-11-07 Jetson 측정)
     capture = cv2.VideoCapture(VIDEOS[0][1])
     frame = cv2.resize(capture.read()[1], FRAME_SIZE)
     capture.release()
-    result = loading["model"].predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
+    result = loading["model"].predict(
+        source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE
+    )[0]
     recognize(loading["llm"], frame, result, False)
     STATUS["answers"] = {}
     STATUS["images"] = {}
@@ -149,8 +223,10 @@ def render_panels():
         shared["nodes_request"] = None
         if panel:
             shared["panel_image"] = draw_panel(*panel)
+
         if nodes:
             shared["nodes_image"] = nodes[0](*nodes[1])
+
         if not panel and not nodes:
             time.sleep(0.01)
 
@@ -161,12 +237,23 @@ def detect_boxes():
         if shared["frame"] is None:
             time.sleep(0.001)
             continue
+
         video, number, image = shared["frame"]
         shared["frame"] = None
-        found = model.predict(source=image, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
+        found = model.predict(
+            source=image,
+            conf=DETECT_CONF,
+            iou=0.5,
+            verbose=False,
+            classes=CLASSES,
+            imgsz=IMAGE_SIZE,
+        )[0]
+
         # 탐지 중에 영상이 바뀌면 이전 영상의 박스를 새 영상에 그리지 않음
         if video == current_video:
-            boxes = list(zip(found.boxes.xyxy.tolist(), found.boxes.cls.tolist(), found.boxes.conf.tolist()))
+            boxes = list(
+                zip(found.boxes.xyxy.tolist(), found.boxes.cls.tolist(), found.boxes.conf.tolist())
+            )
             shared["results"] = shared["results"][-DISPLAY_DELAY:] + [(number, boxes)]
             shared["input"] = (image, found)
 
@@ -178,27 +265,60 @@ def boxes_at(number):
     after = [result for result in results if result[0] > number]
     if not before:
         return after[0][1] if after else []
+
     if not after:
         return before[-1][1]
-    return interpolate_boxes(before[-1][1], after[0][1], (number - before[-1][0]) / (after[0][0] - before[-1][0]))
+
+    return interpolate_boxes(
+        before[-1][1], after[0][1], (number - before[-1][0]) / (after[0][0] - before[-1][0])
+    )
 
 
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
 # 스레드는 이 사전으로 값을 넘김. frame은 영상 루프에서 YOLO로, input은 YOLO에서 Gemma로, clip은 Gemma에서 화면으로 감
-shared = {"recorder": None, "listen_start": 0.0, "transcribing": False, "stop_requested": False, "results": [], "question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
-          "frame": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "compare": {}}}
+shared = {
+    "recorder": None,
+    "listen_start": 0.0,
+    "transcribing": False,
+    "stop_requested": False,
+    "results": [],
+    "question": None,
+    "thinking": None,
+    "answer": None,
+    "answer_time": 0.0,
+    "speech": None,
+    "listening": False,
+    "speaking": False,
+    "voice_error": None,
+    "frame": None,
+    "input": None,
+    "law": LAWS[selected["law"]][1],
+    "clip": {"last_seen": {}, "rules": [], "compare": {}},
+}
+
 loading = {"step": 0, "since": time.perf_counter()}
 loader = threading.Thread(target=load_models, daemon=True)
 loader.start()
 while loader.is_alive():
-    cv2.imshow(WINDOW, draw_loading(SCREEN_HEIGHT, LOAD_STEPS, loading["step"], time.perf_counter() - loading["since"]))
+    cv2.imshow(
+        WINDOW,
+        draw_loading(
+            SCREEN_HEIGHT, LOAD_STEPS, loading["step"], time.perf_counter() - loading["since"]
+        ),
+    )
     if cv2.waitKey(100) & 0xFF == ord("q"):
         raise SystemExit
+
 # 불러오기가 실패하면 스레드가 끝나도 마지막 단계에 닿지 못함
 if loading["step"] < len(LOAD_STEPS):
     raise SystemExit("모델을 불러오지 못했습니다")
+
 model = loading["model"]
-threading.Thread(target=watch, args=(loading["llm"], loading["laws"], shared, loading["embedder"], loading["corpora"]), daemon=True).start()
+threading.Thread(
+    target=watch,
+    args=(loading["llm"], loading["laws"], shared, loading["embedder"], loading["corpora"]),
+    daemon=True,
+).start()
 threading.Thread(target=speak_loop, args=(shared,), daemon=True).start()
 threading.Thread(target=terminal_questions, daemon=True).start()
 print("터미널에 질문을 입력하거나 창에서 m 키로 음성 질문을 시작합니다")
@@ -206,11 +326,35 @@ print("터미널에 질문을 입력하거나 창에서 m 키로 음성 질문�
 cap = cv2.VideoCapture()
 current_video = None
 threading.Thread(target=detect_boxes, daemon=True).start()
+
 shared["panel_request"] = None
 shared["nodes_request"] = None
-shared["panel_image"] = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, [], STATUS, "choice", None, 0, {"listening": False, "thinking": None, "answer": None, "error": None, "recording": False, "transcribing": False, "elapsed": 0.0, "limit": RECORD_SECONDS})
-shared["nodes_image"] = draw_compare([(name, {"rules": [], "pending": False}) for name, short in COMPARE_LAWS], 1)
+shared["panel_image"] = draw_panel(
+    SCREEN_HEIGHT,
+    VIDEO_WIDTH,
+    buttons,
+    selected,
+    [],
+    STATUS,
+    "choice",
+    None,
+    0,
+    {
+        "listening": False,
+        "thinking": None,
+        "answer": None,
+        "error": None,
+        "recording": False,
+        "transcribing": False,
+        "elapsed": 0.0,
+        "limit": RECORD_SECONDS,
+    },
+)
+shared["nodes_image"] = draw_compare(
+    [(name, {"rules": [], "pending": False}) for name, short in COMPARE_LAWS], 1
+)
 threading.Thread(target=render_panels, daemon=True).start()
+
 waiting = []
 frame_number = 0
 spoken_time = {}
@@ -230,6 +374,7 @@ while True:
     if selected["video"] != current_video:
         current_video = selected["video"]
         is_camera = VIDEOS[current_video][1] == CAMERA
+
         # 카메라는 앞서 연 장치를 닫아야 다시 열 수 있음
         cap.release()
         if is_camera:
@@ -238,7 +383,9 @@ while True:
         else:
             cap = cv2.VideoCapture(VIDEOS[current_video][1])
             frame_ms = 1000 / (cap.get(cv2.CAP_PROP_FPS) * PLAY_SPEED)
+
         # 묶음을 새로 만들면 돌고 있던 판단의 결과는 버려진 묶음에 쓰여 화면에 나오지 않음
+
         # 입력을 먼저 비워야 watch가 새 묶음과 이전 영상 프레임을 함께 읽지 않음
         shared["frame"] = None
         shared["results"] = []
@@ -257,15 +404,19 @@ while True:
     # 카메라를 영상과 같은 16:9로 잘라 탐지와 크롭 위치가 찌그러지지 않게 함
     if is_camera:
         top = max((frame.shape[0] - frame.shape[1] * 9 // 16) // 2, 0)
-        frame = frame[top:frame.shape[0] - top]
+        frame = frame[top : frame.shape[0] - top]
+
     frame = cv2.resize(frame, FRAME_SIZE)
+
     # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
     frame_number += 1
     shared["frame"] = (current_video, frame_number, frame.copy())
+
     # 화면은 DISPLAY_DELAY 프레임 늦게 그려 그 사이 나온 탐지로 박스 위치를 보간함
     waiting.append((frame_number, frame))
     if len(waiting) <= DISPLAY_DELAY:
         continue
+
     shown_number, frame = waiting.pop(0)
     shown_boxes = boxes_at(shown_number)
     shared["law"] = LAWS[selected["law"]][1]
@@ -276,53 +427,123 @@ while True:
     now = time.perf_counter()
     if shared["answer"] and now - shared["answer_time"] >= ANSWER_SECONDS:
         shared["answer"] = None
+
     # 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 주고 읽어 줌
     for rule in rules:
         if rule not in shown_rules:
             reading = rule
             reading_since = now
+
             # 유지 시간이 끊겼다 다시 나온 같은 지시는 다시 읽지 않고, 답변을 읽는 동안에도 끼어들지 않음
-            if now - spoken_time.get(rule["instruction"], -SPEECH_REPEAT_SECONDS) >= SPEECH_REPEAT_SECONDS and not shared["answer"]:
+            if (
+                now - spoken_time.get(rule["instruction"], -SPEECH_REPEAT_SECONDS)
+                >= SPEECH_REPEAT_SECONDS
+                and not shared["answer"]
+            ):
                 shared["speech"] = rule["instruction"]
                 spoken_time[rule["instruction"]] = now
+
     shown_rules = rules
     if now - reading_since >= READING_SECONDS:
         reading = None
+
     phase = int(now - reading_since) if reading else 0
+
     # 0.2초짜리 호출에 화면이 깜빡이지 않도록 장면을 최소 시간만큼 유지함
     if STATUS["stage"] in CALLS and STATUS["stage"] != scene and now - scene_since >= SCENE_SECONDS:
         scene = STATUS["stage"]
         scene_since = now
+
     answer = shared["answer"]
-    voice = {"listening": shared["listening"], "thinking": shared["thinking"], "answer": answer, "error": shared["voice_error"],
-             "recording": shared["recorder"] is not None, "transcribing": shared["transcribing"],
-             "elapsed": now - shared["listen_start"], "limit": RECORD_SECONDS}
+    voice = {
+        "listening": shared["listening"],
+        "thinking": shared["thinking"],
+        "answer": answer,
+        "error": shared["voice_error"],
+        "recording": shared["recorder"] is not None,
+        "transcribing": shared["transcribing"],
+        "elapsed": now - shared["listen_start"],
+        "limit": RECORD_SECONDS,
+    }
     STATUS["stale"] = judging_old_clip()
+
     # 녹음 중에는 0.5초마다 다시 그려 깜빡임과 경과 시간을 갱신함
     recording_tick = int(voice["elapsed"] * 2) if voice["recording"] else 0
-    state = (scene, reading is None, phase, STATUS["answers"].get(scene), voice["listening"], voice["thinking"], id(answer), voice["error"],
-             voice["recording"], voice["transcribing"], recording_tick, STATUS["stale"])
+    state = (
+        scene,
+        reading is None,
+        phase,
+        STATUS["answers"].get(scene),
+        voice["listening"],
+        voice["thinking"],
+        id(answer),
+        voice["error"],
+        voice["recording"],
+        voice["transcribing"],
+        recording_tick,
+        STATUS["stale"],
+    )
+
     # 질문에 답할 때는 근거 조문을, 평소에는 같은 장면의 법령별 규칙을 나란히 그림
     if answer:
-        nodes = [{"situation": article["id"], "article": article, "fresh": True, "instruction": "질문의 근거 후보"} for article in answer["articles"]]
+        nodes = [
+            {
+                "situation": article["id"],
+                "article": article,
+                "fresh": True,
+                "instruction": "질문의 근거 후보",
+            }
+            for article in answer["articles"]
+        ]
         node_state = (id(answer),)
         request = (draw_nodes, (nodes, 0))
     else:
         compare = shared["clip"].get("compare", {})
-        columns = [(name, compare.get(short, {"rules": [], "pending": False})) for name, short in COMPARE_LAWS]
-        node_state = ([(column["pending"], [(rule["law"], rule["instruction"]) for rule in column["rules"]]) for name, column in columns], selected["law"])
-        request = (draw_compare, (columns, [short for name, short in COMPARE_LAWS].index(LAWS[selected["law"]][1])))
+        columns = [
+            (name, compare.get(short, {"rules": [], "pending": False}))
+            for name, short in COMPARE_LAWS
+        ]
+        node_state = (
+            [
+                (
+                    column["pending"],
+                    [(rule["law"], rule["instruction"]) for rule in column["rules"]],
+                )
+                for name, column in columns
+            ],
+            selected["law"],
+        )
+        request = (
+            draw_compare,
+            (columns, [short for name, short in COMPARE_LAWS].index(LAWS[selected["law"]][1])),
+        )
+
     if node_state != drawn_nodes:
         drawn_nodes = node_state
         shared["nodes_request"] = request
+
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        shared["panel_request"] = (SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
+        shared["panel_request"] = (
+            SCREEN_HEIGHT,
+            VIDEO_WIDTH,
+            buttons,
+            selected,
+            rules,
+            STATUS,
+            scene,
+            reading,
+            phase,
+            voice,
+        )
+
     if view != drawn_view:
         drawn_view = view
+
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀
         with open(OUTPUT_PATH, "a", encoding="utf-8") as file:
             file.write(json.dumps({"time": time.time(), "rules": rules}, ensure_ascii=False) + "\n")
+
         STATUS["outputs"] += 1
 
     elapsed_time = time.perf_counter() - shown_time
@@ -334,7 +555,14 @@ while True:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
-    output_frame = draw(frame, shown_boxes, shared["panel_image"], shared["nodes_image"], displayed_fps, shared["recorder"] is not None)
+    output_frame = draw(
+        frame,
+        shown_boxes,
+        shared["panel_image"],
+        shared["nodes_image"],
+        displayed_fps,
+        shared["recorder"] is not None,
+    )
 
     cv2.imshow(WINDOW, output_frame)
 
@@ -344,6 +572,7 @@ while True:
     key = cv2.waitKey(wait_ms) & 0xFF
     if key == ord("q"):
         break
+
     if key == ord("m"):
         toggle_listening()
 
