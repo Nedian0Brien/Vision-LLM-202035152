@@ -42,7 +42,8 @@ LINE = (71, 66, 62)
 
 # 프레임마다 PIL로 글자를 그리면 한 프레임에 25ms가 걸려 YOLO보다 오래 걸렸음(2026-11-03 Mac 측정)
 LABELS = {}
-for name in CLASS_NAMES.values():
+RECORDING_LABEL = "녹음 중"
+for name in list(CLASS_NAMES.values()) + [RECORDING_LABEL]:
     image = Image.new("RGB", (int(SMALL_FONT.getlength(name)) + 12, 24), PANEL)
     ImageDraw.Draw(image).text((6, 2), name, font=SMALL_FONT, fill=INK)
     LABELS[name] = np.array(image)
@@ -58,6 +59,8 @@ RAIL_GAP = 18
 CARD_TOP = 508
 # 법령 탭 줄의 오른쪽 끝에 놓는 버튼의 창 좌표
 MIC_BOX = (VIDEO_WIDTH + 540, TAB_ROWS[1], VIDEO_WIDTH + PANEL_WIDTH - 28, TAB_ROWS[1] + 26)
+# 화면 배열이 BGR 순서라 빨강으로 보이도록 파랑 자리를 작게 둠
+RECORDING = (60, 60, 225)
 IMAGE_SIZE = (292, 164)
 # 호출마다 보여 줄 입력 이미지와 지금 하는 일
 CALLS = {"choice": ("frame", "Gemma가 장면을 보고 있습니다"), "light": ("lights", "Gemma가 신호 색을 읽고 있습니다"),
@@ -179,8 +182,19 @@ def draw_law_card(pen, status, rule, phase):
 def draw_answer_card(pen, voice):
     """질문과 답 또는 음성 입력 상태를 그리는 함수"""
     y = CARD_TOP
+    if voice["recording"]:
+        # 0.5초마다 점을 껐다 켜서 녹음 중임을 보임
+        if int(voice["elapsed"] * 2) % 2 == 0:
+            pen.ellipse((28, y + 8, 44, y + 24), fill=RECORDING)
+        pen.text((56, y), "듣고 있습니다", font=RESULT_FONT, fill=INK)
+        pen.text((56, y + 38), "다시 누르면 멈추고 질문합니다", font=SMALL_FONT, fill=SOFT)
+        done = min(voice["elapsed"] / voice["limit"], 1)
+        pen.rectangle((56, y + 70, 456, y + 74), fill=LINE)
+        pen.rectangle((56, y + 70, 56 + int(400 * done), y + 74), fill=RECORDING)
+        pen.text((468, y + 62), f"{int(voice['elapsed'])}초 / {voice['limit']}초", font=SMALL_FONT, fill=SOFT)
+        return
     if voice["listening"]:
-        pen.text((28, y), "듣고 있습니다", font=RESULT_FONT, fill=ACCENT)
+        pen.text((28, y), "질문을 글로 바꾸고 있습니다" if voice["transcribing"] else "음성 출력이 끝나기를 기다립니다", font=RESULT_FONT, fill=ACCENT)
         return
     if voice["thinking"]:
         pen.text((28, y), wrap(voice["thinking"], MEDIUM_FONT, 584)[0], font=MEDIUM_FONT, fill=SOFT)
@@ -203,7 +217,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
         pen.text((x1 - frame_width, y1), name, font=SMALL_FONT, fill=INK if chosen else FAINT)
         if chosen:
             pen.line((x1 - frame_width, y2 - 1, x2 - frame_width, y2 - 1), fill=ACCENT, width=2)
-    pen.text((MIC_BOX[0] - frame_width, MIC_BOX[1]), "음성 질문", font=SMALL_FONT, fill=ACCENT if voice["listening"] else SOFT)
+    pen.text((MIC_BOX[0] - frame_width, MIC_BOX[1]), "멈추기" if voice["recording"] else "음성 질문", font=SMALL_FONT, fill=RECORDING if voice["recording"] else ACCENT if voice["listening"] else SOFT)
     y = HERO_TOP
     if rules:
         # 규칙은 처음 나온 순서로 쌓이므로 가장 새로 나온 규칙을 크게 그림
@@ -237,7 +251,11 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
         draw_law_card(pen, status, reading, phase)
     else:
         draw_rail(pen, 1)
-        if scene in CALLS:
+        # 영상을 바꾼 직후에는 이전 영상 판단이 끝나야 새 영상을 판단함
+        if status.get("stale"):
+            pen.text((28, CARD_TOP), "이전 영상 판단을 마치는 중입니다", font=RESULT_FONT, fill=SOFT)
+            pen.text((28, CARD_TOP + 40), "끝나면 새 영상으로 판단을 시작합니다", font=SMALL_FONT, fill=FAINT)
+        elif scene in CALLS:
             draw_recognition_card(image, pen, status, scene)
     pen.text((28, 806), "VLA 출력", font=TINY_FONT, fill=FAINT)
     pen.text((100, 804), wrap("  ".join([rule["action"] for rule in rules]) if rules else "없음", SMALL_FONT, 500)[0], font=SMALL_FONT, fill=INK if rules else FAINT)
@@ -324,7 +342,7 @@ def draw_nodes(nodes, spinner):
     return np.array(image)
 
 
-def draw(frame, boxes, panel_image, nodes_image, fps):
+def draw(frame, boxes, panel_image, nodes_image, fps, recording):
     """프레임에 박스와 클래스 이름을 그리고 조문을 아래에, 패널을 오른쪽에 붙이는 함수"""
     frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))
     for box, cls, conf in boxes:
@@ -336,6 +354,11 @@ def draw(frame, boxes, panel_image, nodes_image, fps):
             top = max(y1 - height, 0)
             width = min(width, frame.shape[1] - x1)
             frame[top:top + height, x1:x1 + width] = label[:, :width]
+    # 패널을 보지 않아도 녹음 중임을 알 수 있게 영상 왼쪽 위에 표시함
+    if recording:
+        cv2.circle(frame, (24, 24), 8, RECORDING, -1)
+        label = LABELS[RECORDING_LABEL]
+        frame[12:12 + label.shape[0], 40:40 + label.shape[1]] = label
     canvas = cv2.copyMakeBorder(frame, 0, NODE_HEIGHT, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
     canvas[:, VIDEO_WIDTH:] = panel_image
     canvas[VIDEO_HEIGHT:, :VIDEO_WIDTH] = nodes_image

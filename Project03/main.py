@@ -9,9 +9,9 @@ import cv2
 from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE, interpolate_boxes
-from gemma import NO_LAW, STATUS, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
+from gemma import NO_LAW, STATUS, judging_old_clip, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
 from hud import CALLS, MIC_BOX, SCREEN_HEIGHT, VIDEO_WIDTH, button_boxes, draw, draw_loading, draw_nodes, draw_panel
-from voice import listen, speak_loop
+from voice import RECORD_SECONDS, listen, speak_loop, stop_listening
 
 FRAME_SIZE = (1280, 720)
 WINDOW = "Driving Rule Retrieval"
@@ -57,9 +57,11 @@ selected = {"video": [path for name, path, focus in VIDEOS].index(args.video), "
 buttons = button_boxes(VIDEO_WIDTH, {"video": [name for name, path, focus in VIDEOS], "law": [name for name, short in LAWS]})
 
 
-def start_listening():
-    """듣는 중이 아니면 음성 질문 스레드를 시작하는 함수"""
-    if not shared["listening"]:
+def toggle_listening():
+    """듣는 중이면 녹음을 멈추고, 아니면 음성 질문 스레드를 시작하는 함수"""
+    if shared["listening"]:
+        stop_listening(shared)
+    else:
         threading.Thread(target=listen, args=(shared,), daemon=True).start()
 
 
@@ -80,7 +82,7 @@ def on_click(event, x, y, flags, param):
     """버튼을 누르면 고른 영상이나 법령 번호를 바꾸거나 음성 질문을 시작하는 함수"""
     if event == cv2.EVENT_LBUTTONDOWN:
         if MIC_BOX[0] <= x <= MIC_BOX[2] and MIC_BOX[1] <= y <= MIC_BOX[3]:
-            start_listening()
+            toggle_listening()
         for group, index, name, (x1, y1, x2, y2) in buttons:
             if x1 <= x <= x2 and y1 <= y <= y2:
                 selected[group] = index
@@ -181,7 +183,7 @@ def boxes_at(number):
 
 
 # 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
-shared = {"results": [], "question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
+shared = {"recorder": None, "listen_start": 0.0, "transcribing": False, "stop_requested": False, "results": [], "question": None, "thinking": None, "answer": None, "answer_time": 0.0, "speech": None, "listening": False, "speaking": False, "voice_error": None,
           "frame": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": [], "nodes": []}}
 loading = {"step": 0, "since": time.perf_counter()}
 loader = threading.Thread(target=load_models, daemon=True)
@@ -204,7 +206,7 @@ current_video = None
 threading.Thread(target=detect_boxes, daemon=True).start()
 shared["panel_request"] = None
 shared["nodes_request"] = None
-shared["panel_image"] = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, [], STATUS, "choice", None, 0, {"listening": False, "thinking": None, "answer": None, "error": None})
+shared["panel_image"] = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, [], STATUS, "choice", None, 0, {"listening": False, "thinking": None, "answer": None, "error": None, "recording": False, "transcribing": False, "elapsed": 0.0, "limit": RECORD_SECONDS})
 shared["nodes_image"] = draw_nodes([], 0)
 threading.Thread(target=render_panels, daemon=True).start()
 waiting = []
@@ -289,8 +291,14 @@ while True:
         scene = STATUS["stage"]
         scene_since = now
     answer = shared["answer"]
-    voice = {"listening": shared["listening"], "thinking": shared["thinking"], "answer": answer, "error": shared["voice_error"]}
-    state = (scene, reading is None, phase, STATUS["answers"].get(scene), voice["listening"], voice["thinking"], id(answer), voice["error"])
+    voice = {"listening": shared["listening"], "thinking": shared["thinking"], "answer": answer, "error": shared["voice_error"],
+             "recording": shared["recorder"] is not None, "transcribing": shared["transcribing"],
+             "elapsed": now - shared["listen_start"], "limit": RECORD_SECONDS}
+    STATUS["stale"] = judging_old_clip()
+    # 녹음 중에는 0.5초마다 다시 그려 깜빡임과 경과 시간을 갱신함
+    recording_tick = int(voice["elapsed"] * 2) if voice["recording"] else 0
+    state = (scene, reading is None, phase, STATUS["answers"].get(scene), voice["listening"], voice["thinking"], id(answer), voice["error"],
+             voice["recording"], voice["transcribing"], recording_tick, STATUS["stale"])
     nodes = shared["clip"]["nodes"]
     if answer:
         nodes = [{"situation": article["id"], "article": article, "fresh": True, "instruction": "질문의 근거 후보"} for article in answer["articles"]]
@@ -319,7 +327,7 @@ while True:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
-    output_frame = draw(frame, shown_boxes, shared["panel_image"], shared["nodes_image"], displayed_fps)
+    output_frame = draw(frame, shown_boxes, shared["panel_image"], shared["nodes_image"], displayed_fps, shared["recorder"] is not None)
 
     cv2.imshow(WINDOW, output_frame)
 
@@ -330,7 +338,7 @@ while True:
     if key == ord("q"):
         break
     if key == ord("m"):
-        start_listening()
+        toggle_listening()
 
 cap.release()
 cv2.destroyAllWindows()

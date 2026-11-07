@@ -129,6 +129,15 @@ class RecognizeTest(unittest.TestCase):
         self.assertEqual(self.run_recognize(Boxes, ["green", "no"], "0", True), [])
 
 
+class SkipTest(unittest.TestCase):
+    def test_ask_word_skips_old_clip(self):
+        self.addCleanup(gemma.WATCHING.clear)
+        gemma.WATCHING["shared"] = {"clip": {"new": True}}
+        gemma.WATCHING["clip"] = {"old": True}
+        # llm이 None이라 호출하면 실패하므로 빈 답은 호출하지 않았다는 뜻
+        self.assertEqual(gemma.ask_word(None, "rain", None, "", ["yes", "no"]), "")
+
+
 class ActionTest(unittest.TestCase):
     def test_read_provision_returns_action_code(self):
         class Llm:
@@ -234,26 +243,51 @@ class QuestionTest(unittest.TestCase):
         self.assertNotIn("Traffic law text", model.prompt)
 
 
+class Recorder:
+    """녹음 프로세스 대신 끝난 값을 돌려주고 멈춤 요청을 기록하는 시험용 클래스"""
+
+    def __init__(self, code, stop=False):
+        self.code = code
+        self.stop = stop
+        self.terminated = False
+
+    def wait(self):
+        """녹음 중에 다시 누른 것처럼 멈춤을 요청하고 끝난 값을 돌려주는 메서드"""
+        if self.stop:
+            voice.stop_listening(self.shared)
+        return self.code
+
+    def terminate(self):
+        """멈춤 요청을 기록하는 메서드"""
+        self.terminated = True
+
+
 class VoiceTest(unittest.TestCase):
-    def test_listen_reports_missing_microphone(self):
-        original = voice.speech_to_text
-        self.addCleanup(lambda: setattr(voice, "speech_to_text", original))
-
-        def fail():
-            raise OSError
-
-        voice.speech_to_text = fail
-        shared = {"listening": False, "speaking": False, "question": None, "voice_error": None}
+    def listen_with(self, recorder, question):
+        """가짜 녹음기와 가짜 Whisper로 listen을 돌리는 메서드"""
+        originals = voice.subprocess.Popen, voice.speech_to_text
+        self.addCleanup(lambda: (setattr(voice.subprocess, "Popen", originals[0]), setattr(voice, "speech_to_text", originals[1])))
+        voice.subprocess.Popen = lambda command: recorder
+        voice.speech_to_text = lambda: question
+        shared = {"listening": False, "speaking": False, "question": None, "voice_error": None, "recorder": None,
+                  "listen_start": 0.0, "transcribing": False, "stop_requested": False}
+        recorder.shared = shared
         voice.listen(shared)
-        self.assertEqual((shared["listening"], shared["question"], shared["voice_error"]), (False, None, "마이크를 쓸 수 없습니다"))
+        return shared
 
     def test_listen_puts_question(self):
-        original = voice.speech_to_text
-        self.addCleanup(lambda: setattr(voice, "speech_to_text", original))
-        voice.speech_to_text = lambda: "소화전 앞에 세워도 되나요"
-        shared = {"listening": False, "speaking": False, "question": None, "voice_error": None}
-        voice.listen(shared)
-        self.assertEqual(shared["question"], "소화전 앞에 세워도 되나요")
+        shared = self.listen_with(Recorder(0), "소화전 앞에 세워도 되나요")
+        self.assertEqual((shared["question"], shared["listening"], shared["recorder"]), ("소화전 앞에 세워도 되나요", False, None))
+
+    def test_listen_reports_missing_microphone(self):
+        shared = self.listen_with(Recorder(1), "들리지 않은 질문")
+        self.assertEqual((shared["listening"], shared["question"], shared["voice_error"]), (False, None, "마이크를 쓸 수 없습니다"))
+
+    def test_stop_uses_recording_so_far(self):
+        recorder = Recorder(-15, stop=True)
+        shared = self.listen_with(recorder, "비 올 때 전조등을 켜야 하나요")
+        self.assertTrue(recorder.terminated)
+        self.assertEqual((shared["question"], shared["voice_error"]), ("비 올 때 전조등을 켜야 하나요", None))
 
 
 class WatchTest(unittest.TestCase):
@@ -352,7 +386,12 @@ class WatchTest(unittest.TestCase):
         new_clip = {"last_seen": {}, "rules": []}
         self.shared["clip"] = new_clip
         self.go.release()
-        self.wait_rules(old_clip, [{"law": "a", "instruction": "a"}])
+        # 버려진 묶음은 조문을 읽지 않아 규칙이 생기지 않음
+        for _ in range(200):
+            if "clip" not in gemma.WATCHING:
+                break
+            time.sleep(0.01)
+        self.assertEqual(old_clip["rules"], [])
         self.assertEqual(new_clip, {"last_seen": {}, "rules": []})
         self.shared["input"] = ("frame", "result")
         self.started.acquire()

@@ -109,7 +109,7 @@
 | 함수 | 하는 일 | 호출 위치 |
 |---|---|---|
 | `detect_boxes()` | 가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘긴다. | `threading.Thread` |
-| `start_listening()` | 듣는 중이 아니면 음성 질문 스레드를 시작한다. | `on_click`, 영상 루프 |
+| `toggle_listening()` | 듣는 중이면 녹음을 멈추고, 아니면 음성 질문 스레드를 시작한다. | `on_click`, 영상 루프 |
 | `terminal_questions()` | 터미널에 입력한 줄을 질문 칸에 넣는다. | `threading.Thread` |
 | `on_click(event, x, y, flags, param)` | 버튼을 누르면 고른 영상이나 법령 번호를 바꾼다. | `cv2.setMouseCallback`을 통해 OpenCV 창이 부른다. |
 

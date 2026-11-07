@@ -126,6 +126,8 @@ READ_CHARS = 240
 HOLD_SECONDS = 8.0
 
 # 화면이 모듈별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
+# watch가 지금 판단 중인 묶음과 공유 사전이고 영상이 바뀌어 버려진 묶음인지 가리는 데 씀
+WATCHING = {}
 STATUS = {"stage": "wait", "started": 0.0, "images": {}, "answers": {}, "odds": {}, "outputs": 0}
 
 
@@ -225,8 +227,16 @@ def first_token_bias(llm, words):
     return {llm.tokenize(word.encode("utf-8"), add_bos=False)[0]: 1000.0 for word in words}
 
 
+def judging_old_clip():
+    """판단 중인 묶음이 영상 전환으로 버려졌는지 돌려주는 함수"""
+    return "clip" in WATCHING and WATCHING["shared"]["clip"] is not WATCHING["clip"]
+
+
 def ask_word(llm, stage, image, question, words):
     """크롭 한 장을 보고 정해진 낱말 중 하나로 답하게 하고 답을 화면 상태에 적는 함수"""
+    # 영상이 바뀌면 결과가 버려지므로 남은 크롭 질문을 부르지 않아 새 영상 판단을 앞당김
+    if judging_old_clip():
+        return ""
     start_stage(stage)
     content = [image_part(image, 140), {"type": "text", "text": question}]
     response = llm.create_chat_completion(messages=[{"role": "user", "content": content}], max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, words))
@@ -336,7 +346,14 @@ def watch(llm, laws, shared, embedder, corpora):
         frame, result = current
         law = shared["law"]
         in_school_zone = time.perf_counter() - clip["last_seen"].get(SCHOOL_ZONE, -HOLD_SECONDS) <= HOLD_SECONDS
+        WATCHING["shared"] = shared
+        WATCHING["clip"] = clip
         found = recognize(llm, frame, result, in_school_zone)
+        # 버려진 묶음은 조문을 읽어도 화면에 나오지 않음
+        if judging_old_clip():
+            WATCHING.pop("clip")
+            continue
+        WATCHING.pop("clip")
         now = time.perf_counter()
         for situation in found:
             clip["last_seen"][situation] = now

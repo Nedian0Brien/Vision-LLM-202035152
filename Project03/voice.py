@@ -10,7 +10,8 @@ PLAY_SOUND = False
 MAC = sys.platform == "darwin"
 # 카드 번호는 꽂는 순서와 재부팅에 따라 바뀌어 장치 이름으로 지정함(2026-11-07 Jetson에서 USB Microphone이 카드 2번)
 MIC_DEVICE = "plughw:CARD=Microphone,DEV=0"
-RECORD_SECONDS = 5
+# 다시 눌러 멈출 수 있어 넉넉히 두고, 누르는 것을 잊어도 이 시간에 끝남
+RECORD_SECONDS = 10
 AUDIO_DIR = "speech"
 INPUT_FILE = AUDIO_DIR + "/input.wav"
 WHISPER_PATH = "whisper-cli" if MAC else "../whisper.cpp/build-cpu/bin/whisper-cli"
@@ -29,8 +30,7 @@ spoken = {}
 
 
 def speech_to_text():
-    """마이크로 녹음한 질문을 Whisper로 글로 바꾸는 함수"""
-    subprocess.run(RECORD_COMMAND, check=True)
+    """녹음한 질문을 Whisper로 글로 바꾸는 함수"""
     result = subprocess.run([WHISPER_PATH, "-m", WHISPER_MODEL, "-f", INPUT_FILE, "-l", "ko", "--no-timestamps"], text=True, capture_output=True, check=True)
     return result.stdout.strip()
 
@@ -65,15 +65,32 @@ def speak_loop(shared):
 
 
 def listen(shared):
-    """읽기가 끝난 뒤 음성 질문을 받아 질문 칸에 넣는 함수"""
+    """읽기가 끝난 뒤 녹음하고 음성 질문을 질문 칸에 넣는 함수"""
     shared["listening"] = True
+    shared["stop_requested"] = False
     while shared["speaking"]:
         time.sleep(0.05)
     # 마이크가 없어도 터미널 질문은 계속 받아야 함
     try:
+        shared["listen_start"] = time.perf_counter()
+        shared["recorder"] = subprocess.Popen(RECORD_COMMAND)
+        # 다시 눌러 멈춘 녹음은 0이 아닌 값으로 끝나도 그때까지 녹음한 파일을 씀
+        if shared["recorder"].wait() != 0 and not shared["stop_requested"]:
+            raise OSError("녹음 실패")
+        shared["recorder"] = None
+        shared["transcribing"] = True
         question = speech_to_text()
         if question:
             shared["question"] = question
     except (OSError, subprocess.CalledProcessError):
         shared["voice_error"] = "마이크를 쓸 수 없습니다"
+    shared["recorder"] = None
+    shared["transcribing"] = False
     shared["listening"] = False
+
+
+def stop_listening(shared):
+    """녹음 중이면 녹음을 멈추는 함수"""
+    if shared["recorder"] is not None:
+        shared["stop_requested"] = True
+        shared["recorder"].terminate()
