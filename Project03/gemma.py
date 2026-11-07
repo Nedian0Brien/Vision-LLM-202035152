@@ -138,8 +138,9 @@ def load_gemma():
     handler = Gemma4ChatHandler(clip_model_path=VISION_PATH, verbose=False)
     # 기본값은 CPU 코어 수만큼 스레드를 써서 같은 CPU의 YOLO가 20ms에서 358ms로 느려졌고, 2개로 줄이면 110ms였음(2026-11-03 Mac 측정)
     # 비전 모듈도 n_threads 값을 그대로 씀
+    # flash attention을 켜면 Jetson에서 판단 한 번이 5.08초에서 3.65초로 줄고 같은 7프레임의 인식 결과는 같았음(2026-11-07 측정)
     return Llama(model_path=LLM_PATH, chat_handler=handler, n_gpu_layers=-1, n_ctx=4096, n_batch=512, n_ubatch=512,
-                 n_threads=GEMMA_THREADS, n_threads_batch=GEMMA_THREADS, verbose=False)
+                 n_threads=GEMMA_THREADS, n_threads_batch=GEMMA_THREADS, flash_attn=True, verbose=False)
 
 
 def load_law(short):

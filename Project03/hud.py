@@ -54,7 +54,6 @@ STEPS = ["보기", "인식", "조문", "읽기", "출력"]
 STEP_X = [60, 190, 320, 450, 580]
 RAIL_Y = 440
 # 지시문 목록 한 줄의 높이와 단계 표시 위 여백
-ROW_HEIGHT = 27
 RAIL_GAP = 18
 CARD_TOP = 508
 # 법령 탭 줄의 오른쪽 끝에 놓는 버튼의 창 좌표
@@ -220,29 +219,26 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
     pen.text((MIC_BOX[0] - frame_width, MIC_BOX[1]), "멈추기" if voice["recording"] else "음성 질문", font=SMALL_FONT, fill=RECORDING if voice["recording"] else ACCENT if voice["listening"] else SOFT)
     y = HERO_TOP
     if rules:
-        # 규칙은 처음 나온 순서로 쌓이므로 가장 새로 나온 규칙을 크게 그림
-        rule = rules[-1]
-        for line in wrap(rule["instruction"], LARGE_FONT, 584)[:2]:
-            pen.text((28, y), line, font=LARGE_FONT, fill=INK)
-            y += 44
-        pen.text((28, y + 8), rule["law"], font=MEDIUM_FONT, fill=ACCENT)
-        y += 34
-        others = rules[-2::-1]
-        if not others:
-            for line in wrap(rule["text"], SMALL_FONT, 584)[:2]:
+        # 한 지시문이 더 중요해 보이지 않도록 모두 같은 크기로 최신 순으로 그림(2026-11-07 사용자 지시)
+        newest = rules[::-1]
+        for index, rule in enumerate(newest):
+            lines = wrap(rule["instruction"], RESULT_FONT, 584)[:2]
+            # 마지막 규칙이 아니면 외 N개를 쓸 한 줄을 남김
+            bottom = RAIL_Y - RAIL_GAP - (0 if index == len(newest) - 1 else 22)
+            if y + len(lines) * 34 + 30 > bottom:
+                pen.text((28, y), f"외 {len(newest) - index}개", font=SMALL_FONT, fill=SOFT)
+                break
+            for line in lines:
+                pen.text((28, y), line, font=RESULT_FONT, fill=INK)
+                y += 34
+            pen.text((28, y + 2), rule["law"], font=SMALL_FONT, fill=ACCENT)
+            y += 34
+        if len(rules) == 1:
+            for line in wrap(rules[0]["text"], SMALL_FONT, 584)[:2]:
                 pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
                 y += 22
-        # 지시문 줄 수에 따라 단계 표시 위에 남는 만큼만 최신 순으로 그림
-        rows = (RAIL_Y - RAIL_GAP - y) // ROW_HEIGHT
-        hidden = len(others) - rows + 1 if len(others) > rows else 0
-        for other in others[:rows - 1] if hidden else others:
-            pen.text((28, y), wrap(other["instruction"], MEDIUM_FONT, 408)[0], font=MEDIUM_FONT, fill=INK)
-            pen.text((448, y + 2), other["law"], font=SMALL_FONT, fill=ACCENT)
-            y += ROW_HEIGHT
-        if hidden:
-            pen.text((28, y), f"외 {hidden}개", font=SMALL_FONT, fill=SOFT)
     else:
-        pen.text((28, y), "적용할 규칙 없음", font=LARGE_FONT, fill=FAINT)
+        pen.text((28, y), "적용할 규칙 없음", font=RESULT_FONT, fill=FAINT)
     if voice["listening"] or voice["thinking"] or voice["answer"]:
         draw_rail(pen, 1 if voice["listening"] else 3 if voice["thinking"] else 4)
         draw_answer_card(pen, voice)
