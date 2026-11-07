@@ -140,7 +140,7 @@ flowchart TD
 
 ## 시간
 
-Mac 단독 측정 중앙값은 YOLO 0.04초이고, 조문 읽기는 처음 한 번 약 0.5초입니다. 판단 한 번은 개발용 재생에서 1.6초입니다. 사례 영상의 판단 중앙값은 빗길, 통학버스, 금문교가 약 1.9초, 호출이 많은 소화전이 약 2.3초입니다(다른 작업과 겹쳐 재서 조금 높을 수 있습니다). 창을 띄우지 않은 사례 영상 실행은 13~20 FPS이고, 영상은 원래 속도의 절반 정도로 재생됩니다. 창을 띄운 값은 고인 물 호출을 뺀 뒤 다시 재지 않았습니다. Jetson은 아직 재지 않았습니다.
+Mac 단독 측정 중앙값은 YOLO 0.04초이고, 조문 읽기는 처음 한 번 약 0.5초입니다. 판단 한 번은 개발용 재생에서 1.6초입니다. 사례 영상의 판단 중앙값은 빗길, 통학버스, 금문교가 약 1.9초, 호출이 많은 소화전이 약 2.3초입니다(다른 작업과 겹쳐 재서 조금 높을 수 있습니다). 창을 띄운 실제 실행은 보호구역과 금문교 14~15 FPS, 비 11 FPS, 통학버스와 소화전 9 FPS이고, 영상은 원래 속도의 절반 정도로 재생됩니다(2026-11-07, 다른 프로그램이 함께 실행 중). Gemma를 꺼도 17~18 FPS입니다. 프레임마다 YOLO 약 41ms와 `cv2.waitKey` 약 14ms가 들기 때문입니다. 25 FPS 목표는 Mac에서 아직 달성하지 못했습니다. YOLO를 MPS로 돌리면 Gemma를 껐을 때 25.8 FPS이지만, Gemma와 함께 돌면 GPU 경쟁으로 9~10 FPS로 떨어집니다. Jetson은 아직 재지 않았습니다.
 
 ## VLA 출력
 
@@ -251,11 +251,11 @@ mkdir -p videos && curl -L -o videos/wonju-2020-04-16.webm "https://upload.wikim
 
 이 영상은 개발용 평가에 씁니다. 원본의 86~118초를 다시 저장한 `videos/wonju-demo.mp4`는 시연 버튼에서 뺐고, 터널 안 구간(172~178초)이 약 6초뿐이라 터널 시연은 아래 영상으로 합니다. Mac에서 OpenCV `VideoWriter`로 만들었습니다.
 
-**샌프란시스코 영상(미국 캘리포니아).** 위키미디어 공용의 [San Francisco Downtown Driving Tour, 2023 California, USA](https://commons.wikimedia.org/wiki/File:San_Francisco_Downtown_Driving_Tour,_2023_California,_USA._Travel_Guide,_(4K_HDR).webm)을 씁니다. 촬영자는 ZERO ONE이고 라이선스는 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0)입니다. 같은 원본의 1876~1952초를 `videos/golden-gate.mp4`(76초, 30 FPS, `mpeg4`)로 저장했습니다. 금문교를 건너는 구간이고, 같은 장면에서 법령을 바꾸면 현행은 앞지르기 금지, 캘리포니아는 구조물에 안전한 속도로 지시가 달라집니다.
+**샌프란시스코 영상(미국 캘리포니아).** 위키미디어 공용의 [San Francisco Downtown Driving Tour, 2023 California, USA](https://commons.wikimedia.org/wiki/File:San_Francisco_Downtown_Driving_Tour,_2023_California,_USA._Travel_Guide,_(4K_HDR).webm)을 씁니다. 촬영자는 ZERO ONE이고 라이선스는 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0)입니다. 같은 원본의 1904~1952초를 `videos/golden-gate.mp4`(48초, 30 FPS, `mpeg4`)로 저장했습니다. 금문교를 건너는 구간이고, 같은 장면에서 법령을 바꾸면 현행은 앞지르기 금지, 캘리포니아는 구조물에 안전한 속도로 지시가 달라집니다.
 
-**터널 영상(한국 블랙박스).** AI Hub `교통법규 위반 상황 데이터`(71555) 검증 데이터의 터널 진로변경 사례 10개의 프레임을 이어 `videos/tunnel-korea.mp4`(약 86초, 10 FPS, 1280×720)를 만들었습니다. 쓴 사례는 `data/aihub-71555/tunnel/_clip-cases.json`에 있습니다. 사례 경계에서 장면이 끊깁니다. 번호판이 보이는 프레임이 있어 외부 공개 자료에 넣지 않습니다.
+**터널 영상(한국 블랙박스).** AI Hub `교통법규 위반 상황 데이터`(71555) 검증 데이터의 터널 진로변경 사례 10개의 프레임을 이어 `videos/tunnel-korea.mp4`(약 42초, 10 FPS, 1280×720, 앞부분 44초를 잘라 냄)를 만들었습니다. 쓴 사례는 `data/aihub-71555/tunnel/_clip-cases.json`에 있습니다. 사례 경계에서 장면이 끊깁니다. 번호판이 보이는 프레임이 있어 외부 공개 자료에 넣지 않습니다.
 
-**사례 영상(실제 주행).** 과제 시연에만 쓰는 유튜브 영상 세 개와 샌프란시스코 원본의 일부를 씁니다(2026-11-07 사용자 승인). 모두 1280×720, 30 FPS, `mp4v`이고, 출처는 `videos/youtube-sources.txt`에 있습니다. `rain-seoul.mp4`는 [K Traveler](https://www.youtube.com/watch?v=rxrJj2fyOSY)의 84~144초입니다. `school-zone-busan.mp4`는 [운전마법사](https://www.youtube.com/watch?v=NMAQIOZ_lAM)의 189~202초에서 계기판과 자막을 잘라 냈습니다. 원본의 안내 화살표가 없는 구간입니다. `school-bus-korea.mp4`는 [한문철 TV](https://www.youtube.com/watch?v=SNDLO8CyOVo)의 12~38초에서 진행자 화면을 잘라 냈습니다. `hydrant-sf.mp4`는 샌프란시스코 원본의 628~650초를 다시 저장한 영상이고, 신호 대기 중과 출발 직후에 소화전이 보입니다. 다리 위 사례는 `golden-gate.mp4`를 씁니다. 유튜브 영상은 재배포하지 않으며 저장소와 외부 공개 자료에 넣지 않습니다.
+**사례 영상(실제 주행).** 과제 시연에만 쓰는 유튜브 영상 세 개와 샌프란시스코 원본의 일부를 씁니다(2026-11-07 사용자 승인). 모두 1280×720, 30 FPS, `mp4v`이고, 출처는 `videos/youtube-sources.txt`에 있습니다. `rain-seoul.mp4`는 [K Traveler](https://www.youtube.com/watch?v=rxrJj2fyOSY)의 108~144초입니다. `school-zone-busan.mp4`는 [운전마법사](https://www.youtube.com/watch?v=NMAQIOZ_lAM)의 189~202초에서 계기판과 자막을 잘라 냈습니다. 원본의 안내 화살표가 없는 구간입니다. `school-bus-korea.mp4`는 [한문철 TV](https://www.youtube.com/watch?v=SNDLO8CyOVo)의 12~38초에서 진행자 화면을 잘라 냈습니다. `hydrant-sf.mp4`는 샌프란시스코 원본의 628~650초를 다시 저장한 영상이고, 신호 대기 중과 출발 직후에 소화전이 보입니다. 다리 위 사례는 `golden-gate.mp4`를 씁니다. 유튜브 영상은 재배포하지 않으며 저장소와 외부 공개 자료에 넣지 않습니다.
 
 
 AI Hub 자료와 프레임은 커밋하지 않습니다. 시연 사용은 사용자가 승인했습니다(2026-11-06). 번호판과 사람이 보이는 프레임은 외부 공개 자료에 넣지 않습니다.
@@ -282,7 +282,7 @@ python main.py camera --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
 
 카메라는 실습과 같은 `/dev/video0`, YUY2, 640×480, 30 FPS로 열고, 가운데 640×360을 잘라 1280×720으로 키웁니다. 카메라가 없거나 끊기면 첫 영상으로 돌아갑니다.
 
-오른쪽 패널의 버튼으로 영상과 법령(현행, 2006년, 캘리포니아, 조문 없음)을 바꿉니다. 패널 위쪽에는 지시문과 근거 조문이, 아래쪽에는 보기, 인식, 조문, 읽기, 출력 단계가 한 줄로 나옵니다. 평소에는 인식 단계에서 지금 호출의 입력 이미지, 답, 확률, 입력 토큰 수, 걸린 시간을 보여 줍니다. 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 줍니다. 이 1초는 보는 사람을 위한 표시 시간이고 실제 처리 시간이 아닙니다. 시연 영상은 지정한 구간만 원래 속도로 재생하고 나머지는 8배속으로 건너뜁니다. 배속 중에는 규칙을 비우고 YOLO와 Gemma를 돌리지 않습니다. 법령을 바꾸면 다음 판단부터 그 법령의 조문으로 지시문이 나옵니다. `q`를 누르면 종료합니다.
+영상이 끝나면 다음 영상으로 넘어갑니다(카메라 탭은 건너뜁니다). 오른쪽 패널의 버튼으로 영상과 법령(현행, 2006년, 캘리포니아, 조문 없음)을 바꿉니다. 패널 위쪽에는 지시문과 근거 조문이, 아래쪽에는 보기, 인식, 조문, 읽기, 출력 단계가 한 줄로 나옵니다. 평소에는 인식 단계에서 지금 호출의 입력 이미지, 답, 확률, 입력 토큰 수, 걸린 시간을 보여 줍니다. 새 규칙이 나오면 조문, 읽기, 출력을 1초씩 보여 줍니다. 이 1초는 보는 사람을 위한 표시 시간이고 실제 처리 시간이 아닙니다. 시연 영상은 지정한 구간만 원래 속도로 재생하고 나머지는 8배속으로 건너뜁니다. 배속 중에는 규칙을 비우고 YOLO와 Gemma를 돌리지 않습니다. 법령을 바꾸면 다음 판단부터 그 법령의 조문으로 지시문이 나옵니다. `q`를 누르면 종료합니다.
 
 ### 테스트
 
@@ -370,7 +370,7 @@ python -c "from gemma import load_gemma; load_gemma(); input('free -m을 본 뒤
 
 ### 5. 실행 측정
 
-`tests/jetson_timing.py`는 `main.py`를 그대로 실행하면서 시간을 잽니다. `cv2.imshow`와 버튼을 쓰므로 Jetson 화면의 터미널에서 실행합니다. 영상마다 120초쯤 돌리고 `q`로 끝냅니다. 결과는 `jetson-timing.txt`에 이어 쓰고, 멈추면 오류도 같은 파일에 남습니다. `vla-output.jsonl`에 규칙이 쌓이는지도 봅니다.
+`tests/jetson_timing.py`는 `main.py`를 그대로 실행하면서 시간을 잽니다. `cv2.imshow`와 버튼을 쓰므로 Jetson 화면의 터미널에서 실행합니다. 영상이 끝나면 다음 탭으로 넘어가므로 한 번의 실행 값에는 여러 영상이 섞입니다. 120초쯤 돌리고 `q`로 끝냅니다. 결과는 `jetson-timing.txt`에 이어 쓰고, 멈추면 오류도 같은 파일에 남습니다. `vla-output.jsonl`에 규칙이 쌓이는지도 봅니다.
 
 ```bash
 python tests/jetson_timing.py videos/tunnel-korea.mp4 --model ../src/models/YOLO/yolo11n_736x1280_fp16.engine
