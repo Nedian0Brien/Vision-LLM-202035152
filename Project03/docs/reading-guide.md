@@ -18,7 +18,6 @@
 | 8 | `watch` | 8초 유지와 지시문 재사용 | 같은 상황을 다시 봐도 왜 Gemma를 다시 부르지 않는가 |
 | 9 | `main.py` 위에서 아래로 | 영상 열기, YOLO, 입력 칸, 패널 갱신, 출력 기록 | 영상 루프가 Gemma를 기다리지 않는 이유는 무엇인가 |
 | 10 | `hud.py`의 `draw_panel`, `draw` | 패널 그리기 | 패널을 왜 매 프레임 다시 그리지 않는가 |
-| 11 | `build_corpus.py`, `tests/test_gemma.py` | 법령 수집과 동작 시험 | 인덱스는 코퍼스에서 어떻게 만들어지는가 |
 
 ## 실행 순서를 코드로 말하기
 
@@ -114,17 +113,6 @@
 | `terminal_questions()` | 터미널에 입력한 줄을 질문 칸에 넣는다. | `threading.Thread` |
 | `on_click(event, x, y, flags, param)` | 버튼을 누르면 고른 영상이나 법령 번호를 바꾼다. | `cv2.setMouseCallback`을 통해 OpenCV 창이 부른다. |
 
-### build_corpus.py
-
-| 함수 | 하는 일 | 호출 위치 |
-|---|---|---|
-| `fetch(oc, mst)` | 법령일련번호로 법령 본문 XML을 받는다. | `build_corpus.py` 맨 아래 반복문 |
-| `clean(text)` | 줄바꿈과 겹친 공백을 한 칸으로 줄이고 끝의 개정 이력을 지운다. | `law_articles` |
-| `law_articles(root)` | 도로교통법 XML을 항마다 한 항목으로 모은다. | `build_corpus.py` 맨 아래 반복문 |
-| `signal_rows(root)` | 시행규칙 별표 2의 선 문자 표를 신호 종류마다 한 항목으로 모은다. | `build_corpus.py` 맨 아래 반복문 |
-| `california_sections(zip_path)` | 캘리포니아 차량법 제11편 조문을 항마다 한 항목으로 모은다. | `build_corpus.py` 맨 아래 |
-| `save(file_name, name, articles)` | 코퍼스 이름과 항목을 JSON 파일 하나로 저장한다. | `build_corpus.py` 맨 아래 |
-
 ## 라이브러리 색인
 
 | 라이브러리 | 왜 쓰는가 |
@@ -196,7 +184,6 @@
 | 함수 | 하는 일 | 쓴 곳 |
 |---|---|---|
 | `json.load` | JSON 파일을 읽는다 | `gemma.load_law` |
-| `json.dump` | JSON 파일을 쓴다 | `build_corpus.save` |
 | `json.dumps` | 자료를 JSON 문자열로 바꾼다 | `main.py` |
 
 ### llama_cpp
@@ -240,24 +227,6 @@
 | 함수 | 하는 일 | 쓴 곳 |
 |---|---|---|
 | `ultralytics.YOLO` | YOLO 모델을 불러온다 | `main.py` |
-
-### urllib
-
-| 함수 | 하는 일 | 쓴 곳 |
-|---|---|---|
-| `urllib.request.request.urlopen`(`urllib.request.urlopen`)` | URL을 연다 | `build_corpus.fetch` |
-
-### xml
-
-| 함수 | 하는 일 | 쓴 곳 |
-|---|---|---|
-| `xml.etree.ElementTree.fromstring` | XML 문자열을 읽는다 | `build_corpus.fetch`, `build_corpus.california_sections` |
-
-### zipfile
-
-| 함수 | 하는 일 | 쓴 곳 |
-|---|---|---|
-| `zipfile.ZipFile` | zip 파일을 연다 | `build_corpus.california_sections` |
 
 ## 발표에서 나올 질문
 
