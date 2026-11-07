@@ -122,8 +122,8 @@ NO_LAW = "none"
 NO_ARTICLE = {"id": "조문 없음", "title": "", "text": "", "references": []}
 # 인식이 완벽하다고 가정한 개발용 수치는 120자 44/53, 240자 46/53, 400자 39/53이었음(2026-11-05)
 READ_CHARS = 240
-# 개발용 지표의 사이클 간격과 같은 값이고 결과를 보고 조정하지 않음
-HOLD_SECONDS = 3.5
+# Jetson 판단 약 5초와 처음 읽는 조문 약 5초 동안 지시가 사라지지 않도록 다음 판단까지 유지함(2026-11-07 Jetson 측정, 사용자 지시)
+HOLD_SECONDS = 8.0
 
 # 화면이 모듈별 처리 상태를 그리는 값이고 판단에는 쓰지 않음
 STATUS = {"stage": "wait", "started": 0.0, "images": {}, "answers": {}, "odds": {}, "outputs": 0}

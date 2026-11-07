@@ -24,6 +24,8 @@ VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(0, 18)]), ("금문교", "video
 FAST_SPEED = 8
 # YOLO 결과가 약 3프레임 늦게 나오므로 화면도 그만큼 늦춰 박스를 맞춤(2026-11-07 Mac 측정, 어긋남 평균 2.3프레임에서 0.7프레임)
 DISPLAY_DELAY = 3
+# 판단 기회를 늘리려고 영상을 느껴지지 않을 만큼만 늦춤(2026-11-07 사용자 지시)
+PLAY_SPEED = 0.9
 ANSWER_SECONDS = 15
 SPEECH_REPEAT_SECONDS = 10
 READING_SECONDS = 3
@@ -196,7 +198,7 @@ while True:
             frame_ms = 1
         else:
             cap = cv2.VideoCapture(VIDEOS[current_video][1])
-            frame_ms = 1000 / cap.get(cv2.CAP_PROP_FPS)
+            frame_ms = 1000 / (cap.get(cv2.CAP_PROP_FPS) * PLAY_SPEED)
         # 묶음을 새로 만들면 돌고 있던 판단의 결과는 버려진 묶음에 쓰여 화면에 나오지 않음
         # 입력을 먼저 비워야 watch가 새 묶음과 이전 영상 프레임을 함께 읽지 않음
         shared["frame"] = None
