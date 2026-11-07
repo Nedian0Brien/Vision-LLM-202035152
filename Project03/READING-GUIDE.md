@@ -23,7 +23,7 @@
 ## 실행 순서를 코드로 말하기
 
 1. `main.py`가 영상을 한 프레임 읽어 1280×720으로 바꿉니다.
-2. 배속 구간이 아니면 YOLO11n이 박스를 찾고, 프레임과 박스를 `shared["input"]`에 넣습니다.
+2. 배속 구간이 아니면 프레임 복사본을 `shared["frame"]`에 넣습니다. 별도 스레드의 `detect_boxes`가 YOLO11n으로 박스를 찾아 프레임과 박스를 `shared["input"]`에 넣습니다. 화면은 3프레임 늦춰 박스와 맞춥니다.
 3. 별도 스레드의 `watch`가 가장 새로운 입력을 꺼내 `recognize`를 부릅니다. 영상 루프는 이 호출을 기다리지 않습니다.
 4. `recognize`가 객관식과 크롭 질문의 답을 합쳐 상황 목록을 돌려줍니다.
 5. `watch`가 상황마다 본 시각을 적고, 3.5초 안에 본 상황 중 고른 법령에 조문이 있는 것만 남깁니다.
@@ -103,6 +103,7 @@
 
 | 함수 | 하는 일 | 호출 위치 |
 |---|---|---|
+| `detect_boxes()` | 가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘긴다. | `threading.Thread` |
 | `on_click(event, x, y, flags, param)` | 버튼을 누르면 고른 영상이나 법령 번호를 바꾼다. | `cv2.setMouseCallback`을 통해 OpenCV 창이 부른다. |
 
 ### build_corpus.py
@@ -125,7 +126,7 @@
 | `ultralytics` | YOLO11n 탐지 |
 | `llama_cpp` | Gemma E2B 실행, 이미지 입력, 답 제한, 마지막 점수 읽기 |
 | `PIL` | 패널의 한글 그리기 |
-| `threading` | 영상 루프와 판단 스레드 분리 |
+| `threading` | 영상 루프와 YOLO, Gemma 스레드 분리 |
 | `base64` | 이미지를 data URL로 변환 |
 | `json` | 인덱스 읽기, VLA 출력 쓰기 |
 | `argparse`, `time`, `os` | 실행 인자, 시간 측정, 글꼴 경로 확인 |

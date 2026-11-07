@@ -18,9 +18,11 @@ OUTPUT_PATH = "vla-output.jsonl"
 CAMERA = "camera"
 # 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
 VIDEOS = [("터널", "videos/tunnel-korea.mp4", [(0, 18)]), ("금문교", "videos/golden-gate.mp4", [(0, 30)]),
-          ("보호구역", "videos/school-zone-busan.mp4", [(0, 13)]), ("비", "videos/rain-seoul.mp4", [(0, 36)]), ("통학버스", "videos/school-bus-korea.mp4", [(0, 26)]),
-          ("소화전", "videos/hydrant-sf.mp4", [(0, 22)]), ("카메라", CAMERA, [])]
+          ("보호구역", "videos/school-zone-busan.mp4", [(0, 26)]), ("비", "videos/rain-seoul.mp4", [(0, 36)]), ("통학버스", "videos/school-bus-korea.mp4", [(0, 26)]),
+          ("소화전", "videos/hydrant-sf.mp4", [(0, 35)]), ("카메라", CAMERA, [])]
 FAST_SPEED = 8
+# YOLO 결과가 약 3프레임 늦게 나오므로 화면도 그만큼 늦춰 박스를 맞춤(2026-11-07 Mac 측정, 어긋남 평균 2.3프레임에서 0.7프레임)
+DISPLAY_DELAY = 3
 READING_SECONDS = 3
 SCENE_SECONDS = 1
 LAWS = [("현행 도로교통법", "current"), ("2006년 도로교통법", "2006"), ("캘리포니아 차량법", "california"), ("조문 없음", NO_LAW)]
@@ -55,13 +57,32 @@ model = YOLO(args.model)
 cv2.namedWindow(WINDOW)
 cv2.setMouseCallback(WINDOW, on_click)
 
-# 영상 루프가 Gemma를 기다리지 않도록 Gemma는 별도 스레드에서 돌림
-shared = {"input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": []}}
+def detect_boxes():
+    """가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘기는 함수"""
+    while True:
+        if shared["frame"] is None:
+            time.sleep(0.001)
+            continue
+        video, image = shared["frame"]
+        shared["frame"] = None
+        found = model.predict(source=image, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
+        # 탐지 중에 영상이 바뀌면 이전 영상의 박스를 새 영상에 그리지 않음
+        if video == current_video:
+            shared["result"] = found
+            shared["input"] = (image, found)
+
+
+# 영상 루프가 YOLO와 Gemma를 기다리지 않도록 둘 다 별도 스레드에서 돌림(2026-11-07 Mac 측정, 12~14 FPS에서 22~25 FPS)
+shared = {"frame": None, "result": None, "input": None, "law": LAWS[selected["law"]][1], "clip": {"last_seen": {}, "rules": []}}
 laws = {short: load_law(short) for name, short in LAWS}
 threading.Thread(target=watch, args=(load_gemma(), laws, shared), daemon=True).start()
 
 cap = cv2.VideoCapture()
 current_video = None
+threading.Thread(target=detect_boxes, daemon=True).start()
+waiting = []
+shown_time = time.perf_counter()
+next_time = shown_time
 drawn_view = None
 drawn_state = None
 shown_rules = []
@@ -72,8 +93,6 @@ scene_since = 0.0
 displayed_fps = 0.0
 
 while True:
-    start_time = time.perf_counter()
-
     if selected["video"] != current_video:
         current_video = selected["video"]
         is_camera = VIDEOS[current_video][1] == CAMERA
@@ -87,8 +106,11 @@ while True:
             frame_ms = 1000 / cap.get(cv2.CAP_PROP_FPS)
         # 묶음을 새로 만들면 돌고 있던 판단의 결과는 버려진 묶음에 쓰여 화면에 나오지 않음
         # 입력을 먼저 비워야 watch가 새 묶음과 이전 영상 프레임을 함께 읽지 않음
+        shared["frame"] = None
+        shared["result"] = None
         shared["input"] = None
         shared["clip"] = {"last_seen": {}, "rules": []}
+        waiting.clear()
 
     ret, frame = cap.read()
 
@@ -109,14 +131,19 @@ while True:
         for skipped in range(FAST_SPEED - 1):
             cap.grab()
         result = None
+        shared["frame"] = None
         if shared["input"] is not None:
             shared["input"] = None
             shared["clip"] = {"last_seen": {}, "rules": []}
             STATUS["stage"] = "skip"
     else:
-        result = model.predict(source=frame, conf=DETECT_CONF, iou=0.5, verbose=False, classes=CLASSES, imgsz=IMAGE_SIZE)[0]
-        # draw가 프레임에 박스를 그리므로 Gemma에는 복사본을 넘김
-        shared["input"] = (frame.copy(), result)
+        # draw가 프레임에 박스를 그리므로 YOLO와 Gemma에는 복사본을 넘김
+        shared["frame"] = (current_video, frame.copy())
+        waiting.append(frame)
+        if len(waiting) <= DISPLAY_DELAY:
+            continue
+        frame = waiting.pop(0)
+        result = shared["result"]
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그림
@@ -150,21 +177,23 @@ while True:
             file.write(json.dumps({"time": time.time(), "rules": rules}, ensure_ascii=False) + "\n")
         STATUS["outputs"] += 1
 
-    elapsed_time = time.perf_counter() - start_time
-    current_fps = 1.0 / elapsed_time
+    elapsed_time = time.perf_counter() - shown_time
+    shown_time = time.perf_counter()
 
     # 배속 구간은 모델을 돌리지 않아 처리 속도를 나타내지 않음
     if displayed_fps == 0:
-        displayed_fps = current_fps
+        displayed_fps = 1.0 / elapsed_time
     elif not fast:
-        displayed_fps = 0.9 * displayed_fps + 0.1 * current_fps
+        # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
+        displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
     output_frame = draw(frame, result, panel_image, displayed_fps)
 
     cv2.imshow(WINDOW, output_frame)
 
-    # 처리가 영상보다 빠르면 남는 시간만큼 기다려 원래 속도로 재생함
-    wait_ms = max(1, int(frame_ms - (time.perf_counter() - start_time) * 1000))
+    # waitKey가 요청보다 오래 걸려도 오차가 쌓이지 않도록 재생 시각을 기준으로 기다림(2026-11-07 Mac 측정, 25 FPS에서 29 FPS)
+    next_time = max(next_time + frame_ms / 1000, time.perf_counter())
+    wait_ms = max(1, int((next_time - time.perf_counter()) * 1000))
     if cv2.waitKey(wait_ms) & 0xFF == ord("q"):
         break
 
