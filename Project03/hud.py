@@ -287,13 +287,20 @@ def draw_nodes(nodes, spinner):
     column = 0
     y = 44
     drawn = []
+    shown = []
+    # 여러 상황이 같은 조문을 찾으면 한 번만 그림
     for node in [node for node in nodes if node["fresh"]] + [node for node in nodes if not node["fresh"]]:
+        if node["article"]["id"] not in [other["article"]["id"] for other in shown]:
+            shown.append(node)
+    # 조문이 적으면 칸 높이를 나눠 조문 원문을 길게 보여 줌
+    height = (NODE_HEIGHT - 52) // max(1, -(-len(shown) // len(NODE_COLUMNS)))
+    for node in shown:
         article = node["article"]
-        # 여러 상황이 같은 조문을 찾으면 한 번만 그림
-        if article["id"] in drawn:
-            continue
         results = wrap(node["instruction"], SMALL_FONT, 284)[:2] if node["instruction"] else ["지시문 생성 중..."]
-        lines = wrap(article["text"], TINY_FONT, 284)[:2]
+        lines = wrap(article["text"], TINY_FONT, 284)
+        count = max(2, (height - 64 - 21 * len(results)) // 19)
+        if len(lines) > count:
+            lines = lines[:count - 1] + [lines[count - 1][:-1] + "…"]
         if y + 48 + 21 * len(results) + 19 * len(lines) > NODE_HEIGHT - 8:
             column += 1
             if column == len(NODE_COLUMNS):
