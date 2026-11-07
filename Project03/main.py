@@ -10,7 +10,7 @@ from ultralytics import YOLO
 
 from detect import CLASSES, DETECT_CONF, IMAGE_SIZE
 from gemma import NO_LAW, STATUS, load_corpus, load_embedder, load_gemma, load_law, recognize, watch
-from hud import CALLS, MIC_BOX, VIDEO_WIDTH, button_boxes, draw, draw_loading, draw_nodes, draw_panel
+from hud import CALLS, MIC_BOX, SCREEN_HEIGHT, VIDEO_WIDTH, button_boxes, draw, draw_loading, draw_nodes, draw_panel
 from voice import listen, speak_loop
 
 FRAME_SIZE = (1280, 720)
@@ -89,7 +89,8 @@ def on_click(event, x, y, flags, param):
 
 
 # 마우스 콜백은 이름 붙은 창에만 달 수 있어 첫 imshow 전에 창을 만듦
-cv2.namedWindow(WINDOW)
+# 시연 장비의 모니터가 1600×900보다 작아도 창 크기를 줄여 전체를 볼 수 있게 함
+cv2.namedWindow(WINDOW, cv2.WINDOW_NORMAL)
 cv2.setMouseCallback(WINDOW, on_click)
 
 def open_camera():
@@ -158,7 +159,7 @@ loading = {"step": 0, "since": time.perf_counter()}
 loader = threading.Thread(target=load_models, daemon=True)
 loader.start()
 while loader.is_alive():
-    cv2.imshow(WINDOW, draw_loading(FRAME_SIZE[1], LOAD_STEPS, loading["step"], time.perf_counter() - loading["since"]))
+    cv2.imshow(WINDOW, draw_loading(SCREEN_HEIGHT, LOAD_STEPS, loading["step"], time.perf_counter() - loading["since"]))
     if cv2.waitKey(100) & 0xFF == ord("q"):
         raise SystemExit
 # 불러오기가 실패하면 스레드가 끝나도 마지막 단계에 닿지 못함
@@ -279,10 +280,10 @@ while True:
     node_state = ([(node["situation"], node["fresh"], node["instruction"]) for node in nodes], spinner)
     if node_state != drawn_nodes:
         drawn_nodes = node_state
-        nodes_image = draw_nodes(FRAME_SIZE[1], nodes, spinner)
+        nodes_image = draw_nodes(nodes, spinner)
     if view != drawn_view or state != drawn_state:
         drawn_state = state
-        panel_image = draw_panel(FRAME_SIZE[1], VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
+        panel_image = draw_panel(SCREEN_HEIGHT, VIDEO_WIDTH, buttons, selected, rules, STATUS, scene, reading, phase, voice)
     if view != drawn_view:
         drawn_view = view
         # llama_cpp가 호출 중 stdout을 막아 print가 사라지므로 파일에 씀

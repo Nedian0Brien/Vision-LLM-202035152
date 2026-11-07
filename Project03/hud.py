@@ -20,10 +20,11 @@ MEDIUM_FONT = ImageFont.truetype(FONT_PATH, 17)
 RESULT_FONT = ImageFont.truetype(FONT_PATH, 26)
 LARGE_FONT = ImageFont.truetype(FONT_PATH, 36)
 
-# 1280 픽셀 영상 옆에 붙여 전체 폭이 1920 픽셀 화면에 맞게 함
+# 16:9 모니터에 맞도록 왼쪽에 영상과 조문, 오른쪽에 패널을 두어 전체를 1600×900으로 맞춤(2026-11-07 사용자 지시)
+SCREEN_HEIGHT = 900
 PANEL_WIDTH = 640
-NODE_WIDTH = 320
-# 세 열을 합쳐 1920 폭 화면에 들어가도록 영상을 줄여 그림
+NODE_HEIGHT = 360
+NODE_COLUMNS = [20, 340, 660]
 VIDEO_WIDTH = 960
 VIDEO_HEIGHT = 540
 VIDEO_SCALE = 0.75
@@ -50,11 +51,11 @@ TAB_ROWS = [16, 54]
 HERO_TOP = 104
 STEPS = ["보기", "인식", "조문", "읽기", "출력"]
 STEP_X = [60, 190, 320, 450, 580]
-RAIL_Y = 356
+RAIL_Y = 440
 # 지시문 목록 한 줄의 높이와 단계 표시 위 여백
 ROW_HEIGHT = 27
 RAIL_GAP = 18
-CARD_TOP = 424
+CARD_TOP = 508
 # 법령 탭 줄의 오른쪽 끝에 놓는 버튼의 창 좌표
 MIC_BOX = (VIDEO_WIDTH + 540, TAB_ROWS[1], VIDEO_WIDTH + PANEL_WIDTH - 28, TAB_ROWS[1] + 26)
 IMAGE_SIZE = (292, 164)
@@ -237,15 +238,15 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
         draw_rail(pen, 1)
         if scene in CALLS:
             draw_recognition_card(image, pen, status, scene)
-    pen.text((28, 618), "VLA 출력", font=TINY_FONT, fill=FAINT)
-    pen.text((100, 616), wrap("  ".join([rule["action"] for rule in rules]) if rules else "없음", SMALL_FONT, 500)[0], font=SMALL_FONT, fill=INK if rules else FAINT)
-    pen.text((28, 696), voice["error"] or f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=ACCENT if voice["error"] else FAINT)
+    pen.text((28, 806), "VLA 출력", font=TINY_FONT, fill=FAINT)
+    pen.text((100, 804), wrap("  ".join([rule["action"] for rule in rules]) if rules else "없음", SMALL_FONT, 500)[0], font=SMALL_FONT, fill=INK if rules else FAINT)
+    pen.text((28, 868), voice["error"] or f"vla-output.jsonl  {status['outputs']}줄", font=TINY_FONT, fill=ACCENT if voice["error"] else FAINT)
     return np.array(image)
 
 
 def draw_loading(height, steps, step, elapsed):
     """불러오는 단계와 진행 막대를 그린 시작 화면을 만드는 함수"""
-    width = VIDEO_WIDTH + PANEL_WIDTH + NODE_WIDTH
+    width = VIDEO_WIDTH + PANEL_WIDTH
     image = Image.new("RGB", (width, height), PANEL)
     pen = ImageDraw.Draw(image)
     left = (width - LOAD_BAR_WIDTH) // 2
@@ -270,13 +271,15 @@ def draw_spinner(pen, x, y, spinner):
         pen.ellipse((dot_x - 1, dot_y - 1, dot_x + 1, dot_y + 1), fill=ACCENT if index == spinner else LINE)
 
 
-def draw_nodes(height, nodes, spinner):
-    """검색된 조문 노드를 이번 판단에서 찾은 것부터 그린 열 이미지를 만드는 함수"""
-    image = Image.new("RGB", (NODE_WIDTH, height), PANEL)
+def draw_nodes(nodes, spinner):
+    """검색된 조문 노드를 이번 판단에서 찾은 것부터 영상 아래 세 칸에 그린 이미지를 만드는 함수"""
+    image = Image.new("RGB", (VIDEO_WIDTH, NODE_HEIGHT), PANEL)
     pen = ImageDraw.Draw(image)
-    pen.line((0, 0, 0, height), fill=LINE, width=1)
-    pen.text((20, 20), "검색된 조문", font=SMALL_FONT, fill=SOFT)
-    y = 56
+    pen.line((0, 0, VIDEO_WIDTH, 0), fill=LINE, width=1)
+    pen.text((20, 14), "검색된 조문", font=SMALL_FONT, fill=SOFT)
+    x = NODE_COLUMNS[0]
+    column = 0
+    y = 44
     drawn = []
     for node in [node for node in nodes if node["fresh"]] + [node for node in nodes if not node["fresh"]]:
         article = node["article"]
@@ -285,32 +288,36 @@ def draw_nodes(height, nodes, spinner):
             continue
         results = wrap(node["instruction"], SMALL_FONT, 284)[:2] if node["instruction"] else ["지시문 생성 중..."]
         lines = wrap(article["text"], TINY_FONT, 284)[:2]
-        if y + 48 + 21 * len(results) + 19 * len(lines) > height - 40:
-            pen.text((20, y), "더 찾은 조문 있음", font=TINY_FONT, fill=SOFT)
-            break
+        if y + 48 + 21 * len(results) + 19 * len(lines) > NODE_HEIGHT - 8:
+            column += 1
+            if column == len(NODE_COLUMNS):
+                pen.text((VIDEO_WIDTH - 130, 14), "더 찾은 조문 있음", font=TINY_FONT, fill=SOFT)
+                break
+            x = NODE_COLUMNS[column]
+            y = 44
         drawn.append(article["id"])
-        pen.text((20, y), article["id"], font=MEDIUM_FONT, fill=ACCENT if node["fresh"] else SOFT)
-        pen.text((20, y + 24), article["title"], font=SMALL_FONT, fill=SOFT if node["fresh"] else FAINT)
+        pen.text((x, y), article["id"], font=MEDIUM_FONT, fill=ACCENT if node["fresh"] else SOFT)
+        pen.text((x, y + 24), article["title"], font=SMALL_FONT, fill=SOFT if node["fresh"] else FAINT)
         y += 48
         if node["instruction"]:
             for line in results:
-                pen.text((20, y), line, font=SMALL_FONT, fill=INK)
+                pen.text((x, y), line, font=SMALL_FONT, fill=INK)
                 y += 21
         else:
-            draw_spinner(pen, 28, y + 10, spinner)
-            pen.text((44, y), results[0], font=SMALL_FONT, fill=ACCENT)
+            draw_spinner(pen, x + 8, y + 10, spinner)
+            pen.text((x + 24, y), results[0], font=SMALL_FONT, fill=ACCENT)
             y += 21
         for line in lines:
-            pen.text((20, y), line, font=TINY_FONT, fill=FAINT)
+            pen.text((x, y), line, font=TINY_FONT, fill=FAINT)
             y += 19
         y += 16
     if not drawn:
-        pen.text((20, y), "검색된 조문 없음", font=MEDIUM_FONT, fill=FAINT)
+        pen.text((x, y), "검색된 조문 없음", font=MEDIUM_FONT, fill=FAINT)
     return np.array(image)
 
 
 def draw(frame, result, panel_image, nodes_image, fps):
-    """프레임에 박스와 클래스 이름을 그리고 패널과 조문 열을 오른쪽에 붙이는 함수"""
+    """프레임에 박스와 클래스 이름을 그리고 조문을 아래에, 패널을 오른쪽에 붙이는 함수"""
     frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))
     # 배속 구간에는 탐지 결과가 없음
     if result is None:
@@ -328,8 +335,8 @@ def draw(frame, result, panel_image, nodes_image, fps):
             top = max(y1 - height, 0)
             width = min(width, frame.shape[1] - x1)
             frame[top:top + height, x1:x1 + width] = label[:, :width]
-    canvas = cv2.copyMakeBorder(frame, 0, panel_image.shape[0] - VIDEO_HEIGHT, 0, PANEL_WIDTH + NODE_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
-    canvas[:, VIDEO_WIDTH:VIDEO_WIDTH + PANEL_WIDTH] = panel_image
-    canvas[:, VIDEO_WIDTH + PANEL_WIDTH:] = nodes_image
+    canvas = cv2.copyMakeBorder(frame, 0, NODE_HEIGHT, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL)
+    canvas[:, VIDEO_WIDTH:] = panel_image
+    canvas[VIDEO_HEIGHT:, :VIDEO_WIDTH] = nodes_image
     cv2.putText(canvas, f"{fps:.1f} FPS", (canvas.shape[1] - 110, canvas.shape[0] - 16), cv2.FONT_HERSHEY_SIMPLEX, 0.5, FAINT, 1)
     return canvas
