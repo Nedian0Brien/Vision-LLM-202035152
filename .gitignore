@@ -12,3 +12,4 @@ Project03/setup-report.txt
 src/models/*
 src/datasets/*
 .env
+__pycache__/
