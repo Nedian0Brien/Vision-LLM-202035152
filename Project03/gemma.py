@@ -2,6 +2,7 @@
 
 import base64
 import json
+import os
 import time
 
 import cv2
@@ -121,6 +122,8 @@ STATUS = {"stage": "wait", "started": 0.0, "images": {}, "answers": {}, "odds": 
 
 def load_gemma():
     """비전 모듈을 붙인 Gemma를 불러오는 함수"""
+    # Jetson에서 CUDA 그래프 캡처가 YOLO의 torch.cuda.synchronize와 충돌해 프로세스가 멈춰 끔(2026-11-07 Jetson 측정)
+    os.environ["GGML_CUDA_DISABLE_GRAPHS"] = "1"
     handler = Gemma4ChatHandler(clip_model_path=VISION_PATH, verbose=False)
     # 기본값은 CPU 코어 수만큼 스레드를 써서 같은 CPU의 YOLO가 20ms에서 358ms로 느려졌고, 2개로 줄이면 110ms였음(2026-11-03 Mac 측정)
     # 비전 모듈도 n_threads 값을 그대로 씀
