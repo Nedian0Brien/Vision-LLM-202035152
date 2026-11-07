@@ -20,8 +20,8 @@ CAMERA = "camera"
 # 세 번째 값은 원래 속도로 볼 구간(초)이고 2026-11-06 시연 영상을 4초 간격으로 판단한 결과에서 지시가 이어지는 곳을 골랐음
 VIDEOS = [("터널", "videos/tunnel-korea.mp4"), ("금문교", "videos/golden-gate.mp4"), ("보호구역", "videos/school-zone-busan.mp4"),
           ("비", "videos/rain-seoul.mp4"), ("통학버스", "videos/school-bus-korea.mp4"), ("소화전", "videos/hydrant-sf.mp4"), ("카메라", CAMERA)]
-# 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 탐지 시간과 간격이 각각 약 4프레임, 어긋남 중앙값이 8프레임이었음(2026-11-07 측정)
-DISPLAY_DELAY = 10
+# 표시할 프레임의 앞뒤 탐지 결과가 모두 나오도록 화면을 늦춤. Jetson에서 Gemma와 함께 돌 때 YOLO 호출 p95가 약 0.6초라 10프레임에서는 표시 프레임의 44~53%만 뒤 탐지 결과가 있었음(2026-11-07 측정)
+DISPLAY_DELAY = 20
 # 판단 기회를 늘리려고 영상을 느껴지지 않을 만큼만 늦춤(2026-11-07 사용자 지시)
 PLAY_SPEED = 0.9
 ANSWER_SECONDS = 15
