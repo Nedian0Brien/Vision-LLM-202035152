@@ -8,11 +8,12 @@ AI 부트캠프 온디바이스AI 수업 실습을 위한 리포지토리
 
 | 폴더·파일 | 내용 |
 | --- | --- |
-| `00_Initial-Setup.ipynb` ~ `02_Computer-Vision.ipynb` | 수업 실습 노트북 |
+| `00_Initial-Setup.ipynb` ~ `06-Vision_LLM_Multimodal_Systems.ipynb` | 수업 실습 노트북 |
 | `261010/` | 과제 1 |
 | `261017/` | 과제 2: 조명 오염된 이미지에서 농구공 영역 검출 |
 | `261025/` | 과제 3: GPU 가속(잔상 효과, Convolution2D, MNIST, CIFAR-10)과 IoU·NMS |
 | [`Project01/`](Project01/README.md) | 프로젝트 1: PinchKeyboard, 손끝 꼬집기 한글 입력기(`Project01/project01.py`) |
+| [`Project03/`](Project03/README.md) | 최종 프로젝트: CODRIVE, 온디바이스 VLA를 위한 도로교통법 검색 및 지시문 생성 모듈(`Project03/main.py`, 발표 자료 `Project03/docs/codrive-presentation.pdf`) |
 | `practice/` | 수업 중 실습 코드 |
 | `src/` | 공용 이미지·모델(`src/models/MediaPipe/hand_landmarker.task` 등) |
 | `docs/` | 수업 내용 정리(학습 위키) |
