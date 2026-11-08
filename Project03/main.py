@@ -117,6 +117,7 @@ parser.add_argument("video", nargs="?", default=VIDEOS[0][1])
 parser.add_argument("--model", default="../src/models/YOLO/yolo11n.pt")
 args = parser.parse_args()
 
+# 탭에서 고른 영상과 법령의 번호이고 탭을 누르면 on_click이 바꿈
 selected = {"video": [path for name, path in VIDEOS].index(args.video), "law": 0}
 buttons = button_boxes(
     VIDEO_WIDTH, {"video": [name for name, path in VIDEOS], "law": [name for name, short in LAWS]}
@@ -234,12 +235,16 @@ def render_panels():
 def detect_boxes():
     """가장 새로운 프레임에서 박스를 찾아 화면과 Gemma에 넘기는 함수"""
     while True:
+        # 영상 루프가 새 프레임을 올릴 때까지 기다림
         if shared["frame"] is None:
             time.sleep(0.001)
             continue
 
+        # 꺼낸 뒤 비워 두면 탐지가 느릴 때 그사이 올라온 프레임 중 가장 최근 것만 다음에 처리함
         video, number, image = shared["frame"]
         shared["frame"] = None
+
+        # YOLO 예측 수행
         found = model.predict(
             source=image,
             conf=DETECT_CONF,
@@ -254,7 +259,10 @@ def detect_boxes():
             boxes = list(
                 zip(found.boxes.xyxy.tolist(), found.boxes.cls.tolist(), found.boxes.conf.tolist())
             )
+            # 화면이 DISPLAY_DELAY 프레임 늦게 그려 그 구간의 탐지 결과만 남김
             shared["results"] = shared["results"][-DISPLAY_DELAY:] + [(number, boxes)]
+
+            # Gemma 판단에는 프레임과 YOLO 결과 원본을 넘김
             shared["input"] = (image, found)
 
 
@@ -296,6 +304,8 @@ shared = {
     "clip": {"last_seen": {}, "rules": [], "compare": {}},
 }
 
+# 모델 로딩
+# 창을 다루는 imshow는 메인 스레드에서 불러야 해서 불러오기를 스레드로 보내고 메인 스레드는 로딩 화면을 그림
 loading = {"step": 0, "since": time.perf_counter()}
 loader = threading.Thread(target=load_models, daemon=True)
 loader.start()
@@ -306,27 +316,29 @@ while loader.is_alive():
             SCREEN_HEIGHT, LOAD_STEPS, loading["step"], time.perf_counter() - loading["since"]
         ),
     )
-    if cv2.waitKey(100) & 0xFF == ord("q"):
+    if cv2.waitKey(100) & 0xFF == ord("q"):  # q 눌러서 종료
         raise SystemExit
 
 # 불러오기가 실패하면 스레드가 끝나도 마지막 단계에 닿지 못함
 if loading["step"] < len(LOAD_STEPS):
     raise SystemExit("모델을 불러오지 못했습니다")
 
-model = loading["model"]
-threading.Thread(
+model = loading["model"]  # 불러온 YOLO 모델 꺼냄
+threading.Thread(  # Gemma와 법령 판단 스레드
     target=watch,
     args=(loading["llm"], loading["laws"], shared, loading["embedder"], loading["corpora"]),
     daemon=True,
 ).start()
-threading.Thread(target=speak_loop, args=(shared,), daemon=True).start()
-threading.Thread(target=terminal_questions, daemon=True).start()
+threading.Thread(target=speak_loop, args=(shared,), daemon=True).start()  # 음성 출력 스레드
+threading.Thread(target=terminal_questions, daemon=True).start()  # 터미널 입력 질문 스레드
 print("터미널에 질문을 입력하거나 창에서 m 키로 음성 질문을 시작합니다")
 
+# 영상 입력 시작
 cap = cv2.VideoCapture()
 current_video = None
-threading.Thread(target=detect_boxes, daemon=True).start()
+threading.Thread(target=detect_boxes, daemon=True).start()  # YOLO 스레드
 
+# 첫 패널 이미지 그리기
 shared["panel_request"] = None
 shared["nodes_request"] = None
 shared["panel_image"] = draw_panel(
@@ -350,11 +362,13 @@ shared["panel_image"] = draw_panel(
         "limit": RECORD_SECONDS,
     },
 )
+# 법령마다 찾은 규칙을 나란히 비교하는 아래 네 칸을 빈 상태로 그림
 shared["nodes_image"] = draw_compare(
     [(name, {"rules": [], "pending": False}) for name, short in COMPARE_LAWS], 1
 )
-threading.Thread(target=render_panels, daemon=True).start()
+threading.Thread(target=render_panels, daemon=True).start()  # 패널 렌더 별도 스레드로 분리
 
+# 메인 루프에서 쓸 변수 초기화
 waiting = []
 frame_number = 0
 spoken_time = {}
@@ -370,7 +384,9 @@ scene = "choice"
 scene_since = 0.0
 displayed_fps = 0.0
 
+# 메인 루프
 while True:
+    # 탭에서 고른 영상이 열려 있는 영상과 다르면 새로 염
     if selected["video"] != current_video:
         current_video = selected["video"]
         is_camera = VIDEOS[current_video][1] == CAMERA
@@ -393,6 +409,7 @@ while True:
         shared["clip"] = {"last_seen": {}, "rules": [], "compare": {}}
         waiting.clear()
 
+    # 프레임 한 장을 읽음
     ret, frame = cap.read()
 
     # 영상이 끝나면 카메라 탭을 건너뛰고 다음 영상을 열고, 카메라가 없거나 끊기면 화면이 멈추지 않도록 첫 영상으로 돌아감
@@ -417,14 +434,17 @@ while True:
     if len(waiting) <= DISPLAY_DELAY:
         continue
 
+    # 가장 오래 기다린 프레임을 꺼내 그 앞뒤 탐지 결과로 박스 위치를 구함
     shown_number, frame = waiting.pop(0)
     shown_boxes = boxes_at(shown_number)
+    # 고른 법령의 이름을 넘기면 watch가 그 법령의 조문으로 판단함
     shared["law"] = LAWS[selected["law"]][1]
 
     # 프레임마다 PIL로 글자를 그리면 느려서 화면 내용이 바뀔 때만 패널을 다시 그리게 함
     rules = shared["clip"]["rules"]
     view = (selected["video"], selected["law"], rules)
     now = time.perf_counter()
+    # 질문의 답은 ANSWER_SECONDS 동안만 보여 줌
     if shared["answer"] and now - shared["answer_time"] >= ANSWER_SECONDS:
         shared["answer"] = None
 
@@ -465,10 +485,12 @@ while True:
         "elapsed": now - shared["listen_start"],
         "limit": RECORD_SECONDS,
     }
+    # 영상을 바꾼 뒤에도 이전 영상 판단이 돌고 있는지 패널에 알림
     STATUS["stale"] = judging_old_clip()
 
     # 녹음 중에는 0.5초마다 다시 그려 깜빡임과 경과 시간을 갱신함
     recording_tick = int(voice["elapsed"] * 2) if voice["recording"] else 0
+    # 패널 모양을 정하는 값을 묶어 두고 이전 값과 달라질 때만 다시 그림
     state = (
         scene,
         reading is None,
@@ -518,10 +540,12 @@ while True:
             (columns, [short for name, short in COMPARE_LAWS].index(LAWS[selected["law"]][1])),
         )
 
+    # 아래 칸 내용이 바뀌면 그리기 스레드에 요청함
     if node_state != drawn_nodes:
         drawn_nodes = node_state
         shared["nodes_request"] = request
 
+    # 패널 내용이 바뀌면 그리기 스레드에 요청함
     if view != drawn_view or state != drawn_state:
         drawn_state = state
         shared["panel_request"] = (
@@ -537,6 +561,7 @@ while True:
             voice,
         )
 
+    # 규칙이 바뀔 때마다 출력 파일에 한 줄 기록함
     if view != drawn_view:
         drawn_view = view
 
@@ -546,6 +571,7 @@ while True:
 
         STATUS["outputs"] += 1
 
+    # 직전 프레임을 보여 준 뒤 지난 시간으로 FPS를 구함
     elapsed_time = time.perf_counter() - shown_time
     shown_time = time.perf_counter()
 
@@ -555,6 +581,7 @@ while True:
         # 간격을 평균 내야 재생 시각에 맞추는 짧은 간격이 FPS를 부풀리지 않음
         displayed_fps = 1.0 / (0.9 / displayed_fps + 0.1 * elapsed_time)
 
+    # 프레임에 박스를 그리고 아래 네 칸과 오른쪽 패널을 붙임
     output_frame = draw(
         frame,
         shown_boxes,
@@ -569,6 +596,7 @@ while True:
     # waitKey가 요청보다 오래 걸려도 오차가 쌓이지 않도록 재생 시각을 기준으로 기다림(2026-11-07 Mac 측정, 25 FPS에서 29 FPS)
     next_time = max(next_time + frame_ms / 1000, time.perf_counter())
     wait_ms = max(1, int((next_time - time.perf_counter()) * 1000))
+    # q는 종료, m은 음성 질문 시작과 중지임
     key = cv2.waitKey(wait_ms) & 0xFF
     if key == ord("q"):
         break

@@ -13,6 +13,7 @@ FONT_PATHS = [
     "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",  # Ubuntu의 fonts-nanum 글꼴
     "/System/Library/Fonts/AppleSDGothicNeo.ttc",  # macOS 기본 한글 글꼴
 ]
+# 장비에 설치된 첫 한글 글꼴을 씀
 FONT_PATH = [path for path in FONT_PATHS if os.path.exists(path)][0]
 TINY_FONT = ImageFont.truetype(FONT_PATH, 14)
 SMALL_FONT = ImageFont.truetype(FONT_PATH, 15)
@@ -24,12 +25,20 @@ LARGE_FONT = ImageFont.truetype(FONT_PATH, 36)
 SCREEN_HEIGHT = 900
 PANEL_WIDTH = 640
 NODE_HEIGHT = 360
+
+# 검색된 조문을 놓는 세 열의 왼쪽 x 좌표
 NODE_COLUMNS = [20, 340, 660]
 VIDEO_WIDTH = 960
 VIDEO_HEIGHT = 540
+
+# 1280폭 프레임을 960폭으로 줄인 비율이고 박스 좌표에 곱함
 VIDEO_SCALE = 0.75
 LOAD_BAR_WIDTH = 720
+
+# wrap이 나눈 줄을 문장, 글자 크기, 폭별로 저장해 두는 사전
 WRAPPED = {}
+
+# 스피너 점 여덟 개의 중심 기준 위치
 SPINNER_POINTS = [(0, -7), (5, -5), (7, 0), (5, 5), (0, 7), (-5, 5), (-7, 0), (-5, -5)]
 
 # 프레임이 BGR 순서라 PIL에 넘기는 색도 BGR 순서로 적음
@@ -48,8 +57,11 @@ for name in list(CLASS_NAMES.values()) + [RECORDING_LABEL]:
     ImageDraw.Draw(image).text((6, 2), name, font=SMALL_FONT, fill=INK)
     LABELS[name] = np.array(image)
 
+# 탭 두 줄(영상, 법령)의 y 좌표와 지시문 목록이 시작하는 y 좌표
 TAB_ROWS = [16, 54]
 HERO_TOP = 104
+
+# 처리 단계 표시줄의 단계 이름과 단계마다 점을 찍는 x 좌표
 STEPS = ["보기", "인식", "조문", "읽기", "출력"]
 STEP_X = [60, 190, 320, 450, 580]
 RAIL_Y = 440
@@ -120,8 +132,11 @@ def wrap(text, font, width):
 
 def draw_rail(pen, current):
     """처리 단계를 가로 한 줄로 그리고 지금 단계를 표시하는 함수"""
+    # 회색 선 위에 지금 단계까지 강조색 선을 덧그림
     pen.line((STEP_X[0], RAIL_Y, STEP_X[-1], RAIL_Y), fill=LINE, width=2)
     pen.line((STEP_X[0], RAIL_Y, STEP_X[current], RAIL_Y), fill=ACCENT, width=2)
+
+    # 지금 단계는 큰 이중 원, 지난 단계는 채운 점, 남은 단계는 빈 원으로 그림
     for index, (x, name) in enumerate(zip(STEP_X, STEPS)):
         if index == current:
             pen.ellipse((x - 9, RAIL_Y - 9, x + 9, RAIL_Y + 9), fill=PANEL, outline=ACCENT, width=3)
@@ -138,6 +153,8 @@ def draw_rail(pen, current):
 def card_image(image, picture):
     """지금 호출의 입력 이미지를 비율을 유지해 모서리가 둥근 칸에 그리는 함수"""
     width, height = IMAGE_SIZE
+
+    # 가로와 세로 중 더 많이 줄여야 하는 쪽에 맞춰 이미지를 칸 가운데에 놓고 남는 곳은 칸 색으로 채움
     scale = min(width / picture.shape[1], height / picture.shape[0])
     size = (max(1, int(picture.shape[1] * scale)), max(1, int(picture.shape[0] * scale)))
     canvas = np.full((height, width, 3), LINE, np.uint8)
@@ -145,6 +162,8 @@ def card_image(image, picture):
     canvas[top : top + size[1], left : left + size[0]] = cv2.resize(
         picture, size, interpolation=cv2.INTER_AREA
     )
+
+    # 흰색으로 채운 둥근 사각형 마스크로 붙여 모서리를 둥글게 함
     mask = Image.new("L", IMAGE_SIZE, 0)
     ImageDraw.Draw(mask).rounded_rectangle((0, 0, width - 1, height - 1), 8, fill=255)
     image.paste(Image.fromarray(canvas), (28, CARD_TOP), mask)
@@ -166,6 +185,8 @@ def draw_recognition_card(image, pen, status, scene):
         card_image(image, picture)
 
     pen.text((344, CARD_TOP + 2), doing, font=SMALL_FONT, fill=INK)
+
+    # 답은 낱말, 걸린 시간, (낱말, 확률) 목록, 입력 토큰 수 순서의 묶음임
     answer = status["answers"].get(scene)
     if answer:
         y = CARD_TOP + 32
@@ -179,6 +200,7 @@ def draw_recognition_card(image, pen, status, scene):
 
 def draw_law_card(pen, status, rule, phase):
     """새 규칙이 나올 때 조문, 읽기, 출력을 한 단계씩 그리는 함수"""
+    # phase 0은 조문, 1은 행동, 2는 VLA 출력 단계임
     if phase == 0:
         pen.text(
             (28, CARD_TOP),
@@ -199,6 +221,8 @@ def draw_law_card(pen, status, rule, phase):
         odds = status["odds"].get(rule["instruction"], [])
         best = f"  {max(probability for word, probability in odds) * 100:.0f}%" if odds else ""
         pen.text((28, CARD_TOP + 30), rule["action"] + best, font=RESULT_FONT, fill=ACCENT)
+
+        # 가장 높은 행동은 위에 크게 그렸으므로 그다음 두 후보만 작게 보여 줌
         y = CARD_TOP + 76
         for probability, word in sorted(
             [(probability, word) for word, probability in odds], reverse=True
@@ -219,6 +243,8 @@ def draw_law_card(pen, status, rule, phase):
 def draw_answer_card(pen, voice):
     """질문과 답 또는 음성 입력 상태를 그리는 함수"""
     y = CARD_TOP
+
+    # 녹음 중, 글로 바꾸는 중, 답을 쓰는 중, 답이 나온 상태 순으로 하나만 그림
     if voice["recording"]:
         # 0.5초마다 점을 껐다 켜서 녹음 중임을 보임
         if int(voice["elapsed"] * 2) % 2 == 0:
@@ -226,6 +252,8 @@ def draw_answer_card(pen, voice):
 
         pen.text((56, y), "듣고 있습니다", font=RESULT_FONT, fill=INK)
         pen.text((56, y + 38), "다시 누르면 멈추고 질문합니다", font=SMALL_FONT, fill=SOFT)
+
+        # 경과 시간을 제한 시간으로 나눈 만큼 막대를 채움
         done = min(voice["elapsed"] / voice["limit"], 1)
         pen.rectangle((56, y + 70, 456, y + 74), fill=LINE)
         pen.rectangle((56, y + 70, 56 + int(400 * done), y + 74), fill=RECORDING)
@@ -300,6 +328,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
             pen.text((28, y + 2), rule["law"], font=SMALL_FONT, fill=ACCENT)
             y += 34
 
+        # 규칙이 하나일 때만 근거 조문 본문을 두 줄까지 보여 줌
         if len(rules) == 1:
             for line in wrap(rules[0]["text"], SMALL_FONT, 584)[:2]:
                 pen.text((28, y), line, font=SMALL_FONT, fill=SOFT)
@@ -331,6 +360,7 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
         elif scene in CALLS:
             draw_recognition_card(image, pen, status, scene)
 
+    # VLA 모델에 넘기는 행동을 한 줄로 이어 보여 줌
     pen.text((28, 806), "VLA 출력", font=TINY_FONT, fill=FAINT)
     pen.text(
         (100, 804),
@@ -340,6 +370,8 @@ def draw_panel(height, frame_width, buttons, selected, rules, status, scene, rea
         font=SMALL_FONT,
         fill=INK if rules else FAINT,
     )
+
+    # 오류가 있으면 오류를, 없으면 지금까지 기록한 출력 줄 수를 보여 줌
     pen.text(
         (28, 868),
         voice["error"] or f"vla-output.jsonl  {status['outputs']}줄",
@@ -360,6 +392,8 @@ def draw_loading(height, steps, step, elapsed):
 
     # 단계가 예상보다 길어도 막대가 다음 단계까지 넘어가지 않게 95%에서 멈춤
     current = steps[min(step, len(steps) - 1)]
+
+    # 끝난 단계의 시간 합에 지금 단계의 경과 시간을 더해 전체 진행 정도를 구함
     done = sum([seconds for name, seconds in steps[:step]]) + (
         min(elapsed, current[1] * 0.95) if step < len(steps) else 0
     )
@@ -410,6 +444,7 @@ def draw_nodes(nodes, spinner):
             shown.append(node)
 
     # 조문이 적으면 칸 높이를 나눠 조문 원문을 길게 보여 줌
+    # -(-a // b)는 올림 나눗셈이라 열마다 놓을 노드 수를 구해 노드 하나가 쓸 높이를 정함
     height = (NODE_HEIGHT - 52) // max(1, -(-len(shown) // len(NODE_COLUMNS)))
     for node in shown:
         article = node["article"]
@@ -420,9 +455,12 @@ def draw_nodes(nodes, spinner):
         )
         lines = wrap(article["text"], TINY_FONT, 284)
         count = max(2, (height - 64 - 21 * len(results)) // 19)
+
+        # 원문이 칸보다 길면 마지막 줄 끝을 말줄임표로 바꿈
         if len(lines) > count:
             lines = lines[: count - 1] + [lines[count - 1][:-1] + "…"]
 
+        # 현재 열에 들어가지 않으면 다음 열로 넘기고 열이 모두 차면 멈춤
         if y + 48 + 21 * len(results) + 19 * len(lines) > NODE_HEIGHT - 8:
             column += 1
             if column == len(NODE_COLUMNS):
@@ -464,6 +502,7 @@ def draw_compare(columns, selected):
     image = Image.new("RGB", (VIDEO_WIDTH, NODE_HEIGHT), PANEL)
     pen = ImageDraw.Draw(image)
     pen.line((0, 0, VIDEO_WIDTH, 0), fill=LINE, width=1)
+    # 칸 폭은 영상 폭을 법령 수로 나눈 값이고 고른 법령의 칸 제목만 강조색으로 그림
     width = VIDEO_WIDTH // len(columns)
     for index, (name, column) in enumerate(columns):
         x = index * width + 16
@@ -517,6 +556,7 @@ def draw_compare(columns, selected):
 def draw(frame, boxes, panel_image, nodes_image, fps, recording):
     """프레임에 박스와 클래스 이름을 그리고 조문을 아래에, 패널을 오른쪽에 붙이는 함수"""
     frame = cv2.resize(frame, (VIDEO_WIDTH, VIDEO_HEIGHT))
+    # 박스 좌표는 1280폭 프레임 기준이라 VIDEO_SCALE을 곱하고, 라벨 이미지를 박스 위에 붙임
     for box, cls, conf in boxes:
         if conf >= SHOW_CONF:
             x1, y1, x2, y2 = [int(value * VIDEO_SCALE) for value in box]
@@ -533,6 +573,7 @@ def draw(frame, boxes, panel_image, nodes_image, fps, recording):
         label = LABELS[RECORDING_LABEL]
         frame[12 : 12 + label.shape[0], 40 : 40 + label.shape[1]] = label
 
+    # 영상 아래와 오른쪽에 패널 색 여백을 붙인 뒤 그 자리에 조문 열과 패널 이미지를 채움
     canvas = cv2.copyMakeBorder(
         frame, 0, NODE_HEIGHT, 0, PANEL_WIDTH, cv2.BORDER_CONSTANT, value=PANEL
     )

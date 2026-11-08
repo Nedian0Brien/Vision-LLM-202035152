@@ -22,6 +22,8 @@ WHISPER_MODEL = (
 )
 PIPER_PYTHON = "../.venv-piper/bin/python" if MAC else "../.piper_venv/bin/python"
 PIPER_MODEL = "../src/models/Piper/ko_KR-kss-medium.onnx"
+# Whisper가 16kHz 모노 음성을 받아 두 장비 모두 그 형식으로 녹음함
+# Mac은 ffmpeg로 녹음하고 afplay로 재생하며, Jetson은 arecord로 녹음하고 aplay로 재생함
 if MAC:
     RECORD_COMMAND = [
         "ffmpeg",
@@ -43,6 +45,7 @@ if MAC:
     PLAY_COMMAND = "afplay"
 else:
     RECORD_COMMAND = [
+        # pasuspender는 녹음하는 동안 PulseAudio가 잡고 있는 마이크를 풀어 arecord가 쓰게 함
         "pasuspender",
         "--",
         "arecord",
@@ -59,6 +62,8 @@ else:
         INPUT_FILE,
     ]
     PLAY_COMMAND = "aplay"
+
+# 음성 파일을 쓸 폴더가 없으면 만듦
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
 # 같은 지시문을 다시 합성하지 않도록 만든 음성 파일을 재사용함
@@ -67,6 +72,7 @@ spoken = {}
 
 def speech_to_text():
     """녹음한 질문을 Whisper로 글로 바꾸는 함수"""
+    # -l ko는 한국어로 인식하고 --no-timestamps는 시간 표시 없이 글만 받음
     result = subprocess.run(
         [WHISPER_PATH, "-m", WHISPER_MODEL, "-f", INPUT_FILE, "-l", "ko", "--no-timestamps"],
         text=True,
@@ -79,6 +85,8 @@ def speech_to_text():
 def text_to_speech(text):
     """글을 Piper로 음성 파일로 만들어 재생하는 함수"""
     if text not in spoken:
+
+        # 지금까지 만든 파일 수를 번호로 붙여 문장마다 다른 파일에 저장함
         path = f"{AUDIO_DIR}/tts-{len(spoken)}.wav"
         subprocess.run(
             [PIPER_PYTHON, "-m", "piper", "-m", PIPER_MODEL, "-f", path, "--", text],
@@ -98,6 +106,7 @@ def speak_loop(shared):
             time.sleep(0.05)
             continue
 
+        # 가져가며 비워 두면 읽는 동안 들어온 문장 중 가장 최근 것만 다음에 읽음
         text = shared["speech"]
         shared["speech"] = None
         if not PLAY_SOUND:
@@ -118,6 +127,8 @@ def listen(shared):
     """읽기가 끝난 뒤 녹음하고 음성 질문을 질문 칸에 넣는 함수"""
     shared["listening"] = True
     shared["stop_requested"] = False
+
+    # 읽는 소리가 끝나야 녹음에 섞이지 않음
     while shared["speaking"]:
         time.sleep(0.05)
 
@@ -130,6 +141,7 @@ def listen(shared):
         if shared["recorder"].wait() != 0 and not shared["stop_requested"]:
             raise OSError("녹음 실패")
 
+        # 녹음이 끝나면 Whisper로 글로 바꾸고, 글이 비어 있으면 질문으로 쓰지 않음
         shared["recorder"] = None
         shared["transcribing"] = True
         question = speech_to_text()
@@ -146,5 +158,6 @@ def listen(shared):
 def stop_listening(shared):
     """녹음 중이면 녹음을 멈추는 함수"""
     if shared["recorder"] is not None:
+        # 녹음 프로세스를 끝내면 listen 안에서 기다리던 wait가 풀려 그때까지의 파일로 이어 감
         shared["stop_requested"] = True
         shared["recorder"].terminate()

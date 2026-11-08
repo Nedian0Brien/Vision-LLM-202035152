@@ -48,6 +48,8 @@ SITUATIONS = [
     "a child protection school zone, shown by red pavement, "
     "the words 어린이 보호구역 painted on the road or a school zone sign",
 ]
+
+# 코드에서 따로 가려 쓰는 상황은 목록 번호로 이름을 붙여 둠
 RED, YELLOW, PEDESTRIAN, SCHOOL_ZONE = SITUATIONS[0], SITUATIONS[1], SITUATIONS[7], SITUATIONS[14]
 
 # 객관식 목록에 상황을 더하면 다른 상황의 답이 흔들려 크롭 질문으로 따로 물음(2026-11-06 개발용 측정, 현행 35/53에서 33/53)
@@ -56,6 +58,8 @@ SCHOOL_BUS = "a children's school bus driving ahead of the car"
 SCHOOL_CROSSWALK = "a crosswalk with no traffic light inside a child protection school zone"
 HYDRANT = "a fire hydrant beside the road"
 CROP_SITUATIONS = [RAIN, SCHOOL_BUS, SCHOOL_CROSSWALK, HYDRANT]
+
+# 화면에 보이는 한국어 이름이고 SITUATIONS와 같은 순서임
 SITUATION_NAMES = [
     "적색 신호",
     "황색 신호",
@@ -123,6 +127,7 @@ OBJECT_WORDS = ["hydrant", "cone", "bollard", "sign", "other"]
 YES_NO = ["yes", "no"]
 
 # 영어 표현은 행동 고르기 프롬프트에만 쓰고, 코드는 지시문 언어와 무관하게 그대로 둠
+# 키는 Gemma가 고르는 영어 행동이고 값은 VLA 모델에 넘기는 행동 코드임
 ACTIONS = {
     "Stop": "STOP",
     "Yield": "YIELD",
@@ -269,6 +274,7 @@ def load_gemma():
 
 def load_law(short):
     """법령의 상황별 조문 사전을 불러오는 함수"""
+    # 조문 없음 모드는 모든 상황에 빈 조문을 짝지어 Gemma가 조문 없이 답하게 함
     if short == NO_LAW:
         return {situation: NO_ARTICLE for situation in SITUATIONS + CROP_SITUATIONS}
 
@@ -281,6 +287,7 @@ def load_embedder():
     return Llama(
         model_path=EMBED_PATH,
         embedding=True,
+        # 토큰마다 나온 벡터의 평균을 문장 벡터로 씀
         pooling_type=llama_cpp.LLAMA_POOLING_TYPE_MEAN,
         n_ctx=2048,
         n_batch=2048,
@@ -302,6 +309,7 @@ def load_corpus(short):
     with open(f"laws/rules-{short}.json", encoding="utf-8") as file:
         rules = json.load(file)
 
+    # vectors는 조문마다, rule_vectors는 요약 규칙마다 미리 계산해 둔 임베딩임
     return {
         "articles": articles,
         "vectors": np.load(f"laws/vectors-{short}.npy"),
@@ -312,9 +320,12 @@ def load_corpus(short):
 
 def search_law(embedder, question, corpus):
     """질문과 가장 가까운 법령 항목을 찾는 함수"""
+    # EmbeddingGemma는 검색 질의 앞에 이 접두어를 붙여 쓰도록 학습되어 있음
     query = np.array(
         embedder.embed("task: search result | query: " + question, normalize=True), dtype=np.float32
     )
+
+    # 벡터가 모두 정규화되어 있어 내적이 클수록 질문과 가까운 조문임
     order = np.argsort(-(corpus["vectors"] @ query))
     return [corpus["articles"][int(index)] for index in order[:SEARCH_TOP]]
 
@@ -333,6 +344,8 @@ def answer_question(llm, embedder, question, corpus):
         if articles
         else CLOSED_ANSWER_PROMPT.format(question=question)
     )
+
+    # create_completion에는 Gemma의 대화 형식을 직접 적어 넘김
     ask = f"<|turn>user\n{prompt}<turn|>\n<|turn>model\n"
     answer = llm.create_completion(ask, max_tokens=80, temperature=0, stop=["<turn|>"])["choices"][
         0
@@ -358,6 +371,8 @@ def answer_odds(llm, words):
     scores = np.array(
         [logits[llm.tokenize(word.encode("utf-8"), add_bos=False)[0]] for word in words]
     )
+
+    # 최댓값을 빼고 지수를 취해 점수가 커도 넘치지 않게 하고, 합이 1이 되도록 나누면 낱말끼리의 확률이 됨
     probabilities = np.exp(scores - scores.max())
     return list(zip(words, (probabilities / probabilities.sum()).tolist()))
 
@@ -371,6 +386,8 @@ def image_part(image, tokens):
         size = (max(TOKEN_PIXELS, int(width * scale)), max(TOKEN_PIXELS, int(height * scale)))
         image = cv2.resize(image, size, interpolation=cv2.INTER_AREA)
 
+
+    # JPEG으로 압축해 base64 주소로 감싸 메시지에 이미지로 넣음
     jpeg = cv2.imencode(".jpg", image, [cv2.IMWRITE_JPEG_QUALITY, 95])[1]
     return {
         "type": "image_url",
@@ -380,6 +397,7 @@ def image_part(image, tokens):
 
 def parse_situations(answer):
     """Gemma가 답한 번호 문자열을 상황 목록으로 바꾸는 함수"""
+    # 번호가 목록 범위 안일 때만 상황으로 바꾸고 같은 상황은 한 번만 넣음
     found = []
     for part in answer.replace(".", ",").split(","):
         part = part.strip()
@@ -395,6 +413,7 @@ def parse_situations(answer):
 
 def first_token_bias(llm, words):
     """답의 첫 토큰을 낱말들의 첫 토큰으로 제한하는 logit_bias를 만드는 함수"""
+    # 첫 토큰 점수에 1000을 더하면 낱말 후보 가운데 하나가 반드시 뽑힘
     return {llm.tokenize(word.encode("utf-8"), add_bos=False)[0]: 1000.0 for word in words}
 
 
@@ -413,6 +432,7 @@ def ask_word(llm, stage, image, question, words):
     content = [image_part(image, 140), {"type": "text", "text": question}]
     response = llm.create_chat_completion(
         messages=[{"role": "user", "content": content}],
+        # 한 토큰만 받아 호출을 짧게 하고 답이 낱말 후보 안에서 나오게 함
         max_tokens=1,
         temperature=0,
         logit_bias=first_token_bias(llm, words),
@@ -434,6 +454,7 @@ def search_rules(embedder, situation, article, corpus, exclude=()):
         )
         for phrase in situation.split(PHRASE_JOIN)
     ]
+    # exclude에 든 규칙은 후보에서 빼려고 규칙마다 허용 여부를 담아 둠
     allowed = np.array(
         [(rule["id"], rule["instruction"]) not in exclude for rule in corpus["rules"]]
     )
@@ -451,6 +472,7 @@ def search_rules(embedder, situation, article, corpus, exclude=()):
     )
     others = []
     for query in queries:
+        # 허용되지 않은 규칙은 점수를 -inf로 두어 순위 맨 뒤로 보냄
         scores = np.where(allowed, corpus["rule_vectors"] @ query, -np.inf)
         for position in np.argsort(-scores)[:RULE_TOP]:
             rule = corpus["rules"][int(position)]
@@ -480,6 +502,7 @@ def choose_rules(llm, frame, situation, others):
     answer = llm.create_chat_completion(
         messages=[{"role": "user", "content": content}], max_tokens=12, temperature=0
     )["choices"][0]["message"]["content"]
+    # 답한 번호를 후보 규칙으로 바꾸고 범위 밖 번호와 중복은 버림
     chosen = []
     for part in answer.replace(" ", "").split(","):
         if part.isdigit() and 0 < int(part) <= len(others) and others[int(part) - 1] not in chosen:
@@ -656,6 +679,7 @@ def recognize(llm, frame, result, in_school_zone):
         "hydrants": hydrants,
     }
     start_stage("choice")
+    # 장면 전체, 신호등과 표지 크롭, 노면 크롭을 이미지 세 장으로 한 번에 넣음
     content = [
         image_part(frame, 280),
         image_part(signs, 140),
@@ -788,6 +812,8 @@ def read_provision(llm, situation, article):
     first = llm.create_completion(
         prompt, max_tokens=1, temperature=0, logit_bias=first_token_bias(llm, ACTIONS)
     )["choices"][0]["text"].strip()
+
+    # 한 토큰만 받았으므로 그 토큰으로 시작하는 행동 이름을 찾아 코드로 바꿈
     code = [code for action, code in ACTIONS.items() if action.startswith(first)][0]
     odds = answer_odds(llm, ACTIONS)
     end_stage("action", code, odds, llm.n_tokens)
