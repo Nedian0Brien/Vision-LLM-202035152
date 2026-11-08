@@ -1,6 +1,7 @@
 """음성 질문을 글로 바꾸고 글을 음성으로 읽는 모듈"""
 
 import os
+import signal
 import subprocess
 import sys
 import time
@@ -159,5 +160,6 @@ def stop_listening(shared):
     """녹음 중이면 녹음을 멈추는 함수"""
     if shared["recorder"] is not None:
         # 녹음 프로세스를 끝내면 listen 안에서 기다리던 wait가 풀려 그때까지의 파일로 이어 감
+        # SIGTERM을 받은 pasuspender는 PulseAudio를 정지 상태로 두어 다음 aplay가 끝나지 않으므로 SIGINT로 멈춤(2026-11-08 Jetson 재현)
         shared["stop_requested"] = True
-        shared["recorder"].terminate()
+        shared["recorder"].send_signal(signal.SIGINT)
