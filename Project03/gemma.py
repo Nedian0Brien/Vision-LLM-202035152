@@ -422,8 +422,8 @@ def ask_word(llm, stage, image, question, words):
     return answer
 
 
-def find_rules(llm, embedder, frame, situation, article, corpus, exclude=()):
-    """빌드 때 고른 조문의 요약을 기본 규칙으로 두고, 검색한 관련 규칙 가운데 Gemma가 고른 것을 덧붙이는 함수"""
+def search_rules(embedder, situation, article, corpus, exclude=()):
+    """빌드 때 고른 조문의 요약을 기본 규칙으로 두고 상황 문장과 가까운 관련 규칙 후보를 검색하는 함수"""
     start_stage("search")
 
     # 목록 상황은 문장 하나이고, 자유 구절 묶음은 구절마다 검색해 후보를 모음
@@ -458,41 +458,46 @@ def find_rules(llm, embedder, frame, situation, article, corpus, exclude=()):
                 others.append(rule)
 
     end_stage("search", f"후보 {len(others)}개", [], 0)
-    if others:
-        start_stage("choose")
-        options = "".join(
-            [
-                f"{number}. {rule['instruction_en']} (applies to: {rule['scene']})\n"
-                for number, rule in enumerate(others, 1)
-            ]
-        )
-        content = [
-            image_part(frame, CHOOSE_TOKENS),
-            {"type": "text", "text": CHOOSE_PROMPT.format(situation=situation, options=options)},
+    return [rule_output(rule) for rule in found], others
+
+
+def choose_rules(llm, frame, situation, others):
+    """검색한 관련 규칙 후보 가운데 장면에 맞는 것을 Gemma가 고르게 하는 함수"""
+    if not others:
+        return []
+
+    start_stage("choose")
+    options = "".join(
+        [
+            f"{number}. {rule['instruction_en']} (applies to: {rule['scene']})\n"
+            for number, rule in enumerate(others, 1)
         ]
-        answer = llm.create_chat_completion(
-            messages=[{"role": "user", "content": content}], max_tokens=12, temperature=0
-        )["choices"][0]["message"]["content"]
-        for part in answer.replace(" ", "").split(","):
-            if (
-                part.isdigit()
-                and 0 < int(part) <= len(others)
-                and others[int(part) - 1] not in found
-            ):
-                found.append(others[int(part) - 1])
-
-        end_stage("choose", answer.strip(), [], llm.n_tokens)
-
-    return [
-        {
-            "law": rule["id"],
-            "title": rule["title"],
-            "action": rule["action"],
-            "instruction": rule["instruction"],
-            "text": rule["text"][:READ_CHARS],
-        }
-        for rule in found
+    )
+    content = [
+        image_part(frame, CHOOSE_TOKENS),
+        {"type": "text", "text": CHOOSE_PROMPT.format(situation=situation, options=options)},
     ]
+    answer = llm.create_chat_completion(
+        messages=[{"role": "user", "content": content}], max_tokens=12, temperature=0
+    )["choices"][0]["message"]["content"]
+    chosen = []
+    for part in answer.replace(" ", "").split(","):
+        if part.isdigit() and 0 < int(part) <= len(others) and others[int(part) - 1] not in chosen:
+            chosen.append(others[int(part) - 1])
+
+    end_stage("choose", answer.strip(), [], llm.n_tokens)
+    return [rule_output(rule) for rule in chosen]
+
+
+def rule_output(rule):
+    """법령 요약 하나를 화면과 VLA 출력에 쓰는 규칙 형식으로 바꾸는 함수"""
+    return {
+        "law": rule["id"],
+        "title": rule["title"],
+        "action": rule["action"],
+        "instruction": rule["instruction"],
+        "text": rule["text"][:READ_CHARS],
+    }
 
 
 def publish(found):
@@ -526,16 +531,24 @@ def publish(found):
     clip["rules"] = unique_rules(pairs)
     clip["compare"] = compare_rules(recent)
     for situation in pending:
-        readings[(law, situation)] = find_law_rules(law, situation)
-        pairs = pairs + [(situation, rule) for rule in readings[(law, situation)]]
+        # 기본 규칙은 검색만으로 정해지므로 Gemma가 관련 규칙을 고르기 전에 먼저 화면에 넘김
+        base, others = find_law_rules(law, situation)
+        readings[(law, situation)] = base
+        pairs = pairs + [(situation, rule) for rule in base]
+        clip["rules"] = unique_rules(pairs)
+        clip["compare"] = compare_rules(recent)
+
+        chosen = choose_rules(WATCHING["llm"], WATCHING["frame"], situation, others)
+        readings[(law, situation)] = base + chosen
+        pairs = pairs + [(situation, rule) for rule in chosen]
         clip["rules"] = unique_rules(pairs)
         clip["compare"] = compare_rules(recent)
 
 
 def find_law_rules(law, situation):
-    """한 법령과 상황의 규칙을 찾는 함수"""
+    """한 법령과 상황의 기본 규칙과 관련 규칙 후보를 찾는 함수"""
     if law == NO_LAW:
-        return [read_provision(WATCHING["llm"], situation, NO_ARTICLE)]
+        return [read_provision(WATCHING["llm"], situation, NO_ARTICLE)], []
 
     corpus = WATCHING["corpora"][law]
     if is_free(situation):
@@ -547,21 +560,11 @@ def find_law_rules(law, situation):
             for rule in WATCHING["readings"].get((law, situation_seen), [])
         }
         general = {(rule["id"], rule["instruction"]) for rule in corpus["rules"] if rule["general"]}
-        return find_rules(
-            WATCHING["llm"],
-            WATCHING["embedder"],
-            WATCHING["frame"],
-            situation,
-            {"id": None},
-            corpus,
-            general | taken,
-        )
+        return search_rules(WATCHING["embedder"], situation, {"id": None}, corpus, general | taken)
 
     # 빌드 때 기본 조문을 정하지 못한 상황도 관련 규칙은 검색해 Gemma가 고르게 함(캘리포니아 통학버스 §22454)
     article = WATCHING["laws"][law].get(situation, {"id": None})
-    return find_rules(
-        WATCHING["llm"], WATCHING["embedder"], WATCHING["frame"], situation, article, corpus
-    )
+    return search_rules(WATCHING["embedder"], situation, article, corpus)
 
 
 def is_free(situation):
@@ -609,7 +612,10 @@ def fill_compare():
                 if judging_old_clip():
                     return
 
-                readings[(short, situation)] = find_law_rules(short, situation)
+                base, others = find_law_rules(short, situation)
+                readings[(short, situation)] = base + choose_rules(
+                    WATCHING["llm"], WATCHING["frame"], situation, others
+                )
                 clip["compare"] = compare_rules(recent)
 
 
@@ -673,6 +679,13 @@ def recognize(llm, frame, result, in_school_zone):
     phrases = describe_scene(llm)
     found = []
 
+    for situation in chosen:
+        if situation not in (RED, YELLOW, PEDESTRIAN):
+            found.append(situation)
+
+    # 객관식에서 찾은 상황을 크롭 질문을 기다리지 않고 바로 화면에 넘김(Jetson 객관식 3.4초와 크롭 질문 한 번 0.5~0.8초)
+    publish(found)
+
     # 신호 색과 횡단보도는 객관식에서 오인식이 많아 대상만 자른 크롭으로 따로 물음(2026-11-05 개발용 측정, 현행 28/53에서 31/53)
     if lights is not None:
         color = ask_word(llm, "light", lights, LIGHT_PROMPT, LIGHT_WORDS)
@@ -683,13 +696,6 @@ def recognize(llm, frame, result, in_school_zone):
             found.append(YELLOW)
 
         publish(found)
-
-    for situation in chosen:
-        if situation not in (RED, YELLOW, PEDESTRIAN):
-            found.append(situation)
-
-    # 객관식에서 찾은 상황을 크롭 질문을 기다리지 않고 바로 화면에 넘김(Jetson 객관식 3.4초와 크롭 질문 한 번 0.5~0.8초)
-    publish(found)
 
     # 사람 크롭에는 횡단보도가 보이지 않는 경우가 많아 걷는 사람이면 yes로 답하므로 도로 크롭에서 횡단보도를 확인함(2026-11-06 측정)
     if (
